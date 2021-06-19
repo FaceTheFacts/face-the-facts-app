@@ -8,108 +8,80 @@
  * @format
  */
 
- import React from 'react';
- import {
-   SafeAreaView,
-   ScrollView,
-   StatusBar,
-   StyleSheet,
-   Text,
-   useColorScheme,
-   View,
- } from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
 
- import {
-   Colors,
-   DebugInstructions,
-   Header,
-   LearnMoreLinks,
-   ReloadInstructions,
- } from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+  const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
+  const [faces, setFaces] = useState<Face[]>([]);
 
- const Section: React.FC<{
-   title: string;
- }> = ({children, title}) => {
-   const isDarkMode = useColorScheme() === 'dark';
-   return (
-     <View style={styles.sectionContainer}>
-       <Text
-         style={[
-           styles.sectionTitle,
-           {
-             color: isDarkMode ? Colors.white : Colors.black,
-           },
-         ]}>
-         {title}
-       </Text>
-       <Text
-         style={[
-           styles.sectionDescription,
-           {
-             color: isDarkMode ? Colors.light : Colors.dark,
-           },
-         ]}>
-         {children}
-       </Text>
-     </View>
-   );
- };
+  return (
+    <View style={styles.container}>
+      <RNCamera
+        captureAudio={false}
+        style={styles.preview}
+        type={RNCamera.Constants.Type.back}
+        flashMode={RNCamera.Constants.FlashMode.on}
+        onFacesDetected={response => setFaces(response.faces)}
+        onTextRecognized={response => setTexts(response.textBlocks)}>
+        {texts.map((text, index) => (
+          <View
+            key={index}
+            style={{
+              position: 'absolute',
+              top: text.bounds.origin.y,
+              left: text.bounds.origin.x,
+              width: text.bounds.size.width,
+              height: text.bounds.size.height,
+              borderColor: 'black',
+              borderWidth: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={styles.line}>{text.value}</Text>
+          </View>
+        ))}
+        {faces.map((face, index) => (
+          <View
+            key={index}
+            style={{
+              position: 'absolute',
+              top: face.bounds.origin.y,
+              left: face.bounds.origin.x,
+              width: face.bounds.size.width,
+              height: face.bounds.size.height,
+              borderColor: 'black',
+              borderWidth: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 100,
+            }}>
+            <Text style={styles.line}>{face.faceID}</Text>
+          </View>
+        ))}
+      </RNCamera>
+    </View>
+  );
+};
 
- const App = () => {
-   const isDarkMode = useColorScheme() === 'dark';
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'black',
+  },
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  line: {
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowRadius: 15,
+    fontSize: 12,
+  },
+});
 
-   const backgroundStyle = {
-     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-   };
-
-   return (
-     <SafeAreaView style={backgroundStyle}>
-       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-       <ScrollView
-         contentInsetAdjustmentBehavior="automatic"
-         style={backgroundStyle}>
-         <Header />
-         <View
-           style={{
-             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-           }}>
-           <Section title="Step One">
-             Edit <Text style={styles.highlight}>App.js</Text> to change this
-             screen and then come back to see your edits.
-           </Section>
-           <Section title="See Your Changes">
-             <ReloadInstructions />
-           </Section>
-           <Section title="Debug">
-             <DebugInstructions />
-           </Section>
-           <Section title="Learn More">
-             Read the docs to discover what to do next:
-           </Section>
-           <LearnMoreLinks />
-         </View>
-       </ScrollView>
-     </SafeAreaView>
-   );
- };
-
- const styles = StyleSheet.create({
-   sectionContainer: {
-     marginTop: 32,
-     paddingHorizontal: 24,
-   },
-   sectionTitle: {
-     fontSize: 24,
-     fontWeight: '600',
-   },
-   sectionDescription: {
-     marginTop: 8,
-     fontSize: 18,
-     fontWeight: '400',
-   },
-   highlight: {
-     fontWeight: '700',
-   },
- });
-
- export default App;
+export default App;

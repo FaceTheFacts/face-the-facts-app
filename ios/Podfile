@@ -17,6 +17,8 @@ target 'FaceTheFacts' do
     # Pods for testing
   end
 
+  pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [ 'TextDetector', 'FaceDetectorMLKit' ]
+
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
