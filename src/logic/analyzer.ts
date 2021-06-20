@@ -1,4 +1,7 @@
-import {TrackedTextFeature, TrackedTextFeatureRecursive} from 'react-native-camera';
+import {
+  TrackedTextFeature,
+  TrackedTextFeatureRecursive,
+} from 'react-native-camera';
 import {makeToken} from './tokenizer';
 
 export interface Politician {

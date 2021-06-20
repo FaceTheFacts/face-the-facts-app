@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
-import {Politician, PoliticianNameAnalyzer} from './analyzer';
+import {Politician, PoliticianNameAnalyzer} from './logic/analyzer';
 
 const App = () => {
   const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
