@@ -1,54 +1,68 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
-import {Politician, PoliticianNameAnalyzer} from './logic/analyzer';
+import {
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
+import TabMenu from './component/TabMenu';
+import {
+  faCamera as falCamera,
+  faHistory as falHistory,
+  faStar as falStar,
+} from '@fortawesome/pro-light-svg-icons';
+import {
+  faCamera,
+  faHistory,
+  faStar,
+} from '@fortawesome/free-solid-svg-icons';
+import CandidatesView from './view/CandidatesView';
+import {Colors} from './theme';
+import ScannerView from './view/ScannerView';
 
 const App = () => {
-  const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
-  const [faces, setFaces] = useState<Face[]>([]);
-
-  let politician: Politician | null = null;
-  if (faces.length === 1) {
-    const analyzer = new PoliticianNameAnalyzer();
-    politician = analyzer.analyze(texts);
-  }
+  const [selected, setSelected] = useState('candidates');
 
   return (
-    <View style={styles.container}>
-      <RNCamera
-        captureAudio={false}
-        style={styles.preview}
-        type={RNCamera.Constants.Type.back}
-        flashMode={RNCamera.Constants.FlashMode.on}
-        onFacesDetected={response => setFaces(response.faces)}
-        onTextRecognized={response => setTexts(response.textBlocks)}>
-        {politician && (
-          <Text
-            style={{
-              fontSize: 32,
-              position: 'absolute',
-              top: 200,
-              textShadowColor: 'white',
-              textShadowRadius: 15,
-            }}>
-            {politician.id}
-          </Text>
-        )}
-      </RNCamera>
-    </View>
+    <SafeAreaView style={styles.container}>
+      {selected === 'candidates' && <CandidatesView />}
+      {selected === 'scanner' && <ScannerView />}
+      <TabMenu
+        items={[
+          {
+            name: 'candidates',
+            icon: falStar,
+            selectedIcon: faStar,
+            displayName: '',
+          },
+          {
+            name: 'scanner',
+            icon: falCamera,
+            selectedIcon: faCamera,
+            displayName: '',
+          },
+          {
+            name: 'history',
+            icon: falHistory,
+            selectedIcon: faHistory,
+            displayName: '',
+          },
+        ]}
+        selected={selected}
+        onSelect={setSelected}
+        blur={false}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'black',
+    height: '100%',
+    backgroundColor: Colors.background,
   },
-  preview: {
+  content: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    backgroundColor: 'white',
   },
 });
 
