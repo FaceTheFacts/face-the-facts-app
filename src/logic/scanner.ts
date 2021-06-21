@@ -3,47 +3,17 @@ import {
   TrackedTextFeatureRecursive,
 } from 'react-native-camera';
 import {makeToken} from './tokenizer';
-
-export interface Politician {
-  id: string;
-  names: string[][];
-}
-
-const politicians: Politician[] = [
-  {
-    id: 'Ulf Wilhelm',
-    names: [['Ulf', 'Wilhelm']],
-  },
-  {
-    id: 'Jürn Jakob Schultze-Berndt',
-    names: [
-      ['Jürn', 'Jakob', 'Schultze-Berndt'],
-      ['Jürn', 'Jakob', 'Schultze', 'Berndt'],
-    ],
-  },
-];
-const politicianMap = new Map<string, Politician>(
-  politicians.map(value => [value.id, value]),
-);
-const nameMap = new Map<string, Set<string>>();
-politicians.forEach(({id, names}) =>
-  names.forEach(nameBundle =>
-    nameBundle.forEach(name => {
-      const token = makeToken(name);
-      if (!nameMap.get(token)?.add(id)) {
-        nameMap.set(token, new Set([id]));
-      }
-    }),
-  ),
-);
+import {FaceTheFactsData, Politician} from './model';
 
 interface NameFragment {
   id: string;
   pendingTokens: string[];
 }
 
-export class PoliticianNameAnalyzer {
+export class PoliticianScanner {
   private readonly foundTokens: string[] = [];
+
+  public constructor(private readonly data: FaceTheFactsData) {}
 
   public analyze(features: TrackedTextFeature[]): Politician | null {
     features.forEach(feature => this.analyzeFeature(feature));
@@ -51,7 +21,6 @@ export class PoliticianNameAnalyzer {
     if (this.foundTokens.length === 0) {
       return null;
     }
-    console.log('found tokens', this.foundTokens);
 
     const fullNames = new Set<string>();
     let fragments: NameFragment[] = [];
@@ -69,11 +38,10 @@ export class PoliticianNameAnalyzer {
         return true;
       });
 
-      nameMap.get(token)!.forEach(id => {
-        const {names} = politicianMap.get(id)!;
-        names.forEach(nameBundle => {
-          if (makeToken(nameBundle[0]) === token) {
-            const pendingTokens = nameBundle.map(makeToken);
+      this.data.lookupScanToken(token)!.forEach(id =>
+        this.data.lookupScanTokens(id)!.forEach(tokenBundle => {
+          if (makeToken(tokenBundle[0]) === token) {
+            const pendingTokens = tokenBundle.map(makeToken);
             pendingTokens.shift();
             if (pendingTokens.length === 0) {
               fullNames.add(id);
@@ -84,15 +52,15 @@ export class PoliticianNameAnalyzer {
               });
             }
           }
-        });
-      });
+        }),
+      );
     }
 
     if (fullNames.size !== 1) {
       return null;
     }
     const id = [...fullNames][0];
-    return politicianMap.get(id) ?? null;
+    return this.data.lookupPolitician(id);
   }
 
   private analyzeFeature(feature: TrackedTextFeatureRecursive): void {
@@ -101,7 +69,7 @@ export class PoliticianNameAnalyzer {
       return;
     }
     const token = makeToken(feature.value);
-    if (nameMap.has(token)) {
+    if (this.data.lookupScanToken(token)) {
       this.foundTokens.push(token);
     }
   }

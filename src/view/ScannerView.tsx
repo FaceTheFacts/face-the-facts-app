@@ -1,16 +1,22 @@
-import React, {useState} from 'react';
+import React, {
+  useContext,
+  useState,
+} from 'react';
 import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
-import {Politician, PoliticianNameAnalyzer} from '../logic/analyzer';
 import {StyleSheet, Text, View} from 'react-native';
+import {
+  DataContext,
+  Politician,
+} from '../logic/model';
 
 const ScannerView = () => {
   const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
   const [faces, setFaces] = useState<Face[]>([]);
+  const data = useContext(DataContext);
 
   let politician: Politician | null = null;
   if (faces.length === 1) {
-    const analyzer = new PoliticianNameAnalyzer();
-    politician = analyzer.analyze(texts);
+    politician = data.scanPolitician(texts);
   }
 
   return (
