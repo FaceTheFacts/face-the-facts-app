@@ -57,3 +57,7 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# Use the fetch-data.ts script to create this files
+api-politicians.json
+politicians.json
