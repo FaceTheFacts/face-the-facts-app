@@ -1,0 +1,100 @@
+[
+  {
+    "id": "none",
+    "displayName": "Fraktionslos",
+    "foregroundColor": "black",
+    "backgroundColor": "#F8F8F8"
+  },
+  {
+    "id": "bavaria",
+    "displayName": "Bayernpartei",
+    "foregroundColor": "#3AA6F4",
+    "backgroundColor": "#F8F8F8",
+    "borderColor": "#3AA6F4"
+  },
+  {
+    "id": "freie",
+    "displayName": "Freie Wähler",
+    "foregroundColor": "#2F5997",
+    "backgroundColor": "#F8F8F8",
+    "borderColor": "#FD820B"
+  },
+  {
+    "id": "fdp",
+    "displayName": "FDP",
+    "foregroundColor": "#333333",
+    "backgroundColor": "#FAED0B"
+  },
+  {
+    "id": "piraten",
+    "displayName": "Piraten",
+    "foregroundColor": "#333333",
+    "backgroundColor": "#FFB430"
+  },
+  {
+    "id": "oedp",
+    "displayName": "ÖDP",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#FD820B"
+  },
+  {
+    "id": "sdp",
+    "displayName": "SDP",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#E95050"
+  },
+  {
+    "id": "linke",
+    "displayName": "Linke",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#CD3E72"
+  },
+  {
+    "id": "die-partei",
+    "displayName": "Die Partei",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#722B2B"
+  },
+  {
+    "id": "gruene",
+    "displayName": "Grüne",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#61A056"
+  },
+  {
+    "id": "afd",
+    "displayName": "AfD",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#3AA6F4"
+  },
+  {
+    "id": "tierschutzpartei",
+    "displayName": "Tierschutzpartei",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#2F5997"
+  },
+  {
+    "id": "rep",
+    "displayName": "REP",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#2F5997"
+  },
+  {
+    "id": "ndp",
+    "displayName": "NDP",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#9D420F"
+  },
+  {
+    "id": "cdu",
+    "displayName": "CDU",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#636363"
+  },
+  {
+    "id": "other",
+    "displayName": "Sonstige",
+    "foregroundColor": "#FFFFFF",
+    "backgroundColor": "#333333"
+  }
+]
