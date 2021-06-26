@@ -1,12 +1,6 @@
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import TabMenu from './component/TabMenu';
-import {
-  faCamera as falCamera,
-  faHistory as falHistory,
-  faStar as falStar,
-} from '@fortawesome/pro-light-svg-icons';
-import {faCamera, faHistory, faStar} from '@fortawesome/free-solid-svg-icons';
 import CandidatesView from './view/CandidatesView';
 import {Colors} from './theme';
 import ScannerView from './view/ScannerView';
@@ -33,21 +27,18 @@ const App = () => {
           items={[
             {
               name: 'candidates',
-              icon: falStar,
-              selectedIcon: faStar,
-              displayName: '',
+              icon: 'square.grid.2x2.fill',
+              label: 'Wahl',
             },
             {
               name: 'scanner',
-              icon: falCamera,
-              selectedIcon: faCamera,
-              displayName: '',
+              icon: 'person.fill.viewfinder',
+              label: 'Scannen',
             },
             {
               name: 'history',
-              icon: falHistory,
-              selectedIcon: faHistory,
-              displayName: '',
+              icon: 'clock.fill',
+              label: 'Verlauf',
             },
           ]}
           selected={selected}
