@@ -22,12 +22,6 @@ export interface Party {
 export interface Election {
   id: string;
   displayName: string;
-  sets: ElectionCandidateSet[];
-}
-
-export interface ElectionCandidateSet {
-  id: string;
-  displayName: string;
   politicians: string[];
 }
 
@@ -77,6 +71,10 @@ export class FaceTheFactsData {
 
   public lookupPolitician(id: string): Politician | null {
     return this.politicians.get(id) ?? null;
+  }
+
+  public lookupParty(id: string): Party | null {
+    return this.parties.get(id) ?? null;
   }
 
   public scanPolitician(features: TrackedTextFeature[]): Politician | null {

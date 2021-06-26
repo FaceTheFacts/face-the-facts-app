@@ -2,18 +2,12 @@
   {
     "id": "election-2021",
     "displayName": "Bundestagswahl 2021",
-    "sets": [
-      {
-        "id": "candidates",
-        "displayName": "Kanzlerkandidat:innen",
-        "politicians": [
-          "145862",
-          "78993",
-          "130072",
-          "79475",
-          "66924"
-        ]
-      }
+    "politicians": [
+      "145862",
+      "78993",
+      "130072",
+      "79475",
+      "66924"
     ]
   }
 ]
