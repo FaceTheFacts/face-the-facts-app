@@ -2,6 +2,7 @@ import {TrackedTextFeature} from 'react-native-camera';
 import {PoliticianScanner} from './scanner';
 import {makeToken} from './tokenizer';
 import {createContext} from 'react';
+import {Index} from 'flexsearch';
 
 export interface Politician {
   id: string;
@@ -33,8 +34,10 @@ export interface FaceTheFactsDataset {
 
 export class FaceTheFactsData {
   private readonly politicians: Map<string, Politician>;
+  private readonly politiciansArray: Politician[];
   private readonly parties: Map<string, Party>;
   public readonly elections: Election[];
+  private readonly searchIndex: Index;
 
   private readonly scanTokens: Map<string, string[][]>;
   private readonly scanTokenMap: Map<string, Set<string>>;
@@ -48,7 +51,15 @@ export class FaceTheFactsData {
 
     this.scanTokens = new Map();
     this.scanTokenMap = new Map();
-    dataset.politicians.forEach(({id, displayName}) => {
+    this.searchIndex = new Index({
+      tokenize: 'forward',
+      charset: 'latin:advanced',
+      context: true,
+    });
+    this.politiciansArray = dataset.politicians;
+
+    console.time('indexing');
+    dataset.politicians.forEach(({id, displayName}, index) => {
       const boundarySplit = displayName
         .split(/\b/)
         .filter(value => value.match(/\b/));
@@ -66,7 +77,10 @@ export class FaceTheFactsData {
           }
         }),
       );
+
+      this.searchIndex.add(index, displayName);
     });
+    console.timeEnd('indexing');
   }
 
   public lookupPolitician(id: string): Politician | null {
@@ -87,6 +101,13 @@ export class FaceTheFactsData {
 
   public lookupScanTokens(politicianId: string): string[][] | null {
     return this.scanTokens.get(politicianId) ?? null;
+  }
+
+  public search(query: string): Politician[] {
+    return this.searchIndex
+      .search(query)
+      .map(index => this.politiciansArray[index])
+      .sort((a, b) => b.popularity - a.popularity);
   }
 }
 

@@ -2937,6 +2937,11 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.1.1.tgz#c4b489e80096d9df1dfc97c79871aea7c617c469"
   integrity sha512-zAoAQiudy+r5SvnSw3KJy5os/oRJYHzrzja/tBDqrZtNhUw8bt6y8OBzMWcjWr+8liV8Eb6yOhw8WZ7VFZ5ZzA==
 
+flexsearch@^0.7.11:
+  version "0.7.11"
+  resolved "https://registry.yarnpkg.com/flexsearch/-/flexsearch-0.7.11.tgz#e65881fd65a6854bf4760ae89d64dd40fc97fc12"
+  integrity sha512-7li2Kv9as1le1QuxK8lflA8D+qsI97wBAu8SPiDFZLtQ1wlakPOo6ytpRvd885tlEJez0qII1DnMpInhee4Y0Q==
+
 flow-parser@0.*:
   version "0.153.0"
   resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.153.0.tgz#bac7e977c79f380b07088d36fd0fccea24435db8"
