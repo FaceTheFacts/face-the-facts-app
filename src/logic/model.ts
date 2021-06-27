@@ -58,7 +58,6 @@ export class FaceTheFactsData {
     });
     this.politiciansArray = dataset.politicians;
 
-    console.time('indexing');
     dataset.politicians.forEach(({id, displayName}, index) => {
       const boundarySplit = displayName
         .split(/\b/)
@@ -80,7 +79,6 @@ export class FaceTheFactsData {
 
       this.searchIndex.add(index, displayName);
     });
-    console.timeEnd('indexing');
   }
 
   public lookupPolitician(id: string): Politician | null {
