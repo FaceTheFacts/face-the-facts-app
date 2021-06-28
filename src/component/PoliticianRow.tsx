@@ -1,9 +1,18 @@
 import React, {useContext} from 'react';
 import {DataContext, Politician} from '../logic/model';
-import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {Colors} from '../theme';
 import ProfilePicturePlaceholder from './ProfilePicturePlaceholder';
 import PartyTag from './PartyTag';
+import {NavigationContext} from '@react-navigation/native';
+import {showPolitician} from '../logic/navigation';
 
 export interface PoliticianRowProps {
   style?: StyleProp<ViewStyle>;
@@ -12,15 +21,18 @@ export interface PoliticianRowProps {
 
 const PoliticianRow = ({style, politician}: PoliticianRowProps) => {
   const data = useContext(DataContext);
+  const navigator = useContext(NavigationContext)!;
 
   return (
-    <View style={StyleSheet.flatten([styles.container, style])}>
+    <TouchableOpacity
+      style={StyleSheet.flatten([styles.container, style])}
+      onPress={() => showPolitician(navigator, politician.id)}>
       <ProfilePicturePlaceholder />
       <View style={styles.content}>
         <Text style={styles.name}>{politician.displayName}</Text>
         <PartyTag party={data.lookupParty(politician.party)!} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

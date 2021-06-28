@@ -1,18 +1,12 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
-import {
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {DataContext, Politician} from '../logic/model';
+import {KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {DataContext} from '../logic/model';
 import {SFSymbol} from 'react-native-sfsymbols';
 import {Colors} from '../theme';
 import PoliticianRow from '../component/PoliticianRow';
+import {NavigationContext} from '@react-navigation/native';
+import {showPolitician} from '../logic/navigation';
 
 const ScannerView = () => {
   const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
@@ -21,10 +15,19 @@ const ScannerView = () => {
   const [searchInput, setSearchInput] = useState('');
   const inputRef = useRef<TextInput>(null);
   const data = useContext(DataContext);
+  const navigator = useContext(NavigationContext)!;
+  useCallback(() => {
+    return navigator.addListener('focus', event => {
+      console.log('focus', event);
+    });
+  }, []);
 
-  let scannedPolitician: Politician | null = null;
   if (faces.length === 1) {
-    scannedPolitician = data.scanPolitician(texts);
+    const scannedPolitician = data.scanPolitician(texts);
+    // console.log('scan result', scannedPolitician);
+    if (scannedPolitician) {
+      showPolitician(navigator, scannedPolitician.id);
+    }
   }
 
   return (
@@ -87,20 +90,8 @@ const ScannerView = () => {
             type={RNCamera.Constants.Type.back}
             flashMode={RNCamera.Constants.FlashMode.on}
             onFacesDetected={response => setFaces(response.faces)}
-            onTextRecognized={response => setTexts(response.textBlocks)}>
-            {scannedPolitician && (
-              <Text
-                style={{
-                  fontSize: 32,
-                  position: 'absolute',
-                  top: 200,
-                  textShadowColor: 'white',
-                  textShadowRadius: 15,
-                }}>
-                {scannedPolitician.id}
-              </Text>
-            )}
-          </RNCamera>
+            onTextRecognized={response => setTexts(response.textBlocks)}
+          />
         </View>
       )}
       {!searching && (
@@ -162,6 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.foreground,
     textAlign: 'center',
+    marginBottom: 16,
   },
 });
 
