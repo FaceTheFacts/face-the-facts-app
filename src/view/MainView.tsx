@@ -1,8 +1,9 @@
+import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import CandidatesView from './CandidatesView';
 import ScannerView from './ScannerView';
 import TabMenu from '../component/TabMenu';
-import React, {useState} from 'react';
+import HistoryView from './HistoryView';
 import {Colors} from '../theme';
 
 const MainView = () => {
@@ -13,6 +14,7 @@ const MainView = () => {
       <SafeAreaView style={styles.contentContainer}>
         {selected === 'candidates' && <CandidatesView />}
         {selected === 'scanner' && <ScannerView />}
+        {selected === 'history' && <HistoryView />}
       </SafeAreaView>
       <SafeAreaView style={styles.tabBarContainer}>
         <TabMenu

@@ -360,6 +360,8 @@ PODS:
     - React-Core
   - react-native-sfsymbols (1.1.0):
     - React
+  - react-native-sqlite-storage (5.0.0):
+    - React
   - react-native-webview (11.6.4):
     - React-Core
   - React-perflogger (0.64.1)
@@ -510,6 +512,7 @@ DEPENDENCIES:
   - react-native-camera/TextDetector (from `../node_modules/react-native-camera`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sfsymbols (from `../node_modules/react-native-sfsymbols`)
+  - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -598,6 +601,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-sfsymbols:
     :path: "../node_modules/react-native-sfsymbols"
+  react-native-sqlite-storage:
+    :path: "../node_modules/react-native-sqlite-storage"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-perflogger:
@@ -683,6 +688,7 @@ SPEC CHECKSUMS:
   react-native-camera: 7bf59f2728ffb019fa25e60a225d2c57e1a8f0f6
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-sfsymbols: 48bd4b285e664a2cc1171f520c96ccd07a178e42
+  react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
   react-native-webview: 1a19adb5578cdf7f005b7961dcc50c1c6b70f41b
   React-perflogger: aad6d4b4a267936b3667260d1f649b6f6069a675
   React-RCTActionSheet: fc376be462c9c8d6ad82c0905442fd77f82a9d2a
