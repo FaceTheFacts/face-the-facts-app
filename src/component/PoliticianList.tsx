@@ -42,9 +42,13 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
     opacity: 0.7,
     marginBottom: 10,
+    marginLeft: 16,
+    marginRight: 16,
   },
   politician: {
     marginBottom: 10,
+    marginLeft: 16,
+    marginRight: 16,
   },
 });
 

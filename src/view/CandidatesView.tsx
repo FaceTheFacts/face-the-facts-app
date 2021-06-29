@@ -39,8 +39,6 @@ const CandidatesView = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 16,
-    paddingRight: 16,
   },
   title: {
     fontFamily: 'Inter',
@@ -48,9 +46,8 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
     marginTop: 24,
     marginBottom: 24,
-  },
-  politicianRow: {
-    marginBottom: 16,
+    marginLeft: 16,
+    marginRight: 16,
   },
 });
 
