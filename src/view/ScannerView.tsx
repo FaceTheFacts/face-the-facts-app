@@ -1,6 +1,15 @@
-import React, {useCallback, useContext, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
-import {KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {DataContext} from '../logic/model';
 import {SFSymbol} from 'react-native-sfsymbols';
 import {Colors} from '../theme';
@@ -13,18 +22,27 @@ const ScannerView = () => {
   const [faces, setFaces] = useState<Face[]>([]);
   const [searching, setSearching] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const [focussed, setFocussed] = useState(true);
   const inputRef = useRef<TextInput>(null);
   const data = useContext(DataContext);
   const navigator = useContext(NavigationContext)!;
-  useCallback(() => {
-    return navigator.addListener('focus', event => {
-      console.log('focus', event);
-    });
-  }, []);
 
-  if (faces.length === 1) {
+  useEffect(
+    () => navigator.addListener('focus', () => setFocussed(true)),
+    [navigator],
+  );
+  useEffect(
+    () =>
+      navigator.addListener('blur', () => {
+        setFocussed(false);
+        setTexts([]);
+        setFaces([]);
+      }),
+    [navigator],
+  );
+
+  if (!searching && focussed && faces.length === 1) {
     const scannedPolitician = data.scanPolitician(texts);
-    // console.log('scan result', scannedPolitician);
     if (scannedPolitician) {
       showPolitician(navigator, scannedPolitician.id);
     }
@@ -32,73 +50,79 @@ const ScannerView = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="height">
-      <View style={styles.searchBarContainer}>
-        <SFSymbol
-          style={styles.searchBarIcon}
-          name="magnifyingglass"
-          size={18}
-          color={Colors.background}
-        />
-        <TextInput
-          ref={inputRef}
-          style={styles.searchBarInput}
-          placeholder="Suchen"
-          placeholderTextColor={Colors.placeholderColor}
-          onFocus={() => setSearching(true)}
-          onBlur={() => setSearching(searchInput !== '')}
-          value={searchInput}
-          onChangeText={setSearchInput}
-          autoCompleteType="off"
-          dataDetectorTypes="none"
-          textContentType="none"
-          spellCheck={false}
-          autoCorrect={false}
-          autoCapitalize="words"
-          returnKeyType="search"
-        />
-        {!!searchInput && (
-          <TouchableOpacity
-            onPress={() => {
-              setSearchInput('');
-              inputRef.current!.focus();
-            }}>
-            <SFSymbol
-              style={styles.searchBarClearButton}
-              name="xmark.circle"
-              size={18}
-              color={Colors.background}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
-      {searching && !!searchInput && (
-        <ScrollView>
-          {data.search(searchInput).map(politician => (
-            <PoliticianRow
-              key={politician.id}
-              style={styles.searchItem}
-              politician={politician}
-            />
-          ))}
-        </ScrollView>
-      )}
-      {!searching && (
-        <View style={styles.previewWrapper}>
-          <RNCamera
-            captureAudio={false}
-            style={styles.preview}
-            type={RNCamera.Constants.Type.back}
-            flashMode={RNCamera.Constants.FlashMode.on}
-            onFacesDetected={response => setFaces(response.faces)}
-            onTextRecognized={response => setTexts(response.textBlocks)}
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.searchBarContainer}>
+          <SFSymbol
+            style={styles.searchBarIcon}
+            name="magnifyingglass"
+            size={18}
+            color={Colors.background}
           />
+          <TextInput
+            ref={inputRef}
+            style={styles.searchBarInput}
+            placeholder="Suchen"
+            placeholderTextColor={Colors.placeholderColor}
+            onFocus={() => {
+              setSearching(true);
+              setTexts([]);
+              setFaces([]);
+            }}
+            onBlur={() => setSearching(searchInput !== '')}
+            value={searchInput}
+            onChangeText={setSearchInput}
+            autoCompleteType="off"
+            dataDetectorTypes="none"
+            textContentType="none"
+            spellCheck={false}
+            autoCorrect={false}
+            autoCapitalize="words"
+            returnKeyType="search"
+          />
+          {!!searchInput && (
+            <TouchableOpacity
+              onPress={() => {
+                setSearchInput('');
+                inputRef.current!.focus();
+              }}>
+              <SFSymbol
+                style={styles.searchBarClearButton}
+                name="xmark.circle"
+                size={18}
+                color={Colors.background}
+              />
+            </TouchableOpacity>
+          )}
         </View>
-      )}
-      {!searching && (
-        <Text style={styles.infoText}>
-          Kamera auf Gesicht und Namen richten
-        </Text>
-      )}
+        {searching && !!searchInput && (
+          <ScrollView>
+            {data.search(searchInput).map(politician => (
+              <PoliticianRow
+                key={politician.id}
+                style={styles.searchItem}
+                politician={politician}
+              />
+            ))}
+          </ScrollView>
+        )}
+        {!searching && focussed && (
+          <View style={styles.previewWrapper}>
+            <RNCamera
+              captureAudio={false}
+              style={styles.preview}
+              type={RNCamera.Constants.Type.back}
+              flashMode={RNCamera.Constants.FlashMode.on}
+              onFacesDetected={response => setFaces(response.faces)}
+              onTextRecognized={response => setTexts(response.textBlocks)}
+            />
+          </View>
+        )}
+        {!searching && (
+          <Text style={styles.infoText}>
+            Kamera auf Gesicht und Namen richten
+          </Text>
+        )}
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };

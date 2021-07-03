@@ -11,11 +11,11 @@ const MainView = () => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.contentContainer}>
+      <View style={styles.contentContainer}>
         {selected === 'candidates' && <CandidatesView />}
         {selected === 'scanner' && <ScannerView />}
         {selected === 'history' && <HistoryView />}
-      </SafeAreaView>
+      </View>
       <SafeAreaView style={styles.tabBarContainer}>
         <TabMenu
           items={[

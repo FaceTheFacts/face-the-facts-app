@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {Colors} from '../theme';
 import {HistoryItem, historyManager} from '../logic/history';
 import {DataContext} from '../logic/model';
@@ -14,7 +14,7 @@ const HistoryView = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Verlauf</Text>
       {items ? (
         items.length ? (
@@ -41,7 +41,7 @@ const HistoryView = () => {
       ) : (
         <Text style={styles.noDataText}>Laden...</Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     opacity: 0.7,
     color: Colors.foreground,
+    marginLeft: 16,
   },
 });
 

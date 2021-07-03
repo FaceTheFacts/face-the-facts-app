@@ -1,8 +1,10 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {DataContext, FaceTheFactsData, Politician} from '../logic/model';
 import {Colors} from '../theme';
-import PoliticianList, {PoliticianListSection} from '../component/PoliticianList';
+import PoliticianList, {
+  PoliticianListSection,
+} from '../component/PoliticianList';
 
 function createSections(
   data: FaceTheFactsData,
@@ -27,12 +29,12 @@ const CandidatesView = () => {
   const data = useContext(DataContext);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Spitzenkandidat:innen</Text>
       <PoliticianList
         sections={createSections(data, data.elections[0].politicians)}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
