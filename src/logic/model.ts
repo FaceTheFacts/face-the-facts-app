@@ -63,10 +63,15 @@ export class FaceTheFactsData {
         .split(/\b/)
         .filter(value => value.match(/\b/));
       const spaceSplit = displayName.split(/\s+/);
-      const scanTokens: string[][] = [boundarySplit.map(makeToken)];
-      if (spaceSplit.length !== boundarySplit.length) {
+      const scanTokens: string[][] = [];
+      if (boundarySplit.length) {
+        scanTokens.push(boundarySplit.map(makeToken));
+      }
+
+      if (spaceSplit.length !== boundarySplit.length && spaceSplit.length) {
         scanTokens.push(spaceSplit.map(makeToken));
       }
+
       this.scanTokens.set(id, scanTokens);
 
       scanTokens.forEach(tokenBundle =>
