@@ -33,7 +33,23 @@ const characterReplacements: Record<string, string> = {
 };
 
 export function makeToken(value: string): string {
-  return [...value.toLowerCase()]
-    .map(char => characterReplacements[char] ?? char)
-    .join('');
+  let result = '';
+  let lastCharacter = '';
+
+  for (const character of [...value.toLowerCase()]) {
+    const replacedCharacter = characterReplacements[character] ?? character;
+    const code = replacedCharacter.charCodeAt(0);
+
+    if (!((code >= 0x41 && code <= 0x5a) || (code >= 0x61 && code <= 0x7a))) {
+      continue;
+    }
+
+    if (replacedCharacter === lastCharacter) {
+      continue;
+    }
+    lastCharacter = replacedCharacter;
+    result += replacedCharacter;
+  }
+
+  return result;
 }
