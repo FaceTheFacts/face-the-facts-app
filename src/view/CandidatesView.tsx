@@ -1,10 +1,9 @@
 import React, {useContext} from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
 import {DataContext, FaceTheFactsData, Politician} from '../logic/model';
 import {Colors} from '../theme';
-import PoliticianList, {
-  PoliticianListSection,
-} from '../component/PoliticianList';
+import {PoliticianListSection} from '../component/PoliticianList';
+import PoliticianRow from '../component/PoliticianRow';
 
 function createSections(
   data: FaceTheFactsData,
@@ -27,13 +26,21 @@ function createSections(
 
 const CandidatesView = () => {
   const data = useContext(DataContext);
+  const election = data.elections[0];
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Spitzenkandidat:innen</Text>
-      <PoliticianList
-        sections={createSections(data, data.elections[0].politicians)}
-      />
+      <Text style={styles.electionName}>{election.displayName}</Text>
+      <ScrollView>
+        {election.politicians.map(politicianId => (
+          <PoliticianRow
+            key={politicianId}
+            style={styles.row}
+            politician={data.lookupPolitician(politicianId)!}
+          />
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -44,10 +51,24 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'Inter',
-    fontSize: 20,
+    fontSize: 24,
     color: Colors.foreground,
+    fontWeight: 'bold',
     marginTop: 24,
-    marginBottom: 24,
+    marginBottom: 4,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  electionName: {
+    fontFamily: 'Inter',
+    fontSize: 17,
+    color: Colors.foreground,
+    marginBottom: 16,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  row: {
+    marginBottom: 10,
     marginLeft: 16,
     marginRight: 16,
   },
