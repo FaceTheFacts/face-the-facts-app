@@ -45,7 +45,7 @@ const ScannerView = () => {
     [navigator],
   );
 
-  if (!searching && focussed && faces.length === 1) {
+  if (!searching && focussed && faces.length) {
     const scannedPolitician = data.scanPolitician(texts);
     if (scannedPolitician) {
       showPolitician(navigator, scannedPolitician.id);
