@@ -5,10 +5,10 @@ import ScannerView from './ScannerView';
 import TabMenu from '../component/TabMenu';
 import HistoryView from './HistoryView';
 import {Colors} from '../theme';
-import {HistoryIcon, ListIcon, SearchIcon} from '../icons';
+import {HistoryIcon, ListIcon, ScanPersonIcon} from '../icons';
 
 const MainView = () => {
-  const [selected, setSelected] = useState('candidates');
+  const [selected, setSelected] = useState('scanner');
 
   return (
     <View style={styles.container}>
@@ -27,7 +27,7 @@ const MainView = () => {
             },
             {
               name: 'scanner',
-              icon: SearchIcon,
+              icon: ScanPersonIcon,
               label: 'Scannen',
             },
             {

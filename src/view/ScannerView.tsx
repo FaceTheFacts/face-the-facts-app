@@ -15,7 +15,7 @@ import PoliticianRow from '../component/PoliticianRow';
 import {NavigationContext} from '@react-navigation/native';
 import {showPolitician} from '../logic/navigation';
 import Icon from '../component/Icon';
-import {ClearIcon, ErrorIcon, ImageSearchIcon, SearchIcon} from '../icons';
+import {ClearIcon, ErrorIcon, ScanIcon, SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
 
@@ -137,7 +137,7 @@ const ScannerView = () => {
       {!searching && cameraReady && (
         <InfoBanner
           style={styles.infoBanner}
-          icon={ImageSearchIcon}
+          icon={ScanIcon}
           title="Nach Plakaten suchen"
           subtitle="Achte darauf, dass der Name der Kandidat:in gut lesbar ist."
         />
