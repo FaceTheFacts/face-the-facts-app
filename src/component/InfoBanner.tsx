@@ -1,8 +1,15 @@
-import {BlurView} from '@react-native-community/blur';
 import Icon from './Icon';
-import {StyleProp, StyleSheet, Text, ViewStyle} from 'react-native';
+import {
+  Platform,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React, {memo} from 'react';
 import {Colors} from '../theme';
+import {BlurView} from 'react-native-blur';
 
 export interface InfoBannerProps {
   style?: StyleProp<ViewStyle>;
@@ -13,20 +20,33 @@ export interface InfoBannerProps {
 
 const InfoBanner = memo(({style, icon, title, subtitle}: InfoBannerProps) => {
   return (
-    <BlurView style={StyleSheet.flatten([styles.container, style])} blurType="dark">
+    <View style={StyleSheet.flatten([styles.container, style])}>
+      {Platform.OS === 'ios' && (
+        <BlurView style={StyleSheet.absoluteFillObject} blurType="dark" />
+      )}
       <Icon style={styles.icon} icon={icon} />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
-    </BlurView>
+    </View>
   );
 });
 
 const styles = StyleSheet.create({
-  container: {
-    height: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  container:
+    Platform.OS === 'ios'
+      ? {
+          height: 150,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }
+      : {
+          height: 150,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: Colors.cardBackground,
+          borderBottomColor: 'rgba(248, 248, 248, 0.22)',
+          borderBottomWidth: 1,
+        },
   icon: {
     width: 30,
     height: 30,

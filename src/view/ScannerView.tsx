@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
 import {
+  Animated,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
@@ -20,13 +21,33 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
 
 const ScannerView = () => {
+  // Scanning
   const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
   const [faces, setFaces] = useState<Face[]>([]);
+
+  // State
   const [searching, setSearching] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
   const [focussed, setFocussed] = useState(true);
   const [cameraReady, setCameraReady] = useState(false);
+
+  // Search
+  const [searchInput, setSearchInput] = useState('');
   const inputRef = useRef<TextInput>(null);
+  const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    if (searching) {
+      Animated.spring(searchOverlayOpacity, {
+        toValue: 0.8,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.spring(searchOverlayOpacity, {
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [searching]);
+
   const data = useContext(DataContext);
   const navigator = useContext(NavigationContext)!;
   const insets = useSafeAreaInsets();
@@ -58,7 +79,7 @@ const ScannerView = () => {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="height">
+    <View style={styles.container}>
       {focussed && (
         <RNCamera
           style={styles.preview}
@@ -79,62 +100,73 @@ const ScannerView = () => {
               subtitle='Gehe zu "Einstellungen" > "FaceTheFacts" > "Kamera" und aktiviere sie, um Plakate scannen zu können.'
             />
           }
-          onStatusChange={event => setCameraReady(event.cameraStatus === 'READY')}
+          onStatusChange={event =>
+            setCameraReady(event.cameraStatus === 'READY')
+          }
         />
       )}
-      {searching && <View style={styles.searchOverlay} />}
+      <Animated.View
+        style={StyleSheet.flatten([
+          styles.searchOverlay,
+          {
+            opacity: searchOverlayOpacity,
+          },
+        ])}
+      />
       <SafeAreaView style={StyleSheet.absoluteFillObject}>
-        <View
-          style={StyleSheet.flatten([
-            styles.searchBarContainer,
-            insets.top <= 20 && {marginTop: 16},
-          ])}>
-          <Icon style={styles.searchBarIcon} icon={SearchIcon} />
-          <TextInput
-            ref={inputRef}
-            style={styles.searchBarInput}
-            placeholder="Suchen"
-            placeholderTextColor={Colors.placeholderColor}
-            onFocus={() => {
-              setSearching(true);
-              setTexts([]);
-              setFaces([]);
-            }}
-            onBlur={() => setSearching(searchInput !== '')}
-            value={searchInput}
-            onChangeText={setSearchInput}
-            autoCompleteType="off"
-            dataDetectorTypes="none"
-            textContentType="none"
-            spellCheck={false}
-            autoCorrect={false}
-            autoCapitalize="words"
-            returnKeyType="search"
-            keyboardAppearance="dark"
-          />
-          {!!searchInput && (
-            <TouchableOpacity
-              onPress={() => {
-                setSearchInput('');
-                inputRef.current!.focus();
-              }}>
-              <Icon style={styles.searchBarClearButton} icon={ClearIcon} />
-            </TouchableOpacity>
+        <KeyboardAvoidingView behavior="height">
+          <View
+            style={StyleSheet.flatten([
+              styles.searchBarContainer,
+              insets.top <= 20 && {marginTop: 16},
+            ])}>
+            <Icon style={styles.searchBarIcon} icon={SearchIcon} />
+            <TextInput
+              ref={inputRef}
+              style={styles.searchBarInput}
+              placeholder="Suchen"
+              placeholderTextColor={Colors.placeholderColor}
+              onFocus={() => {
+                setSearching(true);
+                setTexts([]);
+                setFaces([]);
+              }}
+              onBlur={() => setSearching(searchInput !== '')}
+              value={searchInput}
+              onChangeText={setSearchInput}
+              autoCompleteType="off"
+              dataDetectorTypes="none"
+              textContentType="none"
+              spellCheck={false}
+              autoCorrect={false}
+              autoCapitalize="words"
+              returnKeyType="search"
+              keyboardAppearance="dark"
+            />
+            {!!searchInput && (
+              <TouchableOpacity
+                onPress={() => {
+                  setSearchInput('');
+                  inputRef.current!.focus();
+                }}>
+                <Icon style={styles.searchBarClearButton} icon={ClearIcon} />
+              </TouchableOpacity>
+            )}
+          </View>
+          {!!searchResult.length && (
+            <ScrollView style={styles.searchResultContainer}>
+              {searchResult.map(politician => (
+                <PoliticianRow
+                  key={politician.id}
+                  style={styles.searchItem}
+                  politician={politician}
+                />
+              ))}
+            </ScrollView>
           )}
-        </View>
-        {!!searchResult.length && (
-          <ScrollView style={styles.searchResultContainer}>
-            {searchResult.map(politician => (
-              <PoliticianRow
-                key={politician.id}
-                style={styles.searchItem}
-                politician={politician}
-              />
-            ))}
-          </ScrollView>
-        )}
+        </KeyboardAvoidingView>
       </SafeAreaView>
-      {!searching && cameraReady && (
+      {cameraReady && (
         <InfoBanner
           style={styles.infoBanner}
           icon={ScanIcon}
@@ -142,7 +174,7 @@ const ScannerView = () => {
           subtitle="Achte darauf, dass der Name des:der Kandidat:in gut lesbar ist."
         />
       )}
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -169,6 +201,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontSize: 17,
     padding: 16,
+    color: Colors.background,
   },
   searchBarClearButton: {
     width: 24,
@@ -179,7 +212,6 @@ const styles = StyleSheet.create({
   searchOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: Colors.background,
-    opacity: 0.8,
   },
   searchResultContainer: {
     marginTop: 12,

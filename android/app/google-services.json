@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "435674290079",
+    "project_id": "facethefacts-cd090",
+    "storage_bucket": "facethefacts-cd090.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435674290079:android:d78b32015ae99782e48faa",
+        "android_client_info": {
+          "package_name": "com.facethefacts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435674290079-65e32o4h1t2vdpu2deak6smlo1k3d1eb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtsloFIHPyIAvSyjd597KEAjpkJxPkfjk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435674290079-65e32o4h1t2vdpu2deak6smlo1k3d1eb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "435674290079-57ib7osta1icdo8gfkelkvjcs2tdo1rg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "FaceTheFacts"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
