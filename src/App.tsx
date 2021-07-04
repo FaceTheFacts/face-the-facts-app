@@ -7,6 +7,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import MainView from './view/MainView';
 import EmbeddedView from './view/EmbeddedView';
+import {StatusBar} from 'react-native';
 
 const data = new FaceTheFactsData({
   politicians,
@@ -19,6 +20,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <DataContext.Provider value={data}>
+      <StatusBar barStyle="light-content" />
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="main" component={MainView} />
