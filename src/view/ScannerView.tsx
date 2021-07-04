@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -15,10 +14,10 @@ import {Colors} from '../theme';
 import PoliticianRow from '../component/PoliticianRow';
 import {NavigationContext} from '@react-navigation/native';
 import {showPolitician} from '../logic/navigation';
-import {BlurView} from '@react-native-community/blur';
 import Icon from '../component/Icon';
-import {ClearIcon, ImageSearchIcon, SearchIcon} from '../icons';
+import {ClearIcon, ErrorIcon, ImageSearchIcon, SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import InfoBanner from '../component/InfoBanner';
 
 const ScannerView = () => {
   const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
@@ -26,6 +25,7 @@ const ScannerView = () => {
   const [searching, setSearching] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [focussed, setFocussed] = useState(true);
+  const [cameraReady, setCameraReady] = useState(false);
   const inputRef = useRef<TextInput>(null);
   const data = useContext(DataContext);
   const navigator = useContext(NavigationContext)!;
@@ -71,6 +71,15 @@ const ScannerView = () => {
           onTextRecognized={
             searching ? undefined : response => setTexts(response.textBlocks)
           }
+          notAuthorizedView={
+            <InfoBanner
+              style={styles.infoBanner}
+              icon={ErrorIcon}
+              title="Kein Kamerazugriff"
+              subtitle='Gehe zu "Einstellungen" > "FaceTheFacts" > "Kamera" und aktiviere sie, um Plakate scannen zu können.'
+            />
+          }
+          onStatusChange={event => setCameraReady(event.cameraStatus === 'READY')}
         />
       )}
       {searching && <View style={styles.searchOverlay} />}
@@ -125,14 +134,13 @@ const ScannerView = () => {
           </ScrollView>
         )}
       </SafeAreaView>
-      {!searching && (
-        <BlurView style={styles.infoBanner} blurType="dark">
-          <Icon style={styles.infoBannerIcon} icon={ImageSearchIcon} />
-          <Text style={styles.infoBannerTitle}>Nach Plakaten suchen</Text>
-          <Text style={styles.infoBannerSubtitle}>
-            Achte darauf, dass der Name der Kandidat:in gut lesbar ist.
-          </Text>
-        </BlurView>
+      {!searching && cameraReady && (
+        <InfoBanner
+          style={styles.infoBanner}
+          icon={ImageSearchIcon}
+          title="Nach Plakaten suchen"
+          subtitle="Achte darauf, dass der Name der Kandidat:in gut lesbar ist."
+        />
       )}
     </KeyboardAvoidingView>
   );
@@ -190,45 +198,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  infoText: {
-    fontFamily: 'Inter',
-    fontSize: 13,
-    color: Colors.foreground,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
   infoBanner: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
-    height: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  infoBannerIcon: {
-    width: 30,
-    height: 30,
-    color: Colors.foreground,
-    marginBottom: 4,
-  },
-  infoBannerTitle: {
-    fontFamily: 'Inter',
-    fontSize: 17,
-    color: Colors.foreground,
-    fontWeight: 'bold',
-    marginBottom: 4,
-    textAlign: 'center',
-    marginLeft: 32,
-    marginRight: 32,
-  },
-  infoBannerSubtitle: {
-    fontFamily: 'Inter',
-    fontSize: 13,
-    color: Colors.foreground,
-    textAlign: 'center',
-    marginLeft: 32,
-    marginRight: 32,
   },
 });
 
