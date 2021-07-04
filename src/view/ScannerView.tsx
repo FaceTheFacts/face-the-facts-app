@@ -10,12 +10,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {DataContext} from '../logic/model';
-import {SFSymbol} from 'react-native-sfsymbols';
+import {DataContext, Politician} from '../logic/model';
 import {Colors} from '../theme';
 import PoliticianRow from '../component/PoliticianRow';
 import {NavigationContext} from '@react-navigation/native';
 import {showPolitician} from '../logic/navigation';
+import {BlurView} from '@react-native-community/blur';
+import Icon from '../component/Icon';
+import {ClearIcon, ImageSearchIcon, SearchIcon} from '../icons';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const ScannerView = () => {
   const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
@@ -26,6 +29,7 @@ const ScannerView = () => {
   const inputRef = useRef<TextInput>(null);
   const data = useContext(DataContext);
   const navigator = useContext(NavigationContext)!;
+  const insets = useSafeAreaInsets();
 
   useEffect(
     () => navigator.addListener('focus', () => setFocussed(true)),
@@ -48,16 +52,35 @@ const ScannerView = () => {
     }
   }
 
+  let searchResult: Politician[] = [];
+  if (searching && searchInput) {
+    searchResult = data.search(searchInput);
+  }
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="height">
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.searchBarContainer}>
-          <SFSymbol
-            style={styles.searchBarIcon}
-            name="magnifyingglass"
-            size={18}
-            color={Colors.background}
-          />
+      {focussed && (
+        <RNCamera
+          style={styles.preview}
+          captureAudio={false}
+          type={RNCamera.Constants.Type.back}
+          flashMode={RNCamera.Constants.FlashMode.on}
+          onFacesDetected={
+            searching ? undefined : response => setFaces(response.faces)
+          }
+          onTextRecognized={
+            searching ? undefined : response => setTexts(response.textBlocks)
+          }
+        />
+      )}
+      {searching && <View style={styles.searchOverlay} />}
+      <SafeAreaView style={StyleSheet.absoluteFillObject}>
+        <View
+          style={StyleSheet.flatten([
+            styles.searchBarContainer,
+            insets.top <= 20 && {marginTop: 16},
+          ])}>
+          <Icon style={styles.searchBarIcon} icon={SearchIcon} />
           <TextInput
             ref={inputRef}
             style={styles.searchBarInput}
@@ -78,6 +101,7 @@ const ScannerView = () => {
             autoCorrect={false}
             autoCapitalize="words"
             returnKeyType="search"
+            keyboardAppearance="dark"
           />
           {!!searchInput && (
             <TouchableOpacity
@@ -85,18 +109,13 @@ const ScannerView = () => {
                 setSearchInput('');
                 inputRef.current!.focus();
               }}>
-              <SFSymbol
-                style={styles.searchBarClearButton}
-                name="xmark.circle"
-                size={18}
-                color={Colors.background}
-              />
+              <Icon style={styles.searchBarClearButton} icon={ClearIcon} />
             </TouchableOpacity>
           )}
         </View>
-        {searching && !!searchInput && (
-          <ScrollView>
-            {data.search(searchInput).map(politician => (
+        {!!searchResult.length && (
+          <ScrollView style={styles.searchResultContainer}>
+            {searchResult.map(politician => (
               <PoliticianRow
                 key={politician.id}
                 style={styles.searchItem}
@@ -105,24 +124,16 @@ const ScannerView = () => {
             ))}
           </ScrollView>
         )}
-        {!searching && focussed && (
-          <View style={styles.previewWrapper}>
-            <RNCamera
-              captureAudio={false}
-              style={styles.preview}
-              type={RNCamera.Constants.Type.back}
-              flashMode={RNCamera.Constants.FlashMode.on}
-              onFacesDetected={response => setFaces(response.faces)}
-              onTextRecognized={response => setTexts(response.textBlocks)}
-            />
-          </View>
-        )}
-        {!searching && (
-          <Text style={styles.infoText}>
-            Kamera auf Gesicht und Namen richten
-          </Text>
-        )}
       </SafeAreaView>
+      {!searching && (
+        <BlurView style={styles.infoBanner} blurType="dark">
+          <Icon style={styles.infoBannerIcon} icon={ImageSearchIcon} />
+          <Text style={styles.infoBannerTitle}>Nach Plakaten suchen</Text>
+          <Text style={styles.infoBannerSubtitle}>
+            Achte darauf, dass der Name der Kandidat:in gut lesbar ist.
+          </Text>
+        </BlurView>
+      )}
     </KeyboardAvoidingView>
   );
 };
@@ -130,43 +141,50 @@ const ScannerView = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    paddingLeft: 16,
-    paddingRight: 16,
   },
   searchBarContainer: {
-    marginBottom: 8,
-    padding: 16,
     borderRadius: 8,
     backgroundColor: Colors.foreground,
     flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 16,
+    marginRight: 16,
   },
   searchBarIcon: {
-    width: 18,
-    height: 18,
-    marginRight: 16,
+    width: 24,
+    height: 24,
+    marginLeft: 16,
+    color: Colors.background,
   },
   searchBarInput: {
     flex: 1,
     fontFamily: 'Inter',
     fontSize: 17,
+    padding: 16,
   },
   searchBarClearButton: {
-    width: 18,
-    height: 18,
+    width: 24,
+    height: 24,
+    marginRight: 16,
+    color: Colors.background,
+  },
+  searchOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: Colors.background,
+    opacity: 0.8,
+  },
+  searchResultContainer: {
+    marginTop: 12,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   searchItem: {
-    marginBottom: 8,
-  },
-  previewWrapper: {
-    flex: 1,
-    borderRadius: 8,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginBottom: 16,
-    overflow: 'hidden',
+    marginBottom: 12,
+    borderColor: 'rgba(248, 248, 248, 0.22)',
+    borderWidth: 1,
   },
   preview: {
+    ...StyleSheet.absoluteFillObject,
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -178,6 +196,39 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
     textAlign: 'center',
     marginBottom: 16,
+  },
+  infoBanner: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  infoBannerIcon: {
+    width: 30,
+    height: 30,
+    color: Colors.foreground,
+    marginBottom: 4,
+  },
+  infoBannerTitle: {
+    fontFamily: 'Inter',
+    fontSize: 17,
+    color: Colors.foreground,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    textAlign: 'center',
+    marginLeft: 32,
+    marginRight: 32,
+  },
+  infoBannerSubtitle: {
+    fontFamily: 'Inter',
+    fontSize: 13,
+    color: Colors.foreground,
+    textAlign: 'center',
+    marginLeft: 32,
+    marginRight: 32,
   },
 });
 
