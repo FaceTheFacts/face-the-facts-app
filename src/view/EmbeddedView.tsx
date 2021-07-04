@@ -1,6 +1,8 @@
 import React, {useContext} from 'react';
 import {
   SafeAreaView,
+  Share,
+  ShareContent,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,7 +16,7 @@ import Icon from '../component/Icon';
 import {ArrowBackIos, ShareIcon} from '../icons';
 
 export interface EmbeddedViewProps {
-  route: Route<'embedded', {source: WebViewSource}>;
+  route: Route<'embedded', {source: WebViewSource; shareContent: ShareContent}>;
 }
 
 const EmbeddedView = ({route}: EmbeddedViewProps) => {
@@ -30,7 +32,8 @@ const EmbeddedView = ({route}: EmbeddedViewProps) => {
             <Icon style={styles.backButtonIcon} icon={ArrowBackIos} />
             <Text style={styles.backButtonLabel}>zurück</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => Share.share(route.params.shareContent)}>
             <Icon style={styles.shareButton} icon={ShareIcon} />
           </TouchableOpacity>
         </View>
