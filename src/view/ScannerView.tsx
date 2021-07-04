@@ -139,7 +139,7 @@ const ScannerView = () => {
           style={styles.infoBanner}
           icon={ScanIcon}
           title="Nach Plakaten suchen"
-          subtitle="Achte darauf, dass der Name der Kandidat:in gut lesbar ist."
+          subtitle="Achte darauf, dass der Name des:der Kandidat:in gut lesbar ist."
         />
       )}
     </KeyboardAvoidingView>
