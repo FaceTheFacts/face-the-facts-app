@@ -1,10 +1,17 @@
 import React, {useContext} from 'react';
-import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {SFSymbol} from 'react-native-sfsymbols';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Colors} from '../theme';
 import WebView from 'react-native-webview';
 import {NavigationContext, Route} from '@react-navigation/native';
 import {WebViewSource} from 'react-native-webview/lib/WebViewTypes';
+import Icon from '../component/Icon';
+import {ArrowBackIos, ShareIcon} from '../icons';
 
 export interface EmbeddedViewProps {
   route: Route<'embedded', {source: WebViewSource}>;
@@ -20,21 +27,11 @@ const EmbeddedView = ({route}: EmbeddedViewProps) => {
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigator.goBack()}>
-            <SFSymbol
-              style={styles.backButtonIcon}
-              name="chevron.backward"
-              size={18}
-              color={Colors.foreground}
-            />
+            <Icon style={styles.backButtonIcon} icon={ArrowBackIos} />
             <Text style={styles.backButtonLabel}>zurück</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <SFSymbol
-              style={styles.shareButton}
-              name="square.and.arrow.up"
-              size={18}
-              color={Colors.foreground}
-            />
+            <Icon style={styles.shareButton} icon={ShareIcon} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -64,6 +61,7 @@ const styles = StyleSheet.create({
   backButtonIcon: {
     width: 18,
     height: 18,
+    color: Colors.foreground,
   },
   backButtonLabel: {
     fontFamily: 'Inter',
@@ -74,6 +72,7 @@ const styles = StyleSheet.create({
   shareButton: {
     width: 18,
     height: 18,
+    color: Colors.foreground,
   },
 });
 

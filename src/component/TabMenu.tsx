@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../theme';
-import {SFSymbol} from 'react-native-sfsymbols';
+import Icon from './Icon';
 
 export interface TabMenuItem {
   name: string;
@@ -24,16 +24,12 @@ const TabMenu = ({items, selected, onSelect}: TabMenuProps) => {
           key={name}
           style={styles.itemWrapper}
           onPress={() => onSelect(name)}>
-          <View style={styles.item}>
-            <SFSymbol
-              style={StyleSheet.flatten([
-                styles.icon,
-                selected === name && styles.selectedIcon,
-              ])}
-              name={icon}
-              size={24}
-              color={Colors.foreground}
-            />
+          <View
+            style={StyleSheet.flatten([
+              styles.item,
+              selected === name && styles.selectedItem,
+            ])}>
+            <Icon style={styles.icon} icon={icon} />
             <Text style={styles.label}>{label}</Text>
           </View>
         </TouchableOpacity>
@@ -57,16 +53,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 0.3,
+  },
+  selectedItem: {
+    opacity: 1,
   },
   icon: {
     color: Colors.foreground,
-    opacity: 0.3,
     alignSelf: 'center',
-    width: 24,
-    height: 24,
-  },
-  selectedIcon: {
-    opacity: 1,
+    width: 30,
+    height: 30,
   },
   label: {
     marginTop: 4,

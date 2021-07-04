@@ -5,6 +5,7 @@ import ScannerView from './ScannerView';
 import TabMenu from '../component/TabMenu';
 import HistoryView from './HistoryView';
 import {Colors} from '../theme';
+import {HistoryIcon, ListIcon, SearchIcon} from '../icons';
 
 const MainView = () => {
   const [selected, setSelected] = useState('candidates');
@@ -21,17 +22,17 @@ const MainView = () => {
           items={[
             {
               name: 'candidates',
-              icon: 'square.grid.2x2.fill',
+              icon: ListIcon,
               label: 'Wahl',
             },
             {
               name: 'scanner',
-              icon: 'person.fill.viewfinder',
+              icon: SearchIcon,
               label: 'Scannen',
             },
             {
               name: 'history',
-              icon: 'clock.fill',
+              icon: HistoryIcon,
               label: 'Verlauf',
             },
           ]}
