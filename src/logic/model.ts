@@ -7,7 +7,6 @@ import {Index} from 'flexsearch';
 export interface Politician {
   id: string;
   displayName: string;
-  picture: string | null;
   party: string;
   popularity: number;
 }
