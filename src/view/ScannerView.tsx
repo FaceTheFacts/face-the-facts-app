@@ -166,7 +166,7 @@ const ScannerView = () => {
           )}
         </KeyboardAvoidingView>
       </SafeAreaView>
-      {cameraReady && (
+      {cameraReady && !searching && (
         <InfoBanner
           style={styles.infoBanner}
           icon={ScanIcon}
