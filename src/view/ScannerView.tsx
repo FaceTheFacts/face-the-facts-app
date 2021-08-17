@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
 import {
   Animated,
+  BackHandler,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
@@ -16,7 +17,13 @@ import PoliticianRow from '../component/PoliticianRow';
 import {NavigationContext} from '@react-navigation/native';
 import {showPolitician} from '../logic/navigation';
 import Icon from '../component/Icon';
-import {ClearIcon, ErrorIcon, ScanIcon, SearchIcon} from '../icons';
+import {
+  ArrowBackIos,
+  ClearIcon,
+  ErrorIcon,
+  ScanIcon,
+  SearchIcon,
+} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
 
@@ -46,6 +53,22 @@ const ScannerView = () => {
         useNativeDriver: true,
       }).start();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searching]);
+
+  useEffect(() => {
+    if (!searching) {
+      return;
+    }
+
+    const handler = BackHandler.addEventListener('hardwareBackPress', () => {
+      setSearching(false);
+      setSearchInput('');
+      inputRef.current?.blur();
+
+      return true;
+    });
+    return () => handler.remove();
   }, [searching]);
 
   const data = useContext(DataContext);
@@ -114,13 +137,27 @@ const ScannerView = () => {
         ])}
       />
       <SafeAreaView style={StyleSheet.absoluteFillObject}>
-        <KeyboardAvoidingView behavior="height">
+        <KeyboardAvoidingView
+          style={styles.searchWrapper}
+          behavior="height"
+          keyboardVerticalOffset={insets.top}>
           <View
             style={StyleSheet.flatten([
               styles.searchBarContainer,
               insets.top <= 20 && {marginTop: 16},
             ])}>
-            <Icon style={styles.searchBarIcon} icon={SearchIcon} />
+            {searching ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setSearching(false);
+                  setSearchInput('');
+                  inputRef.current?.blur();
+                }}>
+                <Icon style={styles.searchBarIcon} icon={ArrowBackIos} />
+              </TouchableOpacity>
+            ) : (
+              <Icon style={styles.searchBarIcon} icon={SearchIcon} />
+            )}
             <TextInput
               ref={inputRef}
               style={styles.searchBarInput}
@@ -154,7 +191,9 @@ const ScannerView = () => {
             )}
           </View>
           {!!searchResult.length && (
-            <ScrollView style={styles.searchResultContainer}>
+            <ScrollView
+              style={styles.searchResultContainer}
+              keyboardDismissMode="interactive">
               {searchResult.map(politician => (
                 <PoliticianRow
                   key={politician.id}
@@ -181,6 +220,9 @@ const ScannerView = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  searchWrapper: {
+    maxHeight: '100%',
   },
   searchBarContainer: {
     borderRadius: 8,
@@ -214,6 +256,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   searchResultContainer: {
+    height: '100%',
     marginTop: 12,
     paddingLeft: 16,
     paddingRight: 16,
