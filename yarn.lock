@@ -2247,6 +2247,11 @@ component-emitter@^1.2.1:
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
   integrity sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==
 
+compress-json@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/compress-json/-/compress-json-1.0.4.tgz#4870dd4215213674460d6dcd710b7cb764cde5f4"
+  integrity sha512-ugmGDWyx7mD7KuLRr/v/ixOFEXz5Zn/YI4EiaLGKBXjqU3I4ly7gcORY3n7a+vfJDHlwUENe8Rm8o0Iv3S23Yw==
+
 compressible@~2.0.16:
   version "2.0.18"
   resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.18.tgz#af53cca6b070d4c3c0750fbd77286a6d7cc46fba"

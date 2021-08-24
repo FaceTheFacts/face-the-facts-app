@@ -3,7 +3,7 @@ export interface Dataset {
   parties: Party[];
   polls: Poll[];
   pollTopics: PollTopic[];
-  positions: Position[];
+  positions?: Position[];
   constituencies: Constituency[];
   elections: Election[];
   committees: Committee[];

@@ -13,6 +13,7 @@
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
+    "compress-json": "^1.0.4",
     "flexsearch": "^0.7.11",
     "lodash": "^4.17.21",
     "react": "17.0.1",

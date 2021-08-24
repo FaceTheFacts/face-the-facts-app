@@ -14,6 +14,15 @@ import {
   PollTopic,
   Position,
 } from './data';
+import {
+  CachesDirectoryPath,
+  downloadFile,
+  exists,
+  Headers,
+  readFile,
+  stat,
+} from 'react-native-fs';
+import {decompress} from 'compress-json';
 
 interface SearchPolitician {
   name: string;
@@ -21,7 +30,58 @@ interface SearchPolitician {
   zipCodes?: string[];
 }
 
+const cacheDatabaseFile = `${CachesDirectoryPath}/database.json`;
+
+declare global {
+  interface Date {
+    toGMTString(): string;
+  }
+}
+
 export class FaceTheFactsData {
+  public static async load(
+    onData: (data: FaceTheFactsData) => void,
+    onNoData: () => void,
+  ): Promise<void> {
+    const headers: Headers = {};
+    let fileAlreadyExists = false;
+
+    if (await exists(cacheDatabaseFile)) {
+      onData(await this.loadDataFromCache());
+      fileAlreadyExists = true;
+      const {mtime} = await stat(cacheDatabaseFile);
+      const modifiedSince = new Date(mtime);
+      headers['If-Modified-Since'] = modifiedSince.toGMTString();
+    }
+
+    try {
+      const {statusCode} = await downloadFile({
+        fromUrl: 'https://database.facethefacts-api.de/database.json',
+        toFile: cacheDatabaseFile,
+        headers,
+      }).promise;
+
+      if (statusCode === 200) {
+        onData(await this.loadDataFromCache());
+        return;
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    if (!fileAlreadyExists) {
+      onNoData();
+    }
+  }
+
+  private static async loadDataFromCache(): Promise<FaceTheFactsData> {
+    const json = await readFile(cacheDatabaseFile);
+    const compressedData = JSON.parse(json);
+    const data = decompress(compressedData);
+
+    return new FaceTheFactsData(data);
+  }
+
   private readonly politicians: Map<string, Politician>;
   private readonly politiciansArray: Politician[];
   private readonly parties: Map<string, Party>;
@@ -30,10 +90,8 @@ export class FaceTheFactsData {
   public readonly elections: Election[];
   public readonly polls: Poll[];
   public readonly pollTopics: PollTopic[];
-  // public readonly positions: Map<string, Position>;
   private readonly positions: Map<string, Position>;
   private readonly searchIndex: Document;
-
   private readonly scanTokens: Map<string, string[][]>;
   private readonly scanTokenMap: Map<string, Set<string>>;
 
@@ -51,14 +109,9 @@ export class FaceTheFactsData {
     this.elections = dataset.elections;
     this.polls = dataset.polls;
     this.pollTopics = dataset.pollTopics;
-    const positions: Position[] = Array(10)
-      .fill(null)
-      .map((value, index) => ({
-        id: index.toString(),
-        title: 'Position ' + index,
-        content: 'Description of position ' + index,
-      }));
-    this.positions = new Map(positions.map(value => [value.id, value]));
+    this.positions = new Map(
+      dataset.positions?.map(value => [value.id, value]),
+    );
 
     this.scanTokens = new Map();
     this.scanTokenMap = new Map();
