@@ -3,7 +3,7 @@ import Svg, {Path} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
 
 export interface IconProps {
-  style?: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle & {color: string}>;
   icon: string;
 }
 

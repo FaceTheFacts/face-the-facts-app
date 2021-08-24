@@ -1,7 +1,7 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../theme';
-import {Politician} from '../logic/model';
+import {Politician} from '../logic/data';
 import PoliticianRow from './PoliticianRow';
 
 export interface PoliticianListSection {

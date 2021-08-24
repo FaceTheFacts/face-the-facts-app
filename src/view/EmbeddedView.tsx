@@ -1,13 +1,5 @@
-import React, {useContext} from 'react';
-import {
-  SafeAreaView,
-  Share,
-  ShareContent,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useContext, useRef} from 'react';
+import {SafeAreaView, Share, ShareContent, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../theme';
 import WebView from 'react-native-webview';
 import {NavigationContext, Route} from '@react-navigation/native';
@@ -19,8 +11,31 @@ export interface EmbeddedViewProps {
   route: Route<'embedded', {source: WebViewSource; shareContent: ShareContent}>;
 }
 
+// language=HTML
+const html = `<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+    window.addEventListener('message', ev => {
+      const data = JSON.parse(ev.data);
+
+      const output = document.createElement('pre');
+      output.innerText = ev.data;
+      document.body.appendChild(output);
+    });
+
+    function send() {
+      window.ReactNativeWebView.postMessage({message: 'Hello World!'});
+    }
+    </script>
+    <button onclick="send()">Send event</button>
+  </body>
+</html>
+`;
+
 const EmbeddedView = ({route}: EmbeddedViewProps) => {
   const navigator = useContext(NavigationContext)!;
+  const webView = useRef<WebView | null>(null);
 
   return (
     <View style={styles.container}>
@@ -38,7 +53,26 @@ const EmbeddedView = ({route}: EmbeddedViewProps) => {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <WebView source={route.params.source} />
+      {/*<WebView ref={webView} source={route.params.source} />*/}
+      <WebView
+        ref={webView}
+        source={{html}}
+        onLoad={() =>
+          webView.current!.postMessage(
+            JSON.stringify(
+              {
+                message: 'Hello',
+                key: 'World',
+              },
+              null,
+              4,
+            ),
+          )
+        }
+        onMessage={event => {
+          console.log('received message', JSON.stringify(event.nativeEvent.data));
+        }}
+      />
     </View>
   );
 };

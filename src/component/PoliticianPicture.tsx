@@ -5,9 +5,13 @@ import {resolvePoliticianPicture} from '../logic/picture';
 
 export interface PoliticianPictureProps {
   politicianId: string;
+  size?: number;
 }
 
-const PoliticianPicture = ({politicianId}: PoliticianPictureProps) => {
+const PoliticianPicture = ({
+  politicianId,
+  size = 76,
+}: PoliticianPictureProps) => {
   const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -19,7 +23,12 @@ const PoliticianPicture = ({politicianId}: PoliticianPictureProps) => {
   }
 
   return (
-    <Image style={styles.image} source={{uri: image}} width={76} height={76} />
+    <Image
+      style={styles.image}
+      source={{uri: image}}
+      width={size}
+      height={size}
+    />
   );
 };
 

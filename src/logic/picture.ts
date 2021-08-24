@@ -11,7 +11,7 @@ export async function resolvePoliticianPicture(
   }
 
   const result = await downloadFile({
-    fromUrl: `https://candidate-images.s3.eu-central-1.amazonaws.com/${politicianId}.jpg`,
+    fromUrl: `https://image.facethefacts-api.de/${politicianId}.jpg`,
     toFile: filename,
   }).promise;
 

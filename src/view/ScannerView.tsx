@@ -11,26 +11,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {DataContext, Politician} from '../logic/model';
+import {DataContext} from '../logic/model';
 import {Colors} from '../theme';
 import PoliticianRow from '../component/PoliticianRow';
 import {NavigationContext} from '@react-navigation/native';
-import {showPolitician} from '../logic/navigation';
 import Icon from '../component/Icon';
-import {
-  ArrowBackIos,
-  ClearIcon,
-  ErrorIcon,
-  ScanIcon,
-  SearchIcon,
-} from '../icons';
+import {ArrowBackIos, ClearIcon, ErrorIcon, ScanIcon, SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
+import {Politician} from '../logic/data';
+import PoliticianModal from './PoliticianModal';
+import {historyManager} from '../logic/history';
 
 const ScannerView = () => {
   // Scanning
+  const camera = useRef<RNCamera | null>(null);
   const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
   const [faces, setFaces] = useState<Face[]>([]);
+  const [showPolitician, setShowPolitician] = useState<Politician | null>(null);
 
   // State
   const [searching, setSearching] = useState(false);
@@ -56,16 +54,25 @@ const ScannerView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searching]);
 
+  function startSearching(): void {
+    setSearching(true);
+    setTexts([]);
+    setFaces([]);
+  }
+
+  function stopSearching(): void {
+    setSearching(false);
+    setSearchInput('');
+    inputRef.current?.blur();
+  }
+
   useEffect(() => {
     if (!searching) {
       return;
     }
 
     const handler = BackHandler.addEventListener('hardwareBackPress', () => {
-      setSearching(false);
-      setSearchInput('');
-      inputRef.current?.blur();
-
+      stopSearching();
       return true;
     });
     return () => handler.remove();
@@ -89,10 +96,14 @@ const ScannerView = () => {
     [navigator],
   );
 
-  if (!searching && focussed && faces.length) {
+  if (!searching && !showPolitician && focussed && faces.length) {
     const scannedPolitician = data.scanPolitician(texts);
     if (scannedPolitician) {
-      showPolitician(navigator, scannedPolitician.id);
+      setShowPolitician(scannedPolitician);
+      setFocussed(false);
+      setTexts([]);
+      setFaces([]);
+      historyManager.pushItem(scannedPolitician.id);
     }
   }
 
@@ -105,15 +116,20 @@ const ScannerView = () => {
     <View style={styles.container}>
       {focussed && (
         <RNCamera
+          ref={camera}
           style={styles.preview}
           captureAudio={false}
           type={RNCamera.Constants.Type.back}
           flashMode={RNCamera.Constants.FlashMode.on}
           onFacesDetected={
-            searching ? undefined : response => setFaces(response.faces)
+            searching || showPolitician
+              ? undefined
+              : response => setFaces(response.faces)
           }
           onTextRecognized={
-            searching ? undefined : response => setTexts(response.textBlocks)
+            searching || showPolitician
+              ? undefined
+              : response => setTexts(response.textBlocks)
           }
           notAuthorizedView={
             <InfoBanner
@@ -125,8 +141,7 @@ const ScannerView = () => {
           }
           onStatusChange={event =>
             setCameraReady(event.cameraStatus === 'READY')
-          }
-        />
+          } />
       )}
       <Animated.View
         style={StyleSheet.flatten([
@@ -147,12 +162,7 @@ const ScannerView = () => {
               insets.top <= 20 && {marginTop: 16},
             ])}>
             {searching ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setSearching(false);
-                  setSearchInput('');
-                  inputRef.current?.blur();
-                }}>
+              <TouchableOpacity onPress={stopSearching}>
                 <Icon style={styles.searchBarIcon} icon={ArrowBackIos} />
               </TouchableOpacity>
             ) : (
@@ -163,11 +173,7 @@ const ScannerView = () => {
               style={styles.searchBarInput}
               placeholder="Suchen"
               placeholderTextColor={Colors.placeholderColor}
-              onFocus={() => {
-                setSearching(true);
-                setTexts([]);
-                setFaces([]);
-              }}
+              onFocus={startSearching}
               onBlur={() => setSearching(searchInput !== '')}
               value={searchInput}
               onChangeText={setSearchInput}
@@ -211,6 +217,17 @@ const ScannerView = () => {
           icon={ScanIcon}
           title="Nach Plakaten suchen"
           subtitle="Achte darauf, dass der Name des:der Kandidat:in gut lesbar ist."
+        />
+      )}
+      {showPolitician && (
+        <PoliticianModal
+          politician={showPolitician}
+          autoOpen
+          onClosed={() => {
+            console.log('closed');
+            setShowPolitician(null);
+            setFocussed(true);
+          }}
         />
       )}
     </View>
