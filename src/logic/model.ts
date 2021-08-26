@@ -126,10 +126,11 @@ export class FaceTheFactsData {
         {
           field: 'locations',
           tokenize: 'forward',
-          charset: 'latin:advanced',
+          charset: 'latin:balance',
         },
         {
           field: 'zipCodes',
+          charset: false,
         },
       ],
     });
@@ -230,13 +231,14 @@ export class FaceTheFactsData {
     return this.scanTokens.get(politicianId) ?? null;
   }
 
-  public search(query: string): Politician[] {
-    return this.searchIndex
-      .search(query)
-      .flatMap(result => result.result)
-      .filter((value, index, array) => array.indexOf(value) === index)
-      .map(index => this.politiciansArray[index])
-      .sort((a, b) => b.popularity - a.popularity);
+  public search(query: string): Promise<Politician[]> {
+    return this.searchIndex.searchAsync(query).then(value =>
+      value
+        .flatMap(result => result.result)
+        .filter((value, index, array) => array.indexOf(value) === index)
+        .map(index => this.politiciansArray[index])
+        .sort((a, b) => b.popularity - a.popularity),
+    );
   }
 }
 

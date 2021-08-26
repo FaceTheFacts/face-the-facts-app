@@ -18,9 +18,7 @@ const PoliticianProfile = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const politician = useContext(PoliticianContext);
   const routes = [
-    (politician.committees ||
-      politician.votes ||
-      politician.sideJobs) && {
+    (politician.committees || politician.votes || politician.sideJobs) && {
       key: 'overview',
       title: 'Übersicht',
     },
@@ -99,7 +97,7 @@ const PoliticianProfile = () => {
             />
           );
         }}
-        swipeEnabled={routes[tabIndex].key !== 'overview'}
+        swipeEnabled={false}
       />
     </View>
   );

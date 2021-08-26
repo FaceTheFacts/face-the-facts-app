@@ -107,10 +107,12 @@ const ScannerView = () => {
     }
   }
 
-  let searchResult: Politician[] = [];
-  if (searching && searchInput) {
-    searchResult = data.search(searchInput);
-  }
+  const [searchResult, setSearchResult] = useState<Politician[]>([]);
+  useEffect(() => {
+    if (searching && searchInput) {
+      data.search(searchInput).then(setSearchResult);
+    }
+  }, [searching, searchInput, data]);
 
   return (
     <View style={styles.container}>
@@ -141,7 +143,8 @@ const ScannerView = () => {
           }
           onStatusChange={event =>
             setCameraReady(event.cameraStatus === 'READY')
-          } />
+          }
+        />
       )}
       <Animated.View
         style={StyleSheet.flatten([
@@ -171,7 +174,7 @@ const ScannerView = () => {
             <TextInput
               ref={inputRef}
               style={styles.searchBarInput}
-              placeholder="Suchen"
+              placeholder="Wohnort, PLZ oder Name"
               placeholderTextColor={Colors.placeholderColor}
               onFocus={startSearching}
               onBlur={() => setSearching(searchInput !== '')}

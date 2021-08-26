@@ -1,5 +1,11 @@
 import React, {useContext} from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Poll, PollResult, Vote} from '../../logic/data';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
@@ -50,9 +56,6 @@ const PollDetails = ({poll, candidateAnswer, onClose}: PollDetailsProps) => {
         <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
       </View>
       <View style={styles.votesContainer}>
-        <Text style={styles.voteLabel}>
-          Namentliche Abstimmung im Bundestag
-        </Text>
         <ScrollView style={styles.table} horizontal>
           <View style={styles.tableVoteColumn}>
             {possibleVotes.map(vote => (
@@ -176,14 +179,6 @@ const styles = StyleSheet.create({
   },
   votesContainer: {
     padding: 20,
-  },
-  voteLabel: {
-    color: Colors.foreground,
-    fontSize: 12,
-    fontFamily: 'Inter',
-    opacity: 0.7,
-    textTransform: 'uppercase',
-    marginBottom: 16,
   },
   table: {
     overflow: 'visible',

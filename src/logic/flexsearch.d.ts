@@ -22,5 +22,7 @@ declare module 'flexsearch' {
     append(id: number, content: object): this;
 
     search(query: string, limit?: number): DocumentSearchResult[];
+
+    searchAsync(query: string, limit?: number): Promise<DocumentSearchResult[]>;
   }
 }

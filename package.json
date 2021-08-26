@@ -15,7 +15,6 @@
     "@react-navigation/stack": "^5.14.5",
     "compress-json": "^1.0.4",
     "flexsearch": "^0.7.11",
-    "lodash": "^4.17.21",
     "react": "17.0.1",
     "react-native": "0.64.1",
     "react-native-blur": "^3.2.2",

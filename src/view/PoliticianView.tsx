@@ -45,13 +45,13 @@ const PoliticianView = ({politician}: PoliticianViewProps) => {
   const [tabIndex, setTabIndex] = useState<number>(() =>
     routes.findIndex(value => value.key === 'profile'),
   );
+
   return (
     <PoliticianContext.Provider value={politician}>
       <View style={styles.container}>
         <PoliticianHeader />
         {routes.length > 1 ? (
           <TabView
-            style={{flex: 1}}
             onIndexChange={setTabIndex}
             navigationState={{
               index: tabIndex,
@@ -69,7 +69,7 @@ const PoliticianView = ({politician}: PoliticianViewProps) => {
               />
             )}
             initialLayout={{width}}
-            swipeEnabled={routes[tabIndex].key !== 'profile'}
+            swipeEnabled={false}
           />
         ) : (
           <PoliticianProfile />

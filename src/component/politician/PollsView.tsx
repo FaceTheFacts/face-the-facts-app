@@ -1,11 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions} from 'react-native';
 import {Colors} from '../../theme';
 import {DataContext} from '../../logic/model';
 import PollCard from './PollCard';
@@ -45,7 +39,7 @@ const PollsView = ({politician}: PollsViewProps) => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.subtitle}>nach Themen filtern</Text>
-      <ScrollView horizontal style={{}}>
+      <ScrollView horizontal style={styles.topicsContainer}>
         <Wrap style={{width: width * 3}} spacing={8}>
           {pollTopics.map(topic => (
             <TouchableOpacity
@@ -116,6 +110,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginTop: 16,
     marginBottom: 8,
+  },
+  topicsContainer: {
+    overflow: 'visible',
   },
   topic: {
     flexDirection: 'row',
