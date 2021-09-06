@@ -23,6 +23,7 @@ import {
   stat,
 } from 'react-native-fs';
 import {decompress} from 'compress-json';
+import {HistoryManager} from './history';
 
 interface SearchPolitician {
   name: string;
@@ -94,6 +95,8 @@ export class FaceTheFactsData {
   private readonly searchIndex: Document;
   private readonly scanTokens: Map<string, string[][]>;
   private readonly scanTokenMap: Map<string, Set<string>>;
+
+  public readonly historyManager: HistoryManager;
 
   public constructor(dataset: Dataset) {
     this.politicians = new Map(
@@ -167,6 +170,8 @@ export class FaceTheFactsData {
 
       this.searchIndex.add(index, searchPolitician);
     });
+
+    this.historyManager = new HistoryManager(this.politicians);
   }
 
   public lookupPolitician(id: string): Politician | null {

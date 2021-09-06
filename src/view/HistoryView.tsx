@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {Colors} from '../theme';
-import {HistoryItem, historyManager} from '../logic/history';
+import {HistoryItem} from '../logic/history';
 import {DataContext} from '../logic/model';
 import PoliticianList from '../component/PoliticianList';
 import {groupByDate} from '../utils/date';
@@ -10,8 +10,8 @@ const HistoryView = () => {
   const [items, setItems] = useState<HistoryItem[] | null>(null);
   const data = useContext(DataContext);
   useEffect(() => {
-    historyManager.getItems().then(setItems);
-  }, []);
+    data.historyManager.getItems().then(setItems);
+  }, [data]);
 
   return (
     <SafeAreaView style={styles.container}>

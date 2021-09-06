@@ -1,12 +1,18 @@
 import React, {useContext, useRef} from 'react';
 import {DataContext} from '../logic/model';
-import {StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {Colors} from '../theme';
 import PartyTag from './PartyTag';
 import PoliticianPicture from './PoliticianPicture';
 import {Politician} from '../logic/data';
 import {Modalize} from 'react-native-modalize';
-import {historyManager} from '../logic/history';
 import PoliticianModal from '../view/PoliticianModal';
 
 export interface PoliticianRowProps {
@@ -24,7 +30,7 @@ const PoliticianRow = ({style, politician}: PoliticianRowProps) => {
         style={StyleSheet.flatten([styles.container, style])}
         onPress={() => {
           modal.current!.open();
-          historyManager.pushItem(politician.id);
+          data.historyManager.pushItem(politician.id);
         }}>
         <PoliticianPicture politicianId={politician.id} />
         <View style={styles.content}>

@@ -1,4 +1,5 @@
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
+import {Politician} from './data';
 
 SQLite.enablePromise(true);
 
@@ -10,6 +11,8 @@ export interface HistoryItem {
 export class HistoryManager {
   private items: HistoryItem[] | null = null;
   private database: SQLiteDatabase | null = null;
+
+  public constructor(private readonly politicians: Map<string, Politician>) {}
 
   public async getItems(): Promise<HistoryItem[]> {
     await this.loadItems();
@@ -38,12 +41,23 @@ export class HistoryManager {
 
     await this.openDatabase();
     const [{rows}] = await this.database!.executeSql(
-      'SELECT politician_id, date FROM history ORDER BY date',
+      'SELECT id, politician_id, date FROM history ORDER BY date',
     );
-    this.items = rows.raw().map(value => ({
-      politicianId: value.politician_id,
-      date: new Date(value.date),
-    }));
+    await Promise.all(
+      rows
+        .raw()
+        .filter(({politician_id}) => !this.politicians.has(politician_id))
+        .map(({id}) =>
+          this.database!.executeSql('DELETE FROM history WHERE id = ?', [id]),
+        ),
+    );
+    this.items = rows
+      .raw()
+      .filter(({politician_id}) => this.politicians.has(politician_id))
+      .map(({politician_id, date}) => ({
+        politicianId: politician_id,
+        date: new Date(date),
+      }));
   }
 
   private async openDatabase(): Promise<void> {
@@ -65,5 +79,3 @@ export class HistoryManager {
     );
   }
 }
-
-export const historyManager = new HistoryManager();

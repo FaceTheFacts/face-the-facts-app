@@ -16,12 +16,17 @@ import {Colors} from '../theme';
 import PoliticianRow from '../component/PoliticianRow';
 import {NavigationContext} from '@react-navigation/native';
 import Icon from '../component/Icon';
-import {ArrowBackIos, ClearIcon, ErrorIcon, ScanIcon, SearchIcon} from '../icons';
+import {
+  ArrowBackIos,
+  ClearIcon,
+  ErrorIcon,
+  ScanIcon,
+  SearchIcon,
+} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
 import {Politician} from '../logic/data';
 import PoliticianModal from './PoliticianModal';
-import {historyManager} from '../logic/history';
 
 const ScannerView = () => {
   // Scanning
@@ -103,7 +108,7 @@ const ScannerView = () => {
       setFocussed(false);
       setTexts([]);
       setFaces([]);
-      historyManager.pushItem(scannedPolitician.id);
+      data.historyManager.pushItem(scannedPolitician.id);
     }
   }
 
@@ -199,7 +204,7 @@ const ScannerView = () => {
               </TouchableOpacity>
             )}
           </View>
-          {!!searchResult.length && (
+          {searching && !!searchResult.length && (
             <ScrollView
               style={styles.searchResultContainer}
               keyboardDismissMode="interactive">
@@ -227,7 +232,6 @@ const ScannerView = () => {
           politician={showPolitician}
           autoOpen
           onClosed={() => {
-            console.log('closed');
             setShowPolitician(null);
             setFocussed(true);
           }}
