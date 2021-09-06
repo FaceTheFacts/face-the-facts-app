@@ -44,6 +44,11 @@ export class FaceTheFactsData {
     onData: (data: FaceTheFactsData) => void,
     onNoData: () => void,
   ): Promise<void> {
+    if (__DEV__) {
+      onData(new FaceTheFactsData(require('../../data.json')));
+      return;
+    }
+
     const headers: Headers = {};
     let fileAlreadyExists = false;
 
@@ -88,9 +93,9 @@ export class FaceTheFactsData {
   private readonly parties: Map<string, Party>;
   private readonly committees: Map<string, Committee>;
   private readonly constituencies: Map<string, Constituency>;
-  public readonly elections: Election[];
-  public readonly polls: Poll[];
-  public readonly pollTopics: PollTopic[];
+  public readonly elections: readonly Election[];
+  public readonly polls: readonly Poll[];
+  public readonly pollTopics: readonly PollTopic[];
   private readonly positions: Map<string, Position>;
   private readonly searchIndex: Document;
   private readonly scanTokens: Map<string, string[][]>;
@@ -129,7 +134,7 @@ export class FaceTheFactsData {
         {
           field: 'locations',
           tokenize: 'forward',
-          charset: 'latin:balance',
+          charset: 'latin:simple',
         },
         {
           field: 'zipCodes',

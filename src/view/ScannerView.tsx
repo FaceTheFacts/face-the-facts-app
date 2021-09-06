@@ -1,12 +1,14 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
 import {
+  ActivityIndicator,
   Animated,
   BackHandler,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -113,11 +115,23 @@ const ScannerView = () => {
   }
 
   const [searchResult, setSearchResult] = useState<Politician[]>([]);
+  const searchInProgress = useRef({count: 0, id: 0}).current;
+
   useEffect(() => {
     if (searching && searchInput) {
-      data.search(searchInput).then(setSearchResult);
+      searchInProgress.count++;
+      const id = ++searchInProgress.id;
+      setSearchResult([...searchResult]);
+      data.search(searchInput).then(result => {
+        searchInProgress.count--;
+        if (searchInProgress.id !== id) {
+          return;
+        }
+        setSearchResult(result);
+      });
     }
-  }, [searching, searchInput, data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searching, searchInput, data, searchInProgress]);
 
   return (
     <View style={styles.container}>
@@ -170,7 +184,9 @@ const ScannerView = () => {
               insets.top <= 20 && {marginTop: 16},
             ])}>
             {searching ? (
-              <TouchableOpacity onPress={stopSearching}>
+              <TouchableOpacity
+                style={styles.searchBarButton}
+                onPress={stopSearching}>
                 <Icon style={styles.searchBarIcon} icon={ArrowBackIos} />
               </TouchableOpacity>
             ) : (
@@ -194,8 +210,12 @@ const ScannerView = () => {
               returnKeyType="search"
               keyboardAppearance="dark"
             />
+            {!!searchInProgress.count && (
+              <ActivityIndicator style={styles.searchBarLoadingIndicator} />
+            )}
             {!!searchInput && (
               <TouchableOpacity
+                style={styles.searchBarButton}
                 onPress={() => {
                   setSearchInput('');
                   inputRef.current!.focus();
@@ -217,6 +237,14 @@ const ScannerView = () => {
               ))}
             </ScrollView>
           )}
+          {searching &&
+            !searchResult.length &&
+            !!searchInput &&
+            !searchInProgress.count && (
+              <Text style={styles.searchNoResult}>
+                Es wurden keine Politiker:innen gefunden.
+              </Text>
+            )}
         </KeyboardAvoidingView>
       </SafeAreaView>
       {cameraReady && !searching && (
@@ -256,6 +284,10 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16,
   },
+  searchBarButton: {
+    padding: 16,
+    margin: -16,
+  },
   searchBarIcon: {
     width: 24,
     height: 24,
@@ -268,6 +300,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     padding: 16,
     color: Colors.background,
+  },
+  searchBarLoadingIndicator: {
+    marginRight: 8,
   },
   searchBarClearButton: {
     width: 24,
@@ -284,6 +319,13 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingLeft: 16,
     paddingRight: 16,
+  },
+  searchNoResult: {
+    fontFamily: 'Inter',
+    fontSize: 17,
+    marginHorizontal: 16,
+    marginTop: 8,
+    color: Colors.foreground,
   },
   searchItem: {
     marginBottom: 12,
