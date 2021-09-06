@@ -69,7 +69,6 @@ export interface PollLink {
 export interface Position {
   id: string;
   title: string;
-  content: string;
 }
 
 export interface Constituency {
@@ -106,11 +105,11 @@ export type Vote = 'yes' | 'no' | 'abstain' | 'none';
 
 export type PollResult = 'yes' | 'no';
 
-export type PositionAnswer = 'yes' | 'no' | 'abstain';
+export type PositionAnswer = 'agree' | 'disagree' | 'neutral';
 
 export interface PoliticianPosition {
   id: string;
-  reason: string;
+  reason?: string;
   answer: PositionAnswer;
 }
 

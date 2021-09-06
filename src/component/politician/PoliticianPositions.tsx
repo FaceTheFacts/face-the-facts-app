@@ -1,19 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
-import VoteTag from '../utils/VoteTag';
 import {DataContext} from '../../logic/model';
 import Icon from '../Icon';
 import {ArrowForwardIos, ClearIcon} from '../../icons';
 import {PoliticianPosition} from '../../logic/data';
+import PositionAnswerTag from '../utils/PositionAnswerTag';
 
 const PoliticianPositions = () => {
   const politician = useContext(PoliticianContext);
@@ -40,7 +33,11 @@ const PoliticianPositions = () => {
                 setModalOpen(true);
               }}>
               <Text style={styles.title}>{position.title}</Text>
-              <VoteTag vote={candidatePosition.answer} />
+              <PositionAnswerTag
+                short
+                center
+                answer={candidatePosition.answer}
+              />
               <Icon style={styles.arrow} icon={ArrowForwardIos} />
             </TouchableOpacity>
           );
@@ -48,11 +45,15 @@ const PoliticianPositions = () => {
       </ScrollView>
       {openedCandidatePosition && (
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent
           visible={modalOpen}
           onRequestClose={() => setModalOpen(false)}>
           <View style={styles.modalWrapper}>
+            <Pressable
+              style={styles.modalBarrier}
+              onPress={() => setModalOpen(false)}
+            />
             <TouchableOpacity onPress={() => setModalOpen(false)}>
               <Icon style={styles.modalClose} icon={ClearIcon} />
             </TouchableOpacity>
@@ -61,10 +62,17 @@ const PoliticianPositions = () => {
                 {openedPosition!.title}
               </Text>
               <View style={styles.modalSeparator} />
-              <VoteTag vote={openedCandidatePosition.answer} />
-              <Text style={styles.modalReason}>
-                {openedCandidatePosition.reason}
-              </Text>
+              <PositionAnswerTag answer={openedCandidatePosition.answer} />
+              {openedCandidatePosition.reason && (
+                <>
+                  <Text style={styles.modalReasonLabel}>
+                    Begründung von {politician.name}:
+                  </Text>
+                  <Text style={styles.modalReason}>
+                    "{openedCandidatePosition.reason}"
+                  </Text>
+                </>
+              )}
             </View>
           </View>
         </Modal>
@@ -90,7 +98,7 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
     fontSize: 13,
     fontFamily: 'Inter',
-    marginBottom: 2,
+    marginRight: 8,
   },
   arrow: {
     width: 14,
@@ -98,12 +106,15 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
     marginLeft: 16,
   },
+  modalBarrier: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(24,25,36,0.7)',
+  },
   modalWrapper: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-end',
     padding: 32,
-    backgroundColor: Colors.background,
   },
   modalClose: {
     width: 28,
@@ -119,8 +130,9 @@ const styles = StyleSheet.create({
   },
   modalDescription: {
     color: Colors.foreground,
-    fontSize: 13,
+    fontSize: 15,
     fontFamily: 'Inter',
+    fontWeight: 'bold',
     width: '100%',
   },
   modalSeparator: {
@@ -130,11 +142,18 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 12,
   },
+  modalReasonLabel: {
+    color: Colors.foreground,
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: 'bold',
+    marginTop: 12,
+    marginBottom: 4,
+  },
   modalReason: {
     color: Colors.foreground,
     fontSize: 13,
     fontFamily: 'Inter',
-    marginTop: 12,
   },
 });
 
