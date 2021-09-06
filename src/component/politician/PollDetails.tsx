@@ -1,11 +1,5 @@
-import React, {useContext} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useContext, useRef, useState} from 'react';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Poll, PollResult, Vote} from '../../logic/data';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
@@ -33,6 +27,8 @@ const PollDetails = ({poll, candidateAnswer, onClose}: PollDetailsProps) => {
 
   const [yesVotes, noVotes] = poll.votes;
   const pollResult: PollResult = yesVotes > noVotes ? 'yes' : 'no';
+  const [expanded, setExpanded] = useState(false);
+  const scrollView = useRef<ScrollView | null>(null);
 
   return (
     <>
@@ -42,72 +38,84 @@ const PollDetails = ({poll, candidateAnswer, onClose}: PollDetailsProps) => {
           <Icon style={styles.closeIcon} icon={ClearIcon} />
         </TouchableOpacity>
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>{poll.title}</Text>
-        <ReadMoreHTML baseStyle={styles.description} html={poll.description} />
-      </View>
-      <View style={styles.middleContainer}>
-        <View style={styles.candidateAnswerContainer}>
-          <Text style={styles.candidateAnswerLabel}>
-            Kandidat:in stimmte mit
-          </Text>
-          <VoteTag vote={candidateAnswer} />
+      <ScrollView ref={scrollView} scrollEnabled={expanded}>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{poll.title}</Text>
+          <ReadMoreHTML
+            baseStyle={styles.description}
+            html={poll.description}
+            onCollapse={() => {
+              setExpanded(false);
+              scrollView.current!.scrollTo({});
+            }}
+            onExpand={() => setExpanded(true)}
+          />
         </View>
-        <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
-      </View>
-      <View style={styles.votesContainer}>
-        <ScrollView style={styles.table} horizontal>
-          <View style={styles.tableVoteColumn}>
-            {possibleVotes.map(vote => (
-              <VoteTag key={vote} style={styles.tableVoteTag} vote={vote} />
-            ))}
+        <View style={styles.middleContainer}>
+          <View style={styles.candidateAnswerContainer}>
+            <Text style={styles.candidateAnswerLabel}>
+              Kandidat:in stimmte mit
+            </Text>
+            <VoteTag vote={candidateAnswer} />
           </View>
-          <View style={styles.tableTotalColumn}>
-            <Tag style={styles.tableTag} content="Gesamt" uppercase />
-            {possibleVotes.map((vote, index) => (
-              <Tag
-                key={vote}
-                style={styles.tableTag}
-                content={poll.votes[index].toString()}
-                backgroundColor={
-                  vote === pollResult ? voteColors[vote] : Colors.background
-                }
-                spacing
-                bold
-              />
-            ))}
-          </View>
-          {poll.participatedParties
-            .map(
-              (partyId, index) =>
-                [
-                  partyId,
-                  poll.votes.slice((index + 1) * 4, (index + 1) * 4 + 4),
-                ] as [string, number[]],
-            )
-            .sort((a, b) => a[0].localeCompare(b[0]))
-            .map(([partyId, votes]) => (
-              <View key={partyId} style={styles.tablePartyColumn}>
-                <PartyTag
+          <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
+        </View>
+        <View style={styles.votesContainer}>
+          <ScrollView style={styles.table} horizontal>
+            <View style={styles.tableVoteColumn}>
+              {possibleVotes.map(vote => (
+                <VoteTag key={vote} style={styles.tableVoteTag} vote={vote} />
+              ))}
+            </View>
+            <View style={styles.tableTotalColumn}>
+              <Tag style={styles.tableTag} content="Gesamt" uppercase />
+              {possibleVotes.map((vote, index) => (
+                <Tag
+                  key={vote}
                   style={styles.tableTag}
-                  party={data.lookupParty(partyId)!}
+                  content={poll.votes[index].toString()}
+                  backgroundColor={
+                    vote === pollResult ? voteColors[vote] : Colors.background
+                  }
+                  spacing
+                  bold
                 />
-                {possibleVotes.map((vote, voteIndex) => (
-                  <Tag
-                    key={vote}
+              ))}
+            </View>
+            {poll.participatedParties
+              .map(
+                (partyId, index) =>
+                  [
+                    partyId,
+                    poll.votes.slice((index + 1) * 4, (index + 1) * 4 + 4),
+                  ] as [string, number[]],
+              )
+              .sort((a, b) => a[0].localeCompare(b[0]))
+              .map(([partyId, votes]) => (
+                <View key={partyId} style={styles.tablePartyColumn}>
+                  <PartyTag
                     style={styles.tableTag}
-                    content={votes[voteIndex].toString()}
-                    backgroundColor={
-                      vote === pollResult ? voteColors[vote] : Colors.background
-                    }
-                    spacing
-                    bold
+                    party={data.lookupParty(partyId)!}
                   />
-                ))}
-              </View>
-            ))}
-        </ScrollView>
-      </View>
+                  {possibleVotes.map((vote, voteIndex) => (
+                    <Tag
+                      key={vote}
+                      style={styles.tableTag}
+                      content={votes[voteIndex].toString()}
+                      backgroundColor={
+                        vote === pollResult
+                          ? voteColors[vote]
+                          : Colors.background
+                      }
+                      spacing
+                      bold
+                    />
+                  ))}
+                </View>
+              ))}
+          </ScrollView>
+        </View>
+      </ScrollView>
     </>
   );
 };

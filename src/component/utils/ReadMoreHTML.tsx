@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {StyleProp, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View, ViewStyle} from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {RenderHTML} from 'react-native-render-html';
 import {Colors} from '../../theme';
 import {MixedStyleDeclaration} from '@native-html/transient-render-engine';
@@ -8,9 +16,17 @@ export interface ReadMoreHTMLProps {
   containerStyle?: StyleProp<ViewStyle>;
   baseStyle?: MixedStyleDeclaration;
   html: string;
+  onExpand?: () => void;
+  onCollapse?: () => void;
 }
 
-const ReadMoreHTML = ({containerStyle, baseStyle, html}: ReadMoreHTMLProps) => {
+const ReadMoreHTML = ({
+  containerStyle,
+  baseStyle,
+  html,
+  onExpand,
+  onCollapse,
+}: ReadMoreHTMLProps) => {
   const {width} = useWindowDimensions();
   const [expanded, setExpanded] = useState(false);
 
@@ -30,7 +46,14 @@ const ReadMoreHTML = ({containerStyle, baseStyle, html}: ReadMoreHTMLProps) => {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => setExpanded(!expanded)}>
+        onPress={() => {
+          setExpanded(!expanded);
+          if (expanded) {
+            onCollapse?.call(null);
+          } else {
+            onExpand?.call(null);
+          }
+        }}>
         <Text style={styles.buttonLabel}>
           {expanded ? 'Weniger lesen' : 'Mehr lesen'}
         </Text>
