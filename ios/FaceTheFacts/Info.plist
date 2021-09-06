@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>de_DE</string>
 	<key>CFBundleDisplayName</key>
 	<string>FaceTheFacts</string>
 	<key>CFBundleExecutable</key>
@@ -12,6 +12,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>de</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
@@ -36,9 +40,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>This app can scan posters of elections campaigns to show information about the political. It requires access to the camera to be able to make the recognision of the posters.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Diese App kann Poster von Politikern scannen und Informationen zu dem jeweiligen Politiker anzeigen. Um die Plakete zu scannen, brauch diese App jedoch Zugriff auf die Kamera ihres Gerätes.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Black.ttf</string>
