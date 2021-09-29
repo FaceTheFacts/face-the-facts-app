@@ -9,6 +9,7 @@ const PoliticianConstituency = () => {
   const data = useContext(DataContext);
   const politician = useContext(PoliticianContext);
   const constituency = data.lookupConstituencies(politician.constituency!)!;
+  const parentPoliticianId = politician.id;
 
   return (
     <View style={styles.container}>
@@ -20,7 +21,11 @@ const PoliticianConstituency = () => {
         data={constituency.politicians}
         keyExtractor={item => item}
         renderItem={info => (
-          <PoliticianRow style={styles.politicianRow} politician={data.lookupPolitician(info.item)!} />
+          <PoliticianRow
+            style={styles.politicianRow}
+            politician={data.lookupPolitician(info.item)!}
+            parentPoliticianId={parentPoliticianId}
+          />
         )}
       />
     </View>

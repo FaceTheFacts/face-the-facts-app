@@ -19,9 +19,14 @@ import {NavigationContext} from '@react-navigation/native';
 export interface PoliticianRowProps {
   style?: StyleProp<ViewStyle>;
   politician: Politician;
+  parentPoliticianId?: string;
 }
 
-const PoliticianRow = ({style, politician}: PoliticianRowProps) => {
+const PoliticianRow = ({
+  style,
+  politician,
+  parentPoliticianId,
+}: PoliticianRowProps) => {
   const data = useContext(DataContext);
   const modal = useRef<Modalize>(null);
   const navigator = useContext(NavigationContext)!;
@@ -31,10 +36,12 @@ const PoliticianRow = ({style, politician}: PoliticianRowProps) => {
       <TouchableOpacity
         style={StyleSheet.flatten([styles.container, style])}
         onPress={() => {
-          navigator.push('politician', {
-            politician,
-          });
-          data.historyManager.pushItem(politician.id);
+          if (politician.id !== parentPoliticianId) {
+            navigator.push('politician', {
+              politician,
+            });
+            data.historyManager.pushItem(politician.id);
+          }
         }}>
         <PoliticianPicture politicianId={politician.id} />
         <View style={styles.content}>
