@@ -5,7 +5,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import MainView from './view/MainView';
 import EmbeddedView from './view/EmbeddedView';
-import {SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import PoliticianView from './view/PoliticianView';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import SplashScreen from './view/SplashScreen';
 import {Colors} from './theme';
 
@@ -57,6 +64,7 @@ const App = () => {
           <Stack.Navigator headerMode="none">
             <Stack.Screen name="main" component={MainView} />
             <Stack.Screen name="embedded" component={EmbeddedView} />
+            <Stack.Screen name="politician" component={PoliticianView} />
           </Stack.Navigator>
         </NavigationContainer>
       </Host>
