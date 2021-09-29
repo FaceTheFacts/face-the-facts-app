@@ -63,6 +63,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
   // TODO: check if politician is current politician
   return (
     <PoliticianContext.Provider value={politician}>
+      <SafeAreaView style={styles.iosSafeTop} />
       <SafeAreaView style={styles.container}>
         <StatusBar
           barStyle="light-content"
@@ -106,6 +107,10 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
 };
 
 const styles = StyleSheet.create({
+  iosSafeTop: {
+    flex: 0,
+    backgroundColor: Colors.cardBackground,
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.background,
