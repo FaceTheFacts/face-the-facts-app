@@ -14,6 +14,7 @@ import PoliticianPicture from './PoliticianPicture';
 import {Politician} from '../logic/data';
 import {Modalize} from 'react-native-modalize';
 import PoliticianModal from '../view/PoliticianModal';
+import {NavigationContext} from '@react-navigation/native';
 
 export interface PoliticianRowProps {
   style?: StyleProp<ViewStyle>;
@@ -23,13 +24,16 @@ export interface PoliticianRowProps {
 const PoliticianRow = ({style, politician}: PoliticianRowProps) => {
   const data = useContext(DataContext);
   const modal = useRef<Modalize>(null);
+  const navigator = useContext(NavigationContext)!;
 
   return (
     <>
       <TouchableOpacity
         style={StyleSheet.flatten([styles.container, style])}
         onPress={() => {
-          modal.current!.open();
+          navigator.push('politician', {
+            politician,
+          });
           data.historyManager.pushItem(politician.id);
         }}>
         <PoliticianPicture politicianId={politician.id} />
