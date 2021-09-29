@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Host} from 'react-native-portalize';
 import {DataContext, FaceTheFactsData} from './logic/model';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import MainView from './view/MainView';
 import EmbeddedView from './view/EmbeddedView';
 import PoliticianView from './view/PoliticianView';
@@ -64,7 +64,11 @@ const App = () => {
           <Stack.Navigator headerMode="none">
             <Stack.Screen name="main" component={MainView} />
             <Stack.Screen name="embedded" component={EmbeddedView} />
-            <Stack.Screen name="politician" component={PoliticianView} />
+            <Stack.Screen
+              name="politician"
+              component={PoliticianView}
+              options={{...TransitionPresets.SlideFromRightIOS}}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </Host>
