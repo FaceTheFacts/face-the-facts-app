@@ -1,9 +1,8 @@
-import React, {createContext, useState, useContext} from 'react';
+import React, {createContext, useState} from 'react';
 import {
   StyleSheet,
   useWindowDimensions,
   View,
-  TouchableOpacity,
   StatusBar,
   SafeAreaView,
 } from 'react-native';
@@ -16,9 +15,7 @@ import PoliticianPositions from '../component/politician/PoliticianPositions';
 import PoliticianConstituency from '../component/politician/PoliticianConstituency';
 import {Colors} from '../theme';
 import {Route} from 'react-native-tab-view/lib/typescript/types';
-import {NavigationContext} from '@react-navigation/native';
-import Icon from '../component/Icon';
-import {ArrowBackIos} from '../icons';
+import BackButton from '../component/BackButton';
 
 interface PoliticianViewProps {
   route: RouteProp<{params: {politician: Politician}}, 'params'>;
@@ -35,7 +32,6 @@ export const PoliticianContext = createContext<Politician>(null as any);
 const PoliticianView = ({route}: PoliticianViewProps) => {
   const {politician} = route.params;
   const {width} = useWindowDimensions();
-  const navigator = useContext(NavigationContext)!;
 
   const routes = [
     politician.positions && {
@@ -59,23 +55,15 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
     routes.findIndex(value => value.key === 'profile'),
   );
 
-  // TODO: animation direction
-  // TODO: check if politician is current politician
   return (
     <PoliticianContext.Provider value={politician}>
       <SafeAreaView style={styles.iosSafeTop} />
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar
           barStyle="light-content"
           backgroundColor={Colors.cardBackground}
         />
-        <View style={styles.backBtnContainer}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => navigator.goBack()}>
-            <Icon style={styles.icon} icon={ArrowBackIos} />
-          </TouchableOpacity>
-        </View>
+        <BackButton />
         <PoliticianHeader />
         {routes.length > 1 ? (
           <TabView
@@ -101,7 +89,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
         ) : (
           <PoliticianProfile />
         )}
-      </SafeAreaView>
+      </View>
     </PoliticianContext.Provider>
   );
 };
@@ -114,26 +102,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-  },
-  backBtnContainer: {
-    backgroundColor: Colors.cardBackground,
-    // // height: 40,
-    flexDirection: 'row',
-    // paddingVertical: 20,
-    // paddingHorizontal: 25,
-  },
-  backBtn: {
-    // backgroundColor: Colors.cardBackground,
-    // height: 40,
-    // flexDirection: 'row',
-    paddingVertical: 20,
-    paddingHorizontal: 25,
-  },
-  icon: {
-    color: Colors.foreground,
-    alignSelf: 'center',
-    width: 30,
-    height: 30,
   },
   tabBar: {
     backgroundColor: Colors.cardBackground,
