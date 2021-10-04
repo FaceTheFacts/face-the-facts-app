@@ -12,7 +12,7 @@ import {Modalize} from 'react-native-modalize';
 import VoteTag, {voteColors} from '../utils/VoteTag';
 import PollDetails, {pollResultLabels} from './PollDetails';
 import {Colors} from '../../theme';
-import {possibleVotes} from './PoliticianOverview';
+import {possibleVotes} from '../politician/PoliticianOverview';
 import BottomSheet from '../utils/BottomSheet';
 
 export interface PollCardProps {
