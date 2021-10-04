@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View, StatusBar} from 'react-native';
 import CandidatesView from './CandidatesView';
 import ScannerView from './ScannerView';
 import TabMenu from '../component/TabMenu';
@@ -12,6 +12,7 @@ const MainView = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
       <View style={styles.contentContainer}>
         {selected === 'candidates' && <CandidatesView />}
         {selected === 'scanner' && <ScannerView />}
