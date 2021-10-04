@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import SplashScreen from './view/SplashScreen';
 import {Colors} from './theme';
+import PollsView from './view/PollsView';
 
 const Stack = createStackNavigator();
 
@@ -65,8 +66,13 @@ const App = () => {
             <Stack.Screen name="main" component={MainView} />
             <Stack.Screen name="embedded" component={EmbeddedView} />
             <Stack.Screen
-              name="politician"
+              name="PoliticianScreen"
               component={PoliticianView}
+              options={{...TransitionPresets.SlideFromRightIOS}}
+            />
+            <Stack.Screen
+              name="PollsScreen"
+              component={PollsView}
               options={{...TransitionPresets.SlideFromRightIOS}}
             />
           </Stack.Navigator>
