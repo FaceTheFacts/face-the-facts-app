@@ -37,6 +37,7 @@ const BottomSheet = ({
         }
         modalStyle={{backgroundColor: Colors.background}}
         scrollViewProps={{horizontal: true, scrollEnabled: false}}
+        withHandle={false}
         {...modalizeProps}>
         <SafeAreaView style={{width}}>{children}</SafeAreaView>
       </Modalize>
