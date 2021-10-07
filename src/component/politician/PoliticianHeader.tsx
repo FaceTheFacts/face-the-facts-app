@@ -32,9 +32,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: Colors.cardBackground,
-    padding: 24,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+    // padding: 24,
+    paddingTop: 4,
+    paddingBottom: 24,
+    paddingHorizontal: 24,
   },
   rightContainer: {
     flex: 1,
