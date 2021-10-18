@@ -19,9 +19,6 @@ const BackButton = () => {
   );
 };
 const styles = StyleSheet.create({
-  iosSafeTop: {
-    backgroundColor: '#ffffff',
-  },
   container: {
     backgroundColor: Colors.cardBackground,
     flexDirection: 'row',
