@@ -1,12 +1,18 @@
 import React, {useContext, useRef, useState} from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Poll, PollResult, Vote} from '../../logic/data';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
 import {ClearIcon} from '../../icons';
 import VoteTag, {voteColors} from '../utils/VoteTag';
 import Tag from '../utils/Tag';
-import {possibleVotes} from './PoliticianOverview';
+import {possibleVotes} from '../politician/PoliticianOverview';
 import PartyTag from '../PartyTag';
 import {DataContext} from '../../logic/model';
 import ReadMoreHTML from '../utils/ReadMoreHTML';

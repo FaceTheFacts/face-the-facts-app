@@ -1,5 +1,12 @@
 import React, {createContext, useState} from 'react';
-import {StyleSheet, useWindowDimensions, View} from 'react-native';
+import {
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  StatusBar,
+  SafeAreaView,
+} from 'react-native';
+import {RouteProp} from '@react-navigation/native';
 import PoliticianHeader from '../component/politician/PoliticianHeader';
 import {Politician} from '../logic/data';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
@@ -8,9 +15,10 @@ import PoliticianPositions from '../component/politician/PoliticianPositions';
 import PoliticianConstituency from '../component/politician/PoliticianConstituency';
 import {Colors} from '../theme';
 import {Route} from 'react-native-tab-view/lib/typescript/types';
+import BackButton from '../component/BackButton';
 
-export interface PoliticianViewProps {
-  politician: Politician;
+interface PoliticianViewProps {
+  route: RouteProp<{params: {politician: Politician}}, 'params'>;
 }
 
 const renderScene = SceneMap({
@@ -21,7 +29,8 @@ const renderScene = SceneMap({
 
 export const PoliticianContext = createContext<Politician>(null as any);
 
-const PoliticianView = ({politician}: PoliticianViewProps) => {
+const PoliticianView = ({route}: PoliticianViewProps) => {
+  const {politician} = route.params;
   const {width} = useWindowDimensions();
 
   const routes = [
@@ -48,7 +57,13 @@ const PoliticianView = ({politician}: PoliticianViewProps) => {
 
   return (
     <PoliticianContext.Provider value={politician}>
+      <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.container}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={Colors.cardBackground}
+        />
+        <BackButton />
         <PoliticianHeader />
         {routes.length > 1 ? (
           <TabView
@@ -80,8 +95,13 @@ const PoliticianView = ({politician}: PoliticianViewProps) => {
 };
 
 const styles = StyleSheet.create({
+  iosSafeTop: {
+    flex: 0,
+    backgroundColor: Colors.cardBackground,
+  },
   container: {
     flex: 1,
+    backgroundColor: Colors.background,
   },
   tabBar: {
     backgroundColor: Colors.cardBackground,

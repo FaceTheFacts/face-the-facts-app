@@ -1,11 +1,18 @@
 import React, {useRef} from 'react';
-import {StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {Poll, PollResult, Vote} from '../../logic/data';
 import {Modalize} from 'react-native-modalize';
 import VoteTag, {voteColors} from '../utils/VoteTag';
 import PollDetails, {pollResultLabels} from './PollDetails';
 import {Colors} from '../../theme';
-import {possibleVotes} from './PoliticianOverview';
+import {possibleVotes} from '../politician/PoliticianOverview';
 import BottomSheet from '../utils/BottomSheet';
 
 export interface PollCardProps {
@@ -25,7 +32,7 @@ const PollCard = ({style, poll, candidateVote}: PollCardProps) => {
       style={StyleSheet.flatten([styles.container, style])}
       onPress={() => modal.current!.open()}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title} numberOfLines={1}>
+        <Text style={styles.title} numberOfLines={2}>
           {poll.title}
         </Text>
         <VoteTag vote={candidateVote} />

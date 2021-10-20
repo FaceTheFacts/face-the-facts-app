@@ -1,4 +1,4 @@
-import React, {useContext, useRef} from 'react';
+import React, {useContext} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,17 +7,15 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import {NavigationContext} from '@react-navigation/native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import {DataContext} from '../../logic/model';
 import Icon from '../Icon';
 import Wrap from '../utils/Wrap';
 import {SideJobIncomeLevel, Vote} from '../../logic/data';
-import {Modalize} from 'react-native-modalize';
-import BottomSheet from '../utils/BottomSheet';
-import PollsView from './PollsView';
 import {ArrowForwardIos} from '../../icons';
-import PollCard from './PollCard';
+import PollCard from '../poll/PollCard';
 
 const incomeLevelLabels: Record<SideJobIncomeLevel, string> = {
   '1': '1.000 € bis 3.500 €',
@@ -40,9 +38,9 @@ function formatDate(date: string): string {
 }
 
 const PoliticianOverview = () => {
-  const pollsModal = useRef<Modalize | null>(null);
   const data = useContext(DataContext);
   const politician = useContext(PoliticianContext);
+  const navigator = useContext<any>(NavigationContext)!;
   const {width} = useWindowDimensions();
 
   return (
@@ -74,7 +72,11 @@ const PoliticianOverview = () => {
           <>
             <TouchableOpacity
               style={styles.pollsHeader}
-              onPress={() => pollsModal.current?.open()}>
+              onPress={() => {
+                navigator.push('PollsScreen', {
+                  politician,
+                });
+              }}>
               <Text style={styles.pollsTitle}>Kürzliche Abstimmungen</Text>
               <Icon style={styles.pollsArrow} icon={ArrowForwardIos} />
             </TouchableOpacity>
@@ -126,9 +128,6 @@ const PoliticianOverview = () => {
           </>
         )}
       </View>
-      <BottomSheet modalRef={pollsModal} modalTopOffset={60}>
-        <PollsView politician={politician} />
-      </BottomSheet>
     </ScrollView>
   );
 };

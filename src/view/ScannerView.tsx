@@ -28,7 +28,6 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
 import {Politician} from '../logic/data';
-import PoliticianModal from './PoliticianModal';
 
 const ScannerView = () => {
   // Scanning
@@ -86,7 +85,7 @@ const ScannerView = () => {
   }, [searching]);
 
   const data = useContext(DataContext);
-  const navigator = useContext(NavigationContext)!;
+  const navigator = useContext<any>(NavigationContext)!;
   const insets = useSafeAreaInsets();
 
   useEffect(
@@ -132,6 +131,15 @@ const ScannerView = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searching, searchInput, data, searchInProgress]);
+
+  useEffect(() => {
+    if (showPolitician) {
+      navigator.push('PoliticianScreen', {politician: showPolitician});
+      setShowPolitician(null);
+      setFocussed(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showPolitician]);
 
   return (
     <View style={styles.container}>
@@ -253,16 +261,6 @@ const ScannerView = () => {
           icon={ScanIcon}
           title="Nach Plakaten suchen"
           subtitle="Achte darauf, dass der Name des:der Kandidat:in gut lesbar ist."
-        />
-      )}
-      {showPolitician && (
-        <PoliticianModal
-          politician={showPolitician}
-          autoOpen
-          onClosed={() => {
-            setShowPolitician(null);
-            setFocussed(true);
-          }}
         />
       )}
     </View>
