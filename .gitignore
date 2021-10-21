@@ -61,3 +61,4 @@ buck-out/
 # Use the fetch-data.ts script to create this files
 api-politicians.json
 politicians.json
+data.json
