@@ -30,7 +30,9 @@ jobs:
         run: npm run lint
 
       - name: Run gradle tests
-        run: cd android && fastlane test
+        run: |
+          echo "[]" >> data.json
+          cd android && fastlane test
 
       - name: Run gradle linter
         run: cd android && fastlane lint
