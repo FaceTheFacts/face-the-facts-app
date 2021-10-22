@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Animated, StyleSheet, ViewProps} from 'react-native';
+import {Animated, ViewProps} from 'react-native';
 
 type DeepMap<T> = {[key: string]: DeepMap<T> | T};
 
@@ -26,8 +26,7 @@ function deepMerge<A extends object, B extends object>(a: A, b: B): A & B {
 const TransitionView = (props: ViewProps) => {
   const values = useRef<DeepMap<Animated.Value>>({}).current;
 
-  useEffect(() => {
-  }, [props]);
+  useEffect(() => {}, [props]);
 
   return <Animated.View {...deepMerge(props, values)} />;
 };
