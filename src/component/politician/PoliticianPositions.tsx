@@ -1,5 +1,13 @@
 import React, {useContext, useState} from 'react';
-import {Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import {DataContext} from '../../logic/model';
