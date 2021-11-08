@@ -34,7 +34,7 @@ const PoliticianRow = ({
       onPress={() => {
         if (politician.id !== parentPoliticianId) {
           navigator.push('PoliticianScreen', {politician});
-          data.historyManager.pushItem(politician.id);
+          data.dbManager.pushHistoryItem(politician.id);
         }
       }}>
       <PoliticianPicture politicianId={politician.id} />
