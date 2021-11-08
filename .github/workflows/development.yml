@@ -5,9 +5,17 @@ on:
     branches: [development]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: bradennapier/eslint-plus-action@v3.4.2
+      with:
+        reportIgnoredFiles: true
+        issueSummaryOnlyOnEvent: true
+
   ci:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -25,9 +33,6 @@ jobs:
 
       - name: Run javascript tests
         run: npm run test
-
-      - name: Run eslint
-        run: npm run lint
 
       - name: Run gradle tests
         run: |
