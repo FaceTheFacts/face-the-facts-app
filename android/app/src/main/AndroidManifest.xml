@@ -18,6 +18,9 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
         <meta-data 
+            android:name="firebase_data_collection_default_enabled"
+            android:value="false" />
+        <meta-data 
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
         <meta-data 
