@@ -73,5 +73,7 @@
         <false />
         <key>GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS</key>
         <false />
+        <key>firebase_performance_collection_deactivated</key>
+        <true />
     </dict>
 </plist>
