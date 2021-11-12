@@ -11,12 +11,12 @@ import {
 import {Colors} from '../theme';
 import PartyTag from './PartyTag';
 import PoliticianPicture from './PoliticianPicture';
-import {Politician} from '../logic/data';
+import {Politician, SearchedPolitician} from '../logic/data';
 import {NavigationContext} from '@react-navigation/native';
 
 export interface PoliticianRowProps {
   style?: StyleProp<ViewStyle>;
-  politician: Politician;
+  politician: SearchedPolitician;
   parentPoliticianId?: string;
 }
 
@@ -40,7 +40,7 @@ const PoliticianRow = ({
       <PoliticianPicture politicianId={politician.id} />
       <View style={styles.content}>
         <Text style={styles.name}>{politician.name}</Text>
-        <PartyTag party={data.lookupParty(politician.partyId)!} />
+        {/* <PartyTag party={data.lookupParty(politician.partyId)!} /> */}
       </View>
     </TouchableOpacity>
   );
