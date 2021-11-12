@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   tabContainer: {},
   followBtn: {
     backgroundColor: Colors.cardBackground,
-    borderColor: 'rgba(252, 252, 252, 0.4)',
+    borderColor: Colors.white40,
     borderWidth: 2,
     paddingVertical: 8,
     paddingHorizontal: 12,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   unFollowBtn: {
-    backgroundColor: '#FCFCFC',
+    backgroundColor: Colors.baseWhite,
     borderWidth: 2,
     paddingVertical: 8,
     paddingHorizontal: 12,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   followText: {
-    color: '#fcfcfc',
+    color: Colors.baseWhite,
     fontSize: 13,
     fontWeight: 'bold',
     fontFamily: 'Inter',
