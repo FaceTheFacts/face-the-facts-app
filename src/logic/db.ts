@@ -60,7 +60,7 @@ export class DBManager {
 
   public async removeFollowedId(politicianId: number): Promise<void> {
     await this.openDatabase();
-    await this.database!.executeSql('DELETE FROM history WHERE id = ?', [
+    await this.database!.executeSql('DELETE FROM follow WHERE id = ?', [
       politicianId,
     ]);
     this.followedIds!.delete(politicianId);
