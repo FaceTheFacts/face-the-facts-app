@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {TouchableOpacity, View, StyleSheet, Text} from 'react-native';
 import {TabBar, TabView, SceneRendererProps} from 'react-native-tab-view';
 import {Colors} from '../theme';
 import FollowFeed from '../component/feed/FollowFeed';
 import ParliamentFeed from '../component/feed/ParliamentFeed';
+import {Modalize} from 'react-native-modalize';
+import BottomSheet from '../component/utils/BottomSheet';
+import FeedFilter from '../component/feed/FeedFilter';
 
 interface HomeViewProps {
   setSelected: (value: string) => void;
@@ -18,12 +21,12 @@ type SceneRenderer = SceneRendererProps & {
 };
 
 const HomeView = (props: HomeViewProps) => {
-  console.log(props);
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {key: 'parliament', title: 'Bundestag'},
     {key: 'follow', title: 'Folge ich'},
   ]);
+  const modal = useRef<Modalize>(null);
 
   const renderScene = ({route}: SceneRenderer) => {
     switch (route.key) {
@@ -37,29 +40,40 @@ const HomeView = (props: HomeViewProps) => {
   };
 
   return (
-    <TabView
-      navigationState={{index, routes}}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      renderTabBar={props => (
-        <View style={styles.headerContainer}>
-          <TabBar
-            {...props}
-            indicatorStyle={{backgroundColor: Colors.darkBlue8}}
-            tabStyle={styles.tab}
-            style={styles.tabBar}
-            activeColor={Colors.baseWhite}
-            inactiveColor={Colors.white40}
-            renderLabel={({route, color}) => (
-              <Text style={{...styles.label, color}}>{route.title}</Text>
-            )}
-          />
-          <TouchableOpacity style={styles.filterBtn}>
-            <Text style={styles.filterText}>IX Filtern</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    />
+    <>
+      <TabView
+        navigationState={{index, routes}}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={props => (
+          <View style={styles.headerContainer}>
+            <TabBar
+              {...props}
+              indicatorStyle={{backgroundColor: Colors.darkBlue8}}
+              tabStyle={styles.tab}
+              style={styles.tabBar}
+              activeColor={Colors.baseWhite}
+              inactiveColor={Colors.white40}
+              renderLabel={({route, color}) => (
+                <Text style={{...styles.label, color}}>{route.title}</Text>
+              )}
+            />
+            <TouchableOpacity
+              style={styles.filterBtn}
+              onPress={() => modal.current?.open()}>
+              <Text style={styles.filterText}>IX Filtern</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+      <BottomSheet
+        modalRef={modal}
+        modalStyle={styles.modalStyle}
+        //modalHeight={600}
+        adjustToContentHeight={true}>
+        <FeedFilter />
+      </BottomSheet>
+    </>
   );
 };
 
@@ -102,6 +116,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     color: Colors.baseWhite,
+  },
+  modalStyle: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    backgroundColor: Colors.background,
   },
 });
 
