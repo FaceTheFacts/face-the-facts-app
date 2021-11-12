@@ -86,6 +86,11 @@ export interface Election {
   politicians: string[];
 }
 
+export interface SearchedPolitician {
+  id: string;
+  name: string;
+  //partyId: string;
+}
 export interface Politician {
   id: string;
   popularity: number;
