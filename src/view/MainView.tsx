@@ -3,6 +3,7 @@ import {SafeAreaView, StyleSheet, View, StatusBar} from 'react-native';
 import CandidatesView from './CandidatesView';
 import ScannerView from './ScannerView';
 import TabMenu from '../component/TabMenu';
+import HomeView from './HomeView';
 import HistoryView from './HistoryView';
 import {Colors} from '../theme';
 import {HistoryIcon, ListIcon, ScanPersonIcon} from '../icons';
@@ -14,6 +15,7 @@ const MainView = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
       <View style={styles.contentContainer}>
+        {selected === 'home' && <HomeView setSelected={setSelected} />}
         {selected === 'candidates' && <CandidatesView />}
         {selected === 'scanner' && <ScannerView />}
         {selected === 'history' && <HistoryView />}
@@ -21,6 +23,11 @@ const MainView = () => {
       <SafeAreaView style={styles.tabBarContainer}>
         <TabMenu
           items={[
+            {
+              name: 'home',
+              icon: ListIcon,
+              label: 'Home',
+            },
             {
               name: 'candidates',
               icon: ListIcon,
