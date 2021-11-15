@@ -7,6 +7,8 @@ import ParliamentFeed from '../component/feed/ParliamentFeed';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import FeedFilter from '../component/feed/FeedFilter';
+import Icon from '../component/Icon';
+import {FilterIcon} from '../icons';
 
 interface HomeViewProps {
   setSelected: (value: string) => void;
@@ -61,7 +63,12 @@ const HomeView = (props: HomeViewProps) => {
             <TouchableOpacity
               style={styles.filterBtn}
               onPress={() => modal.current?.open()}>
-              <Text style={styles.filterText}>IX Filtern</Text>
+              <Icon
+                style={styles.icon}
+                icon={FilterIcon}
+                viewBox={'0 0 512 512'}
+              />
+              <Text style={styles.filterText}>Filtern</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -69,7 +76,6 @@ const HomeView = (props: HomeViewProps) => {
       <BottomSheet
         modalRef={modal}
         modalStyle={styles.modalStyle}
-        //modalHeight={600}
         adjustToContentHeight={true}>
         <FeedFilter />
       </BottomSheet>
@@ -111,6 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingVertical: 8,
     paddingHorizontal: 16,
+    flexDirection: 'row',
   },
   filterText: {
     fontSize: 13,
@@ -121,6 +128,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     backgroundColor: Colors.background,
+  },
+  icon: {
+    color: Colors.foreground,
+    alignSelf: 'center',
+    width: 13,
+    height: 13,
+    marginRight: 8,
   },
 });
 
