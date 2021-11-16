@@ -1,17 +1,17 @@
 import React, {memo} from 'react';
 import Svg, {Path} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
+import {SVGIcon} from '../icons';
 
 export interface IconProps {
   style?: StyleProp<ViewStyle & {color: string}>;
-  icon: string;
-  viewBox?: string;
+  icon: SVGIcon;
 }
 
-const Icon = memo(({style, icon, viewBox}: IconProps) => {
+const Icon = memo(({style, icon: {viewBox, d}}: IconProps) => {
   return (
-    <Svg style={style} viewBox={viewBox || '0 0 24 24'}>
-      <Path d={icon} fill="currentColor" />
+    <Svg style={style} viewBox={viewBox}>
+      <Path d={d} fill="currentColor" />
     </Svg>
   );
 });

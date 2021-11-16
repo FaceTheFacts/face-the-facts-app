@@ -6,7 +6,16 @@ import TabMenu from '../component/TabMenu';
 import HomeView from './HomeView';
 import HistoryView from './HistoryView';
 import {Colors} from '../theme';
-import {HistoryIcon, ListIcon, ScanPersonIcon} from '../icons';
+import {
+  HomeIcon,
+  HomeIconSolid,
+  ScannerIcon,
+  ScannerIconSolid,
+  PoliticiansIcon,
+  PoliticiansIconSolid,
+  CandidatesIcon,
+  CandidatesIconSolid,
+} from '../icons';
 
 const MainView = () => {
   const [selected, setSelected] = useState('scanner');
@@ -16,32 +25,32 @@ const MainView = () => {
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
       <View style={styles.contentContainer}>
         {selected === 'home' && <HomeView setSelected={setSelected} />}
-        {selected === 'candidates' && <CandidatesView />}
         {selected === 'scanner' && <ScannerView />}
-        {selected === 'history' && <HistoryView />}
+        {selected === 'politicians' && <HistoryView />}
+        {selected === 'candidates' && <CandidatesView />}
       </View>
       <SafeAreaView style={styles.tabBarContainer}>
         <TabMenu
           items={[
             {
               name: 'home',
-              icon: ListIcon,
+              icons: [HomeIcon, HomeIconSolid],
               label: 'Home',
             },
             {
-              name: 'candidates',
-              icon: ListIcon,
-              label: 'Wahl',
-            },
-            {
-              name: 'scanner',
-              icon: ScanPersonIcon,
+              name: 'scan',
+              icons: [ScannerIcon, ScannerIconSolid],
               label: 'Scannen',
             },
             {
-              name: 'history',
-              icon: HistoryIcon,
-              label: 'Verlauf',
+              name: 'politicians',
+              icons: [PoliticiansIcon, PoliticiansIconSolid],
+              label: 'Politiker',
+            },
+            {
+              name: 'candidates',
+              icons: [CandidatesIcon, CandidatesIconSolid],
+              label: 'Wahlen',
             },
           ]}
           selected={selected}

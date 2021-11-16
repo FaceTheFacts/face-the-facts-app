@@ -63,11 +63,7 @@ const HomeView = (props: HomeViewProps) => {
             <TouchableOpacity
               style={styles.filterBtn}
               onPress={() => modal.current?.open()}>
-              <Icon
-                style={styles.icon}
-                icon={FilterIcon}
-                viewBox={'0 0 512 512'}
-              />
+              <Icon style={styles.icon} icon={FilterIcon} />
               <Text style={styles.filterText}>Filtern</Text>
             </TouchableOpacity>
           </View>
