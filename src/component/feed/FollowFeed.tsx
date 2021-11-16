@@ -1,7 +1,8 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {DataContext} from '../../logic/model';
 import {Colors} from '../../theme';
+import PollRow, {Poll} from './row/PollRow';
 
 interface FollowFeedProps {
   setSelected: (value: string) => void;
@@ -10,6 +11,37 @@ interface FollowFeedProps {
 const FollowFeed = (props: FollowFeedProps) => {
   const data = useContext(DataContext);
   const [followedIds, setFollowedIds] = useState<Set<number> | null>(null);
+  const [polls, setPolls] = useState<Poll[]>([]);
+
+  useEffect(() => {
+    if (followedIds) {
+      const pollsMap: Map<string, Poll> = new Map();
+      for (const id of followedIds) {
+        const politician = data.lookupPolitician(id.toString());
+        if (!politician) {
+          return;
+        }
+        const {votes} = data.lookupPolitician(id.toString())!;
+        const visiblePolls = data.polls.filter(poll => poll.id in votes!);
+        for (const visiblePoll of visiblePolls) {
+          const poll: Poll = pollsMap.get(visiblePoll.id) ?? {
+            id: visiblePoll.id,
+            title: visiblePoll.title,
+            participants: [],
+            date: visiblePoll.date,
+          };
+          poll.participants.push(politician);
+          pollsMap.set(visiblePoll.id, poll);
+        }
+      }
+      const newPolls = Array.from(pollsMap.values());
+      newPolls.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      );
+      // setPolls(newPolls.slice(0, 15));
+      setPolls(newPolls);
+    }
+  }, [followedIds, data]);
 
   useEffect(() => {
     data.dbManager.getFollowedIds().then(setFollowedIds);
@@ -32,7 +64,11 @@ const FollowFeed = (props: FollowFeedProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header4}>TODO: implement feed</Text>
+      <FlatList
+        data={polls}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => <PollRow poll={item} />}
+      />
     </View>
   );
 };

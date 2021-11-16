@@ -23,7 +23,7 @@ type SceneRenderer = SceneRendererProps & {
 };
 
 const HomeView = (props: HomeViewProps) => {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(1);
   const [routes] = React.useState([
     {key: 'parliament', title: 'Bundestag'},
     {key: 'follow', title: 'Folge ich'},
