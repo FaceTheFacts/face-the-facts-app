@@ -71,7 +71,12 @@ const PoliticianLinks = () => {
         return (
           <TouchableOpacity key={index} onPress={() => Linking.openURL(link)}>
             <View style={styles.link}>
-              {type && <Icon style={styles.icon} icon={type.icon} />}
+              {type && (
+                <Icon
+                  style={styles.icon}
+                  icon={{viewBox: '0 0 24 24', d: type.icon}}
+                />
+              )}
               <Text style={styles.label}>{type?.label ?? link}</Text>
             </View>
           </TouchableOpacity>

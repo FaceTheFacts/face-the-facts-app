@@ -25,7 +25,7 @@ const MainView = () => {
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
       <View style={styles.contentContainer}>
         {selected === 'home' && <HomeView setSelected={setSelected} />}
-        {selected === 'scan' && <ScannerView />}
+        {selected === 'scanner' && <ScannerView />}
         {selected === 'politicians' && <HistoryView />}
         {selected === 'candidates' && <CandidatesView />}
       </View>
@@ -38,7 +38,7 @@ const MainView = () => {
               label: 'Home',
             },
             {
-              name: 'scan',
+              name: 'scanner',
               icons: [ScannerIcon, ScannerIconSolid],
               label: 'Scan',
             },

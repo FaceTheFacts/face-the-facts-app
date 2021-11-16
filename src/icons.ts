@@ -1,7 +1,7 @@
-export type SVGIcon = {
+export interface SVGIcon {
   viewBox: string;
   d: string;
-};
+}
 
 // Paths of icons from the Material Icons set
 export const ArrowBackIos = {
