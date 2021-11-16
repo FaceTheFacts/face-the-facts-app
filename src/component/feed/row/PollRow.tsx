@@ -26,12 +26,27 @@ const PollRow = ({poll}: PollRowProps) => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.image}>
-          <PoliticianPicture
-            politicianId={poll.participants[0].id.toString()}
-            size={48}
-          />
-        </View>
+        {poll.participants.length > 1 ? (
+          <View style={styles.image}>
+            <PoliticianPicture
+              politicianId={poll.participants[0].id.toString()}
+              size={32}
+            />
+            <View style={styles.imageOverlay}>
+              <PoliticianPicture
+                politicianId={poll.participants[1].id.toString()}
+                size={32}
+              />
+            </View>
+          </View>
+        ) : (
+          <View style={styles.image}>
+            <PoliticianPicture
+              politicianId={poll.participants[0].id.toString()}
+              size={48}
+            />
+          </View>
+        )}
         <View style={[{width: width - 80}]}>
           <View style={styles.title}>
             <Text style={styles.boldText}>{poll.participants[0].name}</Text>
@@ -66,7 +81,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    paddingRight: 8,
+    width: 48,
+    height: 48,
+    marginRight: 8,
+  },
+  imageOverlay: {
+    width: 48,
+    height: 48,
+    position: 'relative',
+    bottom: 16,
+    left: 16,
   },
   title: {
     flexWrap: 'wrap',
@@ -100,7 +124,6 @@ const styles = StyleSheet.create({
     opacity: 0.12,
     marginHorizontal: 12,
     marginTop: 16,
-    // marginVertical: 16,
   },
 });
 
