@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,14 +8,14 @@ import {
   Easing,
 } from 'react-native';
 import {Colors} from '../../theme';
+import {getItem, storeItem} from '../../logic/storage';
 
 interface ToggleSwitchProps {
   label: string;
-  isEnabled: boolean;
-  onValueChange: () => void;
 }
 
-const ToggleSwitch = ({label, isEnabled, onValueChange}: ToggleSwitchProps) => {
+const ToggleSwitch = ({label}: ToggleSwitchProps) => {
+  const [isEnabled, setIsEnabled] = useState(true);
   const animatedValue = new Animated.Value(0);
   const color = isEnabled ? Colors.baseGreen : Colors.darkBlue20;
 
@@ -33,10 +33,25 @@ const ToggleSwitch = ({label, isEnabled, onValueChange}: ToggleSwitchProps) => {
     outputRange: [4, 20],
   });
 
+  useEffect(() => {
+    (async () => {
+      const toggleValue = await getItem(`@facethefacts_${label}`);
+      if (toggleValue !== null) {
+        setIsEnabled(toggleValue[label]);
+      }
+    })();
+  }, [label]);
+
+  // const setToggleS
+  const onValueChange = async () => {
+    setIsEnabled(!isEnabled);
+    await storeItem(`@facethefacts_${label}`, {[label]: !isEnabled});
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading3}>{label}</Text>
-      <TouchableOpacity onPress={() => onValueChange()}>
+      <TouchableOpacity onPress={async () => await onValueChange()}>
         <View
           style={StyleSheet.flatten([
             styles.toggleContainer,

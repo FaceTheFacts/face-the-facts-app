@@ -1,12 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Colors} from '../../theme';
 import ToggleSwitch from '../utils/ToggleSwitch';
 
 const FeedFilter = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
   return (
     <View style={styles.container}>
       <Text style={styles.heading2}>Filtern</Text>
@@ -15,26 +12,10 @@ const FeedFilter = () => {
         sollen.
       </Text>
       <View style={styles.separatorLine} />
-      <ToggleSwitch
-        label={'Reden'}
-        isEnabled={isEnabled}
-        onValueChange={toggleSwitch}
-      />
-      <ToggleSwitch
-        label={'Abstimmungen'}
-        isEnabled={isEnabled}
-        onValueChange={toggleSwitch}
-      />
-      <ToggleSwitch
-        label={'Artikel'}
-        isEnabled={isEnabled}
-        onValueChange={toggleSwitch}
-      />
-      <ToggleSwitch
-        label={'Nebentätigkeiten'}
-        isEnabled={isEnabled}
-        onValueChange={toggleSwitch}
-      />
+      <ToggleSwitch label={'Reden'} />
+      <ToggleSwitch label={'Abstimmungen'} />
+      <ToggleSwitch label={'Artikel'} />
+      <ToggleSwitch label={'Nebentätigkeiten'} />
     </View>
   );
 };
