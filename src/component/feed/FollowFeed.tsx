@@ -8,7 +8,27 @@ import {
 } from 'react-native';
 import {DataContext} from '../../logic/model';
 import {Colors} from '../../theme';
-import PollRow, {Poll} from './row/PollRow';
+import {
+  PollTab,
+  PollRowContent,
+  SideJobTab,
+  SideJobRowContent,
+} from './FeedRowContent';
+import FeedRow from '../FeedRow';
+
+type ValueOf<T> = T[keyof T];
+
+interface TabEntities {
+  poll: PollTab;
+  sideJob: SideJobTab;
+}
+
+type Row = PollTab | SideJobTab;
+
+interface Tab<T extends ValueOf<TabEntities>> {
+  type: keyof TabEntities;
+  content: T;
+}
 
 interface FollowFeedProps {
   setSelected: (value: string) => void;
@@ -17,8 +37,8 @@ interface FollowFeedProps {
 const FollowFeed = (props: FollowFeedProps) => {
   const data = useContext(DataContext);
   const [visibleCount, setVisibleCount] = useState(20);
-  const [polls, setPolls] = useState<Poll[]>([]);
-  const [visiblePolls, setVisiblePolls] = useState<Poll[]>([]);
+  const [tabs, setTabs] = useState<Tab<Row>[]>([]);
+  const [visibleTabs, setVisibleTabs] = useState<Tab<Row>[]>([]);
   const [followedIds, setFollowedIds] = useState<Set<number> | null>(null);
 
   useEffect(() => {
@@ -27,31 +47,51 @@ const FollowFeed = (props: FollowFeedProps) => {
 
   useEffect(() => {
     if (followedIds) {
-      const pollsMap: Map<string, Poll> = new Map();
+      let allTabs: Tab<Row>[] = [];
+      const pollsMap: Map<string, Tab<PollTab>> = new Map();
+      const sideJobs: Tab<SideJobTab>[] = [];
       for (const id of followedIds) {
         const politician = data.lookupPolitician(id.toString());
         if (!politician) {
-          return;
+          continue;
         }
+        politician.sideJobs?.forEach(sideJob => {
+          if (sideJob.date) {
+            const newSideJob: Tab<SideJobTab> = {
+              type: 'sideJob',
+              content: {
+                ...sideJob,
+                politicians: [politician],
+              },
+            };
+            sideJobs.push(newSideJob);
+          }
+        });
         const {votes} = data.lookupPolitician(id.toString())!;
         const selPolls = data.polls.filter(poll => poll.id in votes!);
         for (const selPoll of selPolls) {
-          const poll: Poll = pollsMap.get(selPoll.id) ?? {
-            id: selPoll.id,
-            title: selPoll.title,
-            participants: [],
-            date: selPoll.date,
+          const poll: Tab<PollTab> = pollsMap.get(selPoll.id) ?? {
+            type: 'poll',
+            content: {
+              id: selPoll.id,
+              title: selPoll.title,
+              politicians: [],
+              date: selPoll.date,
+            },
           };
-          poll.participants.push(politician);
+          poll.content.politicians.push(politician);
           pollsMap.set(selPoll.id, poll);
         }
       }
       const allPolls = Array.from(pollsMap.values());
-      allPolls.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      allTabs = [...allPolls, ...sideJobs];
+      allTabs.sort(
+        (a, b) =>
+          new Date(b.content.date!).getTime() -
+          new Date(a.content.date!).getTime(),
       );
-      setPolls(allPolls);
-      setVisiblePolls(allPolls.slice(0, 20));
+      setTabs(allTabs);
+      setVisibleTabs(allTabs.slice(0, 20));
     }
   }, [followedIds, data]);
 
@@ -70,17 +110,38 @@ const FollowFeed = (props: FollowFeedProps) => {
     );
   }
 
+  const renderTab = (tab: Tab<Row>) => {
+    switch (tab.type) {
+      case 'poll':
+        return (
+          <FeedRow
+            politicians={tab.content.politicians}
+            desc={tab.content.title!}>
+            <PollRowContent poll={tab.content as PollTab} />
+          </FeedRow>
+        );
+      case 'sideJob':
+        return (
+          <FeedRow
+            politicians={tab.content.politicians}
+            desc={tab.content.job!}>
+            <SideJobRowContent sideJob={tab.content as SideJobTab} />
+          </FeedRow>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
-        {visiblePolls.map(poll => (
-          <PollRow poll={poll} />
-        ))}
+        {visibleTabs.map(tab => renderTab(tab))}
         <TouchableOpacity
           style={styles.showMoreButton}
           onPress={() => {
             setVisibleCount(visibleCount + 20);
-            setVisiblePolls(polls.slice(0, visibleCount));
+            setVisibleTabs(tabs.slice(0, visibleCount));
           }}>
           <Text style={styles.showMoreText}>mehr anzeigen</Text>
         </TouchableOpacity>
