@@ -71,12 +71,6 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
-          ls
-
-      - name: Prebuild
-        run: |
-          echo "[]" >> data.json
-          npm run prebuild-android
 
       - name: Deploy production to Google Playstore
         run: cd android && fastlane production
