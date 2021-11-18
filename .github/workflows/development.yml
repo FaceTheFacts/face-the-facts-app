@@ -23,12 +23,14 @@ jobs:
       - name: Install packages
         run: yarn install
 
+      - name: ESLint
+        uses: reviewdog/action-eslint@v1
+        with:
+          reporter: github-pr-review
+          eslint_flags: '. --ext .js,.jsx,.ts,.tsx'
+
       - name: Run javascript tests
         run: npm run test
-
-      - name: ESLint Plus
-        uses: bradennapier/eslint-plus-action@v3
-
 
   cd:
     runs-on: ubuntu-latest
