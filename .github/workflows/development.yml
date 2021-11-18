@@ -1,3 +1,5 @@
+name: ci-cd
+
 on:
   push:
     branches: [development]
@@ -25,9 +27,6 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: "2.x"
-
-      - name: Build install
-        run: cd android && bundle install
 
       - name: Install packages
         run: yarn install
