@@ -26,8 +26,9 @@ jobs:
       - name: Run javascript tests
         run: npm run test
 
-      - name: Run eslint
-        run: npm run lint
+      - name: ESLint Plus
+        uses: bradennapier/eslint-plus-action@v3
+
 
   cd:
     runs-on: ubuntu-latest
