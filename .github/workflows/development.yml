@@ -5,7 +5,16 @@ on:
     branches: [development]
 
 jobs:
-  ci:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bradennapier/eslint-plus-action@v3.4.2
+        with:
+          reportIgnoredFiles: true
+          issueSummaryOnlyOnEvent: true
+
+  testing:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,18 +32,12 @@ jobs:
       - name: Install packages
         run: yarn install
 
-      - name: ESLint
-        uses: reviewdog/action-eslint@v1
-        with:
-          reporter: github-pr-review
-          eslint_flags: '. --ext .js,.jsx,.ts,.tsx'
-
       - name: Run javascript tests
         run: npm run test
 
-  cd:
+  deployment:
     runs-on: ubuntu-latest
-    needs: [ci]
+    needs: [eslint,testing]
     if: ${{ github.event_name == 'push' }}
 
     steps:
