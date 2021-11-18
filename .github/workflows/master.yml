@@ -60,7 +60,7 @@ jobs:
       - name: Decrypt keystore
         run: |
           cd android/app
-          echo ${{ secrets.KEYSTORE_BASE_64 }} | base64 --decode > numbers.keystore
+          echo ${{ secrets.KEYSTORE_BASE_64 }} | base64 --decode > face-the-facts.keystore
 
       - name: Decrypt service-account
         run: |
