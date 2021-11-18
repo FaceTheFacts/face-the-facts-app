@@ -29,11 +29,6 @@ jobs:
       - name: Run eslint
         run: npm run lint
 
-      - name: Run gradle tests
-        run: |
-          echo "[]" >> data.json
-          cd android && fastlane test
-
   cd:
     runs-on: ubuntu-latest
     needs: [ci]
@@ -72,5 +67,10 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
 
-      - name: Deploy production to Google Playstore
-        run: cd android && fastlane production
+      - name: Create data.json mock
+        run: echo "[]" >> data.json
+
+      - name: Deploy alpha to Google Playstore
+        run: |
+          cd android
+          fastlane production
