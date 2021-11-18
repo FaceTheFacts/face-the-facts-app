@@ -1,8 +1,8 @@
 on:
   push:
-    branches: [development]
+    branches: [master]
   pull_request:
-    branches: [development]
+    branches: [master]
 
 jobs:
   ci:
@@ -79,5 +79,5 @@ jobs:
       - name: Prebuild
         run: npm run prebuild-android
 
-      - name: Deploy alpha to Google Playstore
-        run: cd android && fastlane alpha
+      - name: Deploy production to Google Playstore
+        run: cd android && fastlane production
