@@ -32,9 +32,15 @@ interface Tab<T extends ValueOf<TabEntities>> {
 
 interface FollowFeedProps {
   setSelected: (value: string) => void;
+  showPolls: boolean;
+  showSideJobs: boolean;
 }
 
-const FollowFeed = (props: FollowFeedProps) => {
+const FollowFeed = ({
+  setSelected,
+  showPolls,
+  showSideJobs,
+}: FollowFeedProps) => {
   const data = useContext(DataContext);
   const [visibleCount, setVisibleCount] = useState(20);
   const [tabs, setTabs] = useState<Tab<Row>[]>([]);
@@ -103,7 +109,7 @@ const FollowFeed = (props: FollowFeedProps) => {
         </Text>
         <TouchableOpacity
           style={styles.searchBtn}
-          onPress={() => props.setSelected('scanner')}>
+          onPress={() => setSelected('scanner')}>
           <Text style={styles.header4}>Politiker suchen</Text>
         </TouchableOpacity>
       </View>
@@ -114,19 +120,23 @@ const FollowFeed = (props: FollowFeedProps) => {
     switch (tab.type) {
       case 'poll':
         return (
-          <FeedRow
-            politicians={tab.content.politicians}
-            desc={(tab.content as PollTab).title}>
-            <PollRowContent poll={tab.content as PollTab} />
-          </FeedRow>
+          showPolls && (
+            <FeedRow
+              politicians={tab.content.politicians}
+              desc={(tab.content as PollTab).title}>
+              <PollRowContent poll={tab.content as PollTab} />
+            </FeedRow>
+          )
         );
       case 'sideJob':
         return (
-          <FeedRow
-            politicians={tab.content.politicians}
-            desc={(tab.content as SideJobTab).job}>
-            <SideJobRowContent sideJob={tab.content as SideJobTab} />
-          </FeedRow>
+          showSideJobs && (
+            <FeedRow
+              politicians={tab.content.politicians}
+              desc={(tab.content as SideJobTab).job}>
+              <SideJobRowContent sideJob={tab.content as SideJobTab} />
+            </FeedRow>
+          )
         );
       default:
         return null;

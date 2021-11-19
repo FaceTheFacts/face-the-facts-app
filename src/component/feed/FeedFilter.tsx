@@ -3,7 +3,19 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Colors} from '../../theme';
 import ToggleSwitch from '../utils/ToggleSwitch';
 
-const FeedFilter = () => {
+interface FeedFilterProps {
+  showPolls: boolean;
+  showSideJobs: boolean;
+  setShowPolls: (showPolls: boolean) => void;
+  setShowSideJobs: (showSideJobs: boolean) => void;
+}
+
+const FeedFilter = ({
+  showPolls,
+  setShowPolls,
+  showSideJobs,
+  setShowSideJobs,
+}: FeedFilterProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading2}>Filtern</Text>
@@ -12,10 +24,19 @@ const FeedFilter = () => {
         sollen.
       </Text>
       <View style={styles.separatorLine} />
-      <ToggleSwitch label={'Reden'} />
-      <ToggleSwitch label={'Abstimmungen'} />
-      <ToggleSwitch label={'Artikel'} />
-      <ToggleSwitch label={'Nebentätigkeiten'} />
+
+      <ToggleSwitch
+        key="polls"
+        label={'Abstimmungen'}
+        isEnabled={showPolls}
+        setIsEnabled={setShowPolls}
+      />
+      <ToggleSwitch
+        key="sideJobs"
+        label={'Nebentätigkeiten'}
+        isEnabled={showSideJobs}
+        setIsEnabled={setShowSideJobs}
+      />
     </View>
   );
 };

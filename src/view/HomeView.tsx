@@ -24,6 +24,8 @@ type SceneRenderer = SceneRendererProps & {
 
 const HomeView = (props: HomeViewProps) => {
   const [index, setIndex] = useState(1);
+  const [showPolls, setShowPolls] = useState(true);
+  const [showSideJobs, setShowSideJobs] = useState(true);
   const [routes] = useState([
     {key: 'parliament', title: 'Bundestag'},
     {key: 'follow', title: 'Folge ich'},
@@ -35,7 +37,13 @@ const HomeView = (props: HomeViewProps) => {
       case 'parliament':
         return <ParliamentFeed />;
       case 'follow':
-        return <FollowFeed setSelected={props.setSelected} />;
+        return (
+          <FollowFeed
+            setSelected={props.setSelected}
+            showSideJobs={showSideJobs}
+            showPolls={showPolls}
+          />
+        );
       default:
         return null;
     }
@@ -73,7 +81,12 @@ const HomeView = (props: HomeViewProps) => {
         modalRef={modal}
         modalStyle={styles.modalStyle}
         adjustToContentHeight={true}>
-        <FeedFilter />
+        <FeedFilter
+          showPolls={showPolls}
+          setShowPolls={setShowPolls}
+          showSideJobs={showSideJobs}
+          setShowSideJobs={setShowSideJobs}
+        />
       </BottomSheet>
     </>
   );
