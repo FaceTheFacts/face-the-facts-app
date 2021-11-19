@@ -116,7 +116,7 @@ const FollowFeed = (props: FollowFeedProps) => {
         return (
           <FeedRow
             politicians={tab.content.politicians}
-            desc={tab.content.title!}>
+            desc={(tab.content as PollTab).title}>
             <PollRowContent poll={tab.content as PollTab} />
           </FeedRow>
         );
@@ -124,7 +124,7 @@ const FollowFeed = (props: FollowFeedProps) => {
         return (
           <FeedRow
             politicians={tab.content.politicians}
-            desc={tab.content.job!}>
+            desc={(tab.content as SideJobTab).job}>
             <SideJobRowContent sideJob={tab.content as SideJobTab} />
           </FeedRow>
         );
