@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {TouchableOpacity, View, StyleSheet, Text} from 'react-native';
 import {TabBar, TabView, SceneRendererProps} from 'react-native-tab-view';
 import {Colors} from '../theme';
@@ -23,8 +23,8 @@ type SceneRenderer = SceneRendererProps & {
 };
 
 const HomeView = (props: HomeViewProps) => {
-  const [index, setIndex] = React.useState(1);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(1);
+  const [routes] = useState([
     {key: 'parliament', title: 'Bundestag'},
     {key: 'follow', title: 'Folge ich'},
   ]);
