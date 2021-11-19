@@ -34,6 +34,8 @@ interface FollowFeedProps {
   setSelected: (value: string) => void;
   showPolls: boolean;
   showSideJobs: boolean;
+  showSpeeches: boolean;
+  showArticles: boolean;
 }
 
 const FollowFeed = ({
@@ -45,63 +47,61 @@ const FollowFeed = ({
   const [visibleCount, setVisibleCount] = useState(20);
   const [tabs, setTabs] = useState<Tab<Row>[]>([]);
   const [visibleTabs, setVisibleTabs] = useState<Tab<Row>[]>([]);
-  const [followedIds, setFollowedIds] = useState<Set<number> | null>(null);
+  const [followedIds, setFollowedIds] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     data.dbManager.getFollowedIds().then(setFollowedIds);
   }, [data]);
 
   useEffect(() => {
-    if (followedIds) {
-      let allTabs: Tab<Row>[] = [];
-      const pollsMap: Map<string, Tab<PollTab>> = new Map();
-      const sideJobs: Tab<SideJobTab>[] = [];
-      for (const id of followedIds) {
-        const politician = data.lookupPolitician(id.toString());
-        if (!politician) {
-          continue;
-        }
-        politician.sideJobs?.forEach(sideJob => {
-          if (sideJob.date) {
-            const newSideJob: Tab<SideJobTab> = {
-              type: 'sideJob',
-              content: {
-                ...sideJob,
-                politicians: [politician],
-              },
-            };
-            sideJobs.push(newSideJob);
-          }
-        });
-        const {votes} = data.lookupPolitician(id.toString())!;
-        const selPolls = data.polls.filter(poll => poll.id in votes!);
-        for (const selPoll of selPolls) {
-          const poll: Tab<PollTab> = pollsMap.get(selPoll.id) ?? {
-            type: 'poll',
+    let allTabs: Tab<Row>[] = [];
+    const pollsMap: Map<string, Tab<PollTab>> = new Map();
+    const sideJobs: Tab<SideJobTab>[] = [];
+    for (const id of followedIds) {
+      const politician = data.lookupPolitician(id.toString());
+      if (!politician) {
+        continue;
+      }
+      politician.sideJobs?.forEach(sideJob => {
+        if (sideJob.date) {
+          const newSideJob: Tab<SideJobTab> = {
+            type: 'sideJob',
             content: {
-              id: selPoll.id,
-              title: selPoll.title,
-              politicians: [],
-              date: selPoll.date,
+              ...sideJob,
+              politicians: [politician],
             },
           };
-          poll.content.politicians.push(politician);
-          pollsMap.set(selPoll.id, poll);
+          sideJobs.push(newSideJob);
         }
+      });
+      const {votes} = data.lookupPolitician(id.toString())!;
+      const selPolls = data.polls.filter(poll => poll.id in votes!);
+      for (const selPoll of selPolls) {
+        const poll: Tab<PollTab> = pollsMap.get(selPoll.id) ?? {
+          type: 'poll',
+          content: {
+            id: selPoll.id,
+            title: selPoll.title,
+            politicians: [],
+            date: selPoll.date,
+          },
+        };
+        poll.content.politicians.push(politician);
+        pollsMap.set(selPoll.id, poll);
       }
-      const allPolls = Array.from(pollsMap.values());
-      allTabs = [...allPolls, ...sideJobs];
-      allTabs.sort(
-        (a, b) =>
-          new Date(b.content.date!).getTime() -
-          new Date(a.content.date!).getTime(),
-      );
-      setTabs(allTabs);
-      setVisibleTabs(allTabs.slice(0, 20));
     }
+    const allPolls = Array.from(pollsMap.values());
+    allTabs = [...allPolls, ...sideJobs];
+    allTabs.sort(
+      (a, b) =>
+        new Date(b.content.date!).getTime() -
+        new Date(a.content.date!).getTime(),
+    );
+    setTabs(allTabs);
+    setVisibleTabs(allTabs.slice(0, 20));
   }, [followedIds, data]);
 
-  if (!followedIds || followedIds.size < 1) {
+  if (followedIds.size < 1) {
     return (
       <View style={styles.container}>
         <Text style={styles.header4}>
@@ -116,12 +116,13 @@ const FollowFeed = ({
     );
   }
 
-  const renderTab = (tab: Tab<Row>) => {
+  const renderTab = (tab: Tab<Row>, index: number) => {
     switch (tab.type) {
       case 'poll':
         return (
           showPolls && (
             <FeedRow
+              key={index}
               politicians={tab.content.politicians}
               desc={(tab.content as PollTab).title}>
               <PollRowContent poll={tab.content as PollTab} />
@@ -132,6 +133,7 @@ const FollowFeed = ({
         return (
           showSideJobs && (
             <FeedRow
+              key={index}
               politicians={tab.content.politicians}
               desc={(tab.content as SideJobTab).job}>
               <SideJobRowContent sideJob={tab.content as SideJobTab} />
@@ -146,7 +148,7 @@ const FollowFeed = ({
   return (
     <View style={styles.container}>
       <ScrollView>
-        {visibleTabs.map(tab => renderTab(tab))}
+        {visibleTabs.map((tab, index) => renderTab(tab, index))}
         <TouchableOpacity
           style={styles.showMoreButton}
           onPress={() => {

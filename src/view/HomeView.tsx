@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {TouchableOpacity, View, StyleSheet, Text} from 'react-native';
 import {TabBar, TabView, SceneRendererProps} from 'react-native-tab-view';
 import {Colors} from '../theme';
@@ -9,6 +9,12 @@ import BottomSheet from '../component/utils/BottomSheet';
 import FeedFilter from '../component/feed/FeedFilter';
 import Icon from '../component/Icon';
 import {FilterIcon} from '../icons';
+import {getItem, storeItem} from '../logic/storage';
+
+export const POLLS_TOGGLE_KEY = 'polls';
+export const SIDEJOBS_TOGGLE_KEY = 'sideJobs';
+export const SPEECHES_TOGGLE_KEY = 'speeches';
+export const ARTICLES_TOGGLE_KEY = 'articles';
 
 interface HomeViewProps {
   setSelected: (value: string) => void;
@@ -26,11 +32,36 @@ const HomeView = (props: HomeViewProps) => {
   const [index, setIndex] = useState(1);
   const [showPolls, setShowPolls] = useState(true);
   const [showSideJobs, setShowSideJobs] = useState(true);
+  const [showSpeeches, setShowSpeeches] = useState(true);
+  const [showArticles, setShowArticles] = useState(true);
   const [routes] = useState([
     {key: 'parliament', title: 'Bundestag'},
     {key: 'follow', title: 'Folge ich'},
   ]);
   const modal = useRef<Modalize>(null);
+
+  useEffect(() => {
+    (async () => {
+      const [pollsToggleValue, sideJobsToggleValue] = await Promise.all([
+        getItem(`@facethefacts_${POLLS_TOGGLE_KEY}`),
+        getItem(`@facethefacts_${SIDEJOBS_TOGGLE_KEY}`),
+      ]);
+      if (pollsToggleValue !== null) {
+        setShowPolls(pollsToggleValue[POLLS_TOGGLE_KEY]);
+      }
+      if (sideJobsToggleValue !== null) {
+        setShowSideJobs(sideJobsToggleValue[SIDEJOBS_TOGGLE_KEY]);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await storeItem(`@facethefacts_${POLLS_TOGGLE_KEY}`, {
+        [POLLS_TOGGLE_KEY]: showPolls,
+      });
+    })();
+  }, [showPolls]);
 
   const renderScene = ({route}: SceneRenderer) => {
     switch (route.key) {
@@ -40,8 +71,10 @@ const HomeView = (props: HomeViewProps) => {
         return (
           <FollowFeed
             setSelected={props.setSelected}
-            showSideJobs={showSideJobs}
             showPolls={showPolls}
+            showSideJobs={showSideJobs}
+            showSpeeches={showSpeeches}
+            showArticles={showArticles}
           />
         );
       default:
@@ -55,10 +88,10 @@ const HomeView = (props: HomeViewProps) => {
         navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        renderTabBar={props => (
+        renderTabBar={_props => (
           <View style={styles.headerContainer}>
             <TabBar
-              {...props}
+              {..._props}
               indicatorStyle={{backgroundColor: Colors.darkBlue8}}
               tabStyle={styles.tab}
               style={styles.tabBar}
@@ -83,9 +116,13 @@ const HomeView = (props: HomeViewProps) => {
         adjustToContentHeight={true}>
         <FeedFilter
           showPolls={showPolls}
-          setShowPolls={setShowPolls}
           showSideJobs={showSideJobs}
+          showSpeeches={showSpeeches}
+          showArticles={showArticles}
+          setShowPolls={setShowPolls}
           setShowSideJobs={setShowSideJobs}
+          setShowSpeeches={setShowSpeeches}
+          setShowArticles={setShowArticles}
         />
       </BottomSheet>
     </>
