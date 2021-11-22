@@ -96,6 +96,7 @@ const HomeView = (props: HomeViewProps) => {
         navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={setIndex}
+        swipeEnabled={false}
         renderTabBar={_props => (
           <View style={styles.headerContainer}>
             <TabBar
