@@ -29,7 +29,7 @@ type SceneRenderer = SceneRendererProps & {
 };
 
 const HomeView = (props: HomeViewProps) => {
-  const [index, setIndex] = useState(1);
+  const [index, setIndex] = useState(0);
   const [showPolls, setShowPolls] = useState(true);
   const [showSideJobs, setShowSideJobs] = useState(true);
   const [showSpeeches, setShowSpeeches] = useState(true);
@@ -62,6 +62,14 @@ const HomeView = (props: HomeViewProps) => {
       });
     })();
   }, [showPolls]);
+
+  useEffect(() => {
+    (async () => {
+      await storeItem(`@facethefacts_${SIDEJOBS_TOGGLE_KEY}`, {
+        [SIDEJOBS_TOGGLE_KEY]: showSideJobs,
+      });
+    })();
+  }, [showSideJobs]);
 
   const renderScene = ({route}: SceneRenderer) => {
     switch (route.key) {

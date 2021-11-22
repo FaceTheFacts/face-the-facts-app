@@ -149,14 +149,16 @@ const FollowFeed = ({
     <View style={styles.container}>
       <ScrollView>
         {visibleTabs.map((tab, index) => renderTab(tab, index))}
-        <TouchableOpacity
-          style={styles.showMoreButton}
-          onPress={() => {
-            setVisibleCount(visibleCount + 20);
-            setVisibleTabs(tabs.slice(0, visibleCount));
-          }}>
-          <Text style={styles.showMoreText}>mehr anzeigen</Text>
-        </TouchableOpacity>
+        {tabs.length > visibleCount && (
+          <TouchableOpacity
+            style={styles.showMoreButton}
+            onPress={() => {
+              setVisibleCount(visibleCount + 20);
+              setVisibleTabs(tabs.slice(0, visibleCount));
+            }}>
+            <Text style={styles.showMoreText}>mehr anzeigen</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </View>
   );
