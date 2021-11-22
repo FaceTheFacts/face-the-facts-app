@@ -6,4 +6,12 @@ This repository includes the code for the mobile applications (IOS/Android) usin
 
 ## Installation/ Run locally
 
+React Native is using NPM for package management. Please make sure to [install the cli](https://docs.npmjs.com/about-npm-versions) before continuing.
+
+1. Clone the project to your local machine
+2. Navigate to the root folder of the project on your command line/terminal
+3. `npm install`
+4. [Follow the tutorial by React Native for your environment](https://reactnative.dev/docs/0.65/environment-setup) (make sure to select the tab `React Native CLI Quickstart`)
+5. The app should be running now 🎉
+
 ## CI/CD
