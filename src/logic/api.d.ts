@@ -39,21 +39,7 @@ export interface ApiPolitician {
   statistic_questions_answered: string;
   qid_wikidata: string;
   field_title: string;
-  sidejobs: [
-    {
-      id: number;
-      entity_type: string;
-      label: string;
-      income_level: string;
-      interval: string;
-      data_change_date: string;
-      sidejob_organization: {
-        id: number;
-        entity_type: string;
-        label: string;
-      };
-    },
-  ];
+  sidejobs: ApiSidejob[];
   cvs: [
     {
       polician_id: number;
@@ -94,4 +80,20 @@ export interface ApiPoll {
   label: string;
   field_intro: string;
   field_poll_date: string;
+}
+
+export interface ApiSidejob {
+  id: number;
+  entity_type: string;
+  label: string;
+  income_level: string;
+  interval: string;
+  data_change_date: string;
+  sidejob_organization: ApiSidejobOrganisation;
+}
+
+export interface ApiSidejobOrganisation {
+  id: number;
+  entity_type: string;
+  label: string;
 }
