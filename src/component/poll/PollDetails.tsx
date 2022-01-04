@@ -16,6 +16,7 @@ import {possibleVotes} from '../politician/PoliticianOverview';
 import PartyTag from '../PartyTag';
 import {DataContext} from '../../logic/model';
 import ReadMoreHTML from '../utils/ReadMoreHTML';
+import {ApiPoll, ApiPollDetail, ApiPollDetails, ApiVote} from '../../logic/api';
 
 export const pollResultLabels: Record<PollResult, string> = {
   yes: 'Antrag angenommen',
@@ -23,19 +24,23 @@ export const pollResultLabels: Record<PollResult, string> = {
 };
 
 export interface PollDetailsProps {
-  poll: Poll;
+  poll: ApiPoll;
+  vote: ApiVote;
   candidateAnswer: Vote;
+  details: Array<ApiPollDetail>;
   onClose: () => void;
 }
 
-const PollDetails = ({poll, candidateAnswer, onClose}: PollDetailsProps) => {
-  const data = useContext(DataContext);
-
-  const [yesVotes, noVotes] = poll.votes;
-  const pollResult: PollResult = yesVotes > noVotes ? 'yes' : 'no';
+const PollDetails = ({
+  poll,
+  vote,
+  candidateAnswer,
+  details,
+  onClose,
+}: PollDetailsProps) => {
+  const pollResult: PollResult = poll.poll_passed ? 'yes' : 'no';
   const [expanded, setExpanded] = useState(false);
   const scrollView = useRef<ScrollView | null>(null);
-
   return (
     <>
       <View style={styles.headerContainer}>
@@ -46,10 +51,10 @@ const PollDetails = ({poll, candidateAnswer, onClose}: PollDetailsProps) => {
       </View>
       <ScrollView ref={scrollView} scrollEnabled={expanded}>
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{poll.title}</Text>
+          <Text style={styles.title}>{poll.label}</Text>
           <ReadMoreHTML
             baseStyle={styles.description}
-            html={poll.description}
+            html={poll.field_intro}
             onCollapse={() => {
               setExpanded(false);
               scrollView.current!.scrollTo({});
@@ -69,48 +74,54 @@ const PollDetails = ({poll, candidateAnswer, onClose}: PollDetailsProps) => {
         <View style={styles.votesContainer}>
           <ScrollView style={styles.table} horizontal>
             <View style={styles.tableVoteColumn}>
-              {possibleVotes.map(vote => (
-                <VoteTag key={vote} style={styles.tableVoteTag} vote={vote} />
-              ))}
+              {details &&
+                details.map((detail: ApiPollDetail, index: number) => (
+                  <VoteTag
+                    key={index}
+                    style={styles.tableVoteTag}
+                    vote={'yes'}
+                  />
+                ))}
             </View>
             <View style={styles.tableTotalColumn}>
               <Tag style={styles.tableTag} content="Gesamt" uppercase />
-              {possibleVotes.map((vote, index) => (
-                <Tag
-                  key={vote}
-                  style={styles.tableTag}
-                  content={poll.votes[index].toString()}
-                  backgroundColor={
-                    vote === pollResult ? voteColors[vote] : Colors.background
-                  }
-                  spacing
-                  bold
-                />
-              ))}
-            </View>
-            {poll.participatedParties
-              .map(
-                (partyId, index) =>
-                  [
-                    partyId,
-                    poll.votes.slice((index + 1) * 4, (index + 1) * 4 + 4),
-                  ] as [string, number[]],
-              )
-              .sort((a, b) => a[0].localeCompare(b[0]))
-              .map(([partyId, votes]) => (
-                <View key={partyId} style={styles.tablePartyColumn}>
-                  <PartyTag
+              {details &&
+                details.map((detail, index) => (
+                  <Tag
+                    key={index}
                     style={styles.tableTag}
-                    party={data.lookupParty(partyId)!}
+                    content={'Ja'}
+                    backgroundColor={
+                      vote === pollResult ? voteColors[vote] : Colors.background
+                    }
+                    spacing
+                    bold
                   />
-                  {possibleVotes.map((vote, voteIndex) => (
+                ))}
+            </View>
+            {details &&
+              details.map(partyVote => (
+                <View
+                  key={partyVote.fraction.id}
+                  style={styles.tablePartyColumn}>
+                  <Text>{partyVote.fraction.short_name}</Text>
+                  {/* <PartyTag
+                    style={styles.tableTag}
+                    party={partyVote.fraction.short_name}
+                  /> */}
+                  {[
+                    partyVote.total_yes,
+                    partyVote.total_no,
+                    partyVote.total_abstain,
+                    partyVote.total_no_show,
+                  ].map((vote, index) => (
                     <Tag
-                      key={vote}
+                      key={index}
                       style={styles.tableTag}
-                      content={votes[voteIndex].toString()}
+                      content={vote.toString()}
                       backgroundColor={
-                        vote === pollResult
-                          ? voteColors[vote]
+                        pollResult && index === 0
+                          ? voteColors.yes
                           : Colors.background
                       }
                       spacing
