@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import PoliticianHeader from '../component/politician/PoliticianHeader';
-import {Politician} from '../logic/data';
+import {ApiPolitician, ApiPoliticianProfile, ApiPositions} from '../logic/api';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import PoliticianProfile from '../component/politician/PoliticianProfile';
 import PoliticianPositions from '../component/politician/PoliticianPositions';
@@ -18,7 +18,10 @@ import {Route} from 'react-native-tab-view/lib/typescript/types';
 import BackButton from '../component/BackButton';
 
 interface PoliticianViewProps {
-  route: RouteProp<{params: {politician: Politician}}, 'params'>;
+  route: RouteProp<
+    {params: {profile: ApiPoliticianProfile; positions: ApiPositions}},
+    'params'
+  >;
 }
 
 const renderScene = SceneMap({
@@ -27,29 +30,31 @@ const renderScene = SceneMap({
   constituency: PoliticianConstituency,
 });
 
-export const PoliticianContext = createContext<Politician>(null as any);
-
+export const PoliticianContext = createContext<ApiPolitician>(null as any);
 const PoliticianView = ({route}: PoliticianViewProps) => {
-  const {politician} = route.params;
+  const politician: ApiPolitician = {
+    profile: route.params.profile,
+    positions: route.params.positions,
+  };
   const {width} = useWindowDimensions();
 
   const routes = [
-    politician.positions && {
+    (politician.profile.topic_ids_of_latest_committee ||
+      politician.profile.votes_and_polls ||
+      politician.profile.sidejobs ||
+      politician.profile.cvs ||
+      politician.profile.weblinks) && {
+      title: 'Profilseite',
+      key: 'profile',
+    },
+    politician.positions.positions && {
       title: 'Positionen',
       key: 'positions',
     },
-    (politician.committees ||
-      politician.votes ||
-      politician.sideJobs ||
-      politician.cv ||
-      politician.links) && {
-      title: 'Profil',
-      key: 'profile',
-    },
-    politician.constituency && {
+    /* politician.constituency && {
       title: 'Wahlkreis',
       key: 'constituency',
-    },
+    }, */
   ].filter(Boolean) as Route[];
   const [tabIndex, setTabIndex] = useState<number>(() =>
     routes.findIndex(value => value.key === 'profile'),
