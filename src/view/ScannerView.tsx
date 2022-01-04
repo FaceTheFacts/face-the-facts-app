@@ -27,16 +27,10 @@ import {
 } from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
-import {Politician, SearchedPolitician} from '../logic/data';
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query';
-
-import { fetch_data } from '../logic/fetch';
+import {Politician} from '../logic/data';
+import {useQuery} from 'react-query';
+import {ApiSearchPolitician} from '../logic/api';
+import {fetch_api} from '../logic/fetch';
 
 const ScannerView = () => {
   // Scanning
@@ -70,10 +64,14 @@ const ScannerView = () => {
   }, [searching]);
 
   // Fetching
-  const { data, status } = useQuery(`search-${searchInput}`, () => fetch_data(`search?text=${searchInput}&page=1&size=50`));
-
-  if (data)
-  console.log(data.status)
+  const {data, status} = useQuery<
+    Array<ApiSearchPolitician> | undefined,
+    Error
+  >(`search-${searchInput}`, () =>
+    fetch_api<Array<ApiSearchPolitician>>(
+      `search?text=${searchInput}&page=1&size=50`,
+    ),
+  );
 
   function startSearching(): void {
     setSearching(true);
@@ -128,22 +126,21 @@ const ScannerView = () => {
     }
   }
 
-  const [searchResult, setSearchResult] = useState<Politician[]>([]);
+  //const [searchResult, setSearchResult] = useState<ApiPolitician[]>([]);
   const searchInProgress = useRef({count: 0, id: 0}).current;
 
-
- /*  useEffect(() => {
+  /* useEffect(() => {
     if (searching && searchInput) {
       searchInProgress.count++;
       const id = ++searchInProgress.id;
       setSearchResult([...searchResult]);
-      if (status=='success') {
-        setSearchResult(data)
+      if (status === 'success') {
+        setSearchResult(data);
       }
       dataContext.search(searchInput).then(result => {
         searchInProgress.count--;
         if (searchInProgress.id !== id) {
-          return;  
+          return;
         }
         setSearchResult(result);
       });
@@ -251,22 +248,23 @@ const ScannerView = () => {
               </TouchableOpacity>
             )}
           </View>
-          {searching && status=='success' && (
+          {searching && status === 'success' && (
             <ScrollView
               style={styles.searchResultContainer}
               keyboardDismissMode="interactive">
-              {data.length && data.map((item: { id: React.Key | null | undefined; name: SearchedPolitician; }) => (
+              {data?.map((item: ApiSearchPolitician) => (
                 <PoliticianRow
                   key={item.id}
                   style={styles.searchItem}
-                  politician={item.name}
+                  politician={item}
                 />
               ))}
             </ScrollView>
           )}
           {searching &&
             !!searchInput &&
-            !searchInProgress.count && (
+            status === 'success' &&
+            data === undefined && (
               <Text style={styles.searchNoResult}>
                 Es wurden keine Politiker:innen gefunden.
               </Text>
