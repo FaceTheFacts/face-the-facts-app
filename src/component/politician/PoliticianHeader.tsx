@@ -3,23 +3,21 @@ import {StyleSheet, Text, View} from 'react-native';
 import PoliticianPicture from '../PoliticianPicture';
 import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
-import {DataContext} from '../../logic/model';
 import Tag from '../utils/Tag';
 import Wrap from '../utils/Wrap';
 import {PoliticianContext} from '../../view/PoliticianView';
 
 const PoliticianHeader = () => {
   const politician = useContext(PoliticianContext);
-  const data = useContext(DataContext);
 
   return (
     <View style={styles.container}>
-      <PoliticianPicture politicianId={politician.id} size={80} />
+      <PoliticianPicture politicianId={politician.profile.id} size={80} />
       <View style={styles.rightContainer}>
-        <Text style={styles.name}>{politician.name}</Text>
+        <Text style={styles.name}>{politician.profile.label}</Text>
         <Wrap spacing={4}>
-          <PartyTag party={data.lookupParty(politician.partyId)!} />
-          {politician.occupation?.map((occupation, index) => (
+          <PartyTag party={politician.profile.party} />
+          {politician.profile.occupations?.map((occupation, index) => (
             <Tag key={index} content={occupation} />
           ))}
         </Wrap>
