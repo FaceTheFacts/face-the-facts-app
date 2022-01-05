@@ -4,7 +4,7 @@ import {Politician} from './data';
 SQLite.enablePromise(true);
 
 export interface HistoryItem {
-  politicianId: string;
+  politicianId: number;
   date: Date;
 }
 
@@ -25,7 +25,7 @@ export class DBManager {
     return this.historyItems!;
   }
 
-  public async pushHistoryItem(politicianId: string): Promise<void> {
+  public async pushHistoryItem(politicianId: number): Promise<void> {
     const date = new Date();
     await this.openDatabase();
     await this.database!.executeSql(
