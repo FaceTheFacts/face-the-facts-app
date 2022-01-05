@@ -18,7 +18,7 @@ import {
 import SplashScreen from './view/SplashScreen';
 import {Colors} from './theme';
 import PollsView from './view/PollsView';
-import {useQueryClient, QueryClient, QueryClientProvider} from 'react-query';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 const Stack = createStackNavigator();
 
