@@ -11,16 +11,16 @@
 		006B95DA26D569D1000EB869 /* powered_by_abgeordnetenwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 006B95D826D569D1000EB869 /* powered_by_abgeordnetenwatch.png */; };
 		006B95DC26D56A14000EB869 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 006B95DB26D56A14000EB869 /* splash.png */; };
 		00E356F31AD99517003FC87E /* FaceTheFactsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FaceTheFactsTests.m */; };
+		12ED9BE543B0154823657AC7 /* libPods-FaceTheFacts-FaceTheFactsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 243AE206E91B014554F41C51 /* libPods-FaceTheFacts-FaceTheFactsTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1A37A36C8F0649FBAF25752E /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD8A1F2DB6424091940EED0A /* Inter-Regular.ttf */; };
-		2326DCC629A83E4134FA6157 /* libPods-FaceTheFacts-FaceTheFactsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 293D913D7F0F0528342460D3 /* libPods-FaceTheFacts-FaceTheFactsTests.a */; };
-		48857DCD12D6B1E3AC199732 /* libPods-FaceTheFacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9DFAFA2C6E26E783DCB4F4 /* libPods-FaceTheFacts.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		856912AE52FA41B8B5B34E4F /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB76851FDA2C4FDDA46866CD /* Inter-Medium.ttf */; };
 		881DF794353F4B8A9F24B61F /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89043628020E4F53A7F854DA /* Inter-Light.ttf */; };
 		BBF7A640A2D647B680FD5FEC /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97A0336281C34A019DC27587 /* Inter-ExtraLight.ttf */; };
+		CC81CC75573C372187AC6764 /* libPods-FaceTheFacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAEA4081528AAC2CDA3BEDA6 /* libPods-FaceTheFacts.a */; };
 		D28EE645E0704A9EB042DF59 /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8C54B4DCE5749AE9D7834DF /* Inter-Thin.ttf */; };
 		D342F7A3C0954C4C9D38A3F6 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CD6C5A9392B46B2A0F100A0 /* Inter-Bold.ttf */; };
 		EA89AB0F46BD4A78B1049AB9 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A8DBD11AD9A4A368CE0DD81 /* Inter-SemiBold.ttf */; };
@@ -51,19 +51,19 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FaceTheFacts/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FaceTheFacts/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FaceTheFacts/main.m; sourceTree = "<group>"; };
-		1B9DFAFA2C6E26E783DCB4F4 /* libPods-FaceTheFacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FaceTheFacts.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1947A858BDE87F96191E20E8 /* Pods-FaceTheFacts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts.debug.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts.debug.xcconfig"; sourceTree = "<group>"; };
 		1CD6C5A9392B46B2A0F100A0 /* Inter-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.ttf"; path = "../assets/fonts/Inter-Bold.ttf"; sourceTree = "<group>"; };
-		293D913D7F0F0528342460D3 /* libPods-FaceTheFacts-FaceTheFactsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FaceTheFacts-FaceTheFactsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		32495D44D83DD00D8BB63046 /* Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		243AE206E91B014554F41C51 /* libPods-FaceTheFacts-FaceTheFactsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FaceTheFacts-FaceTheFactsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BB653351B934D90A7FD9F64 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraBold.ttf"; path = "../assets/fonts/Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
-		65E0E40E72BC71B7C0CB3665 /* Pods-FaceTheFacts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts.release.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts.release.xcconfig"; sourceTree = "<group>"; };
+		51F08E651A654CBF502568B3 /* Pods-FaceTheFacts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts.release.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts.release.xcconfig"; sourceTree = "<group>"; };
 		7A8DBD11AD9A4A368CE0DD81 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FaceTheFacts/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89043628020E4F53A7F854DA /* Inter-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.ttf"; path = "../assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		97A0336281C34A019DC27587 /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraLight.ttf"; path = "../assets/fonts/Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
-		C0BD9E116A7C292519E9BECA /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; sourceTree = "<group>"; };
+		A1CE4041363F7EAA06827F09 /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; sourceTree = "<group>"; };
+		BAEA4081528AAC2CDA3BEDA6 /* libPods-FaceTheFacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FaceTheFacts.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D02F8522DE7908F187D52D59 /* Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DD8A1F2DB6424091940EED0A /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
-		E86EDAD88E35129CA1FA6137 /* Pods-FaceTheFacts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts.debug.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts.debug.xcconfig"; sourceTree = "<group>"; };
 		E8C54B4DCE5749AE9D7834DF /* Inter-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Thin.ttf"; path = "../assets/fonts/Inter-Thin.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE59F4E0FDA14163A1A38385 /* Inter-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Black.ttf"; path = "../assets/fonts/Inter-Black.ttf"; sourceTree = "<group>"; };
@@ -75,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2326DCC629A83E4134FA6157 /* libPods-FaceTheFacts-FaceTheFactsTests.a in Frameworks */,
+				12ED9BE543B0154823657AC7 /* libPods-FaceTheFacts-FaceTheFactsTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48857DCD12D6B1E3AC199732 /* libPods-FaceTheFacts.a in Frameworks */,
+				CC81CC75573C372187AC6764 /* libPods-FaceTheFacts.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,8 +127,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				1B9DFAFA2C6E26E783DCB4F4 /* libPods-FaceTheFacts.a */,
-				293D913D7F0F0528342460D3 /* libPods-FaceTheFacts-FaceTheFactsTests.a */,
+				BAEA4081528AAC2CDA3BEDA6 /* libPods-FaceTheFacts.a */,
+				243AE206E91B014554F41C51 /* libPods-FaceTheFacts-FaceTheFactsTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -184,10 +184,10 @@
 		B0B422AD3E8E8465F611D0B1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E86EDAD88E35129CA1FA6137 /* Pods-FaceTheFacts.debug.xcconfig */,
-				65E0E40E72BC71B7C0CB3665 /* Pods-FaceTheFacts.release.xcconfig */,
-				32495D44D83DD00D8BB63046 /* Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig */,
-				C0BD9E116A7C292519E9BECA /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */,
+				1947A858BDE87F96191E20E8 /* Pods-FaceTheFacts.debug.xcconfig */,
+				51F08E651A654CBF502568B3 /* Pods-FaceTheFacts.release.xcconfig */,
+				D02F8522DE7908F187D52D59 /* Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig */,
+				A1CE4041363F7EAA06827F09 /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -199,12 +199,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "FaceTheFactsTests" */;
 			buildPhases = (
-				5000A86DEFDB53A8654C9A34 /* [CP] Check Pods Manifest.lock */,
+				4BEFF8DCD9B6E8E025D24207 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				DCA75063ACBFE7E3B30E1103 /* [CP] Embed Pods Frameworks */,
-				C5319F65FCEB2A9125B194FA /* [CP] Copy Pods Resources */,
+				5FD59F5DB45DCA56FB445FF6 /* [CP] Embed Pods Frameworks */,
+				157426AA9EF4183A6B3A6B0C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -220,14 +220,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "FaceTheFacts" */;
 			buildPhases = (
-				BAD1297F5B5CD0604DB02C17 /* [CP] Check Pods Manifest.lock */,
+				56A5A8B068EDFBC4099A029B /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				B8C9D3365C990B7816180660 /* [CP] Embed Pods Frameworks */,
-				B047F405BCD28679DA60B1D9 /* [CP] Copy Pods Resources */,
+				837547EA55189A87B01F563F /* [CP] Embed Pods Frameworks */,
+				9776AB58DC134D96AB854788 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -244,7 +244,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1310;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -320,7 +320,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		5000A86DEFDB53A8654C9A34 /* [CP] Check Pods Manifest.lock */ = {
+		157426AA9EF4183A6B3A6B0C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4BEFF8DCD9B6E8E025D24207 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -342,41 +359,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B047F405BCD28679DA60B1D9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B8C9D3365C990B7816180660 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BAD1297F5B5CD0604DB02C17 /* [CP] Check Pods Manifest.lock */ = {
+		56A5A8B068EDFBC4099A029B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -398,24 +381,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C5319F65FCEB2A9125B194FA /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DCA75063ACBFE7E3B30E1103 /* [CP] Embed Pods Frameworks */ = {
+		5FD59F5DB45DCA56FB445FF6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -430,6 +396,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		837547EA55189A87B01F563F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9776AB58DC134D96AB854788 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts/Pods-FaceTheFacts-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -484,15 +484,16 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 32495D44D83DD00D8BB63046 /* Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig */;
+			baseConfigurationReference = D02F8522DE7908F187D52D59 /* Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = FaceTheFactsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -511,12 +512,13 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0BD9E116A7C292519E9BECA /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */;
+			baseConfigurationReference = A1CE4041363F7EAA06827F09 /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = FaceTheFactsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -535,7 +537,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E86EDAD88E35129CA1FA6137 /* Pods-FaceTheFacts.debug.xcconfig */;
+			baseConfigurationReference = 1947A858BDE87F96191E20E8 /* Pods-FaceTheFacts.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -563,7 +565,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 65E0E40E72BC71B7C0CB3665 /* Pods-FaceTheFacts.release.xcconfig */;
+			baseConfigurationReference = 51F08E651A654CBF502568B3 /* Pods-FaceTheFacts.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -636,7 +638,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -694,7 +696,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
