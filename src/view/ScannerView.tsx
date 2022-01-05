@@ -122,7 +122,7 @@ const ScannerView = () => {
       setFocussed(false);
       setTexts([]);
       setFaces([]);
-      dataContext.historyManager.pushItem(scannedPolitician.id);
+      dataContext.dbManager.pushHistoryItem(scannedPolitician.id);
     }
   }
 

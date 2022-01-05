@@ -58,7 +58,7 @@ const PoliticianRow = ({style, politician}: PoliticianRowProps) => {
       profile: profileQuery.data,
       positions: positionsQuery.data,
     });
-    database.historyManager.pushItem(politician.id);
+    database.dbManager.pushHistoryItem(politician.id);
     setClicked(false);
   }
   return (
