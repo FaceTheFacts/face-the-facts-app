@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {TouchableOpacity, View, StyleSheet, Text} from 'react-native';
+import {TouchableOpacity, StyleSheet, Text, SafeAreaView} from 'react-native';
 import {TabBar, TabView, SceneRendererProps} from 'react-native-tab-view';
 import {Colors} from '../theme';
 import FollowFeed from '../component/feed/FollowFeed';
@@ -98,7 +98,7 @@ const HomeView = (props: HomeViewProps) => {
         onIndexChange={setIndex}
         swipeEnabled={false}
         renderTabBar={_props => (
-          <View style={styles.headerContainer}>
+          <SafeAreaView style={styles.headerContainer}>
             <TabBar
               {..._props}
               indicatorStyle={{backgroundColor: Colors.darkBlue8}}
@@ -116,7 +116,7 @@ const HomeView = (props: HomeViewProps) => {
               <Icon style={styles.icon} icon={FilterIcon} />
               <Text style={styles.filterText}>Filtern</Text>
             </TouchableOpacity>
-          </View>
+          </SafeAreaView>
         )}
       />
       <BottomSheet
