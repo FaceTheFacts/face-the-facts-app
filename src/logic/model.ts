@@ -23,7 +23,7 @@ import {
   stat,
 } from 'react-native-fs';
 import {decompress} from 'compress-json';
-import {HistoryManager} from './history';
+import {DBManager} from './db';
 
 interface SearchPolitician {
   name: string;
@@ -101,7 +101,7 @@ export class FaceTheFactsData {
   private readonly scanTokens: Map<string, string[][]>;
   private readonly scanTokenMap: Map<string, Set<string>>;
 
-  public readonly historyManager: HistoryManager;
+  public readonly dbManager: DBManager;
 
   public constructor(dataset: Dataset) {
     this.politicians = new Map(
@@ -176,7 +176,7 @@ export class FaceTheFactsData {
       this.searchIndex.add(index, searchPolitician);
     });
 
-    this.historyManager = new HistoryManager(this.politicians);
+    this.dbManager = new DBManager(this.politicians);
   }
 
   public lookupPolitician(id: string): Politician | null {

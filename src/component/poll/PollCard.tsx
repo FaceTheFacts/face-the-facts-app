@@ -55,7 +55,8 @@ const PollCard = ({style, poll, candidateVote}: PollCardProps) => {
       <BottomSheet
         modalRef={modal}
         modalStyle={{backgroundColor: Colors.background}}
-        modalHeight={600}>
+        modalHeight={600}
+        withHandle={false}>
         <PollDetails
           poll={poll}
           candidateAnswer={candidateVote}

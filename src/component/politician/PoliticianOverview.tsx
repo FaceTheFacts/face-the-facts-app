@@ -58,7 +58,7 @@ const PoliticianOverview = () => {
                     {committee.icon && (
                       <Icon
                         style={styles.committeeIcon}
-                        icon={committee.icon}
+                        icon={{viewBox: '0 0 24 24', d: committee.icon}}
                       />
                     )}
                     <Text style={styles.committeeLabel}>{committee.name}</Text>

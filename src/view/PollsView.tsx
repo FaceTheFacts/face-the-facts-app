@@ -74,7 +74,7 @@ const PollsView = ({route}: PollsViewProps) => {
                     styles.topicIcon,
                     filter.includes(topic.id) && styles.topicContentSelected,
                   ])}
-                  icon={topic.icon}
+                  icon={{viewBox: '0 0 24 24', d: topic.icon}}
                 />
                 <Text
                   style={StyleSheet.flatten([
