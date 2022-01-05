@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View, StatusBar} from 'react-native';
-import CandidatesView from './CandidatesView';
 import ScannerView from './ScannerView';
 import TabMenu from '../component/TabMenu';
 import HomeView from './HomeView';
@@ -13,8 +12,6 @@ import {
   ScannerIconSolid,
   PoliticiansIcon,
   PoliticiansIconSolid,
-  CandidatesIcon,
-  CandidatesIconSolid,
 } from '../icons';
 
 const MainView = () => {
@@ -27,7 +24,6 @@ const MainView = () => {
         {selected === 'home' && <HomeView setSelected={setSelected} />}
         {selected === 'scanner' && <ScannerView />}
         {selected === 'politicians' && <HistoryView />}
-        {selected === 'candidates' && <CandidatesView />}
       </View>
       <SafeAreaView style={styles.tabBarContainer}>
         <TabMenu
@@ -46,11 +42,6 @@ const MainView = () => {
               name: 'politicians',
               icons: [PoliticiansIcon, PoliticiansIconSolid],
               label: 'Politiker',
-            },
-            {
-              name: 'candidates',
-              icons: [CandidatesIcon, CandidatesIconSolid],
-              label: 'Wahlen',
             },
           ]}
           selected={selected}
