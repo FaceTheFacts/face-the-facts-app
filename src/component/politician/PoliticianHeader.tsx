@@ -6,6 +6,7 @@ import PartyTag from '../PartyTag';
 import Tag from '../utils/Tag';
 import Wrap from '../utils/Wrap';
 import {PoliticianContext} from '../../view/PoliticianView';
+import {DataContext} from '../../logic/model';
 
 const PoliticianHeader = () => {
   const politician = useContext(PoliticianContext);
@@ -13,41 +14,43 @@ const PoliticianHeader = () => {
   const [isFollowed, setIsFollowed] = useState(false);
 
   useEffect(() => {
-    data.dbManager.isIdFollowed(Number(politician.id)).then(setIsFollowed);
+    data.dbManager.isIdFollowed(politician?.profile.id!).then(setIsFollowed);
   }, [data, politician]);
 
   return (
-    <View style={styles.container}>
-      <PoliticianPicture politicianId={politician.profile.id} size={80} />
-      <View style={styles.rightContainer}>
-        <Text style={styles.name}>{politician.profile.label}</Text>
-        <Wrap spacing={4}>
-          <PartyTag party={politician.profile.party} />
-          {politician.profile.occupations?.map((occupation, index) => (
-            <Tag key={index} content={occupation} />
-          ))}
-        </Wrap>
-        <Wrap spacing={4}>
-          <TouchableOpacity
-            style={isFollowed ? styles.unFollowBtn : styles.followBtn}
-            onPress={() => {
-              if (isFollowed) {
-                data.dbManager.removeFollowedId(Number(politician.id));
-                setIsFollowed(false);
-              } else {
-                data.dbManager.pushFollowId(Number(politician.id));
-                setIsFollowed(true);
-              }
-            }}>
-            {isFollowed ? (
-              <Text style={styles.unFollowText}>Folge ich</Text>
-            ) : (
-              <Text style={styles.followText}>Folgen</Text>
-            )}
-          </TouchableOpacity>
-        </Wrap>
+    politician && (
+      <View style={styles.container}>
+        <PoliticianPicture politicianId={politician.profile.id!} size={80} />
+        <View style={styles.rightContainer}>
+          <Text style={styles.name}>{politician.profile.label}</Text>
+          <Wrap spacing={4}>
+            <PartyTag party={politician.profile.party} />
+            {politician.profile.occupations?.map((occupation, index) => (
+              <Tag key={index} content={occupation} />
+            ))}
+          </Wrap>
+          <Wrap spacing={4}>
+            <TouchableOpacity
+              style={isFollowed ? styles.unFollowBtn : styles.followBtn}
+              onPress={() => {
+                if (isFollowed) {
+                  data.dbManager.removeFollowedId(politician.profile.id);
+                  setIsFollowed(false);
+                } else {
+                  data.dbManager.pushFollowId(politician.profile.id);
+                  setIsFollowed(true);
+                }
+              }}>
+              {isFollowed ? (
+                <Text style={styles.unFollowText}>Folge ich</Text>
+              ) : (
+                <Text style={styles.followText}>Folgen</Text>
+              )}
+            </TouchableOpacity>
+          </Wrap>
+        </View>
       </View>
-    </View>
+    )
   );
 };
 

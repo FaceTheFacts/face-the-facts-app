@@ -30,7 +30,7 @@ const renderScene = SceneMap({
   constituency: PoliticianConstituency,
 });
 
-export const PoliticianContext = createContext<ApiPolitician>(null as any);
+export const PoliticianContext = createContext<ApiPolitician | null>(null);
 const PoliticianView = ({route}: PoliticianViewProps) => {
   const politician: ApiPolitician = {
     profile: route.params.profile,

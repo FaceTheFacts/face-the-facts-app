@@ -72,14 +72,17 @@ const PoliticianLinks = () => {
     <ScrollView style={styles.container}>
       <TouchableOpacity
         onPress={() =>
-          Linking.openURL(politician.profile.abgeordnetenwatch_url)
+          Linking.openURL(politician?.profile.abgeordnetenwatch_url!)
         }>
         <View style={styles.link}>
-          <Icon style={styles.icon} icon={awLink.icon} />
+          <Icon
+            style={styles.icon}
+            icon={{viewBox: '0 0 24 24', d: awLink.icon}}
+          />
           <Text style={styles.label}>{awLink.label}</Text>
         </View>
       </TouchableOpacity>
-      {politician.profile.weblinks.map((link, index) => {
+      {politician?.profile.weblinks.map((link, index) => {
         const type = linkTypes.find(type => type.test(link.link));
         return (
           <TouchableOpacity

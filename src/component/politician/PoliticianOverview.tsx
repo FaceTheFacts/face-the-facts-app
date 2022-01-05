@@ -91,17 +91,22 @@ const PoliticianOverview = () => {
   return (
     <ScrollView style={styles.containerWrapper}>
       <View style={styles.container}>
-        {politician.profile.topic_ids_of_latest_committee.length !== 0 && (
+        {politician?.profile.topic_ids_of_latest_committee.length !== 0 && (
           <>
             <Text style={styles.subtitle}>Politische Schwerpunkte</Text>
             <Wrap spacing={8}>
-              {politician.profile.topic_ids_of_latest_committee.map(
+              {politician?.profile.topic_ids_of_latest_committee.map(
                 (topicId, index) => {
-                  const topic = topicTypes.find(topic => topic.id == topicId);
+                  const topic = topicTypes.find(
+                    topicType => topicType.id === topicId,
+                  );
                   return (
                     <View key={index} style={styles.committee}>
                       {topic?.icon && (
-                        <Icon style={styles.committeeIcon} icon={topic.icon} />
+                        <Icon
+                          style={styles.committeeIcon}
+                          icon={{viewBox: '0 0 24 24', d: topic.icon}}
+                        />
                       )}
                       <Text style={styles.committeeLabel}>{topic?.label}</Text>
                     </View>
@@ -111,7 +116,7 @@ const PoliticianOverview = () => {
             </Wrap>
           </>
         )}
-        {politician.profile.votes_and_polls && (
+        {politician?.profile.votes_and_polls && (
           <>
             <TouchableOpacity
               style={styles.pollsHeader}
@@ -144,7 +149,7 @@ const PoliticianOverview = () => {
             </ScrollView>
           </>
         )}
-        {politician.profile.sidejobs && (
+        {politician?.profile.sidejobs && (
           <>
             <Text style={styles.subtitle}>Nebentätigkeiten</Text>
             {politician.profile.sidejobs.map((sidejob, index) => (
