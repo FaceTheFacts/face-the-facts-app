@@ -17,10 +17,11 @@ import {Route} from 'react-native-tab-view/lib/typescript/types';
 import BackButton from '../component/BackButton';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
-import type {
+import {
   ApiPositions,
   ApiPoliticianProfile,
   IPoliticianContext,
+  ApiSpeech,
 } from '../logic/api';
 
 type PoliticianViewParams = {
@@ -51,8 +52,13 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
   );
 
   const {data: positions} = useQuery<ApiPositions | undefined, Error>(
-    `postilions:${politicianId}`,
+    `positions:${politicianId}`,
     () => fetch_api<ApiPositions>(`politician/${politicianId}/positions`),
+  );
+
+  const {data: speeches} = useQuery<ApiSpeech[] | undefined, Error>(
+    `speeches:${politicianId}`,
+    () => fetch_api<ApiSpeech[]>(`politician/${politicianId}/speech`),
   );
 
   const {width} = useWindowDimensions();
@@ -62,7 +68,8 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
       profile?.votes_and_polls ||
       profile?.sidejobs ||
       profile?.cvs ||
-      profile?.weblinks) && {
+      profile?.weblinks ||
+      speeches) && {
       title: 'Profilseite',
       key: 'profile',
     },
@@ -82,7 +89,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
   );
 
   return (
-    <PoliticianContext.Provider value={{positions, profile}}>
+    <PoliticianContext.Provider value={{positions, profile, speeches}}>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.container}>
         <StatusBar
