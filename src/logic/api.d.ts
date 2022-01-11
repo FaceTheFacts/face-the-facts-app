@@ -48,21 +48,17 @@ export interface ApiPoliticianProfile {
   qid_wikidata: string;
   field_title: string;
   sidejobs: ApiSidejob[];
-  cvs: [
-    {
-      polician_id: number;
-      short_description: string;
-      raw_text: string;
-    },
-  ];
+  cvs: {
+    polician_id: number;
+    short_description: string;
+    raw_text: string;
+  }[];
   abgeordnetenwatch_url: string;
-  weblinks: [
-    {
-      id: number;
-      politician_id: number;
-      link: string;
-    },
-  ];
+  weblinks: {
+    id: number;
+    politician_id: number;
+    link: string;
+  }[];
   votes_and_polls: {
     Vote: ApiVote;
     Poll: ApiPoll;
