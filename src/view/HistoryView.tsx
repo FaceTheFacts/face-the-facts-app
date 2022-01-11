@@ -24,11 +24,9 @@ const HistoryView = () => {
                 items,
                 item => item.politicianId,
                 item => item.date,
-                (label, items) => ({
+                (label, historyItems) => ({
                   title: label,
-                  politicians: items.map(
-                    item => data.lookupPolitician(item.politicianId)!,
-                  ),
+                  politicianIds: historyItems.map(item => item.politicianId),
                 }),
               ),
             ]}

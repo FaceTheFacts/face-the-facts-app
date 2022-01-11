@@ -8,7 +8,7 @@ const PoliticianCV = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {politician?.profile.cvs!.map((step, index) => (
+      {politician?.profile?.cvs!.map((step, index) => (
         <View key={index} style={styles.step}>
           <Text style={styles.label}>{step.raw_text}</Text>
         </View>

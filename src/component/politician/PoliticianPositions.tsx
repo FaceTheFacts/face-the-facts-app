@@ -12,18 +12,18 @@ import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
 import {ArrowForwardIos, ClearIcon} from '../../icons';
-import {ApiPolitician, ApiPosition} from '../../logic/api';
+import {ApiPosition} from '../../logic/api';
 import PositionAnswerTag from '../utils/PositionAnswerTag';
 
 const PoliticianPositions = () => {
-  const politician: ApiPolitician = useContext(PoliticianContext);
+  const politician = useContext(PoliticianContext);
   const [openedCandidatePosition, setOpenedCandidatePosition] =
     useState<ApiPosition | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
       <ScrollView style={styles.container}>
-        {politician.positions.positions!.map(candidatePosition => {
+        {politician?.positions?.positions!.map(candidatePosition => {
           return (
             <TouchableOpacity
               key={candidatePosition.id}
@@ -68,7 +68,7 @@ const PoliticianPositions = () => {
               {openedCandidatePosition.reason && (
                 <>
                   <Text style={styles.modalReasonLabel}>
-                    Begründung von {politician.profile.label}:
+                    Begründung von {politician?.profile?.label}:
                   </Text>
                   <Text style={styles.modalReason}>
                     "{openedCandidatePosition.reason}"

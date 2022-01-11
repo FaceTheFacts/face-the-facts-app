@@ -43,8 +43,8 @@ const HomeView = (props: HomeViewProps) => {
   useEffect(() => {
     (async () => {
       const [pollsToggleValue, sideJobsToggleValue] = await Promise.all([
-        getItem(`@facethefacts_${POLLS_TOGGLE_KEY}`),
-        getItem(`@facethefacts_${SIDEJOBS_TOGGLE_KEY}`),
+        getItem(`@facethefacts:${POLLS_TOGGLE_KEY}`),
+        getItem(`@facethefacts:${SIDEJOBS_TOGGLE_KEY}`),
       ]);
       if (pollsToggleValue !== null) {
         setShowPolls(pollsToggleValue[POLLS_TOGGLE_KEY]);
@@ -57,7 +57,7 @@ const HomeView = (props: HomeViewProps) => {
 
   useEffect(() => {
     (async () => {
-      await storeItem(`@facethefacts_${POLLS_TOGGLE_KEY}`, {
+      await storeItem(`@facethefacts:${POLLS_TOGGLE_KEY}`, {
         [POLLS_TOGGLE_KEY]: showPolls,
       });
     })();
@@ -65,7 +65,7 @@ const HomeView = (props: HomeViewProps) => {
 
   useEffect(() => {
     (async () => {
-      await storeItem(`@facethefacts_${SIDEJOBS_TOGGLE_KEY}`, {
+      await storeItem(`@facethefacts:${SIDEJOBS_TOGGLE_KEY}`, {
         [SIDEJOBS_TOGGLE_KEY]: showSideJobs,
       });
     })();

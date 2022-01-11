@@ -24,6 +24,11 @@ export interface ApiPolitician {
   positions: ApiPositions;
 }
 
+export interface IPoliticianContext {
+  profile?: ApiPoliticianProfile;
+  positions?: ApiPositions;
+}
+
 export interface ApiPoliticianProfile {
   id: number;
   entity_type: string;
@@ -78,7 +83,7 @@ export interface ApiPartyStyle {
   display_name: string;
   foreground_color: string;
   background_color: string;
-  border_color: string | undefined;
+  border_color?: string;
 }
 
 export interface ApiVote {
