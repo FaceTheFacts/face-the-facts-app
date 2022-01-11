@@ -155,3 +155,11 @@ export interface ApiPollDetail {
   total_abstain: number;
   total_no_show: number;
 }
+
+export interface ApiSpeech {
+  videoFileURI: string;
+  creator: string;
+  timestamp: number;
+  dateStart: string;
+  dateEnd: string;
+}
