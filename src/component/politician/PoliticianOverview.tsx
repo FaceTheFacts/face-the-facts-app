@@ -44,6 +44,7 @@ import {
   TourismIcon,
   TrafficIcon,
 } from '../../icons';
+import SpeechCard from '../feed/SpeechCard';
 
 export const possibleVotes: Vote[] = ['yes', 'no', 'abstain', 'no_show'];
 
@@ -144,6 +145,34 @@ const PoliticianOverview = () => {
                   poll={poll.Poll}
                   vote={poll.Vote}
                   candidateVote={poll.Vote.vote}
+                />
+              ))}
+            </ScrollView>
+          </>
+        )}
+        {politician?.speeches?.length !== 0 && (
+          <>
+            <TouchableOpacity
+              style={styles.pollsHeader}
+              onPress={() => {
+                navigator.push('PollsScreen', {
+                  politician,
+                });
+              }}>
+              <Text style={styles.pollsTitle}>Reden</Text>
+              <Text style={styles.moreButton}>mehr</Text>
+            </TouchableOpacity>
+            <ScrollView
+              style={styles.pollContainer}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}>
+              {politician?.speeches?.slice(0, 5).map(speech => (
+                <SpeechCard
+                  key={speech.timestamp}
+                  desc={speech.officialTitle}
+                  title={speech.title}
+                  date={speech.date}
                 />
               ))}
             </ScrollView>
