@@ -83,7 +83,7 @@ export interface ApiPartyStyle {
   display_name: string;
   foreground_color: string;
   background_color: string;
-  border_color: string | undefined;
+  border_color?: string;
 }
 
 export interface ApiVote {

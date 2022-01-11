@@ -19,7 +19,6 @@ import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import type {
   ApiPositions,
-  ApiPolitician,
   ApiPoliticianProfile,
   IPoliticianContext,
 } from '../logic/api';
@@ -67,10 +66,11 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
       title: 'Profilseite',
       key: 'profile',
     },
-    positions?.positions && {
-      title: 'Positionen',
-      key: 'positions',
-    },
+    positions?.positions &&
+      positions?.positions.length > 0 && {
+        title: 'Positionen',
+        key: 'positions',
+      },
     // /* politician.constituency && {
     //     title: 'Wahlkreis',
     //     key: 'constituency',
