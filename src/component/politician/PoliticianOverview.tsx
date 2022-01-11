@@ -91,11 +91,11 @@ const PoliticianOverview = () => {
   return (
     <ScrollView style={styles.containerWrapper}>
       <View style={styles.container}>
-        {politician?.profile.topic_ids_of_latest_committee.length !== 0 && (
+        {politician?.profile?.topic_ids_of_latest_committee.length !== 0 && (
           <>
             <Text style={styles.subtitle}>Politische Schwerpunkte</Text>
             <Wrap spacing={8}>
-              {politician?.profile.topic_ids_of_latest_committee.map(
+              {politician?.profile?.topic_ids_of_latest_committee.map(
                 (topicId, index) => {
                   const topic = topicTypes.find(
                     topicType => topicType.id === topicId,
@@ -116,7 +116,7 @@ const PoliticianOverview = () => {
             </Wrap>
           </>
         )}
-        {politician?.profile.votes_and_polls && (
+        {politician?.profile?.votes_and_polls.length !== 0 && (
           <>
             <TouchableOpacity
               style={styles.pollsHeader}
@@ -133,7 +133,7 @@ const PoliticianOverview = () => {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}>
-              {politician.profile.votes_and_polls.slice(0, 5).map(poll => (
+              {politician?.profile?.votes_and_polls.slice(0, 5).map(poll => (
                 <PollCard
                   key={poll.Poll.id}
                   // eslint-disable-next-line react-native/no-inline-styles
@@ -149,10 +149,10 @@ const PoliticianOverview = () => {
             </ScrollView>
           </>
         )}
-        {politician?.profile.sidejobs && (
+        {politician?.profile?.sidejobs.length !== 0 && (
           <>
             <Text style={styles.subtitle}>Nebentätigkeiten</Text>
-            {politician.profile.sidejobs.map((sidejob, index) => (
+            {politician?.profile?.sidejobs.map((sidejob, index) => (
               <View key={index} style={styles.sideJob}>
                 <Text style={styles.sideJobTitle}>{sidejob.label}</Text>
                 <Text style={styles.sideJobOrganization}>
