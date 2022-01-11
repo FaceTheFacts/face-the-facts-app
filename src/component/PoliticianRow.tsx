@@ -38,7 +38,6 @@ const PoliticianRow = ({
       ),
     {enabled: !politician},
   );
-
   return (
     <TouchableOpacity
       style={StyleSheet.flatten([styles.container, style])}
