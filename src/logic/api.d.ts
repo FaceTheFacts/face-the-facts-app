@@ -24,6 +24,11 @@ export interface ApiPolitician {
   positions: ApiPositions;
 }
 
+export interface IPoliticianContext {
+  profile?: ApiPoliticianProfile;
+  positions?: ApiPositions;
+}
+
 export interface ApiPoliticianProfile {
   id: number;
   entity_type: string;

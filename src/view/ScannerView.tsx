@@ -64,13 +64,12 @@ const ScannerView = () => {
   }, [searching]);
 
   // Fetching
-  const {data, status} = useQuery<
-    Array<ApiSearchPolitician> | undefined,
-    Error
-  >(`search-${searchInput}`, () =>
-    fetch_api<Array<ApiSearchPolitician>>(
-      `search?text=${searchInput}&page=1&size=50`,
-    ),
+  const {data, status} = useQuery<ApiSearchPolitician[] | undefined, Error>(
+    `search-${searchInput}`,
+    () =>
+      fetch_api<ApiSearchPolitician[]>(
+        `search?text=${searchInput}&page=1&size=50`,
+      ),
   );
 
   function startSearching(): void {
@@ -252,11 +251,12 @@ const ScannerView = () => {
             <ScrollView
               style={styles.searchResultContainer}
               keyboardDismissMode="interactive">
-              {data?.map((item: ApiSearchPolitician) => (
+              {data?.map(politician => (
                 <PoliticianRow
-                  key={item.id}
+                  key={politician.id}
                   style={styles.searchItem}
-                  politician={item}
+                  politician={politician}
+                  politicianId={politician.id}
                 />
               ))}
             </ScrollView>

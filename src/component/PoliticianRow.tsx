@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {DataContext} from '../logic/model';
 import {
   StyleProp,
@@ -13,64 +13,56 @@ import PartyTag from './PartyTag';
 import PoliticianPicture from './PoliticianPicture';
 import {NavigationContext} from '@react-navigation/native';
 import {useQuery} from 'react-query';
-import {
-  ApiPoliticianProfile,
-  ApiPositions,
-  ApiSearchPolitician,
-} from '../logic/api';
 import {fetch_api} from '../logic/fetch';
+import type {ApiPoliticianProfile, ApiSearchPolitician} from '../logic/api';
 
 export interface PoliticianRowProps {
   style?: StyleProp<ViewStyle>;
-  politician: ApiSearchPolitician;
+  politician?: ApiSearchPolitician;
+  politicianId: number;
 }
 
-const PoliticianRow = ({style, politician}: PoliticianRowProps) => {
+const PoliticianRow = ({
+  style,
+  politician,
+  politicianId,
+}: PoliticianRowProps) => {
   const database = useContext(DataContext);
   const navigator = useContext<any>(NavigationContext)!;
-  const [clicked, setClicked] = useState(false);
 
-  const handleClick = () => {
-    profileQuery.refetch();
-    positionsQuery.refetch();
-    setClicked(true);
-  };
-
-  const profileQuery = useQuery<ApiPoliticianProfile | undefined, Error>(
-    `politician-${politician.id}`,
+  const {data} = useQuery<ApiPoliticianProfile | undefined, Error>(
+    `politician:${politicianId}`,
     () =>
       fetch_api<ApiPoliticianProfile>(
-        `politician/${politician.id}?sidejobs_end=15&votes_end=5`,
+        `politician/${politicianId}?sidejobs_end=15&votes_end=5`,
       ),
-    {enabled: false},
+    {enabled: !politician},
   );
-  const positionsQuery = useQuery<ApiPositions | undefined, Error>(
-    `postition-${politician.id}`,
-    () => fetch_api<ApiPositions>(`politician/${politician.id}/positions`),
-    {enabled: false},
-  );
-  if (
-    profileQuery.status === 'success' &&
-    positionsQuery.status === 'success' &&
-    clicked
-  ) {
-    navigator.push('PoliticianScreen', {
-      profile: profileQuery.data,
-      positions: positionsQuery.data,
-    });
-    database.dbManager.pushHistoryItem(politician.id);
-    setClicked(false);
-  }
+
   return (
     <TouchableOpacity
       style={StyleSheet.flatten([styles.container, style])}
       onPress={() => {
-        handleClick();
+        database.dbManager.pushHistoryItem(politicianId);
+        navigator.push('PoliticianScreen', {
+          politicianId,
+        });
       }}>
-      <PoliticianPicture politicianId={politician.id} />
+      <PoliticianPicture politicianId={politicianId} />
       <View style={styles.content}>
-        <Text style={styles.name}>{politician.label}</Text>
-        <PartyTag party={politician.party} />
+        {politician ? (
+          <>
+            <Text style={styles.name}>{politician.label}</Text>
+            <PartyTag party={politician.party} />
+          </>
+        ) : (
+          data && (
+            <>
+              <Text style={styles.name}>{data.label}</Text>
+              <PartyTag party={data.party} />
+            </>
+          )
+        )}
       </View>
     </TouchableOpacity>
   );

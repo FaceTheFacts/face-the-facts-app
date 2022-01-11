@@ -14,11 +14,11 @@ const PoliticianHeader = () => {
   const [isFollowed, setIsFollowed] = useState(false);
 
   useEffect(() => {
-    data.dbManager.isIdFollowed(politician?.profile.id!).then(setIsFollowed);
+    data.dbManager.isIdFollowed(politician?.profile?.id!).then(setIsFollowed);
   }, [data, politician]);
 
   return (
-    politician && (
+    politician?.profile && (
       <View style={styles.container}>
         <PoliticianPicture politicianId={politician.profile.id!} size={80} />
         <View style={styles.rightContainer}>
@@ -34,10 +34,10 @@ const PoliticianHeader = () => {
               style={isFollowed ? styles.unFollowBtn : styles.followBtn}
               onPress={() => {
                 if (isFollowed) {
-                  data.dbManager.removeFollowedId(politician.profile.id);
+                  data.dbManager.removeFollowedId(politician.profile!.id);
                   setIsFollowed(false);
                 } else {
-                  data.dbManager.pushFollowId(politician.profile.id);
+                  data.dbManager.pushFollowId(politician.profile!.id);
                   setIsFollowed(true);
                 }
               }}>

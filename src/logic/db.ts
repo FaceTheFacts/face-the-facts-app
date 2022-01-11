@@ -30,7 +30,7 @@ export class DBManager {
     await this.openDatabase();
     await this.database!.executeSql(
       'INSERT INTO history(politician_id, date) VALUES (?, ?)',
-      [politicianId, date.toISOString()],
+      [politicianId.toString(), date.toISOString()],
     );
     if (this.historyItems) {
       this.historyItems.push({
