@@ -63,12 +63,10 @@ export interface ApiPoliticianProfile {
       link: string;
     },
   ];
-  votes_and_polls: [
-    {
-      Vote: ApiVote;
-      Poll: ApiPoll;
-    },
-  ];
+  votes_and_polls: {
+    Vote: ApiVote;
+    Poll: ApiPoll;
+  }[];
   topic_ids_of_latest_committee: number[];
 }
 
