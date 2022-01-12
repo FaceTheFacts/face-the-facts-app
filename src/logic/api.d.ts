@@ -28,6 +28,7 @@ export interface IPoliticianContext {
   profile?: ApiPoliticianProfile;
   positions?: ApiPositions;
   speeches?: ApiSpeech[];
+  news?: ApiNews;
 }
 
 export interface ApiPoliticianProfile {
@@ -154,7 +155,26 @@ export interface ApiPollDetail {
 export interface ApiSpeech {
   videoFileURI: string;
   title: string;
-  officialTitle: string;
-  timestamp: number;
   date: string;
+}
+
+export interface ApiNews {
+  items: ApiNewsArticle[];
+}
+
+export interface ApiNewsArticle {
+  id: string;
+  highlight: string;
+  images: PoliTrackImage[];
+  published: string;
+  source: string;
+  title: string;
+  url: string;
+}
+
+export interface PoliTrackImage {
+  url: string;
+  title: string;
+  height: number;
+  width: number;
 }
