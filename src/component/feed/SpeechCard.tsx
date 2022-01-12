@@ -4,17 +4,30 @@ import {Colors} from '../../theme';
 import CardPolitician from '../CardPolitician';
 
 interface SpeechCardProps {
-  politicianId: string;
+  politicianId?: number;
   desc: string;
+  title: string;
   date: string;
+  cardHeight: number;
 }
 
-const SpeechCard = ({politicianId, desc, date}: SpeechCardProps) => {
+const SpeechCard = ({
+  politicianId,
+  desc,
+  title,
+  date,
+  cardHeight,
+}: SpeechCardProps) => {
   return (
-    <View style={styles.container}>
-      <CardPolitician politicianId={politicianId} />
-      <View style={styles.separatorLine} />
+    <View style={[styles.container, {height: cardHeight}]}>
+      {politicianId && (
+        <>
+          <CardPolitician politicianId={politicianId} />
+          <View style={styles.separatorLine} />
+        </>
+      )}
       <View style={styles.cardContent}>
+        <Text style={styles.descText}>{title}</Text>
         <Text style={styles.descText}>{desc}</Text>
         <Text style={styles.dateText}>{date}</Text>
       </View>
@@ -24,8 +37,7 @@ const SpeechCard = ({politicianId, desc, date}: SpeechCardProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 143,
-    width: 268,
+    width: 266,
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
     padding: 12,
@@ -42,12 +54,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   descText: {
-    fontSize: 11,
-    lineHeight: 13.3,
+    fontSize: 13,
+    lineHeight: 15.73,
     color: Colors.baseWhite,
   },
   dateText: {
     fontSize: 11,
+    lineHeight: 13.31,
     color: Colors.white70,
     alignSelf: 'flex-end',
   },
