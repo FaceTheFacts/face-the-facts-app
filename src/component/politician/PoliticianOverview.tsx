@@ -44,14 +44,11 @@ import {
   TourismIcon,
   TrafficIcon,
 } from '../../icons';
-import SpeechCard from '../feed/SpeechCard';
+import SpeechCard from '../speech/SpeechCard';
+import NewsCard from '../news/NewsCard';
+import {formatDate} from '../../utils/date';
 
 export const possibleVotes: Vote[] = ['yes', 'no', 'abstain', 'no_show'];
-
-function formatDate(date: string): string {
-  const [year, month] = date.split('-');
-  return `${month}/${year}`;
-}
 
 const PoliticianOverview = () => {
   const politician = useContext(PoliticianContext);
@@ -134,7 +131,7 @@ const PoliticianOverview = () => {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}>
-              {politician?.profile?.votes_and_polls.slice(0, 5).map(poll => (
+              {politician?.profile?.votes_and_polls.map(poll => (
                 <PollCard
                   key={poll.Poll.id}
                   // eslint-disable-next-line react-native/no-inline-styles
@@ -150,12 +147,42 @@ const PoliticianOverview = () => {
             </ScrollView>
           </>
         )}
+        {politician?.news?.items.length !== 0 && (
+          <>
+            <TouchableOpacity
+              style={styles.pollsHeader}
+              onPress={() => {
+                navigator.push('NewsScreen', {
+                  politician,
+                });
+              }}>
+              <Text style={styles.pollsTitle}>Artikel</Text>
+              <Text style={styles.moreButton}>mehr</Text>
+            </TouchableOpacity>
+            <ScrollView
+              style={styles.pollContainer}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}>
+              {politician?.news?.items.map((news, index) => (
+                <NewsCard
+                  key={index}
+                  title={news.title}
+                  image={news.images}
+                  date={formatDate(news.published)}
+                  url={news.url}
+                  source={news.source}
+                />
+              ))}
+            </ScrollView>
+          </>
+        )}
         {politician?.speeches?.length !== 0 && (
           <>
             <TouchableOpacity
               style={styles.pollsHeader}
               onPress={() => {
-                navigator.push('PollsScreen', {
+                navigator.push('SpeechesScreen', {
                   politician,
                 });
               }}>
@@ -167,12 +194,13 @@ const PoliticianOverview = () => {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}>
-              {politician?.speeches?.slice(0, 5).map(speech => (
+              {politician?.speeches?.slice(0, 5).map((speech, index) => (
                 <SpeechCard
-                  key={speech.timestamp}
-                  desc={speech.officialTitle}
+                  key={index}
+                  politician={politician.profile?.label!}
                   title={speech.title}
-                  date={speech.date}
+                  date={formatDate(speech.date)}
+                  video={speech.videoFileURI}
                   cardHeight={103}
                 />
               ))}
