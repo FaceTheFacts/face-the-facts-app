@@ -9,13 +9,14 @@ import {
 } from 'react-native';
 import {ApiPoll, ApiPollDetail, ApiVote} from '../../logic/api';
 import {Modalize} from 'react-native-modalize';
-import VoteTag, {voteColors} from '../utils/VoteTag';
+import VoteTag from '../utils/VoteTag';
 import PollDetails, {pollResultLabels} from './PollDetails';
 import {Colors} from '../../theme';
 import BottomSheet from '../utils/BottomSheet';
 import {PollResult, Vote} from '../../logic/data';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../../logic/fetch';
+import {formatDate} from '../../utils/date';
 
 export interface PollCardProps {
   style?: StyleProp<ViewStyle>;
@@ -46,7 +47,6 @@ const PollCard = ({style, poll, vote, candidateVote}: PollCardProps) => {
   };
 
   if (clicked && pollQuery.status === 'success') {
-    console.log(pollQuery.data);
     modal.current!.open();
     setClicked(false);
   }
@@ -62,7 +62,10 @@ const PollCard = ({style, poll, vote, candidateVote}: PollCardProps) => {
         </Text>
         <VoteTag vote={candidateVote} />
       </View>
-      <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
+      <View style={styles.footerContainer}>
+        <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
+        <Text style={styles.date}>{formatDate(poll.field_poll_date)}</Text>
+      </View>
       <BottomSheet
         modalRef={modal}
         modalStyle={{backgroundColor: Colors.background}}
@@ -107,6 +110,17 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Inter',
     opacity: 0.5,
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  date: {
+    color: Colors.foreground,
+    fontSize: 11,
+    fontFamily: 'Inter',
+    opacity: 0.5,
+    alignSelf: 'flex-end',
   },
   votesContainer: {
     flexDirection: 'row',
