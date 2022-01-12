@@ -7,13 +7,13 @@ import {
   ScrollView,
 } from 'react-native';
 import {Colors} from '../../theme';
-import SpeechCard from './SpeechCard';
+import SpeechCard from '../speech/SpeechCard';
 import SideJobCard from './SideJobCard';
 
 const MOCK_SPEECH = {
   politicianId: '119742',
-  desc: 'Änderung des Infektionsschutzgesetzes; Einschränkung von Grundrechten',
-  title: 'Zusatzpunkt 1',
+  title:
+    'Änderung des Infektionsschutzgesetzes; Einschränkung von Grundrechten',
   date: '27.09.2022',
 };
 
@@ -44,7 +44,6 @@ const ParliamentFeed = () => {
               key={index}
               politicianId={speech.politicianId}
               title={speech.title}
-              desc={speech.desc}
               date={speech.date}
               cardHeight={264}
             />
