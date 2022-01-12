@@ -46,7 +46,7 @@ const ParliamentFeed = () => {
               title={speech.title}
               desc={speech.desc}
               date={speech.date}
-              height={264}
+              cardHeight={264}
             />
           ))}
         </ScrollView>
