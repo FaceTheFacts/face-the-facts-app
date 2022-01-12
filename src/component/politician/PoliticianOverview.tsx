@@ -173,6 +173,7 @@ const PoliticianOverview = () => {
                   desc={speech.officialTitle}
                   title={speech.title}
                   date={speech.date}
+                  cardHeight={103}
                 />
               ))}
             </ScrollView>
