@@ -22,6 +22,7 @@ import {
   ApiPoliticianProfile,
   IPoliticianContext,
   ApiSpeech,
+  ApiNews,
 } from '../logic/api';
 
 type PoliticianViewParams = {
@@ -58,7 +59,12 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
 
   const {data: speeches} = useQuery<ApiSpeech[] | undefined, Error>(
     `speeches:${politicianId}`,
-    () => fetch_api<ApiSpeech[]>(`politician/${politicianId}/speech`),
+    () => fetch_api<ApiSpeech[]>(`politician/${politicianId}/speeches`),
+  );
+
+  const {data: news} = useQuery<ApiNews | undefined, Error>(
+    `news:${politicianId}`,
+    () => fetch_api<ApiNews>(`politician/${politicianId}/news?page=1&size=5`),
   );
 
   const {width} = useWindowDimensions();
@@ -69,7 +75,8 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
       profile?.sidejobs ||
       profile?.cvs ||
       profile?.weblinks ||
-      speeches) && {
+      speeches ||
+      news) && {
       title: 'Profilseite',
       key: 'profile',
     },
@@ -89,7 +96,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
   );
 
   return (
-    <PoliticianContext.Provider value={{positions, profile, speeches}}>
+    <PoliticianContext.Provider value={{positions, profile, speeches, news}}>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.container}>
         <StatusBar
