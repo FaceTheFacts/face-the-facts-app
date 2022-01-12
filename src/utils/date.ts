@@ -80,3 +80,8 @@ export function* groupByDate<E, R>(
     yield sectionBuilder('Kürzlich', longerAgoItems.sort(compareFunction));
   }
 }
+
+export function formatDate(date: string): string {
+  const [year, month, day] = date.slice(0, 10).split('-');
+  return `${day}.${month}.${year}`;
+}
