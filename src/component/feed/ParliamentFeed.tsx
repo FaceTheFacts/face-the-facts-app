@@ -13,6 +13,7 @@ import SideJobCard from './SideJobCard';
 const MOCK_SPEECH = {
   politicianId: '119742',
   desc: 'Änderung des Infektionsschutzgesetzes; Einschränkung von Grundrechten',
+  title: 'Zusatzpunkt 1',
   date: '27.09.2022',
 };
 
@@ -42,8 +43,10 @@ const ParliamentFeed = () => {
             <SpeechCard
               key={index}
               politicianId={speech.politicianId}
+              title={speech.title}
               desc={speech.desc}
               date={speech.date}
+              height={264}
             />
           ))}
         </ScrollView>
