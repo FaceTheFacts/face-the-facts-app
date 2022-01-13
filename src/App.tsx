@@ -19,6 +19,8 @@ import SplashScreen from './view/SplashScreen';
 import {Colors} from './theme';
 import PollsView from './view/PollsView';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import SpeechesView from './view/SpeechesView';
+import NewsView from './view/NewsView';
 
 const Stack = createStackNavigator();
 
@@ -78,6 +80,8 @@ const App = () => {
                   component={PoliticianView}
                 />
                 <Stack.Screen name="PollsScreen" component={PollsView} />
+                <Stack.Screen name="NewsScreen" component={NewsView} />
+                <Stack.Screen name="SpeechesScreen" component={SpeechesView} />
               </Stack.Navigator>
             </NavigationContainer>
           </View>
