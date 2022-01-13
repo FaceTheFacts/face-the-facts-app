@@ -10,10 +10,11 @@ import {
 import React, {memo} from 'react';
 import {Colors} from '../theme';
 import {BlurView} from 'react-native-blur';
+import {SVGIcon} from '../icons';
 
 export interface InfoBannerProps {
   style?: StyleProp<ViewStyle>;
-  icon: string;
+  icon: SVGIcon;
   title: string;
   subtitle: string;
 }

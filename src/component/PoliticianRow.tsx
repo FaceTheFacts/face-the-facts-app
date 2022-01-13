@@ -11,36 +11,58 @@ import {
 import {Colors} from '../theme';
 import PartyTag from './PartyTag';
 import PoliticianPicture from './PoliticianPicture';
-import {Politician} from '../logic/data';
 import {NavigationContext} from '@react-navigation/native';
+import {useQuery} from 'react-query';
+import {fetch_api} from '../logic/fetch';
+import type {ApiPoliticianProfile, ApiSearchPolitician} from '../logic/api';
 
 export interface PoliticianRowProps {
   style?: StyleProp<ViewStyle>;
-  politician: Politician;
-  parentPoliticianId?: string;
+  politician?: ApiSearchPolitician;
+  politicianId: number;
 }
 
 const PoliticianRow = ({
   style,
   politician,
-  parentPoliticianId,
+  politicianId,
 }: PoliticianRowProps) => {
-  const data = useContext(DataContext);
+  const database = useContext(DataContext);
   const navigator = useContext<any>(NavigationContext)!;
+
+  const {data} = useQuery<ApiPoliticianProfile | undefined, Error>(
+    `politician:${politicianId}`,
+    () =>
+      fetch_api<ApiPoliticianProfile>(
+        `politician/${politicianId}?sidejobs_end=15&votes_end=5`,
+      ),
+    {enabled: !politician},
+  );
 
   return (
     <TouchableOpacity
       style={StyleSheet.flatten([styles.container, style])}
       onPress={() => {
-        if (politician.id !== parentPoliticianId) {
-          navigator.push('PoliticianScreen', {politician});
-          data.historyManager.pushItem(politician.id);
-        }
+        database.dbManager.pushHistoryItem(politicianId);
+        navigator.push('PoliticianScreen', {
+          politicianId,
+        });
       }}>
-      <PoliticianPicture politicianId={politician.id} />
+      <PoliticianPicture politicianId={politicianId} />
       <View style={styles.content}>
-        <Text style={styles.name}>{politician.name}</Text>
-        <PartyTag party={data.lookupParty(politician.partyId)!} />
+        {politician ? (
+          <>
+            <Text style={styles.name}>{politician.label}</Text>
+            <PartyTag party={politician.party} />
+          </>
+        ) : (
+          data && (
+            <>
+              <Text style={styles.name}>{data.label}</Text>
+              <PartyTag party={data.party} />
+            </>
+          )
+        )}
       </View>
     </TouchableOpacity>
   );

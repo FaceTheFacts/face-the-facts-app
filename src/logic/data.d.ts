@@ -85,9 +85,8 @@ export interface Election {
   displayName: string;
   politicians: string[];
 }
-
 export interface Politician {
-  id: string;
+  id: number;
   popularity: number;
   name: string;
   partyId: string;
@@ -101,7 +100,7 @@ export interface Politician {
   positions?: PoliticianPosition[];
 }
 
-export type Vote = 'yes' | 'no' | 'abstain' | 'none';
+export type Vote = 'yes' | 'no' | 'abstain' | 'no_show';
 
 export type PollResult = 'yes' | 'no';
 

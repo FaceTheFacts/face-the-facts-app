@@ -28,6 +28,9 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
 import {Politician} from '../logic/data';
+import {useQuery} from 'react-query';
+import {ApiSearchPolitician} from '../logic/api';
+import {fetch_api} from '../logic/fetch';
 
 const ScannerView = () => {
   // Scanning
@@ -60,6 +63,15 @@ const ScannerView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searching]);
 
+  // Fetching
+  const {data, status} = useQuery<ApiSearchPolitician[] | undefined, Error>(
+    `search-${searchInput}`,
+    () =>
+      fetch_api<ApiSearchPolitician[]>(
+        `search?text=${searchInput}&page=1&size=50`,
+      ),
+  );
+
   function startSearching(): void {
     setSearching(true);
     setTexts([]);
@@ -84,7 +96,7 @@ const ScannerView = () => {
     return () => handler.remove();
   }, [searching]);
 
-  const data = useContext(DataContext);
+  const dataContext = useContext(DataContext);
   const navigator = useContext<any>(NavigationContext)!;
   const insets = useSafeAreaInsets();
 
@@ -103,25 +115,28 @@ const ScannerView = () => {
   );
 
   if (!searching && !showPolitician && focussed && faces.length) {
-    const scannedPolitician = data.scanPolitician(texts);
+    const scannedPolitician = dataContext.scanPolitician(texts);
     if (scannedPolitician) {
       setShowPolitician(scannedPolitician);
       setFocussed(false);
       setTexts([]);
       setFaces([]);
-      data.historyManager.pushItem(scannedPolitician.id);
+      dataContext.dbManager.pushHistoryItem(scannedPolitician.id);
     }
   }
 
-  const [searchResult, setSearchResult] = useState<Politician[]>([]);
+  //const [searchResult, setSearchResult] = useState<ApiPolitician[]>([]);
   const searchInProgress = useRef({count: 0, id: 0}).current;
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (searching && searchInput) {
       searchInProgress.count++;
       const id = ++searchInProgress.id;
       setSearchResult([...searchResult]);
-      data.search(searchInput).then(result => {
+      if (status === 'success') {
+        setSearchResult(data);
+      }
+      dataContext.search(searchInput).then(result => {
         searchInProgress.count--;
         if (searchInProgress.id !== id) {
           return;
@@ -130,7 +145,7 @@ const ScannerView = () => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searching, searchInput, data, searchInProgress]);
+  }, [searching, searchInput, dataContext, searchInProgress]); */
 
   useEffect(() => {
     if (showPolitician) {
@@ -232,23 +247,24 @@ const ScannerView = () => {
               </TouchableOpacity>
             )}
           </View>
-          {searching && !!searchResult.length && (
+          {searching && status === 'success' && (
             <ScrollView
               style={styles.searchResultContainer}
               keyboardDismissMode="interactive">
-              {searchResult.map(politician => (
+              {data?.map(politician => (
                 <PoliticianRow
                   key={politician.id}
                   style={styles.searchItem}
                   politician={politician}
+                  politicianId={politician.id}
                 />
               ))}
             </ScrollView>
           )}
           {searching &&
-            !searchResult.length &&
             !!searchInput &&
-            !searchInProgress.count && (
+            status === 'success' &&
+            data === undefined && (
               <Text style={styles.searchNoResult}>
                 Es wurden keine Politiker:innen gefunden.
               </Text>

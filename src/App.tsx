@@ -4,6 +4,7 @@ import {DataContext, FaceTheFactsData} from './logic/model';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import MainView from './view/MainView';
+import HomeView from './view/HomeView';
 import EmbeddedView from './view/EmbeddedView';
 import PoliticianView from './view/PoliticianView';
 import {
@@ -17,12 +18,15 @@ import {
 import SplashScreen from './view/SplashScreen';
 import {Colors} from './theme';
 import PollsView from './view/PollsView';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   const [data, setData] = useState<FaceTheFactsData | null>(null);
   const [missingData, setMissingData] = useState(false);
+  // Create a QueryClient
+  const queryClient = new QueryClient();
   useEffect(() => {
     FaceTheFactsData.load(setData, () => setMissingData(true));
   }, []);
@@ -59,24 +63,27 @@ const App = () => {
   }
 
   return (
-    <DataContext.Provider value={data}>
-      <StatusBar barStyle="light-content" />
-      <Host>
-        <View style={styles.container}>
-          <NavigationContainer>
-            <Stack.Navigator headerMode="none">
-              <Stack.Screen name="main" component={MainView} />
-              <Stack.Screen name="embedded" component={EmbeddedView} />
-              <Stack.Screen
-                name="PoliticianScreen"
-                component={PoliticianView}
-              />
-              <Stack.Screen name="PollsScreen" component={PollsView} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </Host>
-    </DataContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <DataContext.Provider value={data}>
+        <StatusBar barStyle="light-content" />
+        <Host>
+          <View style={styles.container}>
+            <NavigationContainer>
+              <Stack.Navigator headerMode="none">
+                <Stack.Screen name="main" component={MainView} />
+                <Stack.Screen name="home" component={HomeView} />
+                <Stack.Screen name="embedded" component={EmbeddedView} />
+                <Stack.Screen
+                  name="PoliticianScreen"
+                  component={PoliticianView}
+                />
+                <Stack.Screen name="PollsScreen" component={PollsView} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </Host>
+      </DataContext.Provider>
+    </QueryClientProvider>
   );
 };
 

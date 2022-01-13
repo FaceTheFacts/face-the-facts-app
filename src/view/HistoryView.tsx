@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {Colors} from '../theme';
-import {HistoryItem} from '../logic/history';
+import {HistoryItem} from '../logic/db';
 import {DataContext} from '../logic/model';
 import PoliticianList from '../component/PoliticianList';
 import {groupByDate} from '../utils/date';
@@ -10,7 +10,7 @@ const HistoryView = () => {
   const [items, setItems] = useState<HistoryItem[] | null>(null);
   const data = useContext(DataContext);
   useEffect(() => {
-    data.historyManager.getItems().then(setItems);
+    data.dbManager.getHistoryItems().then(setItems);
   }, [data]);
 
   return (
@@ -24,11 +24,9 @@ const HistoryView = () => {
                 items,
                 item => item.politicianId,
                 item => item.date,
-                (label, items) => ({
+                (label, historyItems) => ({
                   title: label,
-                  politicians: items.map(
-                    item => data.lookupPolitician(item.politicianId)!,
-                  ),
+                  politicianIds: historyItems.map(item => item.politicianId),
                 }),
               ),
             ]}
