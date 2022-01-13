@@ -42,34 +42,47 @@ const HomeView = (props: HomeViewProps) => {
 
   useEffect(() => {
     (async () => {
-      const [pollsToggleValue, sideJobsToggleValue] = await Promise.all([
+      const [
+        pollsToggleValue,
+        sideJobsToggleValue,
+        speechesToggleValue,
+        articlesToggleValue,
+      ] = await Promise.all([
         getItem(`@facethefacts:${POLLS_TOGGLE_KEY}`),
         getItem(`@facethefacts:${SIDEJOBS_TOGGLE_KEY}`),
+        getItem(`@facethefacts:${SPEECHES_TOGGLE_KEY}`),
+        getItem(`@facethefacts:${ARTICLES_TOGGLE_KEY}`),
       ]);
-      if (pollsToggleValue !== null) {
-        setShowPolls(pollsToggleValue[POLLS_TOGGLE_KEY]);
-      }
-      if (sideJobsToggleValue !== null) {
-        setShowSideJobs(sideJobsToggleValue[SIDEJOBS_TOGGLE_KEY]);
-      }
+      setShowPolls(pollsToggleValue || false);
+      setShowSideJobs(sideJobsToggleValue || false);
+      setShowSpeeches(speechesToggleValue || false);
+      setShowArticles(articlesToggleValue || false);
     })();
   }, []);
 
   useEffect(() => {
     (async () => {
-      await storeItem(`@facethefacts:${POLLS_TOGGLE_KEY}`, {
-        [POLLS_TOGGLE_KEY]: showPolls,
-      });
+      await storeItem(`@facethefacts:${POLLS_TOGGLE_KEY}`, showPolls);
     })();
   }, [showPolls]);
 
   useEffect(() => {
     (async () => {
-      await storeItem(`@facethefacts:${SIDEJOBS_TOGGLE_KEY}`, {
-        [SIDEJOBS_TOGGLE_KEY]: showSideJobs,
-      });
+      await storeItem(`@facethefacts:${SIDEJOBS_TOGGLE_KEY}`, showSideJobs);
     })();
   }, [showSideJobs]);
+
+  useEffect(() => {
+    (async () => {
+      await storeItem(`@facethefacts:${SPEECHES_TOGGLE_KEY}`, showSpeeches);
+    })();
+  }, [showSpeeches]);
+
+  useEffect(() => {
+    (async () => {
+      await storeItem(`@facethefacts:${ARTICLES_TOGGLE_KEY}`, showArticles);
+    })();
+  }, [showArticles]);
 
   const renderScene = ({route}: SceneRenderer) => {
     switch (route.key) {

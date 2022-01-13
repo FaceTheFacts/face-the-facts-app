@@ -14,20 +14,27 @@ import {
   SideJobTab,
   SideJobRowContent,
   PoliticianInfo,
+  SpeechTab,
+  SpeechRowContent,
 } from './FeedRowContent';
 import FeedRow from '../FeedRow';
 import {useQueries} from 'react-query';
-import {fetch_api} from '../../logic/fetch';
-import {ApiPoliticianProfile} from '../../logic/api';
+import {fetch_api, request} from '../../logic/fetch';
+import {
+  ApiPoliticianProfile,
+  SpeechResponse,
+  ApiSpeechData,
+} from '../../logic/api';
 
 type ValueOf<T> = T[keyof T];
 
 interface TabEntities {
   poll: PollTab;
   sideJob: SideJobTab;
+  speech: SpeechTab;
 }
 
-type Row = PollTab | SideJobTab;
+type Row = PollTab | SideJobTab | SpeechTab;
 
 interface Tab<T extends ValueOf<TabEntities>> {
   type: keyof TabEntities;
@@ -46,6 +53,7 @@ const FollowFeed = ({
   setSelected,
   showPolls,
   showSideJobs,
+  showSpeeches,
 }: FollowFeedProps) => {
   const data = useContext(DataContext);
   const [visibleCount, setVisibleCount] = useState(20);
@@ -62,23 +70,45 @@ const FollowFeed = ({
       return {
         queryKey: ['politician', politicianId],
         queryFn: () =>
-          fetch_api<ApiPoliticianProfile>(
+          fetch_api<SpeechResponse>(
             `politician/${politicianId}?sidejobs_end=100&votes_end=100`,
           ),
       };
     }),
   );
 
-  const isLoading = politicianQueries.some(query => query.isLoading);
+  const isProfileLoading = politicianQueries.some(query => query.isLoading);
+
+  const speechQueries = useQueries(
+    Array.from(followedIds).map(politicianId => {
+      return {
+        queryKey: ['politician:speech', politicianId],
+        queryFn: () =>
+          request<any>(
+            `https://de.openparliament.tv/api/v1/search/media?abgeordnetenwatchID=${politicianId}&page[size]=100&sort=date-desc`,
+          ),
+      };
+    }),
+  );
+
+  const isSpeechLoading = speechQueries.some(query => query.isLoading);
 
   useEffect(() => {
-    if (!isLoading && politicianQueries.length === followedIds.size) {
+    const profilesLoaded =
+      !isProfileLoading && politicianQueries.length === followedIds.size;
+
+    const speechesLoaded =
+      !isSpeechLoading && politicianQueries.length === followedIds.size;
+
+    if (profilesLoaded && speechesLoaded) {
       let sideJobTabs: Tab<SideJobTab>[] = [];
       const pollsMap: Map<number, Tab<PollTab>> = new Map();
+      const profilesMap: Map<number, ApiPoliticianProfile> = new Map();
 
       politicianQueries.forEach(query => {
         // @ts-ignore
         const profile: ApiPoliticianProfile = query.data;
+        profilesMap.set(profile.id, profile);
         const politician: PoliticianInfo = {
           id: profile.id,
           label: profile.label,
@@ -117,8 +147,37 @@ const FollowFeed = ({
         });
       });
 
+      let speechTabs: Tab<SpeechTab>[] = [];
+      speechQueries.forEach(query => {
+        // @ts-ignore
+        const speeches: ApiSpeechData[] = query.data.data;
+        speeches.forEach(speech => {
+          const title = speech.relationships.agendaItem.data.attributes.title;
+          const politicianId =
+            speech.relationships.people.data[0].attributes.additionalInformation
+              .abgeordnetenwatchID;
+
+          const profile = profilesMap.get(Number(politicianId))!;
+          const politician: PoliticianInfo = {
+            id: profile.id,
+            label: profile.label,
+          };
+
+          const speechTab: Tab<SpeechTab> = {
+            type: 'speech',
+            content: {
+              politicians: [politician],
+              videoFileURI: speech.attributes.videoFileURI,
+              title,
+              created: speech.attributes.dateEnd,
+            },
+          };
+          speechTabs.push(speechTab);
+        });
+      });
+
       const pollTabs = Array.from(pollsMap.values());
-      const allTabs = [...pollTabs, ...sideJobTabs];
+      const allTabs = [...pollTabs, ...sideJobTabs, ...speechTabs];
       allTabs.sort(
         (a, b) =>
           new Date(b.content.created).getTime() -
@@ -131,7 +190,7 @@ const FollowFeed = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, followedIds]);
+  }, [isProfileLoading, isSpeechLoading, followedIds]);
 
   if (followedIds.size < 1) {
     return (
@@ -172,6 +231,17 @@ const FollowFeed = ({
             </FeedRow>
           )
         );
+      case 'speech':
+        return (
+          showSpeeches && (
+            <FeedRow
+              key={index}
+              politicians={tab.content.politicians}
+              desc={(tab.content as SpeechTab).title}>
+              <SpeechRowContent speech={tab.content as SpeechTab} />
+            </FeedRow>
+          )
+        );
       default:
         return null;
     }
@@ -186,7 +256,7 @@ const FollowFeed = ({
             style={styles.showMoreButton}
             onPress={() => {
               setVisibleCount(visibleCount + 20);
-              // setVisibleTabs(tabs.slice(0, visibleCount));
+              setVisibleTabs(tabs.slice(0, visibleCount));
             }}>
             <Text style={styles.showMoreText}>mehr anzeigen</Text>
           </TouchableOpacity>
