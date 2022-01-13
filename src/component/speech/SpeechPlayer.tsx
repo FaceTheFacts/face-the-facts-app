@@ -5,7 +5,7 @@ import Video from 'react-native-video';
 import {ScrollView} from 'react-native-gesture-handler';
 
 export interface SpeechPlayerProps {
-  politician: string;
+  politician?: string;
   date: string;
   title: string;
   video: string;
@@ -17,7 +17,7 @@ const SpeechPlayer = ({politician, date, title, video}: SpeechPlayerProps) => {
     <>
       <ScrollView>
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>{politician}</Text>
+          <Text style={styles.title}>{politician ? politician : 'Rede'}</Text>
           <Text style={styles.date}>{date}</Text>
         </View>
         <View>

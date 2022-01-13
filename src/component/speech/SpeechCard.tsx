@@ -9,11 +9,12 @@ import SpeechPlayer from './SpeechPlayer';
 
 interface SpeechCardProps {
   politicianId?: number;
-  politician: string;
+  politician?: string;
   title: string;
   date: string;
   video: string;
   cardHeight: number;
+  cardWidth: number;
 }
 
 const SpeechCard = ({
@@ -23,6 +24,7 @@ const SpeechCard = ({
   date,
   video,
   cardHeight,
+  cardWidth,
 }: SpeechCardProps) => {
   const modal = useRef<Modalize>(null);
   const handleClickOpen = () => {
@@ -32,7 +34,7 @@ const SpeechCard = ({
   return (
     <TouchableOpacity
       onPress={handleClickOpen}
-      style={[styles.container, {height: cardHeight}]}>
+      style={[styles.container, {height: cardHeight}, {width: cardWidth}]}>
       {politicianId && (
         <>
           <CardPolitician politicianId={politicianId} />
