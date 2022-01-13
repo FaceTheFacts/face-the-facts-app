@@ -79,6 +79,30 @@ export const SideJobRowContent = ({sideJob}: SideJobRowProps) => {
   );
 };
 
+export type SpeechTab = {
+  politicians: PoliticianInfo[];
+  videoFileURI: string;
+  title: string;
+  created: string;
+};
+
+interface SpeechRowProps {
+  speech: SpeechTab;
+}
+
+export const SpeechRowContent = ({speech}: SpeechRowProps) => {
+  return (
+    <View style={styles.title}>
+      <Text style={styles.boldText}>{speech.politicians[0].label}</Text>
+      <Text style={styles.titleText}> hat an eine </Text>
+      <TouchableOpacity>
+        <Text style={styles.linkText}>Rede</Text>
+      </TouchableOpacity>
+      <Text style={styles.titleText}> gehalten.</Text>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   title: {
     flexWrap: 'wrap',

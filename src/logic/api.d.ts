@@ -155,3 +155,49 @@ export interface ApiPollDetail {
   total_abstain: number;
   total_no_show: number;
 }
+
+interface SpeechAttribute {
+  originID?: string;
+  originMediaID?: string;
+  creator: string;
+  videoFileURI: string;
+  dateEnd: string;
+}
+
+interface SpeechRelationship {
+  agendaItem: {
+    data: {
+      attributes: {
+        title: string;
+      };
+    };
+  };
+  people: {
+    data: {
+      attributes: {
+        additionalInformation: {
+          abgeordnetenwatchID: string;
+        };
+      };
+    }[];
+  };
+}
+
+interface ApiSpeechData {
+  type: string;
+  id: string;
+  attributes: SpeechAttribute;
+  relationships: SpeechRelationship;
+}
+
+interface SpeechResponse {
+  meta: {
+    api: unknown;
+    requestStatus: string;
+    results: {
+      count: number;
+      total: number;
+    };
+  };
+  data: ApiSpeechData[];
+}
