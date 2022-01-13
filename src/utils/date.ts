@@ -85,3 +85,44 @@ export function formatDate(date: string): string {
   const [year, month, day] = date.slice(0, 10).split('-');
   return `${day}.${month}.${year}`;
 }
+
+export function formatMonth(date: string): string {
+  const month = date.slice(5, 7);
+  switch (month) {
+    case '01':
+      return 'Januar';
+    case '02':
+      return 'Februar';
+    case '03':
+      return 'März';
+    case '04':
+      return 'April';
+    case '05':
+      return 'Mai';
+    case '06':
+      return 'Juni';
+    case '07':
+      return 'Juli';
+    case '08':
+      return 'August';
+    case '09':
+      return 'September';
+    case '10':
+      return 'Oktober';
+    case '11':
+      return 'November';
+    case '12':
+      return 'Dezember';
+    default:
+      return 'Monat';
+  }
+}
+
+export function checkPreviousMonth(
+  previousDate: string,
+  currentDate: string,
+): boolean {
+  const currentMonth = currentDate.slice(5, 7);
+  const previousMonth = previousDate.slice(5, 7);
+  return currentMonth !== previousMonth;
+}
