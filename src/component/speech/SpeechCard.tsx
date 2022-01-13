@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native';
 import {Modalize} from 'react-native-modalize';
 import {Colors} from '../../theme';
 import CardPolitician from '../CardPolitician';
@@ -30,31 +30,31 @@ const SpeechCard = ({
   };
 
   return (
-    <TouchableOpacity onPress={handleClickOpen}>
-      <View style={[styles.container, {height: cardHeight}]}>
-        {politicianId && (
-          <>
-            <CardPolitician politicianId={politicianId} />
-            <View style={styles.separatorLine} />
-          </>
-        )}
-        <View style={styles.cardContent}>
-          <Text style={styles.descText}>{title}</Text>
-          <Text style={styles.dateText}>{date}</Text>
-        </View>
-        <BottomSheet
-          modalRef={modal}
-          modalStyle={{backgroundColor: Colors.background}}
-          modalHeight={600}
-          withHandle={false}>
-          <SpeechPlayer
-            politician={politician}
-            title={title}
-            date={date}
-            video={video}
-          />
-        </BottomSheet>
+    <TouchableOpacity
+      onPress={handleClickOpen}
+      style={[styles.container, {height: cardHeight}]}>
+      {politicianId && (
+        <>
+          <CardPolitician politicianId={politicianId} />
+          <View style={styles.separatorLine} />
+        </>
+      )}
+      <View style={styles.cardContent}>
+        <Text style={styles.descText}>{title}</Text>
+        <Text style={styles.dateText}>{date}</Text>
       </View>
+      <BottomSheet
+        modalRef={modal}
+        modalStyle={{backgroundColor: Colors.background}}
+        modalHeight={600}
+        withHandle={false}>
+        <SpeechPlayer
+          politician={politician}
+          title={title}
+          date={date}
+          video={video}
+        />
+      </BottomSheet>
     </TouchableOpacity>
   );
 };
