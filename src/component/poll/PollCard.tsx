@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {ApiPoll, ApiPollDetail, ApiVote} from '../../logic/api';
 import {Modalize} from 'react-native-modalize';
-import VoteTag, {voteColors} from '../utils/VoteTag';
+import VoteTag from '../utils/VoteTag';
 import PollDetails, {pollResultLabels} from './PollDetails';
 import {Colors} from '../../theme';
 import BottomSheet from '../utils/BottomSheet';
