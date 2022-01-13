@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext} from 'react';
 import {
   StyleProp,
   StyleSheet,
@@ -7,16 +7,12 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {ApiPoll, ApiPollDetail, ApiVote} from '../../logic/api';
-import {Modalize} from 'react-native-modalize';
+import {ApiPoll, ApiVote} from '../../logic/api';
 import VoteTag from '../utils/VoteTag';
-import PollDetails, {pollResultLabels} from './PollDetails';
+import {pollResultLabels} from '../../view/PollDetailsView';
 import {Colors} from '../../theme';
-import BottomSheet from '../utils/BottomSheet';
 import {PollResult, Vote} from '../../logic/data';
-import {useQuery} from 'react-query';
-import {fetch_api} from '../../logic/fetch';
-import {formatDate} from '../../utils/date';
+import {NavigationContext} from '@react-navigation/native';
 
 export interface PollCardProps {
   style?: StyleProp<ViewStyle>;
@@ -26,59 +22,27 @@ export interface PollCardProps {
 }
 
 const PollCard = ({style, poll, vote, candidateVote}: PollCardProps) => {
-  //const [yesVotes, noVotes] = poll.votes;
+  const navigator = useContext<any>(NavigationContext)!;
   const pollResult: PollResult = poll.poll_passed ? 'yes' : 'no';
-  const modal = useRef<Modalize>(null);
-  const [clicked, setClicked] = useState(false);
-
-  const pollQuery = useQuery<Array<ApiPollDetail> | undefined, Error>(
-    `poll-${poll.id}`,
-    () => fetch_api<Array<ApiPollDetail>>(`poll/${poll.id}/details`),
-    {enabled: false},
-  );
-
-  const handleClickOpen = () => {
-    pollQuery.refetch();
-    setClicked(true);
-  };
-
-  const handleClickClose = () => {
-    modal.current!.close();
-  };
-
-  if (clicked && pollQuery.status === 'success') {
-    modal.current!.open();
-    setClicked(false);
-  }
 
   return (
     <TouchableOpacity
       key={poll.id}
       style={StyleSheet.flatten([styles.container, style])}
-      onPress={handleClickOpen}>
+      onPress={() => {
+        navigator.push('PollDetailsScreen', {
+          poll,
+          vote,
+          candidateVote,
+        });
+      }}>
       <View style={styles.titleContainer}>
         <Text style={styles.title} numberOfLines={2}>
           {poll.label}
         </Text>
         <VoteTag vote={candidateVote} />
       </View>
-      <View style={styles.footerContainer}>
-        <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
-        <Text style={styles.date}>{formatDate(poll.field_poll_date)}</Text>
-      </View>
-      <BottomSheet
-        modalRef={modal}
-        modalStyle={{backgroundColor: Colors.background}}
-        modalHeight={600}
-        withHandle={false}>
-        <PollDetails
-          poll={poll}
-          vote={vote}
-          details={pollQuery.data}
-          candidateAnswer={candidateVote}
-          onClose={handleClickClose}
-        />
-      </BottomSheet>
+      <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
     </TouchableOpacity>
   );
 };

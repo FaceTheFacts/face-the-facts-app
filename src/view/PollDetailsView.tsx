@@ -3,50 +3,60 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
-import {PollResult, Vote} from '../../logic/data';
-import {Colors} from '../../theme';
-import Icon from '../Icon';
-import {ClearIcon} from '../../icons';
-import VoteTag, {voteColors} from '../utils/VoteTag';
-import Tag from '../utils/Tag';
-import ReadMoreHTML from '../utils/ReadMoreHTML';
-import {ApiPoll, ApiPollDetail, ApiVote} from '../../logic/api';
+import {PollResult, Vote} from '../logic/data';
+import {Colors} from '../theme';
+import VoteTag, {voteColors} from '../component/utils/VoteTag';
+import ReadMoreHTML from '../component/utils/ReadMoreHTML';
+import Tag from '../component/utils/Tag';
+import type {ApiPoll, ApiPollDetail, ApiVote} from '../logic/api';
+import {useQuery} from 'react-query';
+import {fetch_api} from '../logic/fetch';
+import {RouteProp} from '@react-navigation/native';
+import BackButton from '../component/BackButton';
 
 export const pollResultLabels: Record<PollResult, string> = {
   yes: 'Antrag angenommen',
   no: 'Antrag abgelehnt',
 };
 
-export interface PollDetailsProps {
+type PollDetailsViewParams = {
   poll: ApiPoll;
   vote: ApiVote;
-  candidateAnswer: Vote;
-  details: ApiPollDetail[];
-  onClose: () => void;
+  candidateVote: Vote;
+};
+
+interface PollDetailsViewProps {
+  route: RouteProp<{params: PollDetailsViewParams}, 'params'>;
 }
 
-const PollDetails = ({
-  poll,
-  vote,
-  candidateAnswer,
-  details,
-  onClose,
-}: PollDetailsProps) => {
+const PollDetailsView = ({route}: PollDetailsViewProps) => {
+  const {poll, vote, candidateVote} = route.params;
+
   const pollResult: PollResult = poll.poll_passed ? 'yes' : 'no';
   const [expanded, setExpanded] = useState(false);
   const scrollView = useRef<ScrollView | null>(null);
+
+  const pollDetailsQuery = useQuery<Array<ApiPollDetail> | undefined, Error>(
+    `poll:${poll.id}:details`,
+    () => fetch_api<Array<ApiPollDetail>>(`poll/${poll.id}/details`),
+  );
+
   return (
     <>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Gesetzesentwurf</Text>
-        <TouchableOpacity onPress={onClose}>
-          <Icon style={styles.closeIcon} icon={ClearIcon} />
-        </TouchableOpacity>
-      </View>
-      <ScrollView ref={scrollView} scrollEnabled={expanded}>
+      <SafeAreaView style={styles.iosSafeTop} />
+      <ScrollView
+        ref={scrollView}
+        scrollEnabled={expanded}
+        style={styles.container}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={Colors.cardBackground}
+        />
+        <BackButton />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{poll.label}</Text>
           <ReadMoreHTML
@@ -64,26 +74,28 @@ const PollDetails = ({
             <Text style={styles.candidateAnswerLabel}>
               Kandidat:in stimmte mit
             </Text>
-            <VoteTag vote={candidateAnswer} />
+            <VoteTag vote={candidateVote} />
           </View>
           <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
         </View>
         <View style={styles.votesContainer}>
           <ScrollView style={styles.table} horizontal>
             <View style={styles.tableVoteColumn}>
-              {details &&
-                details.map((detail: ApiPollDetail, index: number) => (
-                  <VoteTag
-                    key={index}
-                    style={styles.tableVoteTag}
-                    vote={'yes'}
-                  />
-                ))}
+              {pollDetailsQuery.data &&
+                pollDetailsQuery.data.map(
+                  (detail: ApiPollDetail, index: number) => (
+                    <VoteTag
+                      key={index}
+                      style={styles.tableVoteTag}
+                      vote={'yes'}
+                    />
+                  ),
+                )}
             </View>
             <View style={styles.tableTotalColumn}>
               <Tag style={styles.tableTag} content="Gesamt" uppercase />
-              {details &&
-                details.map((detail, index) => (
+              {pollDetailsQuery.data &&
+                pollDetailsQuery.data.map((detail, index) => (
                   <Tag
                     key={index}
                     style={styles.tableTag}
@@ -96,8 +108,8 @@ const PollDetails = ({
                   />
                 ))}
             </View>
-            {details &&
-              details.map(partyVote => (
+            {pollDetailsQuery.data &&
+              pollDetailsQuery.data.map(partyVote => (
                 <View
                   key={partyVote.fraction.id}
                   style={styles.tablePartyColumn}>
@@ -135,24 +147,13 @@ const PollDetails = ({
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: 'row',
+  iosSafeTop: {
+    flex: 0,
     backgroundColor: Colors.cardBackground,
-    padding: 20,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
   },
-  header: {
-    flex: 1,
-    color: Colors.foreground,
-    fontSize: 17,
-    fontFamily: 'Inter',
-    fontWeight: 'bold',
-  },
-  closeIcon: {
-    width: 28,
-    height: 28,
-    color: Colors.foreground,
+  container: {
+    // flex: 1,
+    backgroundColor: Colors.background,
   },
   textContainer: {
     padding: 20,
@@ -226,4 +227,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PollDetails;
+export default PollDetailsView;
