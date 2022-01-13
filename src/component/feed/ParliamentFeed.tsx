@@ -15,6 +15,8 @@ const MOCK_SPEECH = {
   title:
     'Änderung des Infektionsschutzgesetzes; Einschränkung von Grundrechten',
   date: '27.09.2022',
+  videoFileURI:
+    'https://cldf-od.r53.cdn.tv1.eu/1000153copo/ondemand/app144277506/145293313/7515431/7515431_h264_720_400_2000kb_baseline_de_2192.mp4',
 };
 
 const MOCK_SIDEJOB = {
@@ -45,7 +47,9 @@ const ParliamentFeed = () => {
               politicianId={speech.politicianId}
               title={speech.title}
               date={speech.date}
-              cardHeight={264}
+              video={speech.videoFileURI}
+              cardHeight={266}
+              cardWidth={143}
             />
           ))}
         </ScrollView>
