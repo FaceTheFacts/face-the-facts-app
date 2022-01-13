@@ -1,58 +1,83 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {Politician, SideJob} from '../../logic/data';
 import {Colors} from '../../theme';
+import {NavigationContext} from '@react-navigation/native';
+import {ApiSidejob, ApiVoteAndPoll} from '../../logic/api';
 
-export interface PollTab {
-  id: string;
-  title: string;
-  politicians: Politician[];
-  date: string;
+export interface PoliticianInfo {
+  id: number;
+  label: string;
 }
+
+export type PollTab = ApiVoteAndPoll & {
+  created: string;
+  politicians: PoliticianInfo[];
+};
 
 interface PollRowProps {
   poll: PollTab;
 }
 
-export const PollRowContent = ({poll}: PollRowProps) => (
-  <View style={styles.title}>
-    <Text style={styles.boldText}>{poll.politicians[0].name}</Text>
-    {poll.politicians.length > 1 ? (
-      <>
-        <Text style={styles.titleText}> und </Text>
-        <Text style={styles.boldText}>
-          {poll.politicians.length - 1} weitere
-        </Text>
-        <Text style={styles.titleText}> haben an einer </Text>
-      </>
-    ) : (
-      <Text style={styles.titleText}> hat an einer </Text>
-    )}
-    <TouchableOpacity>
-      <Text style={styles.linkText}>Abstimmung</Text>
-    </TouchableOpacity>
-    <Text style={styles.titleText}> teilgenommen.</Text>
-  </View>
-);
+export const PollRowContent = ({poll}: PollRowProps) => {
+  const navigator = useContext<any>(NavigationContext)!;
 
-export type SideJobTab = SideJob & {
-  politicians: Politician[];
+  return (
+    <View style={styles.title}>
+      <Text style={styles.boldText}>{poll.politicians[0].label}</Text>
+      {poll.politicians.length > 1 ? (
+        <>
+          <Text style={styles.titleText}> und </Text>
+          <Text style={styles.boldText}>
+            {poll.politicians.length - 1} weitere
+          </Text>
+          <Text style={styles.titleText}> haben an einer </Text>
+        </>
+      ) : (
+        <Text style={styles.titleText}> hat an einer </Text>
+      )}
+      <TouchableOpacity
+        onPress={() => {
+          navigator.push('PollDetailsScreen', {
+            poll: poll.Poll,
+            vote: poll.Vote,
+            candidateVote: poll.Vote.vote,
+          });
+        }}>
+        <Text style={styles.linkText}>Abstimmung</Text>
+      </TouchableOpacity>
+      <Text style={styles.titleText}> teilgenommen.</Text>
+    </View>
+  );
+};
+
+export type SideJobTab = ApiSidejob & {
+  politicians: PoliticianInfo[];
 };
 
 interface SideJobRowProps {
   sideJob: SideJobTab;
 }
 
-export const SideJobRowContent = ({sideJob}: SideJobRowProps) => (
-  <View style={styles.title}>
-    <Text style={styles.boldText}>{sideJob.politicians[0].name}</Text>
-    <Text style={styles.titleText}> hat an eine </Text>
-    <TouchableOpacity>
-      <Text style={styles.linkText}>Nebentätigkeit</Text>
-    </TouchableOpacity>
-    <Text style={styles.titleText}> hinzugefügt.</Text>
-  </View>
-);
+export const SideJobRowContent = ({sideJob}: SideJobRowProps) => {
+  const navigator = useContext<any>(NavigationContext)!;
+
+  return (
+    <View style={styles.title}>
+      <Text style={styles.boldText}>{sideJob.politicians[0].label}</Text>
+      <Text style={styles.titleText}> hat an eine </Text>
+      <TouchableOpacity
+        onPress={() => {
+          const politicianId = sideJob.politicians[0].id;
+          navigator.push('PoliticianScreen', {
+            politicianId,
+          });
+        }}>
+        <Text style={styles.linkText}>Nebentätigkeit</Text>
+      </TouchableOpacity>
+      <Text style={styles.titleText}> hinzugefügt.</Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   title: {

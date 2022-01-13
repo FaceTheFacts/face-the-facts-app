@@ -29,6 +29,11 @@ export interface IPoliticianContext {
   positions?: ApiPositions;
 }
 
+export interface ApiVoteAndPoll {
+  Vote: ApiVote;
+  Poll: ApiPoll;
+}
+
 export interface ApiPoliticianProfile {
   id: number;
   entity_type: string;
@@ -63,12 +68,7 @@ export interface ApiPoliticianProfile {
       link: string;
     },
   ];
-  votes_and_polls: [
-    {
-      Vote: ApiVote;
-      Poll: ApiPoll;
-    },
-  ];
+  votes_and_polls: ApiVoteAndPoll[];
   topic_ids_of_latest_committee: number[];
 }
 

@@ -1,11 +1,11 @@
 import React, {ReactNode} from 'react';
 import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
 import PoliticianPicture from './PoliticianPicture';
-import {Politician} from '../logic/data';
 import {Colors} from '../theme';
+import {PoliticianInfo} from './feed/FeedRowContent';
 
 interface FeedRowProps {
-  politicians: Politician[];
+  politicians: PoliticianInfo[];
   children: ReactNode;
   desc: string;
 }
@@ -18,23 +18,14 @@ const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
       <View style={styles.container}>
         {politicians.length > 1 ? (
           <View style={styles.image}>
-            <PoliticianPicture
-              politicianId={politicians[0].id.toString()}
-              size={32}
-            />
+            <PoliticianPicture politicianId={+politicians[0].id} size={32} />
             <View style={styles.imageOverlay}>
-              <PoliticianPicture
-                politicianId={politicians[1].id.toString()}
-                size={32}
-              />
+              <PoliticianPicture politicianId={+politicians[1].id} size={32} />
             </View>
           </View>
         ) : (
           <View style={styles.image}>
-            <PoliticianPicture
-              politicianId={politicians[0].id.toString()}
-              size={48}
-            />
+            <PoliticianPicture politicianId={+politicians[0].id} size={48} />
           </View>
         )}
         <View style={[{width: width - 80}]}>
