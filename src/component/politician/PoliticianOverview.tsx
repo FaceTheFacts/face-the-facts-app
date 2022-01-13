@@ -202,6 +202,7 @@ const PoliticianOverview = () => {
                   date={formatDate(speech.date)}
                   video={speech.videoFileURI}
                   cardHeight={103}
+                  cardWidth={266}
                 />
               ))}
             </ScrollView>
