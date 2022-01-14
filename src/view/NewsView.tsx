@@ -16,7 +16,7 @@ export interface NewsViewProps {
 const NewsView = ({route}: NewsViewProps) => {
   const {politician} = route.params;
   const {data: newsData, status: status} = useQuery<ApiNews | undefined, Error>(
-    `news:${politician.profile?.id}`,
+    `newsScreen:${politician.profile?.id}`,
     () =>
       fetch_api<ApiNews>(
         `politician/${politician.profile?.id}/news?page=1&size=100`,
