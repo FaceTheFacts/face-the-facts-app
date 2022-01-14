@@ -7,19 +7,34 @@ export interface NewsPictureProps {
   size?: number;
   source: string;
   image: PoliTrackImage[];
+  width: number;
+  height: number;
+  borderBottom?: boolean;
 }
 
-const NewsPicture = ({image}: NewsPictureProps) => {
+const NewsPicture = ({
+  image,
+  width,
+  height,
+  borderBottom,
+}: NewsPictureProps) => {
+  let radius = 0;
+  if (borderBottom) {
+    radius = 8;
+  }
   if (image.length === 0) {
     return <ProfilePicturePlaceholder />;
   }
 
   return (
     <Image
-      style={styles.image}
+      style={[
+        styles.image,
+        {borderBottomLeftRadius: radius, borderBottomRightRadius: radius},
+      ]}
       source={{uri: image[0].url}}
-      width={styles.image.width}
-      height={styles.image.height}
+      width={width}
+      height={height}
     />
   );
 };
@@ -28,8 +43,6 @@ const styles = StyleSheet.create({
   image: {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
-    width: 191,
-    height: 105,
   },
 });
 
