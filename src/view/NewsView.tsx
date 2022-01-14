@@ -3,9 +3,11 @@ import {ScrollView, StyleSheet, Text, SafeAreaView, View} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import BackButton from '../component/BackButton';
-import {IPoliticianContext} from '../logic/api';
+import {ApiNews, IPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
 import NewsScreenCard from '../component/news/NewsScreenCard';
+import {useQuery} from 'react-query';
+import {fetch_api} from '../logic/fetch';
 
 export interface NewsViewProps {
   route: RouteProp<{params: {politician: IPoliticianContext}}, 'params'>;
@@ -13,7 +15,18 @@ export interface NewsViewProps {
 
 const NewsView = ({route}: NewsViewProps) => {
   const {politician} = route.params;
-
+  const {data: newsData, status: status} = useQuery<ApiNews | undefined, Error>(
+    `news:${politician.profile?.id}`,
+    () =>
+      fetch_api<ApiNews>(
+        `politician/${politician.profile?.id}/news?page=1&size=100`,
+      ),
+  );
+  let news = politician.news;
+  if (status === 'success') {
+    news = newsData;
+  }
+  console.log(news);
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -28,12 +41,12 @@ const NewsView = ({route}: NewsViewProps) => {
       </View>
       <View style={styles.separatorLine} />
       <ScrollView style={styles.container}>
-        {politician?.news?.items.map((newsItem, index) => (
+        {news?.items.map((newsItem, index) => (
           <>
             {index !== 0 ? (
               checkPreviousMonth(
                 newsItem.published,
-                politician?.news!.items[index + -1].published,
+                news!.items[index - 1].published,
               ) && (
                 <View style={styles.monthContainer}>
                   <Text style={styles.month}>
