@@ -1,5 +1,12 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, SafeAreaView, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
@@ -13,7 +20,7 @@ export interface SpeechesViewProps {
 
 const SpeechesView = ({route}: SpeechesViewProps) => {
   const {politician} = route.params;
-
+  const {width} = useWindowDimensions();
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -51,7 +58,7 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
                 date={formatDate(speech.date)}
                 video={speech.videoFileURI}
                 cardHeight={87}
-                cardWidth={351}
+                cardWidth={width - 24}
               />
             </View>
           </View>
@@ -75,12 +82,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 55,
+    height: 60,
     backgroundColor: Colors.cardBackground,
   },
   container: {
     flex: 1,
-    paddingHorizontal: 16,
     backgroundColor: Colors.background,
   },
   backButtonContainer: {
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
   },
   separatorLine: {
     height: 1,
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    backgroundColor: 'rgba(1,1,1,0.6)',
   },
   monthContainer: {
     width: 111,
@@ -129,6 +135,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   speechCardContainer: {
+    alignSelf: 'center',
     marginVertical: 6,
   },
 });

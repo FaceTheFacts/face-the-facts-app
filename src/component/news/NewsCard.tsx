@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Linking} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+  useWindowDimensions,
+} from 'react-native';
 import {PoliTrackImage} from '../../logic/api';
 import {Colors} from '../../theme';
 import NewsIcon from './NewsIcon';
@@ -14,19 +21,25 @@ interface NewsCardProps {
 }
 
 const NewsCard = ({title, date, image, url, source}: NewsCardProps) => {
+  const {width} = useWindowDimensions();
   return (
-    <TouchableOpacity onPress={() => Linking.openURL(url!)}>
-      <View style={styles.container}>
-        <View>
-          <NewsPicture source={source} image={image} width={191} height={105} />
-          <View style={styles.iconContainer}>
-            <NewsIcon source={source} />
-          </View>
+    <TouchableOpacity
+      style={[styles.container, {width: width * 0.51}]}
+      onPress={() => Linking.openURL(url!)}>
+      <View>
+        <NewsPicture
+          source={source}
+          image={image}
+          width={width * 0.51}
+          height={105}
+        />
+        <View style={styles.iconContainer}>
+          <NewsIcon source={source} />
         </View>
-        <View style={styles.cardContent}>
-          <Text style={styles.titleText}>{title}</Text>
-          <Text style={styles.dateText}>{date}</Text>
-        </View>
+      </View>
+      <View style={styles.cardContent}>
+        <Text style={styles.titleText}>{title}</Text>
+        <Text style={styles.dateText}>{date}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -34,7 +47,6 @@ const NewsCard = ({title, date, image, url, source}: NewsCardProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 191,
     height: 200,
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
