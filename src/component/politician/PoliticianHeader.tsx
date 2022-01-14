@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: Colors.cardBackground,
     paddingTop: 4,
-    paddingBottom: 24,
-    paddingHorizontal: 24,
+    paddingBottom: 12,
+    paddingHorizontal: 12,
   },
   rightContainer: {
     flex: 1,
