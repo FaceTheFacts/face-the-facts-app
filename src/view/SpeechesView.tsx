@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(1,1,1,0.6)',
   },
   monthContainer: {
-    width: 111,
     backgroundColor: Colors.cardBackground,
     borderRadius: 8,
     alignSelf: 'center',
