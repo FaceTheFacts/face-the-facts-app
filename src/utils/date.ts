@@ -126,3 +126,25 @@ export function checkPreviousMonth(
   const previousMonth = previousDate.slice(5, 7);
   return currentMonth !== previousMonth;
 }
+
+export function getLogoPath(source: string): any {
+  switch (source) {
+    case 'spon':
+      return require('../../assets/logo/spiegelLogo.png');
+    case 'welt':
+      return require('../../assets/logo/weltLogo.png');
+    case 'bild':
+      return require('../../assets/logo/bildLogo.png');
+    case 'faz':
+      return require('../../assets/logo/fazLogo.png');
+    case 'taz':
+      return require('../../assets/logo/tazLogo.png');
+    case 'zeit':
+      return require('../../assets/logo/zeitLogo.png');
+    case 'sueddeutsche':
+      return require('../../assets/logo/sueddeutscheLogo.png');
+    default:
+      // defaultLogo still missing
+      return require('../../assets/logo/weltLogo.png');
+  }
+}
