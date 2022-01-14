@@ -42,7 +42,7 @@ const NewsView = ({route}: NewsViewProps) => {
       <View style={styles.separatorLine} />
       <ScrollView style={styles.container}>
         {news?.items.map((newsItem, index) => (
-          <>
+          <View key={index}>
             {index !== 0 ? (
               checkPreviousMonth(
                 newsItem.published,
@@ -63,7 +63,6 @@ const NewsView = ({route}: NewsViewProps) => {
             )}
             <View style={styles.newsCardContainer}>
               <NewsScreenCard
-                key={index}
                 title={newsItem.title}
                 date={formatDate(newsItem.published)}
                 image={newsItem.images}
@@ -71,7 +70,7 @@ const NewsView = ({route}: NewsViewProps) => {
                 source={newsItem.source}
               />
             </View>
-          </>
+          </View>
         ))}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />

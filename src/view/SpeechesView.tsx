@@ -29,7 +29,7 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
       <View style={styles.separatorLine} />
       <ScrollView style={styles.container}>
         {politician?.speeches?.map((speech, index) => (
-          <>
+          <View key={index}>
             {index !== 0 ? (
               checkPreviousMonth(
                 speech.date,
@@ -46,7 +46,6 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
             )}
             <View style={styles.speechCardContainer}>
               <SpeechCard
-                key={index}
                 politician={politician.profile?.label!}
                 title={speech.title}
                 date={formatDate(speech.date)}
@@ -55,7 +54,7 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
                 cardWidth={351}
               />
             </View>
-          </>
+          </View>
         ))}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />
