@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Linking} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+  useWindowDimensions,
+} from 'react-native';
 import {PoliTrackImage} from '../../logic/api';
 import {Colors} from '../../theme';
 import NewsIcon from './NewsIcon';
@@ -14,10 +21,11 @@ interface NewsCardProps {
 }
 
 const NewsCard = ({title, date, image, url, source}: NewsCardProps) => {
+  const {width} = useWindowDimensions();
   return (
     <TouchableOpacity
       onPress={() => Linking.openURL(url!)}
-      style={styles.cardContainer}>
+      style={[styles.cardContainer, {width: width - 12}]}>
       <View style={styles.imageContainer}>
         <NewsPicture
           source={source}
@@ -40,8 +48,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     flexDirection: 'row',
-    width: 351,
-    height: 104,
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
   },

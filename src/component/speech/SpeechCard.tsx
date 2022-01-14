@@ -63,7 +63,6 @@ const SpeechCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: 266,
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
     padding: 12,

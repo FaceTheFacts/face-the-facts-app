@@ -26,7 +26,6 @@ const NewsView = ({route}: NewsViewProps) => {
   if (status === 'success') {
     news = newsData;
   }
-  console.log(news);
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -39,7 +38,9 @@ const NewsView = ({route}: NewsViewProps) => {
         </View>
         <View style={styles.rightContainer} />
       </View>
-      <View style={styles.separatorLine} />
+      <View>
+        <View style={styles.separatorLine} />
+      </View>
       <ScrollView style={styles.container}>
         {news?.items.map((newsItem, index) => (
           <View key={index}>
@@ -91,13 +92,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 55,
+    height: 60,
     backgroundColor: Colors.cardBackground,
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: Colors.background,
   },
   backButtonContainer: {
     flex: 1,
@@ -117,10 +113,13 @@ const styles = StyleSheet.create({
   },
   separatorLine: {
     height: 1,
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    backgroundColor: 'rgba(1,1,1,0.6)',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
   },
   monthContainer: {
-    width: 111,
     backgroundColor: Colors.cardBackground,
     borderRadius: 8,
     alignSelf: 'center',
@@ -132,6 +131,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12,
     fontWeight: '600',
+    lineHeight: 14.52,
     fontFamily: 'Inter',
     color: Colors.foreground,
   },
@@ -146,6 +146,8 @@ const styles = StyleSheet.create({
   },
   newsCardContainer: {
     marginVertical: 6,
+    alignSelf: 'center',
+    height: 104,
   },
 });
 
