@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import {Modalize} from 'react-native-modalize';
 import {Colors} from '../../theme';
@@ -27,6 +27,7 @@ const SpeechCard = ({
   cardWidth,
 }: SpeechCardProps) => {
   const modal = useRef<Modalize>(null);
+  const {height} = useWindowDimensions();
   const handleClickOpen = () => {
     modal.current!.open();
   };
@@ -48,7 +49,7 @@ const SpeechCard = ({
       <BottomSheet
         modalRef={modal}
         modalStyle={{backgroundColor: Colors.background}}
-        modalHeight={600}
+        modalHeight={height * 0.7}
         withHandle={false}>
         <SpeechPlayer
           politician={politician}
