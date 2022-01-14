@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import {Colors} from '../../theme';
 import SpeechCard from '../speech/SpeechCard';
@@ -31,9 +32,10 @@ const speeches = new Array(3).fill(MOCK_SPEECH);
 const sideJobs = new Array(3).fill(MOCK_SIDEJOB);
 
 const ParliamentFeed = () => {
+  const {width} = useWindowDimensions();
   return (
-    <View style={styles.container}>
-      <View>
+    <ScrollView>
+      <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Reden</Text>
           <TouchableOpacity style={styles.moreBtn}>
@@ -48,8 +50,8 @@ const ParliamentFeed = () => {
               title={speech.title}
               date={speech.date}
               video={speech.videoFileURI}
-              cardHeight={266}
-              cardWidth={143}
+              cardHeight={143}
+              cardWidth={width * 0.71}
             />
           ))}
         </ScrollView>
@@ -74,7 +76,7 @@ const ParliamentFeed = () => {
           ))}
         </ScrollView>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
