@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 import {Colors} from '../../theme';
 import Video from 'react-native-video';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -12,6 +12,7 @@ export interface SpeechPlayerProps {
 }
 
 const SpeechPlayer = ({politician, date, title, video}: SpeechPlayerProps) => {
+  const {width} = useWindowDimensions();
   const ref = useRef<Video | null>(null);
   return (
     <>
@@ -27,9 +28,10 @@ const SpeechPlayer = ({politician, date, title, video}: SpeechPlayerProps) => {
         <View style={styles.playerContainer}>
           <Video
             source={{uri: video}}
-            style={styles.backgroundVideo}
+            style={[styles.backgroundVideo, {width: width - 32}]}
             controls={true}
             ref={ref}
+            ignoreSilentSwitch="ignore"
           />
         </View>
       </ScrollView>
@@ -79,7 +81,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   backgroundVideo: {
-    width: 343,
     height: 193,
     top: 0,
     left: 0,
