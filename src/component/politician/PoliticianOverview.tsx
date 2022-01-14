@@ -91,7 +91,7 @@ const PoliticianOverview = () => {
       <View style={styles.container}>
         {politician?.profile?.topic_ids_of_latest_committee.length !== 0 && (
           <>
-            <Text style={styles.subtitle}>Politische Schwerpunkte</Text>
+            <Text style={styles.subtitleFocus}>Politische Schwerpunkte</Text>
             <Wrap spacing={8}>
               {politician?.profile?.topic_ids_of_latest_committee.map(
                 (topicId, index) => {
@@ -210,7 +210,7 @@ const PoliticianOverview = () => {
         )}
         {politician?.profile?.sidejobs.length !== 0 && (
           <>
-            <Text style={styles.subtitle}>Nebentätigkeiten</Text>
+            <Text style={styles.subtitleFocus}>Nebentätigkeiten</Text>
             {politician?.profile?.sidejobs.map((sidejob, index) => (
               <View key={index} style={styles.sideJob}>
                 <Text style={styles.sideJobTitle}>{sidejob.label}</Text>
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    padding: 16,
+    paddingHorizontal: 12,
   },
   subtitle: {
     color: Colors.foreground,
@@ -251,8 +251,17 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '600',
     fontFamily: 'Inter',
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 18,
+    marginBottom: 6,
+  },
+  subtitleFocus: {
+    color: Colors.foreground,
+    opacity: 1,
+    fontSize: 17,
+    fontWeight: '600',
+    fontFamily: 'Inter',
+    marginTop: 18,
+    marginBottom: 14,
   },
   moreButton: {
     color: Colors.foreground,
