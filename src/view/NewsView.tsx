@@ -2,10 +2,10 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text, SafeAreaView, View} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
-import NewsCard from '../component/news/NewsCard';
 import BackButton from '../component/BackButton';
 import {IPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
+import NewsScreenCard from '../component/news/NewsScreenCard';
 
 export interface NewsViewProps {
   route: RouteProp<{params: {politician: IPoliticianContext}}, 'params'>;
@@ -49,7 +49,7 @@ const NewsView = ({route}: NewsViewProps) => {
               </View>
             )}
             <View style={styles.newsCardContainer}>
-              <NewsCard
+              <NewsScreenCard
                 key={index}
                 title={newsItem.title}
                 date={formatDate(newsItem.published)}
