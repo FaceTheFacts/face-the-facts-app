@@ -82,7 +82,7 @@ const PoliticianLinks = () => {
           <Text style={styles.label}>{awLink.label}</Text>
         </View>
       </TouchableOpacity>
-      {politician?.profile?.weblinks.map((link, index) => {
+      {politician?.profile?.weblinks?.map((link, index) => {
         const type = linkTypes.find(type => type.test(link.link));
         return (
           <TouchableOpacity

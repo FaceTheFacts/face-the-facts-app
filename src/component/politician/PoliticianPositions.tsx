@@ -23,7 +23,7 @@ const PoliticianPositions = () => {
   return (
     <>
       <ScrollView style={styles.container}>
-        {politician?.positions?.positions!.map(candidatePosition => {
+        {politician?.positions?.positions?.map(candidatePosition => {
           return (
             <TouchableOpacity
               key={candidatePosition.id}
