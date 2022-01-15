@@ -83,7 +83,9 @@ export function* groupByDate<E, R>(
 
 export function formatDate(date: string): string {
   const [year, month, day] = date.slice(0, 10).split('-');
-  return `${day}.${month}.${year}`;
+  const formattedDate = `${day}.${month}.${year}`;
+
+  return formattedDate;
 }
 
 export function formatMonth(date: string): string {
