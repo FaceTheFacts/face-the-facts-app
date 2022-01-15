@@ -5,15 +5,19 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import {Colors} from '../../theme';
-import SpeechCard from './SpeechCard';
+import SpeechCard from '../speech/SpeechCard';
 import SideJobCard from './SideJobCard';
 
 const MOCK_SPEECH = {
   politicianId: '119742',
-  desc: 'Änderung des Infektionsschutzgesetzes; Einschränkung von Grundrechten',
+  title:
+    'Änderung des Infektionsschutzgesetzes; Einschränkung von Grundrechten',
   date: '27.09.2022',
+  videoFileURI:
+    'https://cldf-od.r53.cdn.tv1.eu/1000153copo/ondemand/app144277506/145293313/7515431/7515431_h264_720_400_2000kb_baseline_de_2192.mp4',
 };
 
 const MOCK_SIDEJOB = {
@@ -28,9 +32,10 @@ const speeches = new Array(3).fill(MOCK_SPEECH);
 const sideJobs = new Array(3).fill(MOCK_SIDEJOB);
 
 const ParliamentFeed = () => {
+  const {width} = useWindowDimensions();
   return (
-    <View style={styles.container}>
-      <View>
+    <ScrollView>
+      <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Reden</Text>
           <TouchableOpacity style={styles.moreBtn}>
@@ -42,8 +47,11 @@ const ParliamentFeed = () => {
             <SpeechCard
               key={index}
               politicianId={speech.politicianId}
-              desc={speech.desc}
+              title={speech.title}
               date={speech.date}
+              video={speech.videoFileURI}
+              cardHeight={143}
+              cardWidth={width * 0.71}
             />
           ))}
         </ScrollView>
@@ -68,7 +76,7 @@ const ParliamentFeed = () => {
           ))}
         </ScrollView>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

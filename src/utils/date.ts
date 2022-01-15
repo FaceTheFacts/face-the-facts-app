@@ -80,3 +80,56 @@ export function* groupByDate<E, R>(
     yield sectionBuilder('Kürzlich', longerAgoItems.sort(compareFunction));
   }
 }
+
+export function formatDate(date: string): string {
+  const [year, month, day] = date.slice(0, 10).split('-');
+  const formattedDate = `${day}.${month}.${year}`;
+  return formattedDate;
+}
+
+const monthMap: Record<string, string> = {
+  '01': 'Januar',
+  '02': 'Februar',
+  '03': 'März',
+  '04': 'April',
+  '05': 'Mai',
+  '06': 'Juni',
+  '07': 'Juli',
+  '08': 'August',
+  '09': 'September',
+  '10': 'Oktober',
+  '11': 'November',
+  '12': 'Dezember',
+};
+
+export function formatMonth(date: string): string {
+  const month = date.slice(5, 7);
+  return monthMap[month];
+}
+
+export function checkPreviousMonth(
+  previousDate: string,
+  currentDate: string,
+): boolean {
+  const currentMonth = currentDate.slice(5, 7);
+  const previousMonth = previousDate.slice(5, 7);
+  return currentMonth !== previousMonth;
+}
+
+const logoPathMap: Record<string, any> = {
+  spon: require('../../assets/logo/spiegelLogo.png'),
+  welt: require('../../assets/logo/weltLogo.png'),
+  bild: require('../../assets/logo/bildLogo.png'),
+  faz: require('../../assets/logo/fazLogo.png'),
+  taz: require('../../assets/logo/tazLogo.png'),
+  zeit: require('../../assets/logo/zeitLogo.png'),
+  sueddeutsche: require('../../assets/logo/sueddeutscheLogo.png'),
+};
+
+export function getLogoPath(source: string): any {
+  if (source in logoPathMap) {
+    return logoPathMap[source];
+  }
+  // defaultLogo still missing
+  return require('../../assets/logo/weltLogo.png');
+}

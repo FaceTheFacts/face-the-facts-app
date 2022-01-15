@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   backBtn: {
-    paddingVertical: 20,
+    paddingVertical: 15,
     paddingHorizontal: 25,
   },
   icon: {

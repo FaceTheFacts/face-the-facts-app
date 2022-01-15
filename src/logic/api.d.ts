@@ -27,6 +27,8 @@ export interface ApiPolitician {
 export interface IPoliticianContext {
   profile?: ApiPoliticianProfile;
   positions?: ApiPositions;
+  speeches?: ApiSpeech[];
+  news?: ApiNews;
 }
 
 export interface ApiPoliticianProfile {
@@ -48,27 +50,21 @@ export interface ApiPoliticianProfile {
   qid_wikidata: string;
   field_title: string;
   sidejobs: ApiSidejob[];
-  cvs: [
-    {
-      polician_id: number;
-      short_description: string;
-      raw_text: string;
-    },
-  ];
+  cvs: {
+    polician_id: number;
+    short_description: string;
+    raw_text: string;
+  }[];
   abgeordnetenwatch_url: string;
-  weblinks: [
-    {
-      id: number;
-      politician_id: number;
-      link: string;
-    },
-  ];
-  votes_and_polls: [
-    {
-      Vote: ApiVote;
-      Poll: ApiPoll;
-    },
-  ];
+  weblinks: {
+    id: number;
+    politician_id: number;
+    link: string;
+  }[];
+  votes_and_polls: {
+    Vote: ApiVote;
+    Poll: ApiPoll;
+  }[];
   topic_ids_of_latest_committee: number[];
 }
 
@@ -154,4 +150,31 @@ export interface ApiPollDetail {
   total_no: number;
   total_abstain: number;
   total_no_show: number;
+}
+
+export interface ApiSpeech {
+  videoFileURI: string;
+  title: string;
+  date: string;
+}
+
+export interface ApiNews {
+  items: ApiNewsArticle[];
+}
+
+export interface ApiNewsArticle {
+  id: string;
+  highlight: string;
+  images: PoliTrackImage[];
+  published: string;
+  source: string;
+  title: string;
+  url: string;
+}
+
+export interface PoliTrackImage {
+  url: string;
+  title: string;
+  height: number;
+  width: number;
 }

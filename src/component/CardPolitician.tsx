@@ -5,12 +5,12 @@ import {DataContext} from '../logic/model';
 import PoliticianPicture from './PoliticianPicture';
 
 interface CardPoliticianProps {
-  politicianId: string;
+  politicianId: number;
 }
 
 const CardPolitician = ({politicianId}: CardPoliticianProps) => {
   const data = useContext(DataContext);
-  const politician = data.lookupPolitician(politicianId)!;
+  const politician = data.lookupPolitician(politicianId.toString())!;
   const party = data.lookupParty(politician.partyId)!;
   return (
     <View style={styles.container}>
