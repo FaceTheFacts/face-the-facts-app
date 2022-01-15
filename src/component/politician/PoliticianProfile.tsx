@@ -18,15 +18,17 @@ const PoliticianProfile = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const politician = useContext(PoliticianContext);
   const routes = [
-    (politician.committees || politician.votes || politician.sideJobs) && {
+    (politician?.profile?.topic_ids_of_latest_committee.length !== 0 ||
+      politician?.profile?.votes_and_polls.length !== 0 ||
+      politician?.profile?.sidejobs.length !== 0) && {
       key: 'overview',
       title: 'Übersicht',
     },
-    politician.cv && {
+    politician?.profile?.cvs.length !== 0 && {
       key: 'cv',
-      title: 'Lebenslauf',
+      title: 'Biografie',
     },
-    politician.links && {
+    {
       key: 'links',
       title: 'Weblinks',
     },
@@ -90,7 +92,6 @@ const PoliticianProfile = () => {
                       ])}>
                       <View style={styles.indicator} />
                     </Animated.View>
-                    <View style={styles.separatorLine} />
                   </>
                 );
               }}
@@ -116,13 +117,7 @@ const styles = StyleSheet.create({
   indicator: {
     flex: 1,
     backgroundColor: Colors.cardBackground,
-    borderRadius: 4,
-  },
-  separatorLine: {
-    width: '100%',
-    height: 1,
-    backgroundColor: Colors.foreground,
-    opacity: 0.2,
+    borderRadius: 8,
   },
 });
 
