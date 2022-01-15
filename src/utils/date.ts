@@ -84,40 +84,27 @@ export function* groupByDate<E, R>(
 export function formatDate(date: string): string {
   const [year, month, day] = date.slice(0, 10).split('-');
   const formattedDate = `${day}.${month}.${year}`;
-
   return formattedDate;
 }
 
+const monthMap: Record<string, string> = {
+  '01': 'Januar',
+  '02': 'Februar',
+  '03': 'März',
+  '04': 'April',
+  '05': 'Mai',
+  '06': 'Juni',
+  '07': 'Juli',
+  '08': 'August',
+  '09': 'September',
+  '10': 'Oktober',
+  '11': 'November',
+  '12': 'Dezember',
+};
+
 export function formatMonth(date: string): string {
   const month = date.slice(5, 7);
-  switch (month) {
-    case '01':
-      return 'Januar';
-    case '02':
-      return 'Februar';
-    case '03':
-      return 'März';
-    case '04':
-      return 'April';
-    case '05':
-      return 'Mai';
-    case '06':
-      return 'Juni';
-    case '07':
-      return 'Juli';
-    case '08':
-      return 'August';
-    case '09':
-      return 'September';
-    case '10':
-      return 'Oktober';
-    case '11':
-      return 'November';
-    case '12':
-      return 'Dezember';
-    default:
-      return 'Monat';
-  }
+  return monthMap[month];
 }
 
 export function checkPreviousMonth(
@@ -129,24 +116,20 @@ export function checkPreviousMonth(
   return currentMonth !== previousMonth;
 }
 
+const logoPathMap: Record<string, any> = {
+  spon: require('../../assets/logo/spiegelLogo.png'),
+  welt: require('../../assets/logo/weltLogo.png'),
+  bild: require('../../assets/logo/bildLogo.png'),
+  faz: require('../../assets/logo/fazLogo.png'),
+  taz: require('../../assets/logo/tazLogo.png'),
+  zeit: require('../../assets/logo/zeitLogo.png'),
+  sueddeutsche: require('../../assets/logo/sueddeutscheLogo.png'),
+};
+
 export function getLogoPath(source: string): any {
-  switch (source) {
-    case 'spon':
-      return require('../../assets/logo/spiegelLogo.png');
-    case 'welt':
-      return require('../../assets/logo/weltLogo.png');
-    case 'bild':
-      return require('../../assets/logo/bildLogo.png');
-    case 'faz':
-      return require('../../assets/logo/fazLogo.png');
-    case 'taz':
-      return require('../../assets/logo/tazLogo.png');
-    case 'zeit':
-      return require('../../assets/logo/zeitLogo.png');
-    case 'sueddeutsche':
-      return require('../../assets/logo/sueddeutscheLogo.png');
-    default:
-      // defaultLogo still missing
-      return require('../../assets/logo/weltLogo.png');
+  if (source in logoPathMap) {
+    return logoPathMap[source];
   }
+  // defaultLogo still missing
+  return require('../../assets/logo/weltLogo.png');
 }
