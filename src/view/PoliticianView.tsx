@@ -1,36 +1,16 @@
 import React, {createContext, useState} from 'react';
-import {
-  useWindowDimensions,
-  StyleSheet,
-  View,
-  StatusBar,
-  SafeAreaView,
-} from 'react-native';
-import {RouteProp} from '@react-navigation/native';
+import {StyleSheet, useWindowDimensions, View} from 'react-native';
 import PoliticianHeader from '../component/politician/PoliticianHeader';
+import {Politician} from '../logic/data';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import PoliticianProfile from '../component/politician/PoliticianProfile';
 import PoliticianPositions from '../component/politician/PoliticianPositions';
 import PoliticianConstituency from '../component/politician/PoliticianConstituency';
 import {Colors} from '../theme';
 import {Route} from 'react-native-tab-view/lib/typescript/types';
-import BackButton from '../component/BackButton';
-import {useQuery} from 'react-query';
-import {fetch_api} from '../logic/fetch';
-import {
-  ApiPositions,
-  ApiPoliticianProfile,
-  IPoliticianContext,
-  ApiSpeech,
-  ApiNews,
-} from '../logic/api';
 
-type PoliticianViewParams = {
-  politicianId: number;
-};
-
-interface PoliticianViewProps {
-  route: RouteProp<{params: PoliticianViewParams}, 'params'>;
+export interface PoliticianViewProps {
+  politician: Politician;
 }
 
 const renderScene = SceneMap({
@@ -39,71 +19,36 @@ const renderScene = SceneMap({
   constituency: PoliticianConstituency,
 });
 
-export const PoliticianContext = createContext<IPoliticianContext | null>(null);
+export const PoliticianContext = createContext<Politician>(null as any);
 
-const PoliticianView = ({route}: PoliticianViewProps) => {
-  const {politicianId} = route.params;
-
-  const {data: profile} = useQuery<ApiPoliticianProfile | undefined, Error>(
-    `politician:${politicianId}`,
-    () =>
-      fetch_api<ApiPoliticianProfile>(
-        `politician/${politicianId}?sidejobs_end=15&votes_end=5`,
-      ),
-  );
-
-  const {data: positions} = useQuery<ApiPositions | undefined, Error>(
-    `positions:${politicianId}`,
-    () => fetch_api<ApiPositions>(`politician/${politicianId}/positions`),
-  );
-
-  const {data: speeches} = useQuery<ApiSpeech[] | undefined, Error>(
-    `speeches:${politicianId}`,
-    () => fetch_api<ApiSpeech[]>(`politician/${politicianId}/speeches`),
-  );
-
-  const {data: news} = useQuery<ApiNews | undefined, Error>(
-    `news:${politicianId}`,
-    () => fetch_api<ApiNews>(`politician/${politicianId}/news?page=1&size=5`),
-  );
-
+const PoliticianView = ({politician}: PoliticianViewProps) => {
   const {width} = useWindowDimensions();
 
   const routes = [
-    (profile?.topic_ids_of_latest_committee ||
-      profile?.votes_and_polls ||
-      profile?.sidejobs ||
-      profile?.cvs ||
-      profile?.weblinks ||
-      speeches ||
-      news) && {
-      title: 'Profilseite',
+    politician.positions && {
+      title: 'Positionen',
+      key: 'positions',
+    },
+    (politician.committees ||
+      politician.votes ||
+      politician.sideJobs ||
+      politician.cv ||
+      politician.links) && {
+      title: 'Profil',
       key: 'profile',
     },
-    positions?.positions &&
-      positions?.positions.length > 0 && {
-        title: 'Positionen',
-        key: 'positions',
-      },
-    // /* politician.constituency && {
-    //     title: 'Wahlkreis',
-    //     key: 'constituency',
-    //   }, */
+    politician.constituency && {
+      title: 'Wahlkreis',
+      key: 'constituency',
+    },
   ].filter(Boolean) as Route[];
-
   const [tabIndex, setTabIndex] = useState<number>(() =>
     routes.findIndex(value => value.key === 'profile'),
   );
 
   return (
-    <PoliticianContext.Provider value={{positions, profile, speeches, news}}>
-      <SafeAreaView style={styles.iosSafeTop} />
+    <PoliticianContext.Provider value={politician}>
       <View style={styles.container}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor={Colors.cardBackground}
-        />
-        <BackButton />
         <PoliticianHeader />
         {routes.length > 1 ? (
           <TabView
@@ -135,13 +80,8 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
 };
 
 const styles = StyleSheet.create({
-  iosSafeTop: {
-    flex: 0,
-    backgroundColor: Colors.cardBackground,
-  },
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
   tabBar: {
     backgroundColor: Colors.cardBackground,

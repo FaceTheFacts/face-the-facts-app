@@ -28,9 +28,7 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import InfoBanner from '../component/InfoBanner';
 import {Politician} from '../logic/data';
-import {useQuery} from 'react-query';
-import {ApiSearchPolitician} from '../logic/api';
-import {fetch_api} from '../logic/fetch';
+import PoliticianModal from './PoliticianModal';
 
 const ScannerView = () => {
   // Scanning
@@ -63,15 +61,6 @@ const ScannerView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searching]);
 
-  // Fetching
-  const {data, status} = useQuery<ApiSearchPolitician[] | undefined, Error>(
-    `search-${searchInput}`,
-    () =>
-      fetch_api<ApiSearchPolitician[]>(
-        `search?text=${searchInput}&page=1&size=50`,
-      ),
-  );
-
   function startSearching(): void {
     setSearching(true);
     setTexts([]);
@@ -96,8 +85,8 @@ const ScannerView = () => {
     return () => handler.remove();
   }, [searching]);
 
-  const dataContext = useContext(DataContext);
-  const navigator = useContext<any>(NavigationContext)!;
+  const data = useContext(DataContext);
+  const navigator = useContext(NavigationContext)!;
   const insets = useSafeAreaInsets();
 
   useEffect(
@@ -115,28 +104,25 @@ const ScannerView = () => {
   );
 
   if (!searching && !showPolitician && focussed && faces.length) {
-    const scannedPolitician = dataContext.scanPolitician(texts);
+    const scannedPolitician = data.scanPolitician(texts);
     if (scannedPolitician) {
       setShowPolitician(scannedPolitician);
       setFocussed(false);
       setTexts([]);
       setFaces([]);
-      dataContext.dbManager.pushHistoryItem(scannedPolitician.id);
+      data.historyManager.pushItem(scannedPolitician.id);
     }
   }
 
-  //const [searchResult, setSearchResult] = useState<ApiPolitician[]>([]);
+  const [searchResult, setSearchResult] = useState<Politician[]>([]);
   const searchInProgress = useRef({count: 0, id: 0}).current;
 
-  /* useEffect(() => {
+  useEffect(() => {
     if (searching && searchInput) {
       searchInProgress.count++;
       const id = ++searchInProgress.id;
       setSearchResult([...searchResult]);
-      if (status === 'success') {
-        setSearchResult(data);
-      }
-      dataContext.search(searchInput).then(result => {
+      data.search(searchInput).then(result => {
         searchInProgress.count--;
         if (searchInProgress.id !== id) {
           return;
@@ -145,16 +131,7 @@ const ScannerView = () => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searching, searchInput, dataContext, searchInProgress]); */
-
-  useEffect(() => {
-    if (showPolitician) {
-      navigator.push('PoliticianScreen', {politician: showPolitician});
-      setShowPolitician(null);
-      setFocussed(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showPolitician]);
+  }, [searching, searchInput, data, searchInProgress]);
 
   return (
     <View style={styles.container}>
@@ -247,24 +224,23 @@ const ScannerView = () => {
               </TouchableOpacity>
             )}
           </View>
-          {searching && status === 'success' && (
+          {searching && !!searchResult.length && (
             <ScrollView
               style={styles.searchResultContainer}
               keyboardDismissMode="interactive">
-              {data?.map(politician => (
+              {searchResult.map(politician => (
                 <PoliticianRow
                   key={politician.id}
                   style={styles.searchItem}
                   politician={politician}
-                  politicianId={politician.id}
                 />
               ))}
             </ScrollView>
           )}
           {searching &&
+            !searchResult.length &&
             !!searchInput &&
-            status === 'success' &&
-            data === undefined && (
+            !searchInProgress.count && (
               <Text style={styles.searchNoResult}>
                 Es wurden keine Politiker:innen gefunden.
               </Text>
@@ -277,6 +253,16 @@ const ScannerView = () => {
           icon={ScanIcon}
           title="Nach Plakaten suchen"
           subtitle="Achte darauf, dass der Name des:der Kandidat:in gut lesbar ist."
+        />
+      )}
+      {showPolitician && (
+        <PoliticianModal
+          politician={showPolitician}
+          autoOpen
+          onClosed={() => {
+            setShowPolitician(null);
+            setFocussed(true);
+          }}
         />
       )}
     </View>
