@@ -1,7 +1,7 @@
 import {CachesDirectoryPath, downloadFile, exists} from 'react-native-fs';
 
 export async function resolvePoliticianPicture(
-  politicianId: number,
+  politicianId: string,
 ): Promise<string | null> {
   const filename = `${CachesDirectoryPath}/politician-${politicianId}.jpg`;
   const uri = `file://${filename}`;

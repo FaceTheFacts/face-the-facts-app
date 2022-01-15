@@ -23,7 +23,7 @@ import {
   stat,
 } from 'react-native-fs';
 import {decompress} from 'compress-json';
-import {DBManager} from './db';
+import {HistoryManager} from './history';
 
 interface SearchPolitician {
   name: string;
@@ -101,10 +101,9 @@ export class FaceTheFactsData {
   private readonly scanTokens: Map<string, string[][]>;
   private readonly scanTokenMap: Map<string, Set<string>>;
 
-  public readonly dbManager: DBManager;
+  public readonly historyManager: HistoryManager;
 
   public constructor(dataset: Dataset) {
-    // @ts-ignore
     this.politicians = new Map(
       dataset.politicians.map(value => [value.id, value]),
     );
@@ -146,7 +145,6 @@ export class FaceTheFactsData {
     this.politiciansArray = dataset.politicians;
 
     dataset.politicians.forEach(({id, name, constituency}, index) => {
-      const strId = id.toString();
       const boundarySplit = name.split(/\b/).filter(value => value.match(/\b/));
       const spaceSplit = name.split(/\s+/);
       const scanTokens: string[][] = [];
@@ -158,12 +156,12 @@ export class FaceTheFactsData {
         scanTokens.push(spaceSplit.map(makeToken));
       }
 
-      this.scanTokens.set(strId, scanTokens);
+      this.scanTokens.set(id, scanTokens);
 
       scanTokens.forEach(tokenBundle =>
         tokenBundle.forEach(token => {
-          if (!this.scanTokenMap.get(token)?.add(strId)) {
-            this.scanTokenMap.set(token, new Set([strId]));
+          if (!this.scanTokenMap.get(token)?.add(id)) {
+            this.scanTokenMap.set(token, new Set([id]));
           }
         }),
       );
@@ -178,7 +176,7 @@ export class FaceTheFactsData {
       this.searchIndex.add(index, searchPolitician);
     });
 
-    this.dbManager = new DBManager(this.politicians);
+    this.historyManager = new HistoryManager(this.politicians);
   }
 
   public lookupPolitician(id: string): Politician | null {

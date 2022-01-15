@@ -1,25 +1,22 @@
 {
   "name": "facethefacts",
   "version": "0.0.1",
-  "license": "GPL-3.0-or-later",
+  "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest --passWithNoTests",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prebuild-android": "mkdir -p android/app/src/main/assets && npx jetify && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/"
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
-    "@types/react": "^17",
     "compress-json": "^1.0.4",
     "flexsearch": "^0.7.11",
-    "react": "17.0.2",
-    "react-native": "0.66.1",
+    "react": "17.0.1",
+    "react-native": "0.64.1",
     "react-native-blur": "^3.2.2",
     "react-native-camera": "^3.44.1",
     "react-native-fs": "^2.18.0",
@@ -34,9 +31,7 @@
     "react-native-sqlite-storage": "^5.0.0",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.1.1",
-    "react-native-video": "^5.2.0",
-    "react-native-webview": "^11.6.4",
-    "react-query": "^3.32.1"
+    "react-native-webview": "^11.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -46,13 +41,12 @@
     "@types/lodash": "^4.14.172",
     "@types/react-native": "^0.64.5",
     "@types/react-native-sqlite-storage": "^5.0.0",
-    "@types/react-native-video": "^5.0.11",
     "@types/react-test-renderer": "^16.9.2",
     "babel-jest": "^26.6.3",
     "eslint": "^7.14.0",
     "jest": "^26.6.3",
-    "metro-react-native-babel-preset": "^0.66.2",
-    "react-test-renderer": "17.0.2",
+    "metro-react-native-babel-preset": "^0.64.0",
+    "react-test-renderer": "17.0.1",
     "typescript": "^3.8.3"
   },
   "resolutions": {

@@ -28,7 +28,6 @@ build/
 .gradle
 local.properties
 *.iml
-*.hprof
 
 # node.js
 #
@@ -62,6 +61,3 @@ buck-out/
 # Use the fetch-data.ts script to create this files
 api-politicians.json
 politicians.json
-data.json
-
-service-account.json

@@ -1,11 +1,12 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../theme';
+import {Politician} from '../logic/data';
 import PoliticianRow from './PoliticianRow';
 
 export interface PoliticianListSection {
   title: string;
-  politicianIds: number[];
+  politicians: Politician[];
 }
 
 export interface PoliticianListProps {
@@ -15,14 +16,14 @@ export interface PoliticianListProps {
 const PoliticianList = ({sections}: PoliticianListProps) => {
   return (
     <ScrollView>
-      {sections.map(({title, politicianIds}, index) => (
+      {sections.map(({title, politicians}, index) => (
         <View key={index} style={styles.section}>
           <Text style={styles.header}>{title}</Text>
-          {politicianIds.map(politicianId => (
+          {politicians.map(politician => (
             <PoliticianRow
-              key={politicianId}
+              key={politician.id}
               style={styles.politician}
-              politicianId={politicianId}
+              politician={politician}
             />
           ))}
         </View>

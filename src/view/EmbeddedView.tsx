@@ -1,13 +1,5 @@
 import React, {useContext, useRef} from 'react';
-import {
-  SafeAreaView,
-  Share,
-  ShareContent,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {SafeAreaView, Share, ShareContent, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../theme';
 import WebView from 'react-native-webview';
 import {NavigationContext, Route} from '@react-navigation/native';
@@ -78,10 +70,7 @@ const EmbeddedView = ({route}: EmbeddedViewProps) => {
           )
         }
         onMessage={event => {
-          console.log(
-            'received message',
-            JSON.stringify(event.nativeEvent.data),
-          );
+          console.log('received message', JSON.stringify(event.nativeEvent.data));
         }}
       />
     </View>

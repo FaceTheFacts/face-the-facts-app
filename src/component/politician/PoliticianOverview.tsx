@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useRef} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,238 +7,128 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import {NavigationContext} from '@react-navigation/native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
+import {DataContext} from '../../logic/model';
 import Icon from '../Icon';
 import Wrap from '../utils/Wrap';
-import {Vote} from '../../logic/data';
-import PollCard from '../poll/PollCard';
-import {
-  AdministrationIcon,
-  AgricultureIcon,
-  CultureIcon,
-  DefenceIcon,
-  DevelopmentIcon,
-  EconomyIcon,
-  EducationIcon,
-  EnergyIcon,
-  EnvironmentIcon,
-  EuropeanUnionIcon,
-  FinanceIcon,
-  ForeignPolicyIcon,
-  ForeignTradeIcon,
-  HealthIcon,
-  HomeSecurityIcon,
-  HousingIcon,
-  LabourIcon,
-  LawIcon,
-  MediaIcon,
-  MigrationIcon,
-  NewStatesIcon,
-  ParliamentaryAffairsIcon,
-  PoliticsIcon,
-  ScienceIcon,
-  SocialSecurityIcon,
-  SocietyIcon,
-  TourismIcon,
-  TrafficIcon,
-} from '../../icons';
-import SpeechCard from '../speech/SpeechCard';
-import NewsCard from '../news/NewsCard';
-import {formatDate} from '../../utils/date';
+import {SideJobIncomeLevel, Vote} from '../../logic/data';
+import {Modalize} from 'react-native-modalize';
+import BottomSheet from '../utils/BottomSheet';
+import PollsView from './PollsView';
+import {ArrowForwardIos} from '../../icons';
+import PollCard from './PollCard';
 
-export const possibleVotes: Vote[] = ['yes', 'no', 'abstain', 'no_show'];
+const incomeLevelLabels: Record<SideJobIncomeLevel, string> = {
+  '1': '1.000 € bis 3.500 €',
+  '2': '3.500 € bis 7.000 €',
+  '3': '7.000 € bis 15.000 €',
+  '4': '15.000 € bis 30.000 €',
+  '5': '30.000 € bis 50.000 €',
+  '6': '50.000 € bis 75.000 €',
+  '7': '75.000 € bis 100.000 €',
+  '8': '100.000 € bis 150.000 €',
+  '9': '150.000 € bis 250.000 €',
+  '10': 'ab 250.000 €',
+};
+
+export const possibleVotes: Vote[] = ['yes', 'no', 'abstain', 'none'];
+
+function formatDate(date: string): string {
+  const [year, month] = date.split('-');
+  return `${month}/${year}`;
+}
 
 const PoliticianOverview = () => {
+  const pollsModal = useRef<Modalize | null>(null);
+  const data = useContext(DataContext);
   const politician = useContext(PoliticianContext);
-  const navigator = useContext<any>(NavigationContext)!;
   const {width} = useWindowDimensions();
-
-  const topicTypes = [
-    {id: 1, label: 'Medien', icon: MediaIcon},
-    {id: 2, label: 'Arbeit', icon: LabourIcon},
-    {id: 3, label: 'Bildung', icon: EducationIcon},
-    {id: 4, label: 'Europäische Union', icon: EuropeanUnionIcon},
-    {id: 5, label: 'Landwirtschaft', icon: AgricultureIcon},
-    {id: 6, label: 'Parlamentsangelegenheiten', icon: ParliamentaryAffairsIcon},
-    {id: 7, label: 'Kultur', icon: CultureIcon},
-    {id: 8, label: 'Recht', icon: LawIcon},
-    {id: 9, label: 'Umwelt', icon: EnvironmentIcon},
-    {id: 10, label: 'Verkehr', icon: TrafficIcon},
-    {id: 11, label: 'Außenwirtschaft', icon: ForeignTradeIcon},
-    {id: 12, label: 'Tourismus', icon: TourismIcon},
-    {id: 13, label: 'Verteidigung', icon: DefenceIcon},
-    {id: 14, label: 'Soziale Sicherung', icon: SocialSecurityIcon},
-    {id: 15, label: 'Wissenschaft', icon: ScienceIcon},
-    {id: 16, label: 'Gesellschaft', icon: SocietyIcon},
-    {id: 17, label: 'Entwicklungspolitik', icon: DevelopmentIcon},
-    {id: 18, label: 'Bauwesen', icon: HousingIcon},
-    {id: 19, label: 'Wirtschaft', icon: EconomyIcon},
-    {id: 20, label: 'Energie', icon: EnergyIcon},
-    {id: 21, label: 'Außenpolitik', icon: ForeignPolicyIcon},
-    {id: 22, label: 'Öffentliche Finanzen', icon: FinanceIcon},
-    {id: 23, label: 'Innere Sicherheit', icon: HomeSecurityIcon},
-    {id: 24, label: 'Staat und Verwaltung', icon: AdministrationIcon},
-    {id: 25, label: 'Zuwanderung', icon: MigrationIcon},
-    {id: 26, label: 'Neue Bundesländer', icon: NewStatesIcon},
-    {id: 27, label: 'Politisches Leben', icon: PoliticsIcon},
-    {id: 28, label: 'Gesundheit', icon: HealthIcon},
-  ];
 
   return (
     <ScrollView style={styles.containerWrapper}>
       <View style={styles.container}>
-        {politician?.profile?.topic_ids_of_latest_committee &&
-          politician.profile.topic_ids_of_latest_committee.length > 0 && (
-            <>
-              <Text style={styles.subtitleFocus}>Politische Schwerpunkte</Text>
-              <Wrap spacing={8}>
-                {politician?.profile?.topic_ids_of_latest_committee.map(
-                  (topicId, index) => {
-                    const topic = topicTypes.find(
-                      topicType => topicType.id === topicId,
-                    );
-                    return (
-                      <View key={index} style={styles.committee}>
-                        {topic?.icon && (
-                          <Icon
-                            style={styles.committeeIcon}
-                            icon={{viewBox: '0 0 24 24', d: topic.icon}}
-                          />
-                        )}
-                        <Text style={styles.committeeLabel}>
-                          {topic?.label}
-                        </Text>
-                      </View>
-                    );
-                  },
-                )}
-              </Wrap>
-            </>
-          )}
-        {politician?.profile?.votes_and_polls &&
-          politician.profile.votes_and_polls.length > 0 && (
-            <>
-              <TouchableOpacity
-                style={styles.pollsHeader}
-                onPress={() => {
-                  navigator.push('PollsScreen', {
-                    politician,
-                  });
-                }}>
-                <Text style={styles.pollsTitle}>Abstimmungen</Text>
-                <Text style={styles.moreButton}>mehr</Text>
-              </TouchableOpacity>
-              <ScrollView
-                style={styles.pollContainer}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}>
-                {politician?.profile?.votes_and_polls.map(poll => (
+        {politician.committees && (
+          <>
+            <Text style={styles.subtitle}>Politische Schwerpunkte</Text>
+            <Wrap spacing={8}>
+              {politician.committees.map(committeeId => {
+                const committee = data.lookupCommittee(committeeId)!;
+
+                return (
+                  <View key={committeeId} style={styles.committee}>
+                    {committee.icon && (
+                      <Icon
+                        style={styles.committeeIcon}
+                        icon={committee.icon}
+                      />
+                    )}
+                    <Text style={styles.committeeLabel}>{committee.name}</Text>
+                  </View>
+                );
+              })}
+            </Wrap>
+          </>
+        )}
+        {politician.votes && (
+          <>
+            <TouchableOpacity
+              style={styles.pollsHeader}
+              onPress={() => pollsModal.current?.open()}>
+              <Text style={styles.pollsTitle}>Kürzliche Abstimmungen</Text>
+              <Icon style={styles.pollsArrow} icon={ArrowForwardIos} />
+            </TouchableOpacity>
+            <ScrollView
+              style={styles.pollContainer}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}>
+              {data.polls
+                .filter(poll => poll.id in politician.votes!)
+                .slice(0, 5)
+                .map(poll => (
                   <PollCard
-                    key={poll.Poll.id}
-                    // eslint-disable-next-line react-native/no-inline-styles
+                    key={poll.id}
                     style={{
                       width: width - 32,
                       marginHorizontal: 4,
                     }}
-                    poll={poll.Poll}
-                    vote={poll.Vote}
-                    candidateVote={poll.Vote.vote}
+                    poll={poll}
+                    candidateVote={politician.votes![poll.id]}
                   />
                 ))}
-              </ScrollView>
-            </>
-          )}
-        {politician?.news && politician.news.items.length > 0 && (
-          <>
-            <TouchableOpacity
-              style={styles.pollsHeader}
-              onPress={() => {
-                navigator.push('NewsScreen', {
-                  politician,
-                });
-              }}>
-              <Text style={styles.pollsTitle}>Artikel</Text>
-              <Text style={styles.moreButton}>mehr</Text>
-            </TouchableOpacity>
-            <ScrollView
-              style={styles.pollContainer}
-              horizontal
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}>
-              {politician?.news?.items.map((news, index) => (
-                <NewsCard
-                  key={index}
-                  title={news.title}
-                  image={news.images}
-                  date={formatDate(news.published)}
-                  url={news.url}
-                  source={news.source}
-                />
-              ))}
             </ScrollView>
           </>
         )}
-        {politician?.speeches && politician.speeches.length > 0 && (
+        {politician.sideJobs && (
           <>
-            <TouchableOpacity
-              style={styles.pollsHeader}
-              onPress={() => {
-                navigator.push('SpeechesScreen', {
-                  politician,
-                });
-              }}>
-              <Text style={styles.pollsTitle}>Reden</Text>
-              <Text style={styles.moreButton}>mehr</Text>
-            </TouchableOpacity>
-            <ScrollView
-              style={styles.pollContainer}
-              horizontal
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}>
-              {politician?.speeches?.slice(0, 5).map((speech, index) => (
-                <SpeechCard
-                  key={index}
-                  politician={politician.profile?.label!}
-                  title={speech.title}
-                  date={formatDate(speech.date)}
-                  video={speech.videoFileURI}
-                  cardHeight={103}
-                  cardWidth={width * 0.71}
-                />
-              ))}
-            </ScrollView>
-          </>
-        )}
-        {politician?.profile?.sidejobs &&
-          politician.profile.sidejobs.length > 0 && (
-            <>
-              <Text style={styles.subtitleFocus}>Nebentätigkeiten</Text>
-              {politician?.profile?.sidejobs.map((sidejob, index) => (
-                <View key={index} style={styles.sideJob}>
-                  <Text style={styles.sideJobTitle}>{sidejob.label}</Text>
-                  <Text style={styles.sideJobOrganization}>
-                    {sidejob.sidejob_organization.label}
-                  </Text>
-                  <View style={styles.sideJobBottomContainer}>
-                    {sidejob.income_level && (
-                      <Text style={styles.sideJobIncome}>
-                        {sidejob.income_level}
-                      </Text>
-                    )}
-                    {sidejob.created && (
-                      <Text style={styles.sideJobDate}>
-                        {formatDate(sidejob.created)}
-                      </Text>
-                    )}
-                  </View>
+            <Text style={styles.subtitle}>Bekannte Nebentätigkeiten</Text>
+            {politician.sideJobs.map((sideJob, index) => (
+              <View key={index} style={styles.sideJob}>
+                <Text style={styles.sideJobTitle}>{sideJob.job}</Text>
+                <Text style={styles.sideJobOrganization}>
+                  {sideJob.organization}
+                </Text>
+                <View style={styles.sideJobBottomContainer}>
+                  {sideJob.incomeLevel && (
+                    <Text style={styles.sideJobIncome}>
+                      {incomeLevelLabels[sideJob.incomeLevel]}
+                    </Text>
+                  )}
+                  {sideJob.date && (
+                    <Text style={styles.sideJobDate}>
+                      {formatDate(sideJob.date)}
+                    </Text>
+                  )}
                 </View>
-              ))}
-            </>
-          )}
+              </View>
+            ))}
+          </>
+        )}
       </View>
+      <BottomSheet modalRef={pollsModal} modalTopOffset={60}>
+        <PollsView politician={politician} />
+      </BottomSheet>
     </ScrollView>
   );
 };
@@ -248,37 +138,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    paddingHorizontal: 12,
+    padding: 16,
   },
   subtitle: {
     color: Colors.foreground,
-    opacity: 1,
-    fontSize: 17,
+    opacity: 0.7,
+    fontSize: 12,
     fontWeight: '600',
     fontFamily: 'Inter',
-    marginTop: 18,
-    marginBottom: 6,
-  },
-  subtitleFocus: {
-    color: Colors.foreground,
-    opacity: 1,
-    fontSize: 17,
-    fontWeight: '600',
-    fontFamily: 'Inter',
-    marginTop: 18,
-    marginBottom: 14,
-  },
-  moreButton: {
-    color: Colors.foreground,
-    opacity: 1,
-    fontSize: 13,
-    fontWeight: '600',
-    fontFamily: 'Inter',
-    borderRadius: 4,
-    borderColor: Colors.moreButtonBorder,
-    borderWidth: 1.5,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    textTransform: 'uppercase',
+    marginTop: 16,
+    marginBottom: 8,
   },
   committee: {
     flexDirection: 'row',
@@ -299,17 +169,23 @@ const styles = StyleSheet.create({
   },
   pollsHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 16,
     marginBottom: 8,
   },
   pollsTitle: {
     flex: 1,
     color: Colors.foreground,
-    opacity: 1,
-    fontSize: 17,
+    opacity: 0.7,
+    fontSize: 12,
     fontWeight: '600',
     fontFamily: 'Inter',
+    textTransform: 'uppercase',
+  },
+  pollsArrow: {
+    width: 12,
+    height: 12,
+    color: Colors.foreground,
+    opacity: 0.7,
   },
   pollContainer: {
     overflow: 'visible',

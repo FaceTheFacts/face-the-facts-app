@@ -1,47 +1,39 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, View, StatusBar} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
+import CandidatesView from './CandidatesView';
 import ScannerView from './ScannerView';
 import TabMenu from '../component/TabMenu';
-import HomeView from './HomeView';
 import HistoryView from './HistoryView';
 import {Colors} from '../theme';
-import {
-  HomeIcon,
-  HomeIconSolid,
-  ScannerIcon,
-  ScannerIconSolid,
-  PoliticiansIcon,
-  PoliticiansIconSolid,
-} from '../icons';
+import {HistoryIcon, ListIcon, ScanPersonIcon} from '../icons';
 
 const MainView = () => {
   const [selected, setSelected] = useState('scanner');
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
       <View style={styles.contentContainer}>
-        {selected === 'home' && <HomeView setSelected={setSelected} />}
+        {selected === 'candidates' && <CandidatesView />}
         {selected === 'scanner' && <ScannerView />}
-        {selected === 'politicians' && <HistoryView />}
+        {selected === 'history' && <HistoryView />}
       </View>
       <SafeAreaView style={styles.tabBarContainer}>
         <TabMenu
           items={[
             {
-              name: 'home',
-              icons: [HomeIcon, HomeIconSolid],
-              label: 'Home',
+              name: 'candidates',
+              icon: ListIcon,
+              label: 'Wahl',
             },
             {
               name: 'scanner',
-              icons: [ScannerIcon, ScannerIconSolid],
-              label: 'Scan',
+              icon: ScanPersonIcon,
+              label: 'Scannen',
             },
             {
-              name: 'politicians',
-              icons: [PoliticiansIcon, PoliticiansIconSolid],
-              label: 'Politiker',
+              name: 'history',
+              icon: HistoryIcon,
+              label: 'Verlauf',
             },
           ]}
           selected={selected}

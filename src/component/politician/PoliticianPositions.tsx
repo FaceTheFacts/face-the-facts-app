@@ -1,44 +1,42 @@
 import React, {useContext, useState} from 'react';
-import {
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
+import {DataContext} from '../../logic/model';
 import Icon from '../Icon';
 import {ArrowForwardIos, ClearIcon} from '../../icons';
-import {ApiPosition} from '../../logic/api';
+import {PoliticianPosition} from '../../logic/data';
 import PositionAnswerTag from '../utils/PositionAnswerTag';
 
 const PoliticianPositions = () => {
   const politician = useContext(PoliticianContext);
+  const data = useContext(DataContext);
   const [openedCandidatePosition, setOpenedCandidatePosition] =
-    useState<ApiPosition | null>(null);
+    useState<PoliticianPosition | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const openedPosition = openedCandidatePosition
+    ? data.lookupPosition(openedCandidatePosition.id)
+    : null;
+
   return (
     <>
       <ScrollView style={styles.container}>
-        {politician?.positions?.positions?.map(candidatePosition => {
+        {politician.positions!.map(candidatePosition => {
+          const position = data.lookupPosition(candidatePosition.id)!;
+
           return (
             <TouchableOpacity
-              key={candidatePosition.id}
+              key={position.id}
               style={styles.position}
               onPress={() => {
                 setOpenedCandidatePosition(candidatePosition);
                 setModalOpen(true);
               }}>
-              <Text style={styles.title}>
-                {candidatePosition.position_statement.statement}
-              </Text>
+              <Text style={styles.title}>{position.title}</Text>
               <PositionAnswerTag
                 short
                 center
-                answer={candidatePosition.position}
+                answer={candidatePosition.answer}
               />
               <Icon style={styles.arrow} icon={ArrowForwardIos} />
             </TouchableOpacity>
@@ -61,14 +59,14 @@ const PoliticianPositions = () => {
             </TouchableOpacity>
             <View style={styles.modalContainer}>
               <Text style={styles.modalDescription}>
-                {openedCandidatePosition!.position_statement.statement}
+                {openedPosition!.title}
               </Text>
               <View style={styles.modalSeparator} />
-              <PositionAnswerTag answer={openedCandidatePosition.position} />
+              <PositionAnswerTag answer={openedCandidatePosition.answer} />
               {openedCandidatePosition.reason && (
                 <>
                   <Text style={styles.modalReasonLabel}>
-                    Begründung von {politician?.profile?.label}:
+                    Begründung von {politician.name}:
                   </Text>
                   <Text style={styles.modalReason}>
                     "{openedCandidatePosition.reason}"
