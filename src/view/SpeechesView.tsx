@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -11,8 +11,11 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
-import {IPoliticianContext} from '../logic/api';
+import {ApiSpeeches, IPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
+import {useQuery} from 'react-query';
+import {fetch_api} from '../logic/fetch';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export interface SpeechesViewProps {
   route: RouteProp<{params: {politician: IPoliticianContext}}, 'params'>;
@@ -20,7 +23,16 @@ export interface SpeechesViewProps {
 
 const SpeechesView = ({route}: SpeechesViewProps) => {
   const {politician} = route.params;
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const {width} = useWindowDimensions();
+  const {data: speeches} = useQuery<ApiSpeeches | undefined, Error>(
+    `speeches:${politician?.profile?.id}-${pageNumber}`,
+    () =>
+      fetch_api<ApiSpeeches>(
+        `politician/${politician?.profile?.id}/speeches?page=${pageNumber}`,
+      ),
+    {keepPreviousData: true},
+  );
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -35,12 +47,12 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
       </View>
       <View style={styles.separatorLine} />
       <ScrollView style={styles.container}>
-        {politician?.speeches?.map((speech, index) => (
+        {politician?.speeches?.items.map((speech, index) => (
           <View key={index}>
             {index !== 0 ? (
               checkPreviousMonth(
                 speech.date,
-                politician?.speeches![index + -1].date,
+                politician?.speeches!.items[index + -1].date,
               ) && (
                 <View style={styles.monthContainer}>
                   <Text style={styles.month}>{formatMonth(speech.date)}</Text>
@@ -63,6 +75,11 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
             </View>
           </View>
         ))}
+        {!speeches?.is_last_page && (
+          <TouchableOpacity onPress={() => setPageNumber(pageNumber + 1)}>
+            <Text style={styles.moreButton}>mehr</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />
     </>
@@ -136,6 +153,18 @@ const styles = StyleSheet.create({
   speechCardContainer: {
     alignSelf: 'center',
     marginVertical: 6,
+  },
+  moreButton: {
+    color: Colors.foreground,
+    opacity: 1,
+    fontSize: 13,
+    fontWeight: '600',
+    fontFamily: 'Inter',
+    borderRadius: 4,
+    borderColor: Colors.moreButtonBorder,
+    borderWidth: 1.5,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
 });
 
