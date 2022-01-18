@@ -101,9 +101,7 @@ const PoliticianOverview = () => {
               <Wrap spacing={8}>
                 {politician?.profile?.topic_ids_of_latest_committee.map(
                   (topicId, index) => {
-                    const topic = topicTypes.find(
-                      topicType => topicType.id === topicId,
-                    );
+                    const topic = topicTypes[topicId];
                     return (
                       <View key={index} style={styles.committee}>
                         {topic?.icon && (
