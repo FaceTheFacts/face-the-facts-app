@@ -124,6 +124,7 @@ const logoPathMap: Record<string, any> = {
   taz: require('../../assets/logo/tazLogo.png'),
   zeit: require('../../assets/logo/zeitLogo.png'),
   sueddeutsche: require('../../assets/logo/sueddeutscheLogo.png'),
+  tagesschau: require('../../assets/logo/tagesschauLogo.png'),
 };
 
 export function getLogoPath(source: string): any {
