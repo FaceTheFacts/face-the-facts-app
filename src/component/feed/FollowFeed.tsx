@@ -13,17 +13,28 @@ import {
   PollRowContent,
   SideJobTab,
   SideJobRowContent,
+  PoliticianInfo,
+  SpeechTab,
+  SpeechRowContent,
 } from './FeedRowContent';
 import FeedRow from '../FeedRow';
+import {useQueries} from 'react-query';
+import {fetch_api, request} from '../../logic/fetch';
+import {
+  ApiPoliticianProfile,
+  SpeechResponse,
+  ApiSpeechData,
+} from '../../logic/api';
 
 type ValueOf<T> = T[keyof T];
 
 interface TabEntities {
   poll: PollTab;
   sideJob: SideJobTab;
+  speech: SpeechTab;
 }
 
-type Row = PollTab | SideJobTab;
+type Row = PollTab | SideJobTab | SpeechTab;
 
 interface Tab<T extends ValueOf<TabEntities>> {
   type: keyof TabEntities;
@@ -42,6 +53,7 @@ const FollowFeed = ({
   setSelected,
   showPolls,
   showSideJobs,
+  showSpeeches,
 }: FollowFeedProps) => {
   const data = useContext(DataContext);
   const [visibleCount, setVisibleCount] = useState(20);
@@ -53,53 +65,132 @@ const FollowFeed = ({
     data.dbManager.getFollowedIds().then(setFollowedIds);
   }, [data]);
 
+  const politicianQueries = useQueries(
+    Array.from(followedIds).map(politicianId => {
+      return {
+        queryKey: ['politician', politicianId],
+        queryFn: () =>
+          fetch_api<SpeechResponse>(
+            `politician/${politicianId}?sidejobs_end=100&votes_end=100`,
+          ),
+      };
+    }),
+  );
+
+  const isProfileLoading = politicianQueries.some(query => query.isLoading);
+
+  const speechQueries = useQueries(
+    Array.from(followedIds).map(politicianId => {
+      return {
+        queryKey: ['politician:speech', politicianId],
+        queryFn: () =>
+          request<any>(
+            `https://de.openparliament.tv/api/v1/search/media?abgeordnetenwatchID=${politicianId}&page[size]=100&sort=date-desc`,
+          ),
+      };
+    }),
+  );
+
+  const isSpeechLoading = speechQueries.some(query => query.isLoading);
+
   useEffect(() => {
-    let allTabs: Tab<Row>[] = [];
-    const pollsMap: Map<string, Tab<PollTab>> = new Map();
-    const sideJobs: Tab<SideJobTab>[] = [];
-    for (const id of followedIds) {
-      const politician = data.lookupPolitician(id.toString());
-      if (!politician) {
-        continue;
-      }
-      politician.sideJobs?.forEach(sideJob => {
-        if (sideJob.date) {
-          const newSideJob: Tab<SideJobTab> = {
+    const profilesLoaded =
+      !isProfileLoading && politicianQueries.length === followedIds.size;
+
+    const speechesLoaded =
+      !isSpeechLoading && politicianQueries.length === followedIds.size;
+
+    if (profilesLoaded && speechesLoaded) {
+      let sideJobTabs: Tab<SideJobTab>[] = [];
+      const pollsMap: Map<number, Tab<PollTab>> = new Map();
+      const profilesMap: Map<number, ApiPoliticianProfile> = new Map();
+
+      politicianQueries.forEach(query => {
+        // @ts-ignore
+        const profile: ApiPoliticianProfile = query.data;
+        profilesMap.set(profile.id, profile);
+        const politician: PoliticianInfo = {
+          id: profile.id,
+          label: profile.label,
+        };
+
+        profile.sidejobs.forEach(sideJob => {
+          const sideJobTab: SideJobTab = {
+            politicians: [politician],
+            ...sideJob,
+          };
+          sideJobTabs.push({
             type: 'sideJob',
+            content: sideJobTab,
+          });
+        });
+
+        const pollsInVote: Set<number> = new Set();
+        profile.votes_and_polls.forEach(voteAndPoll => {
+          pollsInVote.add(voteAndPoll.Vote.poll_id);
+        });
+
+        profile.votes_and_polls.forEach(voteAndPoll => {
+          const pollId = voteAndPoll.Poll.id;
+          if (pollsInVote.has(pollId)) {
+            const poll: Tab<PollTab> = pollsMap.get(pollId) ?? {
+              type: 'poll',
+              content: {
+                ...voteAndPoll,
+                created: voteAndPoll.Poll.field_poll_date,
+                politicians: [],
+              },
+            };
+            poll.content.politicians.push(politician);
+            pollsMap.set(pollId, poll);
+          }
+        });
+      });
+
+      let speechTabs: Tab<SpeechTab>[] = [];
+      speechQueries.forEach(query => {
+        // @ts-ignore
+        const speeches: ApiSpeechData[] = query.data.data;
+        speeches.forEach(speech => {
+          const title = speech.relationships.agendaItem.data.attributes.title;
+          const politicianId =
+            speech.relationships.people.data[0].attributes.additionalInformation
+              .abgeordnetenwatchID;
+
+          const profile = profilesMap.get(Number(politicianId))!;
+          const politician: PoliticianInfo = {
+            id: profile.id,
+            label: profile.label,
+          };
+
+          const speechTab: Tab<SpeechTab> = {
+            type: 'speech',
             content: {
-              ...sideJob,
               politicians: [politician],
+              videoFileURI: speech.attributes.videoFileURI,
+              title,
+              created: speech.attributes.dateEnd,
             },
           };
-          sideJobs.push(newSideJob);
-        }
+          speechTabs.push(speechTab);
+        });
       });
-      const {votes} = data.lookupPolitician(id.toString())!;
-      const selPolls = data.polls.filter(poll => poll.id in votes!);
-      for (const selPoll of selPolls) {
-        const poll: Tab<PollTab> = pollsMap.get(selPoll.id) ?? {
-          type: 'poll',
-          content: {
-            id: selPoll.id,
-            title: selPoll.title,
-            politicians: [],
-            date: selPoll.date,
-          },
-        };
-        poll.content.politicians.push(politician);
-        pollsMap.set(selPoll.id, poll);
+
+      const pollTabs = Array.from(pollsMap.values());
+      const allTabs = [...pollTabs, ...sideJobTabs, ...speechTabs];
+      allTabs.sort(
+        (a, b) =>
+          new Date(b.content.created).getTime() -
+          new Date(a.content.created).getTime(),
+      );
+
+      if (allTabs.length > 0) {
+        setTabs(allTabs);
+        setVisibleTabs(allTabs.slice(0, 20));
       }
     }
-    const allPolls = Array.from(pollsMap.values());
-    allTabs = [...allPolls, ...sideJobs];
-    allTabs.sort(
-      (a, b) =>
-        new Date(b.content.date!).getTime() -
-        new Date(a.content.date!).getTime(),
-    );
-    setTabs(allTabs);
-    setVisibleTabs(allTabs.slice(0, 20));
-  }, [followedIds, data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isProfileLoading, isSpeechLoading, followedIds]);
 
   if (followedIds.size < 1) {
     return (
@@ -124,7 +215,7 @@ const FollowFeed = ({
             <FeedRow
               key={index}
               politicians={tab.content.politicians}
-              desc={(tab.content as PollTab).title}>
+              desc={(tab.content as PollTab).Poll.label}>
               <PollRowContent poll={tab.content as PollTab} />
             </FeedRow>
           )
@@ -135,8 +226,19 @@ const FollowFeed = ({
             <FeedRow
               key={index}
               politicians={tab.content.politicians}
-              desc={(tab.content as SideJobTab).job}>
+              desc={(tab.content as SideJobTab).label}>
               <SideJobRowContent sideJob={tab.content as SideJobTab} />
+            </FeedRow>
+          )
+        );
+      case 'speech':
+        return (
+          showSpeeches && (
+            <FeedRow
+              key={index}
+              politicians={tab.content.politicians}
+              desc={(tab.content as SpeechTab).title}>
+              <SpeechRowContent speech={tab.content as SpeechTab} />
             </FeedRow>
           )
         );

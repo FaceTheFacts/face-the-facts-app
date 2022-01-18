@@ -31,6 +31,16 @@ export interface IPoliticianContext {
   news?: ApiNews;
 }
 
+export interface ApiVoteAndPoll {
+  Vote: ApiVote;
+  Poll: ApiPoll;
+}
+
+export interface ApiVoteAndPoll {
+  Vote: ApiVote;
+  Poll: ApiPoll;
+}
+
 export interface ApiPoliticianProfile {
   id: number;
   entity_type: string;
@@ -61,10 +71,7 @@ export interface ApiPoliticianProfile {
     politician_id: number;
     link: string;
   }[];
-  votes_and_polls: {
-    Vote: ApiVote;
-    Poll: ApiPoll;
-  }[];
+  votes_and_polls: ApiVoteAndPoll[];
   topic_ids_of_latest_committee: number[];
 }
 
@@ -152,29 +159,48 @@ export interface ApiPollDetail {
   total_no_show: number;
 }
 
-export interface ApiSpeech {
+interface SpeechAttribute {
+  originID?: string;
+  originMediaID?: string;
+  creator: string;
   videoFileURI: string;
-  title: string;
-  date: string;
+  dateEnd: string;
 }
 
-export interface ApiNews {
-  items: ApiNewsArticle[];
+interface SpeechRelationship {
+  agendaItem: {
+    data: {
+      attributes: {
+        title: string;
+      };
+    };
+  };
+  people: {
+    data: {
+      attributes: {
+        additionalInformation: {
+          abgeordnetenwatchID: string;
+        };
+      };
+    }[];
+  };
 }
 
-export interface ApiNewsArticle {
+interface ApiSpeechData {
+  type: string;
   id: string;
-  highlight: string;
-  images: PoliTrackImage[];
-  published: string;
-  source: string;
-  title: string;
-  url: string;
+  attributes: SpeechAttribute;
+  relationships: SpeechRelationship;
 }
 
-export interface PoliTrackImage {
-  url: string;
-  title: string;
-  height: number;
-  width: number;
+interface SpeechResponse {
+  meta: {
+    api: unknown;
+    requestStatus: string;
+    results: {
+      count: number;
+      total: number;
+    };
+  };
+  data: ApiSpeechData[];
 }

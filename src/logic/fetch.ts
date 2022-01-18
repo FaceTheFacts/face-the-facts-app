@@ -9,3 +9,15 @@ export async function fetch_api<T>(url: string): Promise<T | undefined> {
     console.error(error);
   }
 }
+
+export async function request<T>(url: string): Promise<T | undefined> {
+  try {
+    const response = await fetch(url);
+    if (response.status >= 200 && response.status <= 299) {
+      return await response.json();
+    }
+    return undefined;
+  } catch (_) {
+    return undefined;
+  }
+}

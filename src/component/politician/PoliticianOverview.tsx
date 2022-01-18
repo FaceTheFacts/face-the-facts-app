@@ -48,6 +48,11 @@ import SpeechCard from '../speech/SpeechCard';
 import NewsCard from '../news/NewsCard';
 import {formatDate} from '../../utils/date';
 
+type TopicIcon = {
+  label: string;
+  icon: string;
+};
+
 export const possibleVotes: Vote[] = ['yes', 'no', 'abstain', 'no_show'];
 
 const PoliticianOverview = () => {
@@ -55,36 +60,36 @@ const PoliticianOverview = () => {
   const navigator = useContext<any>(NavigationContext)!;
   const {width} = useWindowDimensions();
 
-  const topicTypes = [
-    {id: 1, label: 'Medien', icon: MediaIcon},
-    {id: 2, label: 'Arbeit', icon: LabourIcon},
-    {id: 3, label: 'Bildung', icon: EducationIcon},
-    {id: 4, label: 'Europäische Union', icon: EuropeanUnionIcon},
-    {id: 5, label: 'Landwirtschaft', icon: AgricultureIcon},
-    {id: 6, label: 'Parlamentsangelegenheiten', icon: ParliamentaryAffairsIcon},
-    {id: 7, label: 'Kultur', icon: CultureIcon},
-    {id: 8, label: 'Recht', icon: LawIcon},
-    {id: 9, label: 'Umwelt', icon: EnvironmentIcon},
-    {id: 10, label: 'Verkehr', icon: TrafficIcon},
-    {id: 11, label: 'Außenwirtschaft', icon: ForeignTradeIcon},
-    {id: 12, label: 'Tourismus', icon: TourismIcon},
-    {id: 13, label: 'Verteidigung', icon: DefenceIcon},
-    {id: 14, label: 'Soziale Sicherung', icon: SocialSecurityIcon},
-    {id: 15, label: 'Wissenschaft', icon: ScienceIcon},
-    {id: 16, label: 'Gesellschaft', icon: SocietyIcon},
-    {id: 17, label: 'Entwicklungspolitik', icon: DevelopmentIcon},
-    {id: 18, label: 'Bauwesen', icon: HousingIcon},
-    {id: 19, label: 'Wirtschaft', icon: EconomyIcon},
-    {id: 20, label: 'Energie', icon: EnergyIcon},
-    {id: 21, label: 'Außenpolitik', icon: ForeignPolicyIcon},
-    {id: 22, label: 'Öffentliche Finanzen', icon: FinanceIcon},
-    {id: 23, label: 'Innere Sicherheit', icon: HomeSecurityIcon},
-    {id: 24, label: 'Staat und Verwaltung', icon: AdministrationIcon},
-    {id: 25, label: 'Zuwanderung', icon: MigrationIcon},
-    {id: 26, label: 'Neue Bundesländer', icon: NewStatesIcon},
-    {id: 27, label: 'Politisches Leben', icon: PoliticsIcon},
-    {id: 28, label: 'Gesundheit', icon: HealthIcon},
-  ];
+  const topicTypes: Record<number, TopicIcon> = {
+    1: {label: 'Medien', icon: MediaIcon},
+    2: {label: 'Arbeit', icon: LabourIcon},
+    3: {label: 'Bildung', icon: EducationIcon},
+    4: {label: 'Europäische Union', icon: EuropeanUnionIcon},
+    5: {label: 'Landwirtschaft', icon: AgricultureIcon},
+    6: {label: 'Parlamentsangelegenheiten', icon: ParliamentaryAffairsIcon},
+    7: {label: 'Kultur', icon: CultureIcon},
+    8: {label: 'Recht', icon: LawIcon},
+    9: {label: 'Umwelt', icon: EnvironmentIcon},
+    10: {label: 'Verkehr', icon: TrafficIcon},
+    11: {label: 'Außenwirtschaft', icon: ForeignTradeIcon},
+    12: {label: 'Tourismus', icon: TourismIcon},
+    13: {label: 'Verteidigung', icon: DefenceIcon},
+    14: {label: 'Soziale Sicherung', icon: SocialSecurityIcon},
+    15: {label: 'Wissenschaft', icon: ScienceIcon},
+    16: {label: 'Gesellschaft', icon: SocietyIcon},
+    17: {label: 'Entwicklungspolitik', icon: DevelopmentIcon},
+    18: {label: 'Bauwesen', icon: HousingIcon},
+    19: {label: 'Wirtschaft', icon: EconomyIcon},
+    20: {label: 'Energie', icon: EnergyIcon},
+    21: {label: 'Außenpolitik', icon: ForeignPolicyIcon},
+    22: {label: 'Öffentliche Finanzen', icon: FinanceIcon},
+    23: {label: 'Innere Sicherheit', icon: HomeSecurityIcon},
+    24: {label: 'Staat und Verwaltung', icon: AdministrationIcon},
+    25: {label: 'Zuwanderung', icon: MigrationIcon},
+    26: {label: 'Neue Bundesländer', icon: NewStatesIcon},
+    27: {label: 'Politisches Leben', icon: PoliticsIcon},
+    28: {label: 'Gesundheit', icon: HealthIcon},
+  };
 
   return (
     <ScrollView style={styles.containerWrapper}>
@@ -96,9 +101,7 @@ const PoliticianOverview = () => {
               <Wrap spacing={8}>
                 {politician?.profile?.topic_ids_of_latest_committee.map(
                   (topicId, index) => {
-                    const topic = topicTypes.find(
-                      topicType => topicType.id === topicId,
-                    );
+                    const topic = topicTypes[topicId];
                     return (
                       <View key={index} style={styles.committee}>
                         {topic?.icon && (
