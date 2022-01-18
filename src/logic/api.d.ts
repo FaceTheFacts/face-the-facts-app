@@ -36,6 +36,11 @@ export interface ApiVoteAndPoll {
   Poll: ApiPoll;
 }
 
+export interface ApiVoteAndPoll {
+  Vote: ApiVote;
+  Poll: ApiPoll;
+}
+
 export interface ApiPoliticianProfile {
   id: number;
   entity_type: string;
