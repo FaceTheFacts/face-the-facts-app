@@ -59,7 +59,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
 
   const {data: speeches} = useQuery<ApiSpeech[] | undefined, Error>(
     `speeches:${politicianId}`,
-    () => fetch_api<ApiSpeech[]>(`politician/${politicianId}/speeches`),
+    () => fetch_api<ApiSpeech[]>(`politician/${politicianId}/speeches?page=1`),
   );
 
   const {data: news} = useQuery<ApiNews | undefined, Error>(

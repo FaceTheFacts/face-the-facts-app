@@ -204,3 +204,34 @@ interface SpeechResponse {
   };
   data: ApiSpeechData[];
 }
+
+export interface ApiSpeech {
+  videoFileURI: string;
+  title: string;
+  date: string;
+}
+
+export interface ApiNews {
+  items: ApiNewsArticle[];
+  total: number;
+  page: number;
+  size: number;
+  is_last_page: boolean;
+}
+
+export interface ApiNewsArticle {
+  id: string;
+  highlight: string;
+  images: PoliTrackImage[];
+  published: string;
+  source: string;
+  title: string;
+  url: string;
+}
+
+export interface PoliTrackImage {
+  url: string;
+  title: string;
+  height: number;
+  width: number;
+}
