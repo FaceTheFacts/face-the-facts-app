@@ -21,8 +21,8 @@ import {
   ApiPositions,
   ApiPoliticianProfile,
   IPoliticianContext,
-  ApiSpeech,
   ApiNews,
+  ApiSpeeches,
 } from '../logic/api';
 
 type PoliticianViewParams = {
@@ -57,9 +57,9 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
     () => fetch_api<ApiPositions>(`politician/${politicianId}/positions`),
   );
 
-  const {data: speeches} = useQuery<ApiSpeech[] | undefined, Error>(
+  const {data: speeches} = useQuery<ApiSpeeches | undefined, Error>(
     `speeches:${politicianId}`,
-    () => fetch_api<ApiSpeech[]>(`politician/${politicianId}/speeches?page=1`),
+    () => fetch_api<ApiSpeeches>(`politician/${politicianId}/speeches?page=1`),
   );
 
   const {data: news} = useQuery<ApiNews | undefined, Error>(

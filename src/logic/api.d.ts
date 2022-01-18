@@ -27,7 +27,7 @@ export interface ApiPolitician {
 export interface IPoliticianContext {
   profile?: ApiPoliticianProfile;
   positions?: ApiPositions;
-  speeches?: ApiSpeech[];
+  speeches?: ApiSpeeches;
   news?: ApiNews;
 }
 
@@ -205,6 +205,14 @@ interface SpeechResponse {
   data: ApiSpeechData[];
 }
 
+export interface ApiSpeeches {
+  items: ApiSpeech[];
+  total: number;
+  page: number;
+  size: number;
+  is_last_page: boolean;
+}
+
 export interface ApiSpeech {
   videoFileURI: string;
   title: string;
@@ -213,10 +221,6 @@ export interface ApiSpeech {
 
 export interface ApiNews {
   items: ApiNewsArticle[];
-  total: number;
-  page: number;
-  size: number;
-  is_last_page: boolean;
 }
 
 export interface ApiNewsArticle {

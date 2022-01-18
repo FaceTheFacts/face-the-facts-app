@@ -184,7 +184,7 @@ const PoliticianOverview = () => {
             </ScrollView>
           </>
         )}
-        {politician?.speeches && politician.speeches.length > 0 && (
+        {politician?.speeches && politician.speeches.items.length > 0 && (
           <>
             <TouchableOpacity
               style={styles.pollsHeader}
@@ -201,7 +201,7 @@ const PoliticianOverview = () => {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}>
-              {politician?.speeches?.slice(0, 5).map((speech, index) => (
+              {politician?.speeches?.items.slice(0, 5).map((speech, index) => (
                 <SpeechCard
                   key={index}
                   politician={politician.profile?.label!}
