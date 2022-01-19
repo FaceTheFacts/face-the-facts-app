@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -13,7 +13,7 @@ import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
 import {ApiSpeeches, IPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
-import {useQuery} from 'react-query';
+import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -23,16 +23,29 @@ export interface SpeechesViewProps {
 
 const SpeechesView = ({route}: SpeechesViewProps) => {
   const {politician} = route.params;
-  const [pageNumber, setPageNumber] = useState<number>(1);
   const {width} = useWindowDimensions();
-  const {data: speeches} = useQuery<ApiSpeeches | undefined, Error>(
-    `speeches:${politician?.profile?.id}-${pageNumber}`,
-    () =>
-      fetch_api<ApiSpeeches>(
-        `politician/${politician?.profile?.id}/speeches?page=${pageNumber}`,
-      ),
-    {keepPreviousData: true},
+  const fetchSpeeches = (pageParam: number) =>
+    fetch_api<ApiSpeeches>(
+      `politician/${politician?.profile?.id}/speeches?page=${pageParam}`,
+    );
+  const {
+    data: speeches,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery<ApiSpeeches | undefined, Error>(
+    `speechesView:${politician?.profile?.id}`,
+    ({pageParam = 1}) => fetchSpeeches(pageParam),
+    {
+      placeholderData: {
+        pages: [politician.speeches],
+        pageParams: [],
+      },
+      keepPreviousData: true,
+      getNextPageParam: (lastPage, pages) =>
+        !lastPage?.is_last_page && pages.length + 1,
+    },
   );
+  console.log(speeches);
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -47,36 +60,38 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
       </View>
       <View style={styles.separatorLine} />
       <ScrollView style={styles.container}>
-        {politician?.speeches?.items.map((speech, index) => (
-          <View key={index}>
-            {index !== 0 ? (
-              checkPreviousMonth(
-                speech.date,
-                politician?.speeches!.items[index + -1].date,
-              ) && (
+        {speeches?.pages.map((page, pageIndex) =>
+          page?.items.map((speech, speechIndex) => (
+            <View key={pageIndex + speechIndex}>
+              {speechIndex !== 0 ? (
+                checkPreviousMonth(
+                  speech.date,
+                  politician?.speeches!.items[speechIndex + -1].date,
+                ) && (
+                  <View style={styles.monthContainer}>
+                    <Text style={styles.month}>{formatMonth(speech.date)}</Text>
+                  </View>
+                )
+              ) : (
                 <View style={styles.monthContainer}>
                   <Text style={styles.month}>{formatMonth(speech.date)}</Text>
                 </View>
-              )
-            ) : (
-              <View style={styles.monthContainer}>
-                <Text style={styles.month}>{formatMonth(speech.date)}</Text>
+              )}
+              <View style={styles.speechCardContainer}>
+                <SpeechCard
+                  politician={politician.profile?.label!}
+                  title={speech.title}
+                  date={formatDate(speech.date)}
+                  video={speech.videoFileURI}
+                  cardHeight={87}
+                  cardWidth={width - 24}
+                />
               </View>
-            )}
-            <View style={styles.speechCardContainer}>
-              <SpeechCard
-                politician={politician.profile?.label!}
-                title={speech.title}
-                date={formatDate(speech.date)}
-                video={speech.videoFileURI}
-                cardHeight={87}
-                cardWidth={width - 24}
-              />
             </View>
-          </View>
-        ))}
-        {!speeches?.is_last_page && (
-          <TouchableOpacity onPress={() => setPageNumber(pageNumber + 1)}>
+          )),
+        )}
+        {hasNextPage && (
+          <TouchableOpacity onPress={() => fetchNextPage()}>
             <Text style={styles.moreButton}>mehr</Text>
           </TouchableOpacity>
         )}
@@ -158,13 +173,17 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
     opacity: 1,
     fontSize: 13,
+    textAlign: 'center',
     fontWeight: '600',
     fontFamily: 'Inter',
     borderRadius: 4,
     borderColor: Colors.moreButtonBorder,
     borderWidth: 1.5,
+    marginVertical: 12,
     paddingHorizontal: 12,
     paddingVertical: 8,
+    width: 60,
+    alignSelf: 'center',
   },
 });
 
