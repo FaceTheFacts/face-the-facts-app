@@ -45,7 +45,6 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
         !lastPage?.is_last_page && pages.length + 1,
     },
   );
-  console.log(speeches);
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
