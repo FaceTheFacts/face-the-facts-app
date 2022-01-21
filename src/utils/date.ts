@@ -180,3 +180,28 @@ export function getWidth(
   //console.log(containerWidth * (voteNumber / total));
   return containerWidth * (voteNumber / total);
 }
+
+export function getChartData(partyVotes: ApiPollDetail[] | undefined) {
+  let total = 0;
+  let yes = 0;
+  let no = 0;
+  let abstain = 0;
+  let noShow = 0;
+  if (partyVotes !== undefined) {
+    partyVotes.map(partyVote => {
+      console.log(partyVote);
+      total +=
+        partyVote.total_yes +
+        partyVote.total_no +
+        partyVote.total_abstain +
+        partyVote.total_no_show;
+      yes += partyVote.total_yes;
+      no += partyVote.total_no;
+      abstain += partyVote.total_abstain;
+      noShow += partyVote.total_no_show;
+    });
+    return [total, yes, no, abstain, noShow];
+  }
+  // returning 0 breaks react-native-pie-chart
+  return [4, 1, 1, 1, 1];
+}
