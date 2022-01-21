@@ -1,3 +1,5 @@
+import {ApiPollDetail} from '../logic/api';
+
 function sameDay(a: Date, b: Date): boolean {
   return (
     a.getDate() === b.getDate() &&
@@ -133,4 +135,48 @@ export function getLogoPath(source: string): any {
   }
   // defaultLogo still missing
   return require('../../assets/logo/weltLogo.png');
+}
+
+export function getWidth(
+  width: number,
+  voteNumber: number,
+  partyVote: ApiPollDetail,
+) {
+  const total =
+    partyVote.total_yes +
+    partyVote.total_no +
+    partyVote.total_abstain +
+    partyVote.total_no_show;
+  const containerWidth = width - 122;
+  const yesWidth = (containerWidth * partyVote.total_yes) / total;
+  const noWidth = (containerWidth * partyVote.total_no) / total;
+  const abstainWidth = (containerWidth * partyVote.total_abstain) / total;
+  const noShowWidth = (containerWidth * partyVote.total_no_show) / total;
+  let smallWidthArray: Array<number> = [];
+  if (yesWidth > 0 && yesWidth < 7) {
+    smallWidthArray.push(yesWidth);
+  }
+  if (noWidth > 0 && noWidth < 7) {
+    smallWidthArray.push(noWidth);
+  }
+  if (abstainWidth > 0 && abstainWidth < 7) {
+    smallWidthArray.push(abstainWidth);
+  }
+  if (noShowWidth > 0 && noShowWidth < 7) {
+    smallWidthArray.push(noShowWidth);
+  }
+  let difference = 0;
+  const n = smallWidthArray.length;
+  for (let i = 0; i < n; i++) {
+    difference = difference + 7 - smallWidthArray[i];
+  }
+
+  const partialDifference = difference / (4 - n);
+  if (n > 0) {
+    const result = containerWidth * (voteNumber / total) - partialDifference;
+    return result;
+  }
+
+  //console.log(containerWidth * (voteNumber / total));
+  return containerWidth * (voteNumber / total);
 }
