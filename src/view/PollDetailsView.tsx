@@ -6,17 +6,19 @@ import {
   View,
   SafeAreaView,
   StatusBar,
+  useWindowDimensions,
 } from 'react-native';
 import {PollResult, Vote} from '../logic/data';
 import {Colors} from '../theme';
-import VoteTag, {voteColors} from '../component/utils/VoteTag';
+import VoteTag from '../component/utils/VoteTag';
 import ReadMoreHTML from '../component/utils/ReadMoreHTML';
-import Tag from '../component/utils/Tag';
 import type {ApiPoll, ApiPollDetail, ApiVote} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {RouteProp} from '@react-navigation/native';
 import BackButton from '../component/BackButton';
+import FractionTag from '../component/FractionTag';
+import {getWidth} from '../utils/date';
 
 export const pollResultLabels: Record<PollResult, string> = {
   yes: 'Antrag angenommen',
@@ -35,16 +37,14 @@ interface PollDetailsViewProps {
 
 const PollDetailsView = ({route}: PollDetailsViewProps) => {
   const {poll, vote, candidateVote} = route.params;
-
+  const {width} = useWindowDimensions();
   const pollResult: PollResult = poll.poll_passed ? 'yes' : 'no';
   const [expanded, setExpanded] = useState(false);
   const scrollView = useRef<ScrollView | null>(null);
-
   const pollDetailsQuery = useQuery<Array<ApiPollDetail> | undefined, Error>(
     `poll:${poll.id}:details`,
     () => fetch_api<Array<ApiPollDetail>>(`poll/${poll.id}/details`),
   );
-
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -69,7 +69,7 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
             onExpand={() => setExpanded(true)}
           />
         </View>
-        <View style={styles.middleContainer}>
+        {/*         <View style={styles.middleContainer}>
           <View style={styles.candidateAnswerContainer}>
             <Text style={styles.candidateAnswerLabel}>
               Kandidat:in stimmte mit
@@ -77,69 +77,131 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
             <VoteTag vote={candidateVote} />
           </View>
           <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
-        </View>
-        <View style={styles.votesContainer}>
-          <ScrollView style={styles.table} horizontal>
-            <View style={styles.tableVoteColumn}>
-              {pollDetailsQuery.data &&
-                pollDetailsQuery.data.map(
-                  (detail: ApiPollDetail, index: number) => (
-                    <VoteTag
-                      key={index}
-                      style={styles.tableVoteTag}
-                      vote={'yes'}
-                    />
-                  ),
-                )}
-            </View>
-            <View style={styles.tableTotalColumn}>
-              <Tag style={styles.tableTag} content="Gesamt" uppercase />
-              {pollDetailsQuery.data &&
-                pollDetailsQuery.data.map((detail, index) => (
-                  <Tag
-                    key={index}
-                    style={styles.tableTag}
-                    content={'Ja'}
-                    backgroundColor={
-                      vote === pollResult ? voteColors[vote] : Colors.background
-                    }
-                    spacing
-                    bold
-                  />
-                ))}
-            </View>
-            {pollDetailsQuery.data &&
-              pollDetailsQuery.data.map(partyVote => (
-                <View
-                  key={partyVote.fraction.id}
-                  style={styles.tablePartyColumn}>
-                  <Text>{partyVote.fraction.short_name}</Text>
-                  {/* <PartyTag
-                    style={styles.tableTag}
-                    party={partyVote.fraction.short_name}
-                  /> */}
-                  {[
-                    partyVote.total_yes,
-                    partyVote.total_no,
-                    partyVote.total_abstain,
-                    partyVote.total_no_show,
-                  ].map((vote, index) => (
-                    <Tag
-                      key={index}
-                      style={styles.tableTag}
-                      content={vote.toString()}
-                      backgroundColor={
-                        pollResult && index === 0
-                          ? voteColors.yes
-                          : Colors.background
-                      }
-                      spacing
-                      bold
-                    />
-                  ))}
-                </View>
-              ))}
-          </ScrollView>
+        </View> */}
+        <View style={styles.partyVotesCard}>
+          <Text style={styles.cardTitle}>Parteien</Text>
+          <View style={styles.separatorLine} />
+          {pollDetailsQuery.data &&
+            pollDetailsQuery.data.map(
+              (partyVote, index) =>
+                partyVote.fraction.full_name !== 'fraktionslos' && (
+                  <>
+                    <View
+                      key={partyVote.fraction.id}
+                      style={styles.fractionRow}>
+                      <View style={styles.fractionTagContainer}>
+                        <FractionTag
+                          party={partyVote.fraction.short_name}
+                          style={styles.fractionTag}
+                        />
+                      </View>
+                      <View
+                        style={[
+                          styles.partyVoteContainer,
+                          {
+                            width: width,
+                          },
+                        ]}>
+                        {partyVote.total_yes > 0 && (
+                          <View
+                            style={[
+                              styles.voteBarContainer,
+                              {
+                                width: getWidth(
+                                  width,
+                                  partyVote.total_yes,
+                                  partyVote,
+                                ),
+                              },
+                            ]}>
+                            <Text style={styles.partyVote}>
+                              {partyVote.total_yes}
+                            </Text>
+                            <View
+                              style={[
+                                styles.voteBar,
+                                {backgroundColor: '#45C66F'},
+                              ]}
+                            />
+                          </View>
+                        )}
+                        {partyVote.total_no > 0 && (
+                          <View
+                            style={[
+                              styles.voteBarContainer,
+                              {
+                                width: getWidth(
+                                  width,
+                                  partyVote.total_no,
+                                  partyVote,
+                                ),
+                              },
+                            ]}>
+                            <Text style={styles.partyVote}>
+                              {partyVote.total_no}
+                            </Text>
+                            <View
+                              style={[
+                                styles.voteBar,
+                                {backgroundColor: '#E54A6F'},
+                              ]}
+                            />
+                          </View>
+                        )}
+                        {partyVote.total_abstain > 0 && (
+                          <View
+                            style={[
+                              styles.voteBarContainer,
+                              {
+                                width: getWidth(
+                                  width,
+                                  partyVote.total_abstain,
+                                  partyVote,
+                                ),
+                              },
+                            ]}>
+                            <Text style={styles.partyVote}>
+                              {partyVote.total_abstain}
+                            </Text>
+                            <View
+                              style={[
+                                styles.voteBar,
+                                {backgroundColor: '#1382E3'},
+                              ]}
+                            />
+                          </View>
+                        )}
+                        {partyVote.total_no_show > 0 && (
+                          <View
+                            style={[
+                              styles.voteBarContainer,
+                              {
+                                width: getWidth(
+                                  width,
+                                  partyVote.total_no_show,
+                                  partyVote,
+                                ),
+                              },
+                            ]}>
+                            <Text style={styles.partyVote}>
+                              {partyVote.total_no_show}
+                            </Text>
+                            <View
+                              style={[
+                                styles.voteBar,
+                                {backgroundColor: '#464750'},
+                              ]}
+                            />
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                    {pollDetailsQuery?.data!.length > index + 2 && (
+                      <View key={index} style={styles.separatorLine} />
+                    )}
+                  </>
+                ),
+            )}
         </View>
       </ScrollView>
     </>
@@ -156,10 +218,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   textContainer: {
-    padding: 20,
+    padding: 12,
   },
   title: {
     color: Colors.foreground,
+    fontWeight: '600',
     fontSize: 17,
     fontFamily: 'Inter',
   },
@@ -200,26 +263,56 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     textAlign: 'right',
   },
-  votesContainer: {
-    padding: 20,
+  partyVotesCard: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 8,
+    marginHorizontal: 12,
+    marginVertical: 6,
   },
-  table: {
-    overflow: 'visible',
+  cardTitle: {
+    color: Colors.foreground,
+    fontWeight: '600',
+    fontSize: 17,
+    fontFamily: 'Inter',
+    padding: 12,
   },
-  tableVoteColumn: {
-    justifyContent: 'flex-end',
+  separatorLine: {
+    height: 1,
+    backgroundColor: Colors.foreground,
+    opacity: 0.12,
+    marginHorizontal: 12,
   },
-  tableTotalColumn: {
-    borderRightColor: Colors.inactive,
-    borderRightWidth: 1,
-    paddingRight: 4,
-    marginRight: 4,
+  fractionRow: {
+    padding: 12,
+    flexDirection: 'row',
+  },
+  fractionTagContainer: {
+    marginRight: 8,
+  },
+  fractionTag: {
     alignItems: 'center',
   },
-  tablePartyColumn: {},
-  tableTag: {
-    margin: 4,
-    alignSelf: 'center',
+  partyVoteContainer: {
+    flexDirection: 'row',
+  },
+  partyVote: {
+    fontFamily: 'Inter',
+    fontSize: 11,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: Colors.foreground,
+    flex: 1,
+    minWidth: 7,
+  },
+  voteBarContainer: {
+    marginRight: 4,
+    minWidth: 7,
+  },
+  voteBar: {
+    flex: 1,
+    maxHeight: 4,
+    borderRadius: 4,
+    marginBottom: 3,
   },
   tableVoteTag: {
     margin: 4,
