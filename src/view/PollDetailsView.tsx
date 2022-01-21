@@ -18,7 +18,8 @@ import {fetch_api} from '../logic/fetch';
 import {RouteProp} from '@react-navigation/native';
 import BackButton from '../component/BackButton';
 import FractionTag from '../component/FractionTag';
-import {getWidth} from '../utils/date';
+import {getChartData, getWidth} from '../utils/date';
+import PieChart from 'react-native-pie-chart';
 
 export const pollResultLabels: Record<PollResult, string> = {
   yes: 'Antrag angenommen',
@@ -45,6 +46,8 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
     `poll:${poll.id}:details`,
     () => fetch_api<Array<ApiPollDetail>>(`poll/${poll.id}/details`),
   );
+  const chartData = getChartData(pollDetailsQuery?.data);
+  console.log(chartData);
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -78,7 +81,48 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
           </View>
           <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
         </View> */}
-        <View style={styles.partyVotesCard}>
+        <View style={styles.votesCard}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.cardTitle}>Gesamt</Text>
+            <Text style={styles.totalVote}>{chartData[0]} Abgeordnete</Text>
+          </View>
+          <View style={styles.separatorLine} />
+          <View style={styles.contentContainer}>
+            <View style={styles.chartContainer}>
+              <PieChart
+                widthAndHeight={100}
+                series={chartData.slice(1, 5)}
+                sliceColor={['#45C66F', '#E54A6F', '#1382E3', '#464750']}
+                doughnut={true}
+                coverRadius={0.7}
+                coverFill={Colors.cardBackground}
+              />
+            </View>
+            <View style={styles.voteNumberCardContainer}>
+              <View style={styles.voteNumberContainer}>
+                <View style={styles.yesVote} />
+                <Text style={styles.voteNumberText}>Ja: {chartData[1]}</Text>
+              </View>
+              <View style={styles.voteNumberContainer}>
+                <View style={styles.noVote} />
+                <Text style={styles.voteNumberText}>Nein: {chartData[2]}</Text>
+              </View>
+              <View style={styles.voteNumberContainer}>
+                <View style={styles.abstainVote} />
+                <Text style={styles.voteNumberText}>
+                  Enthalten: {chartData[3]}
+                </Text>
+              </View>
+              <View style={styles.voteNumberContainer}>
+                <View style={styles.noShowVote} />
+                <Text style={styles.voteNumberText}>
+                  Abwesend: {chartData[4]}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.votesCard}>
           <Text style={styles.cardTitle}>Parteien</Text>
           <View style={styles.separatorLine} />
           {pollDetailsQuery.data &&
@@ -263,11 +307,16 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     textAlign: 'right',
   },
-  partyVotesCard: {
+  votesCard: {
     backgroundColor: Colors.cardBackground,
     borderRadius: 8,
     marginHorizontal: 12,
     marginVertical: 6,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   cardTitle: {
     color: Colors.foreground,
@@ -275,6 +324,75 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Inter',
     padding: 12,
+  },
+  totalVote: {
+    color: Colors.foreground,
+    fontWeight: '400',
+    fontSize: 11,
+    fontFamily: 'Inter',
+    padding: 12,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 54.5,
+    paddingVertical: 24,
+    alignItems: 'center',
+  },
+  chartContainer: {
+    flex: 1,
+  },
+  voteNumberCardContainer: {
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    padding: 0,
+  },
+  voteNumberContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  yesVote: {
+    height: 12,
+    width: 12,
+    backgroundColor: '#45C66F',
+    borderRadius: 2,
+    marginVertical: 6,
+    marginLeft: 2,
+    marginRight: 8,
+  },
+  noVote: {
+    height: 12,
+    width: 12,
+    backgroundColor: '#E54A6F',
+    borderRadius: 2,
+    marginVertical: 6,
+    marginLeft: 2,
+    marginRight: 8,
+  },
+  abstainVote: {
+    height: 12,
+    width: 12,
+    backgroundColor: '#1382E3',
+    borderRadius: 2,
+    marginVertical: 6,
+    marginLeft: 2,
+    marginRight: 8,
+  },
+  noShowVote: {
+    height: 12,
+    width: 12,
+    backgroundColor: '#464750',
+    borderRadius: 2,
+    marginVertical: 6,
+    marginLeft: 2,
+    marginRight: 8,
+  },
+  voteNumberText: {
+    color: Colors.foreground,
+    fontFamily: 'Inter',
+    fontSize: 13,
+    fontWeight: '400',
   },
   separatorLine: {
     height: 1,
