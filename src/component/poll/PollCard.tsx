@@ -13,6 +13,7 @@ import {pollResultLabels} from '../../view/PollDetailsView';
 import {Colors} from '../../theme';
 import {PollResult, Vote} from '../../logic/data';
 import {NavigationContext} from '@react-navigation/native';
+import {formatDate} from '../../utils/date';
 
 export interface PollCardProps {
   style?: StyleProp<ViewStyle>;
@@ -42,7 +43,10 @@ const PollCard = ({style, poll, vote, candidateVote}: PollCardProps) => {
         </Text>
         <VoteTag vote={candidateVote} />
       </View>
-      <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
+      <View style={styles.footerContainer}>
+        <Text style={styles.result}>{pollResultLabels[pollResult]}</Text>
+        <Text style={styles.date}>{formatDate(poll.field_poll_date)}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
