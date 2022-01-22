@@ -108,7 +108,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.cardBackground,
     borderRadius: 8,
     marginHorizontal: 12,
-    marginVertical: 6,
+    marginTop: 6,
+    marginBottom: 36,
   },
   cardTitle: {
     color: Colors.foreground,
