@@ -1,4 +1,4 @@
-import {ApiPollDetail} from '../logic/api';
+import {ApiPartyStyle, ApiPollDetail} from '../logic/api';
 
 function sameDay(a: Date, b: Date): boolean {
   return (
@@ -203,4 +203,123 @@ export function getChartData(partyVotes: ApiPollDetail[] | undefined) {
   }
   // returning 0 breaks react-native-pie-chart
   return [4, 1, 1, 1, 1];
+}
+
+const fractionStyleMap: Record<string, ApiPartyStyle> = {
+  FDP: {
+    id: 4,
+    display_name: 'FDP',
+    foreground_color: '#181924',
+    background_color: '#FFE06D',
+  },
+  'FDP/DVP': {
+    id: 4,
+    display_name: 'FDP',
+    foreground_color: '#181924',
+    background_color: '#FFE06D',
+  },
+  SPD: {
+    id: 1,
+    display_name: 'SPD',
+    foreground_color: '#FFFFFF',
+    background_color: '#E74343',
+  },
+  'CDU/CSU': {
+    id: 2,
+    display_name: 'Union',
+    foreground_color: '#FFFFFF',
+    background_color: '#5D6265',
+  },
+  CDU: {
+    id: 21,
+    display_name: 'CDU',
+    foreground_color: '#FFFFFF',
+    background_color: '#5D6265',
+  },
+  CSU: {
+    id: 22,
+    display_name: 'CSU',
+    foreground_color: '#FFFFFF',
+    background_color: '#0D6CB4',
+    border_color: '#F8F8F8',
+  },
+  'DIE GRÜNEN': {
+    id: 5,
+    display_name: 'Grüne',
+    foreground_color: '#FFFFFF',
+    background_color: '#40A962',
+  },
+  'DIE LINKE': {
+    id: 8,
+    display_name: 'Linke',
+    foreground_color: '#FFFFFF',
+    background_color: '#CD3E72',
+  },
+  AfD: {
+    id: 9,
+    display_name: 'AfD',
+    foreground_color: '#FFFFFF',
+    background_color: '#3AA6F4',
+  },
+  'BVB - Freie Wähler': {
+    id: 7,
+    display_name: 'FW',
+    foreground_color: '#2F5997',
+    background_color: '#F8F8F8',
+    border_color: '#FD820B',
+  },
+  EVP: {
+    id: 39,
+    display_name: 'EVP',
+    foreground_color: '#FFFFFF',
+    background_color: '#3AA6F4',
+  },
+  'S&D': {
+    id: 31,
+    display_name: 'S&D',
+    foreground_color: '#FFFFFF',
+    background_color: '#E74343',
+  },
+  'Grüne/EFA': {
+    id: 35,
+    display_name: 'Grüne',
+    foreground_color: '#FFFFFF',
+    background_color: '#40A962',
+  },
+  'GUE/NGL': {
+    id: 34,
+    display_name: 'Linke',
+    foreground_color: '#FFFFFF',
+    background_color: '#76232F',
+  },
+  ID: {
+    id: 39,
+    display_name: 'ID',
+    foreground_color: '#FFFFFF',
+    background_color: '#055DA3',
+  },
+  RE: {
+    id: 34,
+    display_name: 'RE',
+    foreground_color: '#181924',
+    background_color: '#FFE06D',
+  },
+  EKR: {
+    id: 39,
+    display_name: 'EKR',
+    foreground_color: '#FFFFFF',
+    background_color: '#1382E3',
+  },
+  fraktionslos: {
+    id: 25,
+    display_name: 'Sonst',
+    foreground_color: '#FFFFFF',
+    background_color: '#5D6265',
+  },
+};
+
+export function getFractionStyle(party: string) {
+  return party in fractionStyleMap
+    ? fractionStyleMap[party]
+    : fractionStyleMap.fraktionslos;
 }
