@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {PoliTrackImage} from '../../logic/api';
-import ProfilePicturePlaceholder from './../ProfilePicturePlaceholder';
 
 export interface NewsPictureProps {
   size?: number;
@@ -22,9 +21,6 @@ const NewsPicture = ({
   if (borderBottom) {
     radius = 8;
   }
-  if (image.length === 0) {
-    return <ProfilePicturePlaceholder />;
-  }
 
   return (
     <Image
@@ -32,7 +28,11 @@ const NewsPicture = ({
         styles.image,
         {borderBottomLeftRadius: radius, borderBottomRightRadius: radius},
       ]}
-      source={{uri: image[0].url}}
+      source={
+        image.length > 0
+          ? {uri: image[0].url}
+          : require('../../../assets/logo/placeHolderNewsArticleImage.png')
+      }
       width={width}
       height={height}
     />
