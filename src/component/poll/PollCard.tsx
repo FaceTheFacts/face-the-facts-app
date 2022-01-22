@@ -7,22 +7,32 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {ApiPoll, ApiVote} from '../../logic/api';
+import {ApiPoliticianProfile, ApiPoll, ApiVote} from '../../logic/api';
 import VoteTag from '../utils/VoteTag';
-import {pollResultLabels} from '../../view/PollDetailsView';
 import {Colors} from '../../theme';
 import {PollResult, Vote} from '../../logic/data';
 import {NavigationContext} from '@react-navigation/native';
 import {formatDate} from '../../utils/date';
 
+const pollResultLabels: Record<PollResult, string> = {
+  yes: 'Antrag angenommen',
+  no: 'Antrag abgelehnt',
+};
 export interface PollCardProps {
   style?: StyleProp<ViewStyle>;
   poll: ApiPoll;
   vote: ApiVote;
   candidateVote: Vote;
+  politician?: ApiPoliticianProfile;
 }
 
-const PollCard = ({style, poll, vote, candidateVote}: PollCardProps) => {
+const PollCard = ({
+  style,
+  poll,
+  vote,
+  candidateVote,
+  politician,
+}: PollCardProps) => {
   const navigator = useContext<any>(NavigationContext)!;
   const pollResult: PollResult = poll.poll_passed ? 'yes' : 'no';
 
@@ -35,6 +45,7 @@ const PollCard = ({style, poll, vote, candidateVote}: PollCardProps) => {
           poll,
           vote,
           candidateVote,
+          politician,
         });
       }}>
       <View style={styles.titleContainer}>
