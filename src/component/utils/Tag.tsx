@@ -38,7 +38,7 @@ const Tag = ({
       fontSize: 12,
       fontFamily: 'Inter',
       color: foregroundColor,
-      fontWeight: bold ? 'bold' : 'normal',
+      fontWeight: bold ? '600' : 'normal',
       marginLeft: spacing ? 8 : 0,
       marginRight: spacing ? 8 : 0,
       textTransform: uppercase ? 'uppercase' : 'none',
