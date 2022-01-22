@@ -176,7 +176,6 @@ export function getWidth(
     return result;
   }
 
-  //console.log(containerWidth * (voteNumber / total));
   return containerWidth * (voteNumber / total);
 }
 
@@ -188,7 +187,6 @@ export function getChartData(partyVotes: ApiPollDetail[] | undefined) {
   let noShow = 0;
   if (partyVotes !== undefined) {
     partyVotes.map(partyVote => {
-      console.log(partyVote);
       total +=
         partyVote.total_yes +
         partyVote.total_no +
