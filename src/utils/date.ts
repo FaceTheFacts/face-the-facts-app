@@ -133,8 +133,7 @@ export function getLogoPath(source: string): any {
   if (source in logoPathMap) {
     return logoPathMap[source];
   }
-  // defaultLogo still missing
-  return require('../../assets/logo/weltLogo.png');
+  return require('../../assets/logo/placeHolderNewsTag.png');
 }
 
 export function getWidth(
