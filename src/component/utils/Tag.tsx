@@ -10,6 +10,7 @@ export interface TagProps {
   bold?: boolean;
   spacing?: boolean;
   uppercase?: boolean;
+  width?: boolean;
 }
 
 const Tag = ({
@@ -21,6 +22,7 @@ const Tag = ({
   bold = false,
   spacing = false,
   uppercase = false,
+  width = false,
 }: TagProps) => {
   const styles = StyleSheet.create({
     container: {
@@ -30,12 +32,13 @@ const Tag = ({
       borderColor: borderColor,
       borderWidth: borderColor ? 2 : undefined,
       alignSelf: 'flex-start',
+      width: width ? 50 : undefined,
     },
     label: {
       fontSize: 12,
       fontFamily: 'Inter',
       color: foregroundColor,
-      fontWeight: bold ? 'bold' : 'normal',
+      fontWeight: bold ? '600' : 'normal',
       marginLeft: spacing ? 8 : 0,
       marginRight: spacing ? 8 : 0,
       textTransform: uppercase ? 'uppercase' : 'none',

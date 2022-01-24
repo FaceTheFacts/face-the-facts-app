@@ -16,6 +16,7 @@ const PartyTag = ({style, party}: PartyTagProps) => {
       foregroundColor={party.party_style.foreground_color}
       backgroundColor={party.party_style.background_color}
       borderColor={party.party_style.border_color}
+      bold
     />
   );
 };

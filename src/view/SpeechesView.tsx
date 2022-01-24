@@ -11,8 +11,11 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
-import {IPoliticianContext} from '../logic/api';
+import {ApiPaginatedData, ApiSpeech, IPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
+import {useInfiniteQuery} from 'react-query';
+import {fetch_api} from '../logic/fetch';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export interface SpeechesViewProps {
   route: RouteProp<{params: {politician: IPoliticianContext}}, 'params'>;
@@ -21,6 +24,27 @@ export interface SpeechesViewProps {
 const SpeechesView = ({route}: SpeechesViewProps) => {
   const {politician} = route.params;
   const {width} = useWindowDimensions();
+  const fetchSpeeches = (pageParam: number) =>
+    fetch_api<ApiPaginatedData<ApiSpeech>>(
+      `politician/${politician?.profile?.id}/speeches?page=${pageParam}`,
+    );
+  const {
+    data: speeches,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery<ApiPaginatedData<ApiSpeech> | undefined, Error>(
+    `speechesView:${politician?.profile?.id}`,
+    ({pageParam = 1}) => fetchSpeeches(pageParam),
+    {
+      placeholderData: {
+        pages: [politician.speeches],
+        pageParams: [],
+      },
+      keepPreviousData: true,
+      getNextPageParam: (lastPage, pages) =>
+        !lastPage?.is_last_page && pages.length + 1,
+    },
+  );
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -35,34 +59,41 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
       </View>
       <View style={styles.separatorLine} />
       <ScrollView style={styles.container}>
-        {politician?.speeches?.map((speech, index) => (
-          <View key={index}>
-            {index !== 0 ? (
-              checkPreviousMonth(
-                speech.date,
-                politician?.speeches![index + -1].date,
-              ) && (
+        {speeches?.pages.map((page, pageIndex) =>
+          page?.items.map((speech, speechIndex) => (
+            <View key={pageIndex + speechIndex}>
+              {speechIndex !== 0 ? (
+                checkPreviousMonth(
+                  speech.date,
+                  politician?.speeches!.items[speechIndex + -1].date,
+                ) && (
+                  <View style={styles.monthContainer}>
+                    <Text style={styles.month}>{formatMonth(speech.date)}</Text>
+                  </View>
+                )
+              ) : (
                 <View style={styles.monthContainer}>
                   <Text style={styles.month}>{formatMonth(speech.date)}</Text>
                 </View>
-              )
-            ) : (
-              <View style={styles.monthContainer}>
-                <Text style={styles.month}>{formatMonth(speech.date)}</Text>
+              )}
+              <View style={styles.speechCardContainer}>
+                <SpeechCard
+                  politician={politician.profile?.label!}
+                  title={speech.title}
+                  date={formatDate(speech.date)}
+                  video={speech.videoFileURI}
+                  cardHeight={87}
+                  cardWidth={width - 24}
+                />
               </View>
-            )}
-            <View style={styles.speechCardContainer}>
-              <SpeechCard
-                politician={politician.profile?.label!}
-                title={speech.title}
-                date={formatDate(speech.date)}
-                video={speech.videoFileURI}
-                cardHeight={87}
-                cardWidth={width - 24}
-              />
             </View>
-          </View>
-        ))}
+          )),
+        )}
+        {hasNextPage && (
+          <TouchableOpacity onPress={() => fetchNextPage()}>
+            <Text style={styles.moreButton}>mehr</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />
     </>
@@ -136,6 +167,22 @@ const styles = StyleSheet.create({
   speechCardContainer: {
     alignSelf: 'center',
     marginVertical: 6,
+  },
+  moreButton: {
+    color: Colors.foreground,
+    opacity: 1,
+    fontSize: 13,
+    textAlign: 'center',
+    fontWeight: '600',
+    fontFamily: 'Inter',
+    borderRadius: 4,
+    borderColor: Colors.moreButtonBorder,
+    borderWidth: 1.5,
+    marginVertical: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    width: 60,
+    alignSelf: 'center',
   },
 });
 

@@ -120,40 +120,37 @@ const PoliticianOverview = () => {
               </Wrap>
             </>
           )}
-        {politician?.profile?.votes_and_polls &&
-          politician.profile.votes_and_polls.length > 0 && (
-            <>
-              <TouchableOpacity
-                style={styles.pollsHeader}
-                onPress={() => {
-                  navigator.push('PollsScreen', {
-                    politician,
-                  });
-                }}>
-                <Text style={styles.pollsTitle}>Abstimmungen</Text>
-                <Text style={styles.moreButton}>mehr</Text>
-              </TouchableOpacity>
-              <ScrollView
-                style={styles.pollContainer}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}>
-                {politician?.profile?.votes_and_polls.map(poll => (
-                  <PollCard
-                    key={poll.Poll.id}
-                    // eslint-disable-next-line react-native/no-inline-styles
-                    style={{
-                      width: width - 32,
-                      marginHorizontal: 4,
-                    }}
-                    poll={poll.Poll}
-                    vote={poll.Vote}
-                    candidateVote={poll.Vote.vote}
-                  />
-                ))}
-              </ScrollView>
-            </>
-          )}
+        {politician?.profile && politician.profile.votes_and_polls.length > 0 && (
+          <>
+            <TouchableOpacity
+              style={styles.pollsHeader}
+              /* onPress={() => {navigator.push('PollsScreen', {politician,});}} */
+            >
+              <Text style={styles.pollsTitle}>Abstimmungen</Text>
+              <Text style={styles.moreButton}>mehr</Text>
+            </TouchableOpacity>
+            <ScrollView
+              style={styles.pollContainer}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}>
+              {politician?.profile?.votes_and_polls.map(poll => (
+                <PollCard
+                  key={poll.Poll.id}
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{
+                    width: width - 32,
+                    marginHorizontal: 4,
+                  }}
+                  poll={poll.Poll}
+                  vote={poll.Vote}
+                  candidateVote={poll.Vote.vote}
+                  politician={politician.profile}
+                />
+              ))}
+            </ScrollView>
+          </>
+        )}
         {politician?.news && politician.news.items.length > 0 && (
           <>
             <TouchableOpacity
@@ -184,7 +181,7 @@ const PoliticianOverview = () => {
             </ScrollView>
           </>
         )}
-        {politician?.speeches && politician.speeches.length > 0 && (
+        {politician?.speeches && politician.speeches.items.length > 0 && (
           <>
             <TouchableOpacity
               style={styles.pollsHeader}
@@ -201,7 +198,7 @@ const PoliticianOverview = () => {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}>
-              {politician?.speeches?.slice(0, 5).map((speech, index) => (
+              {politician?.speeches?.items.slice(0, 5).map((speech, index) => (
                 <SpeechCard
                   key={index}
                   politician={politician.profile?.label!}

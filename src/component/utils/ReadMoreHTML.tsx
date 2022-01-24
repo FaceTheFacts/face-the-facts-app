@@ -54,9 +54,7 @@ const ReadMoreHTML = ({
             onExpand?.call(null);
           }
         }}>
-        <Text style={styles.buttonLabel}>
-          {expanded ? 'Weniger lesen' : 'Mehr lesen'}
-        </Text>
+        <Text style={styles.moreButton}>{expanded ? 'weniger' : 'mehr'}</Text>
       </TouchableOpacity>
     </>
   );
@@ -71,7 +69,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   button: {
-    backgroundColor: Colors.cardBackground,
     paddingTop: 8,
     paddingBottom: 8,
     paddingLeft: 16,
@@ -79,13 +76,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignSelf: 'center',
   },
-  buttonLabel: {
+  moreButton: {
     color: Colors.foreground,
+    opacity: 1,
     fontSize: 13,
+    fontWeight: '600',
     fontFamily: 'Inter',
-    opacity: 0.8,
-    textTransform: 'uppercase',
-    textAlign: 'center',
+    borderRadius: 4,
+    borderColor: Colors.moreButtonBorder,
+    borderWidth: 1.5,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
 });
 
