@@ -136,6 +136,8 @@ export function getLogoPath(source: string): any {
   return require('../../assets/logo/placeHolderNewsTag.png');
 }
 
+const minimumWidth = 7;
+
 export function getWidth(
   width: number,
   voteNumber: number,
@@ -152,22 +154,22 @@ export function getWidth(
   const abstainWidth = (containerWidth * partyVote.total_abstain) / total;
   const noShowWidth = (containerWidth * partyVote.total_no_show) / total;
   let smallWidthArray: Array<number> = [];
-  if (yesWidth > 0 && yesWidth < 7) {
+  if (yesWidth > 0 && yesWidth < minimumWidth) {
     smallWidthArray.push(yesWidth);
   }
-  if (noWidth > 0 && noWidth < 7) {
+  if (noWidth > 0 && noWidth < minimumWidth) {
     smallWidthArray.push(noWidth);
   }
-  if (abstainWidth > 0 && abstainWidth < 7) {
+  if (abstainWidth > 0 && abstainWidth < minimumWidth) {
     smallWidthArray.push(abstainWidth);
   }
-  if (noShowWidth > 0 && noShowWidth < 7) {
+  if (noShowWidth > 0 && noShowWidth < minimumWidth) {
     smallWidthArray.push(noShowWidth);
   }
   let difference = 0;
   const n = smallWidthArray.length;
   for (let i = 0; i < n; i++) {
-    difference = difference + 7 - smallWidthArray[i];
+    difference = difference + minimumWidth - smallWidthArray[i];
   }
 
   const partialDifference = difference / (4 - n);
@@ -179,24 +181,19 @@ export function getWidth(
   return containerWidth * (voteNumber / total);
 }
 
-export function getChartData(partyVotes: ApiPollDetail[] | undefined) {
-  let total = 0;
+export function getChartData(partyVotes?: ApiPollDetail[]) {
   let yes = 0;
   let no = 0;
   let abstain = 0;
   let noShow = 0;
-  if (partyVotes !== undefined) {
-    partyVotes.map(partyVote => {
-      total +=
-        partyVote.total_yes +
-        partyVote.total_no +
-        partyVote.total_abstain +
-        partyVote.total_no_show;
+  if (partyVotes) {
+    partyVotes.forEach(partyVote => {
       yes += partyVote.total_yes;
       no += partyVote.total_no;
       abstain += partyVote.total_abstain;
       noShow += partyVote.total_no_show;
     });
+    const total = yes + no + abstain + noShow;
     return [total, yes, no, abstain, noShow];
   }
   // returning 0 breaks react-native-pie-chart

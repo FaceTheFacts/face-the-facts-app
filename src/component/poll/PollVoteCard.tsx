@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 import {ApiPollDetail} from '../../logic/api';
 import {Colors} from '../../theme';
@@ -17,8 +17,8 @@ const PollVoteCard = ({pollData}: PollVoteCardProps) => {
       <View style={styles.separatorLine} />
       {pollData &&
         pollData.map((partyVote, index) => (
-          <>
-            <View key={index} style={styles.fractionRow}>
+          <Fragment key={index}>
+            <View style={styles.fractionRow}>
               <View style={styles.fractionTagContainer}>
                 <FractionTag
                   party={partyVote.fraction.short_name}
@@ -95,9 +95,9 @@ const PollVoteCard = ({pollData}: PollVoteCardProps) => {
               </View>
             </View>
             {pollData.length > index + 1 && (
-              <View key={index + 10} style={styles.separatorLine} />
+              <View style={styles.separatorLine} />
             )}
-          </>
+          </Fragment>
         ))}
     </View>
   );

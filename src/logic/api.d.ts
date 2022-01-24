@@ -27,7 +27,7 @@ export interface ApiPolitician {
 export interface IPoliticianContext {
   profile?: ApiPoliticianProfile;
   positions?: ApiPositions;
-  speeches?: ApiSpeeches;
+  speeches?: ApiPaginatedData<ApiSpeech>;
   news?: ApiNews;
 }
 
@@ -205,8 +205,8 @@ interface SpeechResponse {
   data: ApiSpeechData[];
 }
 
-export interface ApiSpeeches {
-  items: ApiSpeech[];
+export interface ApiPaginatedData<T> {
+  items: T[];
   total: number;
   page: number;
   size: number;

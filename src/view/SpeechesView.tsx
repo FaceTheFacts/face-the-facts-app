@@ -11,7 +11,7 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
-import {ApiSpeeches, IPoliticianContext} from '../logic/api';
+import {ApiPaginatedData, ApiSpeech, IPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
@@ -25,14 +25,14 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
   const {politician} = route.params;
   const {width} = useWindowDimensions();
   const fetchSpeeches = (pageParam: number) =>
-    fetch_api<ApiSpeeches>(
+    fetch_api<ApiPaginatedData<ApiSpeech>>(
       `politician/${politician?.profile?.id}/speeches?page=${pageParam}`,
     );
   const {
     data: speeches,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery<ApiSpeeches | undefined, Error>(
+  } = useInfiniteQuery<ApiPaginatedData<ApiSpeech> | undefined, Error>(
     `speechesView:${politician?.profile?.id}`,
     ({pageParam = 1}) => fetchSpeeches(pageParam),
     {
