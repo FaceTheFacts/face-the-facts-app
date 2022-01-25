@@ -68,8 +68,13 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
           />
         </View>
         <View style={styles.separatorLine} />
-        <View>
-          <PoliticianCard politician={politician} vote={candidateVote} />
+        <View style={styles.politicianCardContainer}>
+          <PoliticianCard
+            politicianId={politician.id}
+            politicianName={politician.label}
+            party={politician.party}
+            vote={candidateVote}
+          />
         </View>
         <PollChart chartData={chartData} />
         <PollVoteCard pollData={pollDetailsQuery.data} />
@@ -112,6 +117,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.foreground,
     opacity: 0.12,
     marginHorizontal: 12,
+  },
+  politicianCardContainer: {
+    marginTop: 6,
   },
 });
 
