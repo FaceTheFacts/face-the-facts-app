@@ -24,6 +24,7 @@ import {
   ApiNews,
   ApiPaginatedData,
   ApiSpeech,
+  ApiSearchPolitician,
 } from '../logic/api';
 
 type PoliticianViewParams = {
@@ -72,6 +73,15 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
     () => fetch_api<ApiNews>(`politician/${politicianId}/news?page=1&size=5`),
   );
 
+  const {data: constituency} = useQuery<
+    ApiSearchPolitician[] | undefined,
+    Error
+  >(`constituency:${politicianId}`, () =>
+    fetch_api<ApiSearchPolitician[]>(
+      `politician/${politicianId}/constituencies`,
+    ),
+  );
+
   const {width} = useWindowDimensions();
 
   const routes = [
@@ -90,10 +100,10 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
         title: 'Positionen',
         key: 'positions',
       },
-    // /* politician.constituency && {
-    //     title: 'Wahlkreis',
-    //     key: 'constituency',
-    //   }, */
+    constituency && {
+      title: 'Wahlkreis',
+      key: 'constituency',
+    },
   ].filter(Boolean) as Route[];
 
   const [tabIndex, setTabIndex] = useState<number>(() =>
@@ -101,7 +111,8 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
   );
 
   return (
-    <PoliticianContext.Provider value={{positions, profile, speeches, news}}>
+    <PoliticianContext.Provider
+      value={{positions, profile, speeches, news, constituency}}>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.container}>
         <StatusBar
