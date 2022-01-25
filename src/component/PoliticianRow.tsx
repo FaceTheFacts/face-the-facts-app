@@ -47,7 +47,7 @@ const PoliticianRow = ({
           politicianId,
         });
       }}>
-      <PoliticianPicture politicianId={politicianId} />
+      <PoliticianPicture politicianId={politicianId} size={48} />
       <View style={styles.content}>
         {politician ? (
           <>
@@ -71,18 +71,18 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.cardBackground,
     borderRadius: 8,
-    padding: 16,
+    padding: 12,
     flexDirection: 'row',
   },
   content: {
     flex: 1,
     flexDirection: 'column',
-    marginLeft: 16,
+    marginLeft: 12,
     justifyContent: 'center',
   },
   name: {
     color: Colors.foreground,
-    fontSize: 18,
+    fontSize: 13,
     fontFamily: 'Inter',
     marginBottom: 4,
   },
