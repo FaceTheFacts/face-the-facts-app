@@ -29,6 +29,7 @@ export interface IPoliticianContext {
   positions?: ApiPositions;
   speeches?: ApiPaginatedData<ApiSpeech>;
   news?: ApiNews;
+  constituency?: ApiSearchPolitician[];
 }
 
 export interface ApiVoteAndPoll {
