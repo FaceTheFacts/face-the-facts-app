@@ -1,67 +1,47 @@
 import React, {useContext} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
-import {DataContext} from '../../logic/model';
+import {StyleSheet, View} from 'react-native';
 import {PoliticianContext} from '../../view/PoliticianView';
-import PoliticianRow from '../PoliticianRow';
 import {Colors} from '../../theme';
+import {ScrollView} from 'react-native-gesture-handler';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import PoliticianRow from '../PoliticianRow';
 
 const PoliticianConstituency = () => {
-  const data = useContext(DataContext);
   const politician = useContext(PoliticianContext);
-  const constituency = data.lookupConstituencies(politician.constituency!)!;
-  const parentPoliticianId = politician.id;
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.numberLabel}>Wahlkreis {constituency.number}</Text>
-      <Text style={styles.nameLabel}>{constituency.name}</Text>
-      <View style={styles.separator} />
-      <FlatList
-        style={styles.politicianList}
-        data={constituency.politicians}
-        keyExtractor={item => item}
-        renderItem={info => (
-          <PoliticianRow
-            style={styles.politicianRow}
-            politician={data.lookupPolitician(info.item)!}
-            parentPoliticianId={parentPoliticianId}
-          />
-        )}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <ScrollView>
+          {politician?.constituency &&
+            politician?.constituency.map(
+              (constituencyCandidate, index) =>
+                constituencyCandidate.id !== politician.profile?.id && (
+                  <View style={styles.rowContainer}>
+                    <PoliticianRow
+                      key={index}
+                      politician={constituencyCandidate}
+                      politicianId={constituencyCandidate.id}
+                    />
+                  </View>
+                ),
+            )}
+        </ScrollView>
+      </View>
+      <SafeAreaView style={styles.iosSafeBottom} />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingTop: 6,
+    paddingHorizontal: 12,
   },
-  numberLabel: {
-    color: Colors.foreground,
-    fontSize: 13,
-    fontFamily: 'Inter',
-    marginBottom: 2,
+  rowContainer: {
+    padding: 6,
   },
-  nameLabel: {
-    color: Colors.foreground,
-    fontSize: 17,
-    fontFamily: 'Inter',
-  },
-  separator: {
-    backgroundColor: Colors.foreground,
-    height: 1,
-    opacity: 0.2,
-    marginTop: 12,
-    marginBottom: 4,
-  },
-  politicianList: {
-    marginHorizontal: -16,
-    paddingHorizontal: 16,
-  },
-  politicianRow: {
-    marginVertical: 4,
-  },
+  iosSafeBottom: {flex: 0, backgroundColor: Colors.background},
 });
 
 export default PoliticianConstituency;
