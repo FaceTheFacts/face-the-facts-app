@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   View,
   useWindowDimensions,
+  TouchableOpacity,
 } from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
@@ -15,7 +16,6 @@ import {ApiPaginatedData, ApiSpeech, IPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export interface SpeechesViewProps {
   route: RouteProp<{params: {politician: IPoliticianContext}}, 'params'>;

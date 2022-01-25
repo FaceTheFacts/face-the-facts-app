@@ -1,8 +1,13 @@
 import React, {useRef} from 'react';
-import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  ScrollView,
+  View,
+} from 'react-native';
 import {Colors} from '../../theme';
 import Video from 'react-native-video';
-import {ScrollView} from 'react-native-gesture-handler';
 
 export interface SpeechPlayerProps {
   politician?: string;
