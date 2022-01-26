@@ -23,19 +23,23 @@ import PoliticianRow from '../component/PoliticianRow';
 import Icon from '../component/Icon';
 import {SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {debounce} from 'lodash';
 
 const HistoryView = () => {
+  const data = useContext(DataContext);
+  const insets = useSafeAreaInsets();
+  const timeout = useRef<NodeJS.Timeout | null>(null);
   const [items, setItems] = useState<HistoryItem[] | null>(null);
 
-  const data = useContext(DataContext);
+  const [searching, setSearching] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const inputRef = useRef<TextInput>(null);
+  const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     data.dbManager.getHistoryItems().then(setItems);
   }, [data]);
-  const [searching, setSearching] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
-  const inputRef = useRef<TextInput>(null);
-  const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     if (searching) {
       Animated.spring(searchOverlayOpacity, {
@@ -51,25 +55,12 @@ const HistoryView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searching]);
 
-  const debouncedSearch = useRef(
-    // eslint-disable-next-line no-shadow
-    debounce(searchInput => {
-      setSearchInput(searchInput);
-    }, 300),
-  ).current;
-
-  React.useEffect(() => {
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [debouncedSearch]);
-
   const {data: search, status} = useQuery<
     ApiSearchPolitician[] | undefined,
     Error
-  >(`search-${searchInput}`, () =>
+  >(`search-${searchQuery}`, () =>
     fetch_api<ApiSearchPolitician[]>(
-      `search?text=${searchInput}&page=1&size=50`,
+      `search?text=${searchQuery}&page=1&size=50`,
     ),
   );
 
@@ -95,7 +86,19 @@ const HistoryView = () => {
     return () => handler.remove();
   }, [searching]);
 
-  const insets = useSafeAreaInsets();
+  useEffect(() => {
+    timeout.current = setTimeout(() => {
+      setSearchQuery(searchInput);
+      timeout.current = null;
+    }, 3000);
+
+    return () => {
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+    };
+  }, [searchInput]);
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -123,13 +126,13 @@ const HistoryView = () => {
               ])}>
               <Icon style={styles.searchBarIcon} icon={SearchIcon} />
               <TextInput
-                ref={inputRef}
                 style={styles.searchBarInput}
                 placeholder="Suche"
                 placeholderTextColor={Colors.foreground}
                 onFocus={startSearching}
                 onBlur={() => setSearching(searchInput !== '')}
-                onChangeText={debouncedSearch}
+                value={searchInput}
+                onChangeText={setSearchInput}
                 autoCompleteType="off"
                 dataDetectorTypes="none"
                 textContentType="none"
@@ -145,8 +148,7 @@ const HistoryView = () => {
                 style={styles.searchBarButton}
                 onPress={() => {
                   setSearchInput('');
-                  inputRef.current!.focus();
-                  stopSearching();
+                  inputRef.current?.focus();
                 }}>
                 <Text style={styles.searchBarButtonText}>Abbrechen</Text>
               </TouchableOpacity>
