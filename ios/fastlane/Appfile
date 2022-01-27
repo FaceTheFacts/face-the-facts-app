@@ -1,0 +1,8 @@
+app_identifier("app.facethefacts") # The bundle identifier of your app
+apple_id("v.c.bellu@gmail.com") # Your Apple email address
+
+itc_team_id("123342511") # App Store Connect Team ID
+team_id("97A6Z6XG2Q") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
