@@ -24,12 +24,12 @@ import SpeechesView from './view/SpeechesView';
 import NewsView from './view/NewsView';
 
 const Stack = createStackNavigator();
+const queryClient = new QueryClient();
 
 const App = () => {
   const [data, setData] = useState<FaceTheFactsData | null>(null);
   const [missingData, setMissingData] = useState(false);
-  // Create a QueryClient
-  const queryClient = new QueryClient();
+
   useEffect(() => {
     FaceTheFactsData.load(setData, () => setMissingData(true));
   }, []);
