@@ -55,7 +55,7 @@ const HistoryView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searching]);
 
-  const {data: search, status} = useQuery<
+  const {data: searchData, status} = useQuery<
     ApiSearchPolitician[] | undefined,
     Error
   >(`search-${searchQuery}`, () =>
@@ -90,7 +90,7 @@ const HistoryView = () => {
     timeout.current = setTimeout(() => {
       setSearchQuery(searchInput);
       timeout.current = null;
-    }, 3000);
+    }, 300);
 
     return () => {
       if (timeout.current) {
@@ -113,75 +113,74 @@ const HistoryView = () => {
           },
         ]}
       />
-      <SafeAreaView style={styles.header}>
-        <KeyboardAvoidingView
-          style={styles.searchWrapper}
-          behavior="height"
-          keyboardVerticalOffset={insets.top}>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={StyleSheet.flatten([
-                styles.searchBarContainer,
-                insets.top <= 20 && {marginTop: 16},
-              ])}>
-              <Icon style={styles.searchBarIcon} icon={SearchIcon} />
-              <TextInput
-                style={styles.searchBarInput}
-                placeholder="Suche"
-                placeholderTextColor={Colors.foreground}
-                onFocus={startSearching}
-                onBlur={() => setSearching(searchInput !== '')}
-                value={searchInput}
-                onChangeText={setSearchInput}
-                autoCompleteType="off"
-                dataDetectorTypes="none"
-                textContentType="none"
-                spellCheck={false}
-                autoCorrect={false}
-                autoCapitalize="words"
-                returnKeyType="search"
-                keyboardAppearance="dark"
-              />
-            </View>
-            {searching && (
-              <TouchableOpacity
-                style={styles.searchBarButton}
-                onPress={() => {
-                  setSearchInput('');
-                  inputRef.current?.focus();
-                }}>
-                <Text style={styles.searchBarButtonText}>Abbrechen</Text>
-              </TouchableOpacity>
-            )}
+      <KeyboardAvoidingView
+        style={styles.searchWrapper}
+        behavior="height"
+        keyboardVerticalOffset={insets.top}>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={StyleSheet.flatten([
+              styles.searchBarContainer,
+              insets.top <= 20 && {marginTop: 16},
+            ])}>
+            <Icon style={styles.searchBarIcon} icon={SearchIcon} />
+            <TextInput
+              ref={inputRef}
+              style={styles.searchBarInput}
+              placeholder="Suche"
+              placeholderTextColor={Colors.foreground}
+              onFocus={startSearching}
+              onBlur={() => setSearching(searchInput !== '')}
+              value={searchInput}
+              onChangeText={setSearchInput}
+              autoCompleteType="off"
+              dataDetectorTypes="none"
+              textContentType="none"
+              spellCheck={false}
+              autoCorrect={false}
+              autoCapitalize="words"
+              returnKeyType="search"
+              keyboardAppearance="dark"
+            />
           </View>
-          {searching && search && status === 'success' && searchInput !== '' && (
-            <View>
-              <View style={styles.separatorLine} />
-              <Text style={styles.searchResultTitle}>suchergebnisse</Text>
-              <ScrollView
-                style={styles.searchResultContainer}
-                keyboardDismissMode="interactive">
-                {search?.map(politician => (
-                  <PoliticianRow
-                    key={politician.id}
-                    style={styles.searchItem}
-                    politician={politician}
-                    politicianId={politician.id}
-                  />
-                ))}
-              </ScrollView>
-            </View>
+          {searching && (
+            <TouchableOpacity
+              style={styles.searchBarButton}
+              onPress={() => {
+                setSearchInput('');
+                inputRef.current?.focus();
+                stopSearching();
+              }}>
+              <Text style={styles.searchBarButtonText}>Abbrechen</Text>
+            </TouchableOpacity>
           )}
-          {
-            // TO-DO: Implement Error Screen when ready
-            searching && !search && status === 'success' && (
-              <Text style={styles.searchNoResult}>
-                Es wurden keine Politiker:innen gefunden.
-              </Text>
-            )
-          }
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+        </View>
+        {searching && searchData && status === 'success' && searchQuery !== '' && (
+          <View>
+            <View style={styles.separatorLine} />
+            <Text style={styles.searchResultTitle}>suchergebnisse</Text>
+            <ScrollView
+              style={styles.searchResultContainer}
+              keyboardDismissMode="interactive">
+              {searchData?.map(politician => (
+                <PoliticianRow
+                  key={politician.id}
+                  style={styles.searchItem}
+                  politicianId={politician.id}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        )}
+        {
+          // TO-DO: Implement Error Screen when ready
+          searching && !searchData && status === 'success' && (
+            <Text style={styles.searchNoResult}>
+              Es wurden keine Politiker:innen gefunden.
+            </Text>
+          )
+        }
+      </KeyboardAvoidingView>
       <View style={styles.separatorLine} />
       <View style={[styles.historyContainer, searching && {opacity: 0.3}]}>
         <Text style={styles.subtitle}>Verlauf</Text>
@@ -262,6 +261,7 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     maxHeight: '100%',
+    backgroundColor: Colors.cardBackground,
   },
   searchBarContainer: {
     flex: 1,
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   searchResultContainer: {
-    height: '80%',
+    height: '78%',
     paddingHorizontal: 12,
     backgroundColor: Colors.background,
   },
