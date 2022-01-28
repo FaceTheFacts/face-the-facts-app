@@ -18,16 +18,19 @@ const PoliticianProfile = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const politician = useContext(PoliticianContext);
   const routes = [
-    (politician?.profile?.topic_ids_of_latest_committee.length !== 0 ||
-      politician?.profile?.votes_and_polls.length !== 0 ||
-      politician?.profile?.sidejobs.length !== 0) && {
+    ((politician?.profile &&
+      politician?.profile.topic_ids_of_latest_committee.length > 0) ||
+      (politician?.profile &&
+        politician?.profile?.votes_and_polls.length > 0) ||
+      (politician?.profile && politician?.profile?.sidejobs.length > 0)) && {
       key: 'overview',
       title: 'Übersicht',
     },
-    politician?.profile?.cvs.length !== 0 && {
-      key: 'cv',
-      title: 'Biografie',
-    },
+    politician?.profile &&
+      politician?.profile?.cvs.length > 0 && {
+        key: 'cv',
+        title: 'Biografie',
+      },
     {
       key: 'links',
       title: 'Weblinks',
