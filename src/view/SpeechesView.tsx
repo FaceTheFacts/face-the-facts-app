@@ -36,6 +36,8 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
     `speechesView:${politician?.profile?.id}`,
     ({pageParam = 1}) => fetchSpeeches(pageParam),
     {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
       placeholderData: {
         pages: [politician.speeches],
         pageParams: [],

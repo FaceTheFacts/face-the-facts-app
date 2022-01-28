@@ -21,6 +21,10 @@ const NewsView = ({route}: NewsViewProps) => {
       fetch_api<ApiNews>(
         `politician/${politician.profile?.id}/news?page=1&size=100`,
       ),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
   let news = politician.news;
   if (status === 'success') {

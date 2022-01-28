@@ -42,6 +42,10 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
   const pollDetailsQuery = useQuery<Array<ApiPollDetail> | undefined, Error>(
     `poll:${poll.id}:details`,
     () => fetch_api<Array<ApiPollDetail>>(`poll/${poll.id}/details`),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
   const chartData = getChartData(pollDetailsQuery?.data);
   return (

@@ -52,34 +52,58 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
       fetch_api<ApiPoliticianProfile>(
         `politician/${politicianId}?sidejobs_end=15&votes_end=5`,
       ),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
 
   const {data: positions} = useQuery<ApiPositions | undefined, Error>(
     `positions:${politicianId}`,
     () => fetch_api<ApiPositions>(`politician/${politicianId}/positions`),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
 
   const {data: speeches} = useQuery<
     ApiPaginatedData<ApiSpeech> | undefined,
     Error
-  >(`speeches:${politicianId}`, () =>
-    fetch_api<ApiPaginatedData<ApiSpeech>>(
-      `politician/${politicianId}/speeches?page=1`,
-    ),
+  >(
+    `speeches:${politicianId}`,
+    () =>
+      fetch_api<ApiPaginatedData<ApiSpeech>>(
+        `politician/${politicianId}/speeches?page=1`,
+      ),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
 
   const {data: news} = useQuery<ApiNews | undefined, Error>(
     `news:${politicianId}`,
     () => fetch_api<ApiNews>(`politician/${politicianId}/news?page=1&size=5`),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
 
   const {data: constituency} = useQuery<
     ApiSearchPolitician[] | undefined,
     Error
-  >(`constituency:${politicianId}`, () =>
-    fetch_api<ApiSearchPolitician[]>(
-      `politician/${politicianId}/constituencies`,
-    ),
+  >(
+    `constituency:${politicianId}`,
+    () =>
+      fetch_api<ApiSearchPolitician[]>(
+        `politician/${politicianId}/constituencies`,
+      ),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
 
   const {width} = useWindowDimensions();
@@ -100,19 +124,19 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
         title: 'Positionen',
         key: 'positions',
       },
-    constituency && {
-      title: 'Wahlkreis',
-      key: 'constituency',
-    },
+    constituency &&
+      constituency.length > 0 && {
+        title: 'Wahlkreis',
+        key: 'constituency',
+      },
   ].filter(Boolean) as Route[];
 
   const [tabIndex, setTabIndex] = useState<number>(() =>
     routes.findIndex(value => value.key === 'profile'),
   );
-
   return (
     <PoliticianContext.Provider
-      value={{positions, profile, speeches, news, constituency}}>
+      value={{profile, positions, news, speeches, constituency}}>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.container}>
         <StatusBar
