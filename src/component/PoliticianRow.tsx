@@ -14,19 +14,14 @@ import PoliticianPicture from './PoliticianPicture';
 import {NavigationContext} from '@react-navigation/native';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
-import type {ApiPoliticianProfile, ApiSearchPolitician} from '../logic/api';
+import type {ApiPoliticianProfile} from '../logic/api';
 
 export interface PoliticianRowProps {
   style?: StyleProp<ViewStyle>;
-  politician?: ApiSearchPolitician;
   politicianId: number;
 }
 
-const PoliticianRow = ({
-  style,
-  politician,
-  politicianId,
-}: PoliticianRowProps) => {
+const PoliticianRow = ({style, politicianId}: PoliticianRowProps) => {
   const database = useContext(DataContext);
   const navigator = useContext<any>(NavigationContext)!;
 
@@ -36,7 +31,10 @@ const PoliticianRow = ({
       fetch_api<ApiPoliticianProfile>(
         `politician/${politicianId}?sidejobs_end=15&votes_end=5`,
       ),
-    {enabled: !politician},
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
   return (
     <TouchableOpacity
@@ -49,18 +47,11 @@ const PoliticianRow = ({
       }}>
       <PoliticianPicture politicianId={politicianId} size={48} />
       <View style={styles.content}>
-        {politician ? (
+        {data && (
           <>
-            <Text style={styles.name}>{politician.label}</Text>
-            <PartyTag party={politician.party} />
+            <Text style={styles.name}>{data.label}</Text>
+            <PartyTag party={data.party} />
           </>
-        ) : (
-          data && (
-            <>
-              <Text style={styles.name}>{data.label}</Text>
-              <PartyTag party={data.party} />
-            </>
-          )
         )}
       </View>
     </TouchableOpacity>
