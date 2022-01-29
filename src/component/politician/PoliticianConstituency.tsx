@@ -14,9 +14,10 @@ const PoliticianConstituency = () => {
           politician?.constituency.map(
             (constituencyCandidate, index) =>
               constituencyCandidate.id !== politician.profile?.id && (
-                <View style={styles.rowContainer} key={index}>
-                  <PoliticianRow politicianId={constituencyCandidate.id} />
-                </View>
+                <PoliticianRow
+                  key={index}
+                  politicianId={constituencyCandidate.id}
+                />
               ),
           )}
       </ScrollView>
@@ -27,12 +28,9 @@ const PoliticianConstituency = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 6,
+    paddingTop: 12,
     paddingBottom: 12,
     paddingHorizontal: 12,
-  },
-  rowContainer: {
-    padding: 6,
   },
   iosSafeBottom: {flex: 0, backgroundColor: Colors.background},
 });
