@@ -1,4 +1,10 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   Animated,
   BackHandler,
@@ -15,14 +21,14 @@ import {Colors} from '../theme';
 import {HistoryItem} from '../logic/db';
 import {DataContext} from '../logic/model';
 import PoliticianList from '../component/PoliticianList';
-import {groupByDate} from '../utils/date';
 import {useQuery} from 'react-query';
 import {ApiSearchPolitician} from '../logic/api';
 import {fetch_api} from '../logic/fetch';
-import PoliticianRow from '../component/PoliticianRow';
 import Icon from '../component/Icon';
 import {SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useFocusEffect} from '@react-navigation/native';
+import PoliticianRow from '../component/PoliticianRow';
 
 const HistoryView = () => {
   const data = useContext(DataContext);
@@ -99,6 +105,13 @@ const HistoryView = () => {
     };
   }, [searchInput]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setSearchInput('');
+      stopSearching();
+    }, []),
+  );
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -148,7 +161,6 @@ const HistoryView = () => {
               style={styles.searchBarButton}
               onPress={() => {
                 setSearchInput('');
-                inputRef.current?.focus();
                 stopSearching();
               }}>
               <Text style={styles.searchBarButtonText}>Abbrechen</Text>
@@ -165,7 +177,6 @@ const HistoryView = () => {
               {searchData?.map(politician => (
                 <PoliticianRow
                   key={politician.id}
-                  style={styles.searchItem}
                   politicianId={politician.id}
                 />
               ))}
@@ -187,17 +198,7 @@ const HistoryView = () => {
         {items ? (
           items.length ? (
             <PoliticianList
-              sections={[
-                ...groupByDate(
-                  items,
-                  item => item.politicianId,
-                  item => item.date,
-                  (label, historyItems) => ({
-                    title: label,
-                    politicianIds: historyItems.map(item => item.politicianId),
-                  }),
-                ),
-              ]}
+              politicianIds={items.map(item => item.politicianId)}
             />
           ) : (
             <Text style={styles.noDataText}>
