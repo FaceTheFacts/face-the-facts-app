@@ -1,36 +1,22 @@
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {ScrollView} from 'react-native';
 import PoliticianRow from './PoliticianRow';
 
-export interface PoliticianListSection {
-  title: string;
+export interface PoliticianListProps {
   politicianIds: number[];
 }
 
-export interface PoliticianListProps {
-  sections: PoliticianListSection[];
-}
-
-const PoliticianList = ({sections}: PoliticianListProps) => {
+const PoliticianList = ({politicianIds}: PoliticianListProps) => {
+  const history = politicianIds.reverse();
+  const politicianHistory =
+    history.length > 10 ? history.slice(0, 10) : history;
   return (
     <ScrollView>
-      {sections.map(({politicianIds}) =>
-        politicianIds.map(politicianId => (
-          <PoliticianRow
-            key={politicianId}
-            style={styles.politician}
-            politicianId={politicianId}
-          />
-        )),
-      )}
+      {politicianHistory.map((politicianId, index) => (
+        <PoliticianRow key={index} politicianId={politicianId} />
+      ))}
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  politician: {
-    marginBottom: 10,
-  },
-});
 
 export default PoliticianList;
