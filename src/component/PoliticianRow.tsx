@@ -1,3 +1,8 @@
+//
+//    This Component has been depreciated.
+//    Checkout PoliticianItem instead.
+//
+
 import React, {useContext} from 'react';
 import {DataContext} from '../logic/model';
 import {
@@ -11,19 +16,26 @@ import {
 import {Colors} from '../theme';
 import PartyTag from './PartyTag';
 import PoliticianPicture from './PoliticianPicture';
-import {NavigationContext} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import type {ApiPoliticianProfile} from '../logic/api';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../view/RootStackParams';
 
 export interface PoliticianRowProps {
   style?: StyleProp<ViewStyle>;
   politicianId: number;
 }
 
+type politicianScreenProp = StackNavigationProp<
+  RootStackParamList,
+  'Politician'
+>;
+
 const PoliticianRow = ({style, politicianId}: PoliticianRowProps) => {
   const database = useContext(DataContext);
-  const navigator = useContext<any>(NavigationContext)!;
+  const navigator = useNavigation<politicianScreenProp>();
 
   const {data} = useQuery<ApiPoliticianProfile | undefined, Error>(
     `politician:${politicianId}`,
@@ -41,7 +53,7 @@ const PoliticianRow = ({style, politicianId}: PoliticianRowProps) => {
       style={StyleSheet.flatten([styles.container, style])}
       onPress={() => {
         database.dbManager.pushHistoryItem(politicianId);
-        navigator.push('PoliticianScreen', {
+        navigator.navigate('Politician', {
           politicianId,
         });
       }}>
