@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {PoliticianContext} from '../../view/PoliticianView';
+import {PoliticianContext} from '../../view/NewPoliticianView';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
 
@@ -107,6 +107,7 @@ const PoliticianLinks = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: Colors.background,
   },
   link: {
     flexDirection: 'row',

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {PoliticianContext} from '../../view/PoliticianView';
+import {PoliticianContext} from '../../view/NewPoliticianView';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
 import {ArrowForwardIos, ClearIcon} from '../../icons';
@@ -86,6 +86,7 @@ const PoliticianPositions = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: Colors.background,
   },
   position: {
     flexDirection: 'row',

@@ -5,7 +5,7 @@ import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
 import Tag from '../utils/Tag';
 import Wrap from '../utils/Wrap';
-import {PoliticianContext} from '../../view/PoliticianView';
+import {PoliticianContext} from '../../view/NewPoliticianView';
 import {DataContext} from '../../logic/model';
 
 const PoliticianHeader = () => {

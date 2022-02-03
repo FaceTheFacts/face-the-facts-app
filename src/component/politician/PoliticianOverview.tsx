@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import {NavigationContext} from '@react-navigation/native';
-import {PoliticianContext} from '../../view/PoliticianView';
+import {PoliticianContext} from '../../view/NewPoliticianView';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
 import Wrap from '../utils/Wrap';
@@ -127,7 +127,10 @@ const PoliticianOverview = () => {
               /* onPress={() => {navigator.push('PollsScreen', {politician,});}} */
             >
               <Text style={styles.pollsTitle}>Abstimmungen</Text>
-              <Text style={styles.moreButton}>mehr</Text>
+              {politician?.profile &&
+                politician.profile.votes_and_polls.length > 5 && (
+                  <Text style={styles.moreButton}>mehr</Text>
+                )}
             </TouchableOpacity>
             <ScrollView
               style={styles.pollContainer}
@@ -156,12 +159,14 @@ const PoliticianOverview = () => {
             <TouchableOpacity
               style={styles.pollsHeader}
               onPress={() => {
-                navigator.push('NewsScreen', {
+                navigator.push('News', {
                   politician,
                 });
               }}>
               <Text style={styles.pollsTitle}>Artikel</Text>
-              <Text style={styles.moreButton}>mehr</Text>
+              {politician?.news && politician.news.items.length > 5 && (
+                <Text style={styles.moreButton}>mehr</Text>
+              )}
             </TouchableOpacity>
             <ScrollView
               style={styles.pollContainer}
@@ -186,12 +191,14 @@ const PoliticianOverview = () => {
             <TouchableOpacity
               style={styles.pollsHeader}
               onPress={() => {
-                navigator.push('SpeechesScreen', {
+                navigator.push('Speeches', {
                   politician,
                 });
               }}>
               <Text style={styles.pollsTitle}>Reden</Text>
-              <Text style={styles.moreButton}>mehr</Text>
+              {politician?.speeches && politician.speeches.items.length > 5 && (
+                <Text style={styles.moreButton}>mehr</Text>
+              )}
             </TouchableOpacity>
             <ScrollView
               style={styles.pollContainer}
@@ -246,6 +253,7 @@ const PoliticianOverview = () => {
 const styles = StyleSheet.create({
   containerWrapper: {
     flex: 1,
+    backgroundColor: Colors.background,
   },
   container: {
     paddingHorizontal: 12,
