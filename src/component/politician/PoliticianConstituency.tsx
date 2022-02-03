@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {PoliticianContext} from '../../view/PoliticianView';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {PoliticianContext} from '../../view/NewPoliticianView';
 import {Colors} from '../../theme';
-import {ScrollView} from 'react-native-gesture-handler';
-import PoliticianRow from '../PoliticianRow';
+import PoliticianItem from '../PoliticianItem';
 
 const PoliticianConstituency = () => {
   const politician = useContext(PoliticianContext);
@@ -14,9 +13,11 @@ const PoliticianConstituency = () => {
           politician?.constituency.map(
             (constituencyCandidate, index) =>
               constituencyCandidate.id !== politician.profile?.id && (
-                <PoliticianRow
+                <PoliticianItem
                   key={index}
                   politicianId={constituencyCandidate.id}
+                  politicianName={constituencyCandidate.label}
+                  party={constituencyCandidate.party}
                 />
               ),
           )}
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 12,
     paddingHorizontal: 12,
+    backgroundColor: Colors.background,
   },
   iosSafeBottom: {flex: 0, backgroundColor: Colors.background},
 });
