@@ -28,7 +28,7 @@ import Icon from '../component/Icon';
 import {SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
-import PoliticianRow from '../component/PoliticianRow';
+import PoliticianItem from '../component/PoliticianItem';
 
 const HistoryView = () => {
   const data = useContext(DataContext);
@@ -175,9 +175,11 @@ const HistoryView = () => {
               style={styles.searchResultContainer}
               keyboardDismissMode="interactive">
               {searchData?.map(politician => (
-                <PoliticianRow
+                <PoliticianItem
                   key={politician.id}
                   politicianId={politician.id}
+                  politicianName={politician.label}
+                  party={politician.party}
                 />
               ))}
             </ScrollView>
