@@ -28,6 +28,7 @@ const NewPoliticianProfile = () => {
   return (
     <Tab.Navigator
       screenOptions={() => ({
+        swipeEnabled: false,
         sceneContainerStyle: {backgroundColor: Colors.background},
         tabBarActiveTintColor: '#FCFCFC',
         tabBarInactiveTintColor: '#FCFCFC66',

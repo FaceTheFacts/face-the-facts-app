@@ -124,6 +124,7 @@ const NewPoliticianView = ({route}: PoliticianViewProps) => {
         ) : (
           <Tab.Navigator
             screenOptions={() => ({
+              swipeEnabled: false,
               sceneContainerStyle: {backgroundColor: Colors.background},
               tabBarActiveTintColor: '#FCFCFC',
               tabBarInactiveTintColor: '#FCFCFC66',
