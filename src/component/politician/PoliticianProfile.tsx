@@ -1,8 +1,13 @@
+//
+//    This Component has been depreciated.
+//    Checkout NewPoliticianProfile instead.
+//
+
 import React, {useContext, useState} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import {Colors} from '../../theme';
-import {PoliticianContext} from '../../view/PoliticianView';
+import {PoliticianContext} from '../../view/NewPoliticianView';
 import PoliticianOverview from './PoliticianOverview';
 import PoliticianCV from './PoliticianCV';
 import PoliticianLinks from './PoliticianLinks';

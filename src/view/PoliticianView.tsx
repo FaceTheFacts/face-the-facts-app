@@ -1,3 +1,8 @@
+//
+//    This View has been depreciated.
+//    Checkout NewPoliticianView instead.
+//
+
 import React, {createContext, useState} from 'react';
 import {
   useWindowDimensions,
@@ -26,6 +31,7 @@ import {
   ApiSpeech,
   ApiSearchPolitician,
 } from '../logic/api';
+import SkeletonPoliticianItem from '../component/SkeletonPoliticianItem';
 
 type PoliticianViewParams = {
   politicianId: number;
@@ -46,7 +52,10 @@ export const PoliticianContext = createContext<IPoliticianContext | null>(null);
 const PoliticianView = ({route}: PoliticianViewProps) => {
   const {politicianId} = route.params;
 
-  const {data: profile} = useQuery<ApiPoliticianProfile | undefined, Error>(
+  const {data: profile, isLoading: profileLoading} = useQuery<
+    ApiPoliticianProfile | undefined,
+    Error
+  >(
     `politician:${politicianId}`,
     () =>
       fetch_api<ApiPoliticianProfile>(
@@ -58,9 +67,27 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
     },
   );
 
-  const {data: positions} = useQuery<ApiPositions | undefined, Error>(
+  const {data: positions, isLoading: positionLoading} = useQuery<
+    ApiPositions | undefined,
+    Error
+  >(
     `positions:${politicianId}`,
     () => fetch_api<ApiPositions>(`politician/${politicianId}/positions`),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
+  );
+
+  const {data: constituency, isLoading: constituencyLoading} = useQuery<
+    ApiSearchPolitician[] | undefined,
+    Error
+  >(
+    `constituency:${politicianId}`,
+    () =>
+      fetch_api<ApiSearchPolitician[]>(
+        `politician/${politicianId}/constituencies`,
+      ),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
@@ -85,21 +112,6 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
   const {data: news} = useQuery<ApiNews | undefined, Error>(
     `news:${politicianId}`,
     () => fetch_api<ApiNews>(`politician/${politicianId}/news?page=1&size=5`),
-    {
-      staleTime: 60 * 10000000, // 10000 minute = around 1 week
-      cacheTime: 60 * 10000000,
-    },
-  );
-
-  const {data: constituency} = useQuery<
-    ApiSearchPolitician[] | undefined,
-    Error
-  >(
-    `constituency:${politicianId}`,
-    () =>
-      fetch_api<ApiSearchPolitician[]>(
-        `politician/${politicianId}/constituencies`,
-      ),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
@@ -134,9 +146,14 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
   const [tabIndex, setTabIndex] = useState<number>(() =>
     routes.findIndex(value => value.key === 'profile'),
   );
+
+  if (profileLoading || positionLoading || constituencyLoading) {
+    return <SkeletonPoliticianItem />;
+  }
+
   return (
     <PoliticianContext.Provider
-      value={{profile, positions, news, speeches, constituency}}>
+      value={{profile, positions, constituency, news, speeches}}>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.container}>
         <StatusBar
