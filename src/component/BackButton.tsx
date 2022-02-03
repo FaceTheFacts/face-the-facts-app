@@ -1,18 +1,18 @@
-import React, {useContext} from 'react';
-import {NavigationContext} from '@react-navigation/native';
+import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors} from '../theme';
 import {ArrowBackIos} from '../icons';
 import Icon from './Icon';
 
 const BackButton = () => {
-  const navigator = useContext(NavigationContext)!;
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.backBtn}
-        onPress={() => navigator.goBack()}>
+        onPress={() => navigation.goBack()}>
         <Icon style={styles.icon} icon={ArrowBackIos} />
       </TouchableOpacity>
     </View>
