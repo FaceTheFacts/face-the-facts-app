@@ -20,27 +20,26 @@ const SpeechPlayer = ({politician, date, title, video}: SpeechPlayerProps) => {
   const {width} = useWindowDimensions();
   const ref = useRef<Video | null>(null);
   return (
-    <>
-      <ScrollView>
-        <View style={styles.headerContainer}>
-          <Text style={styles.title}>{politician ? politician : 'Rede'}</Text>
-          <Text style={styles.date}>{date}</Text>
-        </View>
-        <View>
-          <Text style={styles.description}>{title}</Text>
-        </View>
-        <View style={styles.separatorLine} />
-        <View style={styles.playerContainer}>
-          <Video
-            source={{uri: video}}
-            style={[styles.backgroundVideo, {width: width - 32}]}
-            controls={true}
-            ref={ref}
-            ignoreSilentSwitch="ignore"
-          />
-        </View>
-      </ScrollView>
-    </>
+    <ScrollView>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>{politician ? politician : 'Rede'}</Text>
+        <Text style={styles.date}>{date}</Text>
+      </View>
+      <View>
+        <Text style={styles.description}>{title}</Text>
+      </View>
+      <View style={styles.separatorLine} />
+      <View style={styles.playerContainer}>
+        <Video
+          source={{uri: video}}
+          style={[styles.backgroundVideo, {width: width - 32}]}
+          controls={true}
+          poster="https://image.facethefacts-api.de/videoPlaceholder.png"
+          ref={ref}
+          ignoreSilentSwitch="ignore"
+        />
+      </View>
+    </ScrollView>
   );
 };
 
