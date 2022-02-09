@@ -12,17 +12,20 @@ import {fetch_api} from '../logic/fetch';
 import {
   ApiNews,
   ApiPaginatedData,
+  ApiParty,
   ApiPoliticianProfile,
   ApiPositions,
   ApiSearchPolitician,
   ApiSpeech,
   IPoliticianContext,
 } from '../logic/api';
-import SkeletonPoliticianItem from '../component/SkeletonPoliticianItem';
 import NewPoliticianProfile from '../component/politician/NewPoliticianProfile';
+import SkeletonPoliticianProfile from '../component/politician/SkeletonPoliticianProfile';
 
 type PoliticianViewParams = {
   politicianId: number;
+  politicianName: string;
+  party: ApiParty;
 };
 
 interface PoliticianViewProps {
@@ -32,7 +35,9 @@ interface PoliticianViewProps {
 export const PoliticianContext = createContext<IPoliticianContext | null>(null);
 
 const NewPoliticianView = ({route}: PoliticianViewProps) => {
-  const {politicianId} = route.params;
+  const politicianId = route.params.politicianId;
+  const politicianName = route.params.politicianName;
+  const party = route.params.party;
   const Tab = createMaterialTopTabNavigator();
 
   const {
@@ -102,11 +107,18 @@ const NewPoliticianView = ({route}: PoliticianViewProps) => {
   );
 
   if (profileLoading || positionLoading || constituencyLoading) {
-    return <SkeletonPoliticianItem />;
+    return (
+      <SkeletonPoliticianProfile
+        politicianId={politicianId}
+        politicianName={politicianName}
+        party={party}
+      />
+    );
   }
   if (profileError) {
     return <Text>Error ..</Text>;
   }
+
   return (
     <PoliticianContext.Provider
       value={{profile, news, speeches, positions, constituency}}>
@@ -128,7 +140,9 @@ const NewPoliticianView = ({route}: PoliticianViewProps) => {
               sceneContainerStyle: {backgroundColor: Colors.background},
               tabBarActiveTintColor: '#FCFCFC',
               tabBarInactiveTintColor: '#FCFCFC66',
-              tabBarIndicatorStyle: {backgroundColor: '#FCFCFC'},
+              tabBarIndicatorStyle: {
+                backgroundColor: '#FCFCFC',
+              },
               tabBarLabelStyle: styles.tabBarLabel,
               tabBarStyle: {backgroundColor: Colors.cardBackground},
             })}>

@@ -35,6 +35,8 @@ const PoliticianItem = ({
         database.dbManager.pushHistoryItem(politicianId);
         navigator.navigate('NewPolitician', {
           politicianId,
+          politicianName,
+          party,
         });
       }}>
       <PoliticianPicture politicianId={politicianId} size={48} />
