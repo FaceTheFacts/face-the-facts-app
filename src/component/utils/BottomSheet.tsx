@@ -37,9 +37,11 @@ const BottomSheet = ({
         }
         modalStyle={{backgroundColor: Colors.background}}
         scrollViewProps={{horizontal: true, scrollEnabled: false}}
-        {...modalizeProps}>
-        <SafeAreaView style={{width}}>{children}</SafeAreaView>
-      </Modalize>
+        {...modalizeProps}
+        FooterComponent={
+          <SafeAreaView style={{width}}>{children}</SafeAreaView>
+        }
+      />
     </Portal>
   );
 };
