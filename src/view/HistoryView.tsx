@@ -29,6 +29,7 @@ import {SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
 import PoliticianItem from '../component/PoliticianItem';
+import SkeletonPoliticianItem from '../component/SkeletonPoliticianItem';
 
 const HistoryView = () => {
   const data = useContext(DataContext);
@@ -65,9 +66,7 @@ const HistoryView = () => {
     ApiSearchPolitician[] | undefined,
     Error
   >(`search-${searchQuery}`, () =>
-    fetch_api<ApiSearchPolitician[]>(
-      `search?text=${searchQuery}&page=1&size=50`,
-    ),
+    fetch_api<ApiSearchPolitician[]>(`search?text=${searchQuery}`),
   );
 
   function startSearching(): void {
@@ -167,51 +166,75 @@ const HistoryView = () => {
             </TouchableOpacity>
           )}
         </View>
-        {searching && searchData && status === 'success' && searchQuery !== '' && (
-          <View>
-            <View style={styles.separatorLine} />
-            <Text style={styles.searchResultTitle}>suchergebnisse</Text>
-            <ScrollView
-              style={styles.searchResultContainer}
-              keyboardDismissMode="interactive">
-              {searchData?.map(politician => (
-                <PoliticianItem
-                  key={politician.id}
-                  politicianId={politician.id}
-                  politicianName={politician.label}
-                  party={politician.party}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        )}
+        <View style={styles.separatorLine} />
         {
-          // TO-DO: Implement Error Screen when ready
-          searching && !searchData && status === 'success' && (
-            <Text style={styles.searchNoResult}>
-              Es wurden keine Politiker:innen gefunden.
-            </Text>
+          // Start search
+          searching && searchQuery !== '' && (
+            <View>
+              <View style={styles.separatorLine} />
+              <Text style={styles.searchResultTitle}>suchergebnisse</Text>
+              {
+                // Search loading
+                status === 'loading' && (
+                  <View style={styles.searchResultSkeletonContainer}>
+                    <SkeletonPoliticianItem />
+                  </View>
+                )
+              }
+              {
+                // Search successful and displaying results
+                searchData && status === 'success' && (
+                  <ScrollView
+                    style={styles.searchResultContainer}
+                    keyboardDismissMode="interactive">
+                    {searchData?.map(politician => (
+                      <PoliticianItem
+                        key={politician.id}
+                        politicianId={politician.id}
+                        politicianName={politician.label}
+                        party={politician.party}
+                      />
+                    ))}
+                  </ScrollView>
+                )
+              }
+            </View>
           )
         }
       </KeyboardAvoidingView>
-      <View style={styles.separatorLine} />
-      <View style={[styles.historyContainer, searching && {opacity: 0.3}]}>
-        <Text style={styles.subtitle}>Verlauf</Text>
-        {items ? (
-          items.length ? (
-            <PoliticianList
-              politicianIds={items.map(item => item.politicianId)}
-            />
-          ) : (
-            <Text style={styles.noDataText}>
-              Hier erscheinen Kandidat:innen, deren Wahlplakate du gescannt
-              hast.
-            </Text>
+
+      {
+        // Search without results
+        searching && !searchData && status === 'success' && (
+          <View style={[styles.historyContainer, searching && {opacity: 1}]}>
+            <Text style={styles.searchNoResult}>Keine Ergebnisse</Text>
+          </View>
+        )
+      }
+      {
+        // StartScreen
+        (!searching || (searching && searchQuery === '')) &&
+          status !== 'loading' && (
+            <View
+              style={[styles.historyContainer, searching && {opacity: 0.3}]}>
+              <Text style={styles.subtitle}>Verlauf</Text>
+              {items ? (
+                items.length ? (
+                  <PoliticianList
+                    politicianIds={items.map(item => item.politicianId)}
+                  />
+                ) : (
+                  <Text style={styles.noDataText}>
+                    Hier erscheinen Kandidat:innen, deren Wahlplakate du
+                    gescannt hast.
+                  </Text>
+                )
+              ) : (
+                <SkeletonPoliticianItem />
+              )}
+            </View>
           )
-        ) : (
-          <Text style={styles.noDataText}>Laden...</Text>
-        )}
-      </View>
+      }
     </View>
   );
 };
@@ -322,11 +345,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: Colors.background,
   },
+  searchResultSkeletonContainer: {
+    paddingHorizontal: 12,
+    backgroundColor: Colors.background,
+  },
   searchNoResult: {
     fontFamily: 'Inter',
-    fontSize: 17,
-    marginHorizontal: 16,
-    marginVertical: 8,
+    fontSize: 12,
+    lineHeight: 15,
+    fontWeight: '600',
+    textTransform: 'uppercase',
     color: Colors.foreground,
   },
   searchItem: {
