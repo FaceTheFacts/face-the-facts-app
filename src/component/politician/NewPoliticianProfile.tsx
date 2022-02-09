@@ -32,16 +32,11 @@ const NewPoliticianProfile = () => {
         sceneContainerStyle: {backgroundColor: Colors.background},
         tabBarActiveTintColor: '#FCFCFC',
         tabBarInactiveTintColor: '#FCFCFC66',
-        tabBarIndicatorStyle: {backgroundColor: 'transparent'},
+        tabBarIndicatorStyle: {
+          backgroundColor: '#ffffff',
+        },
         tabBarLabelStyle: styles.tabBarLabel,
         tabBarStyle: {backgroundColor: Colors.background},
-        tabBarItemStyle: {
-          marginVertical: 12,
-          paddingVertical: 8,
-          backgroundColor: Colors.cardBackground,
-          borderRadius: 8,
-        },
-        //tabBarIndicatorContainerStyle: styles.indicatorContainer,
       })}>
       {((politician?.profile &&
         politician?.profile.topic_ids_of_latest_committee.length > 0) ||
@@ -64,11 +59,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 13,
     textTransform: 'none',
-  },
-  indicatorContainer: {
-    margin: 12,
-    backgroundColor: '#2A2f36',
-    borderRadius: 4,
   },
 });
 export default NewPoliticianProfile;
