@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Host} from 'react-native-portalize';
 import {DataContext, FaceTheFactsData} from './logic/model';
-import {NavigationContainer} from '@react-navigation/native';
+import {DarkTheme, NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import MainView from './view/MainView';
 import PoliticianView from './view/PoliticianView';
@@ -71,7 +71,7 @@ const App = () => {
         <StatusBar barStyle="light-content" />
         <Host>
           <View style={styles.container}>
-            <NavigationContainer>
+            <NavigationContainer theme={DarkTheme}>
               <Stack.Navigator>
                 {/* Main contains Home, Scanner and History */}
                 <Stack.Screen
