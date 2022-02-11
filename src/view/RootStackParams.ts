@@ -1,4 +1,4 @@
-import {ApiParty} from '../logic/api';
+import {ApiParty, IPoliticianContext} from '../logic/api';
 
 //to do: Define the params of the other routes
 export type RootStackParamList = {
@@ -11,6 +11,6 @@ export type RootStackParamList = {
   Politician: {politicianId: number};
   News: undefined;
   Speeches: undefined;
-  Polls: undefined;
+  Polls: {politician: IPoliticianContext};
   PollDetails: undefined;
 };
