@@ -20,7 +20,7 @@ import {
   IPoliticianContext,
 } from '../logic/api';
 import PoliticianProfile from '../component/politician/PoliticianProfile';
-import SkeletonPoliticianProfile from '../component/politician/SkeletonPoliticianProfile';
+import SkeletonPoliticianProfile from '../component/skeleton/SkeletonPoliticianProfile';
 
 type PoliticianViewParams = {
   politicianId: number;

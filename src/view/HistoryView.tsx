@@ -29,7 +29,7 @@ import {SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
 import PoliticianItem from '../component/PoliticianItem';
-import SkeletonPoliticianItem from '../component/SkeletonPoliticianItem';
+import SkeletonPoliticianItem from '../component/skeleton/SkeletonPoliticianItem';
 
 const HistoryView = () => {
   const data = useContext(DataContext);

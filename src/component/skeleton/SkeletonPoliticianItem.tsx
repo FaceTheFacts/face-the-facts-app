@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentLoader, {Rect, Circle} from 'react-content-loader/native';
 import {StyleSheet, useWindowDimensions, View} from 'react-native';
-import {Colors} from '../theme';
+import {Colors} from '../../theme';
 
 const SkeletonPoliticianItem = () => {
   const {width} = useWindowDimensions();

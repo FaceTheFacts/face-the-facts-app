@@ -5,7 +5,7 @@ import {useQuery} from 'react-query';
 import {ApiSearchPolitician} from '../logic/api';
 import {fetch_api} from '../logic/fetch';
 import PoliticianItem from './PoliticianItem';
-import SkeletonPoliticianItem from './SkeletonPoliticianItem';
+import SkeletonPoliticianItem from './skeleton/SkeletonPoliticianItem';
 
 export interface PoliticianListProps {
   politicianIds: number[];
