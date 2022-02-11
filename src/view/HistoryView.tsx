@@ -170,9 +170,17 @@ const HistoryView = () => {
         {
           // Start search
           searching && searchQuery !== '' && (
-            <View>
-              <View style={styles.separatorLine} />
-              <Text style={styles.searchResultTitle}>suchergebnisse</Text>
+            <>
+              {!searchData && status === 'success' ? (
+                <View style={styles.noResultContainer}>
+                  <Text style={styles.searchNoResult}>Keine Ergebnisse</Text>
+                </View>
+              ) : (
+                <>
+                  <View style={styles.separatorLine} />
+                  <Text style={styles.searchResultTitle}>suchergebnisse</Text>
+                </>
+              )}
               {
                 // Search loading
                 status === 'loading' && (
@@ -198,19 +206,10 @@ const HistoryView = () => {
                   </ScrollView>
                 )
               }
-            </View>
+            </>
           )
         }
       </KeyboardAvoidingView>
-
-      {
-        // Search without results
-        searching && !searchData && status === 'success' && (
-          <View style={[styles.historyContainer, searching && {opacity: 1}]}>
-            <Text style={styles.searchNoResult}>Keine Ergebnisse</Text>
-          </View>
-        )
-      }
       {
         // StartScreen
         (!searching || (searching && searchQuery === '')) &&
@@ -341,7 +340,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   searchResultContainer: {
-    height: '78%',
+    height: '72%',
     paddingHorizontal: 12,
     backgroundColor: Colors.background,
   },
@@ -356,6 +355,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textTransform: 'uppercase',
     color: Colors.foreground,
+  },
+  noResultContainer: {
+    backgroundColor: Colors.background,
+    padding: 12,
   },
   searchItem: {
     marginBottom: 12,
