@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   icon: {
     color: Colors.foreground,
     alignSelf: 'center',
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
 });
 
