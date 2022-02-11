@@ -12,7 +12,7 @@ import VoteTag from '../utils/VoteTag';
 import {Colors} from '../../theme';
 import {PollResult, Vote} from '../../logic/data';
 import {NavigationContext} from '@react-navigation/native';
-import {formatDate} from '../../utils/date';
+import {formatDate} from '../../utils/util';
 
 const pollResultLabels: Record<PollResult, string> = {
   yes: 'Antrag angenommen',

@@ -15,7 +15,7 @@ import Wrap from '../utils/Wrap';
 import PollCard from '../poll/PollCard';
 import SpeechCard from '../speech/SpeechCard';
 import NewsCard from '../news/NewsCard';
-import {formatDate, topicTypes} from '../../utils/date';
+import {formatDate, topicTypes} from '../../utils/util';
 
 const PoliticianOverview = () => {
   const politician = useContext(PoliticianContext);

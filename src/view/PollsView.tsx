@@ -15,7 +15,7 @@ import BackButton from '../component/BackButton';
 import {ApiVoteAndPoll, IPoliticianContext} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
-import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/date';
+import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/util';
 import {ClearIcon, FilterIcon} from '../icons';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';

@@ -20,7 +20,7 @@ import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {RouteProp} from '@react-navigation/native';
 import BackButton from '../component/BackButton';
-import {getChartData} from '../utils/date';
+import {getChartData} from '../utils/util';
 import PoliticianCard from '../component/politician/PoliticianCard';
 import PollChart from '../component/poll/PollChart';
 import PollVoteCard from '../component/poll/PollVoteCard';

@@ -13,7 +13,7 @@ import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
 import {ApiPaginatedData, ApiSpeech, IPoliticianContext} from '../logic/api';
-import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
+import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 

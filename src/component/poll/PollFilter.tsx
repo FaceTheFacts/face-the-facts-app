@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {Colors} from '../../theme';
-import {topicTypesArr} from '../../utils/date';
+import {topicTypesArr} from '../../utils/util';
 import Icon from '../Icon';
 
 interface PollFilterProps {

@@ -4,7 +4,7 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import BackButton from '../component/BackButton';
 import {ApiNews, IPoliticianContext} from '../logic/api';
-import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
+import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import NewsScreenCard from '../component/news/NewsScreenCard';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
