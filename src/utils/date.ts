@@ -244,6 +244,12 @@ const fractionStyleMap: Record<string, ApiPartyStyle> = {
     foreground_color: '#FFFFFF',
     background_color: '#40A962',
   },
+  'BÜNDNIS 90/DIE GRÜNEN': {
+    id: 5,
+    display_name: 'Grüne',
+    foreground_color: '#FFFFFF',
+    background_color: '#40A962',
+  },
   'DIE LINKE': {
     id: 8,
     display_name: 'Linke',
