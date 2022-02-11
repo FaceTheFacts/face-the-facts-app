@@ -15,12 +15,11 @@ import BackButton from '../component/BackButton';
 import {ApiVoteAndPoll, IPoliticianContext} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
-import {checkPreviousMonth, formatMonth} from '../utils/date';
+import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/date';
 import {ClearIcon, FilterIcon} from '../icons';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import PollFilter from '../component/poll/PollFilter';
-import {topicTypes} from '../component/politician/PoliticianOverview';
 
 export interface PollsViewProps {
   route: RouteProp<{params: PollViewParams}, 'params'>;

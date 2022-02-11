@@ -240,3 +240,8 @@ export interface PoliTrackImage {
   height: number;
   width: number;
 }
+
+export type TopicIcon = {
+  label: string;
+  icon: string;
+};

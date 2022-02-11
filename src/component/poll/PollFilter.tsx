@@ -6,37 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {
-  AdministrationIcon,
-  AgricultureIcon,
-  CultureIcon,
-  DefenceIcon,
-  DevelopmentIcon,
-  EconomyIcon,
-  EducationIcon,
-  EnergyIcon,
-  EnvironmentIcon,
-  EuropeanUnionIcon,
-  FinanceIcon,
-  ForeignPolicyIcon,
-  ForeignTradeIcon,
-  HealthIcon,
-  HomeSecurityIcon,
-  HousingIcon,
-  LabourIcon,
-  LawIcon,
-  MediaIcon,
-  MigrationIcon,
-  NewStatesIcon,
-  ParliamentaryAffairsIcon,
-  PoliticsIcon,
-  ScienceIcon,
-  SocialSecurityIcon,
-  SocietyIcon,
-  TourismIcon,
-  TrafficIcon,
-} from '../../icons';
 import {Colors} from '../../theme';
+import {topicTypesArr} from '../../utils/date';
 import Icon from '../Icon';
 
 interface PollFilterProps {
@@ -49,36 +20,7 @@ interface topicType {
 }
 
 const PollFilter = ({filter, setFilter}: PollFilterProps) => {
-  const topicTypes: topicType[] = [
-    {label: 'Medien', icon: MediaIcon},
-    {label: 'Arbeit', icon: LabourIcon},
-    {label: 'Bildung', icon: EducationIcon},
-    {label: 'Europäische Union', icon: EuropeanUnionIcon},
-    {label: 'Landwirtschaft', icon: AgricultureIcon},
-    {label: 'Parlamentsangelegenheiten', icon: ParliamentaryAffairsIcon},
-    {label: 'Kultur', icon: CultureIcon},
-    {label: 'Recht', icon: LawIcon},
-    {label: 'Umwelt', icon: EnvironmentIcon},
-    {label: 'Verkehr', icon: TrafficIcon},
-    {label: 'Außenwirtschaft', icon: ForeignTradeIcon},
-    {label: 'Tourismus', icon: TourismIcon},
-    {label: 'Verteidigung', icon: DefenceIcon},
-    {label: 'Soziale Sicherung', icon: SocialSecurityIcon},
-    {label: 'Wissenschaft', icon: ScienceIcon},
-    {label: 'Gesellschaft', icon: SocietyIcon},
-    {label: 'Entwicklungspolitik', icon: DevelopmentIcon},
-    {label: 'Bauwesen', icon: HousingIcon},
-    {label: 'Wirtschaft', icon: EconomyIcon},
-    {label: 'Energie', icon: EnergyIcon},
-    {label: 'Außenpolitik', icon: ForeignPolicyIcon},
-    {label: 'Öffentliche Finanzen', icon: FinanceIcon},
-    {label: 'Innere Sicherheit', icon: HomeSecurityIcon},
-    {label: 'Staat und Verwaltung', icon: AdministrationIcon},
-    {label: 'Zuwanderung', icon: MigrationIcon},
-    {label: 'Neue Bundesländer', icon: NewStatesIcon},
-    {label: 'Politisches Leben', icon: PoliticsIcon},
-    {label: 'Gesundheit', icon: HealthIcon},
-  ];
+  const topicTypes: topicType[] = topicTypesArr;
   useEffect(() => {
     setFilter(filter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
