@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import {NavigationContext} from '@react-navigation/native';
-import {PoliticianContext} from '../../view/NewPoliticianView';
+import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
 import Wrap from '../utils/Wrap';

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {PoliticianContext} from '../../view/NewPoliticianView';
+import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
 import {ArrowForwardIos, ClearIcon} from '../../icons';

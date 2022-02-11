@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {PoliticianContext} from '../../view/NewPoliticianView';
+import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import PoliticianItem from '../PoliticianItem';
 

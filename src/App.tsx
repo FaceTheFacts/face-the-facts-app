@@ -21,7 +21,6 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import SpeechesView from './view/SpeechesView';
 import NewsView from './view/NewsView';
 import {RootStackParamList} from './view/RootStackParams';
-import NewPoliticianView from './view/NewPoliticianView';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const queryClient = new QueryClient();
@@ -82,11 +81,6 @@ const App = () => {
                 <Stack.Screen
                   name="Politician"
                   component={PoliticianView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="NewPolitician"
-                  component={NewPoliticianView}
                   options={{headerShown: false}}
                 />
                 <Stack.Screen

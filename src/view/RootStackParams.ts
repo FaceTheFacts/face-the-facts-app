@@ -10,12 +10,11 @@ import {Vote} from '../logic/data';
 //to do: Define the params of the other routes
 export type RootStackParamList = {
   Main: undefined;
-  NewPolitician: {
+  Politician: {
     politicianId: number;
     politicianName: string;
     party: ApiParty;
   };
-  Politician: {politicianId: number};
   News: {politician: IPoliticianContext};
   Speeches: {politician: IPoliticianContext};
   Polls: {politician: IPoliticianContext};

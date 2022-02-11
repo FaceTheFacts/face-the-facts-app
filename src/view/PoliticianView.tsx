@@ -1,66 +1,78 @@
-//
-//    This View has been depreciated.
-//    Checkout NewPoliticianView instead.
-//
-
-import React, {createContext, useState} from 'react';
-import {
-  useWindowDimensions,
-  StyleSheet,
-  View,
-  StatusBar,
-  SafeAreaView,
-} from 'react-native';
-import {RouteProp} from '@react-navigation/native';
-import PoliticianHeader from '../component/politician/PoliticianHeader';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
-import PoliticianProfile from '../component/politician/PoliticianProfile';
+import React, {createContext} from 'react';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import PoliticianPositions from '../component/politician/PoliticianPositions';
 import PoliticianConstituency from '../component/politician/PoliticianConstituency';
-import {Colors} from '../theme';
-import {Route} from 'react-native-tab-view/lib/typescript/types';
 import BackButton from '../component/BackButton';
+import {Colors} from '../theme';
+import PoliticianHeader from '../component/politician/PoliticianHeader';
+import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {RouteProp} from '@react-navigation/native';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {
-  ApiPositions,
-  ApiPoliticianProfile,
-  IPoliticianContext,
   ApiNews,
   ApiPaginatedData,
-  ApiSpeech,
+  ApiParty,
+  ApiPoliticianProfile,
+  ApiPositions,
   ApiSearchPolitician,
+  ApiSpeech,
+  IPoliticianContext,
 } from '../logic/api';
-import SkeletonPoliticianItem from '../component/SkeletonPoliticianItem';
+import PoliticianProfile from '../component/politician/PoliticianProfile';
+import SkeletonPoliticianProfile from '../component/politician/SkeletonPoliticianProfile';
 
 type PoliticianViewParams = {
   politicianId: number;
+  politicianName: string;
+  party: ApiParty;
 };
 
 interface PoliticianViewProps {
   route: RouteProp<{params: PoliticianViewParams}, 'params'>;
 }
 
-const renderScene = SceneMap({
-  positions: PoliticianPositions,
-  profile: PoliticianProfile,
-  constituency: PoliticianConstituency,
-});
-
 export const PoliticianContext = createContext<IPoliticianContext | null>(null);
 
 const PoliticianView = ({route}: PoliticianViewProps) => {
-  const {politicianId} = route.params;
+  const politicianId = route.params.politicianId;
+  const politicianName = route.params.politicianName;
+  const party = route.params.party;
+  const Tab = createMaterialTopTabNavigator();
 
-  const {data: profile, isLoading: profileLoading} = useQuery<
-    ApiPoliticianProfile | undefined,
-    Error
-  >(
+  const {
+    data: profile,
+    isLoading: profileLoading,
+    isError: profileError,
+  } = useQuery<ApiPoliticianProfile | undefined, Error>(
     `politician:${politicianId}`,
     () =>
       fetch_api<ApiPoliticianProfile>(
-        `politician/${politicianId}?sidejobs_end=15&votes_end=5`,
+        `politician/${politicianId}?sidejobs_end=15&votes_end=6`,
       ),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
+  );
+  const {data: speeches} = useQuery<
+    ApiPaginatedData<ApiSpeech> | undefined,
+    Error
+  >(
+    `speeches:${politicianId}`,
+    () =>
+      fetch_api<ApiPaginatedData<ApiSpeech>>(
+        `politician/${politicianId}/speeches?page=1`,
+      ),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
+  );
+
+  const {data: news} = useQuery<ApiNews | undefined, Error>(
+    `news:${politicianId}`,
+    () => fetch_api<ApiNews>(`politician/${politicianId}/news?page=1&size=6`),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
@@ -94,66 +106,22 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
     },
   );
 
-  const {data: speeches} = useQuery<
-    ApiPaginatedData<ApiSpeech> | undefined,
-    Error
-  >(
-    `speeches:${politicianId}`,
-    () =>
-      fetch_api<ApiPaginatedData<ApiSpeech>>(
-        `politician/${politicianId}/speeches?page=1`,
-      ),
-    {
-      staleTime: 60 * 10000000, // 10000 minute = around 1 week
-      cacheTime: 60 * 10000000,
-    },
-  );
-
-  const {data: news} = useQuery<ApiNews | undefined, Error>(
-    `news:${politicianId}`,
-    () => fetch_api<ApiNews>(`politician/${politicianId}/news?page=1&size=5`),
-    {
-      staleTime: 60 * 10000000, // 10000 minute = around 1 week
-      cacheTime: 60 * 10000000,
-    },
-  );
-
-  const {width} = useWindowDimensions();
-
-  const routes = [
-    (profile?.topic_ids_of_latest_committee ||
-      profile?.votes_and_polls ||
-      profile?.sidejobs ||
-      profile?.cvs ||
-      profile?.weblinks ||
-      speeches ||
-      news) && {
-      title: 'Profilseite',
-      key: 'profile',
-    },
-    positions?.positions &&
-      positions?.positions.length > 0 && {
-        title: 'Positionen',
-        key: 'positions',
-      },
-    constituency &&
-      constituency.length > 0 && {
-        title: 'Wahlkreis',
-        key: 'constituency',
-      },
-  ].filter(Boolean) as Route[];
-
-  const [tabIndex, setTabIndex] = useState<number>(() =>
-    routes.findIndex(value => value.key === 'profile'),
-  );
-
   if (profileLoading || positionLoading || constituencyLoading) {
-    return <SkeletonPoliticianItem />;
+    return (
+      <SkeletonPoliticianProfile
+        politicianId={politicianId}
+        politicianName={politicianName}
+        party={party}
+      />
+    );
+  }
+  if (profileError) {
+    return <Text>Error ..</Text>;
   }
 
   return (
     <PoliticianContext.Provider
-      value={{profile, positions, constituency, news, speeches}}>
+      value={{profile, news, speeches, positions, constituency}}>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.container}>
         <StatusBar
@@ -162,29 +130,30 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
         />
         <BackButton />
         <PoliticianHeader />
-        {routes.length > 1 ? (
-          <TabView
-            onIndexChange={setTabIndex}
-            navigationState={{
-              index: tabIndex,
-              routes,
-            }}
-            renderScene={renderScene}
-            renderTabBar={props => (
-              <TabBar
-                {...props}
-                activeColor={Colors.foreground}
-                inactiveColor={Colors.inactive}
-                style={styles.tabBar}
-                labelStyle={styles.tabBarLabel}
-                indicatorStyle={styles.tabBarIndicator}
-              />
-            )}
-            initialLayout={{width}}
-            swipeEnabled={false}
-          />
-        ) : (
+        {!(positions?.positions && positions?.positions.length > 0) &&
+        !(constituency && constituency.length > 0) ? (
           <PoliticianProfile />
+        ) : (
+          <Tab.Navigator
+            sceneContainerStyle={{backgroundColor: Colors.background}}
+            screenOptions={() => ({
+              swipeEnabled: false,
+              tabBarActiveTintColor: '#FCFCFC',
+              tabBarInactiveTintColor: '#FCFCFC66',
+              tabBarIndicatorStyle: {
+                backgroundColor: '#FCFCFC',
+              },
+              tabBarLabelStyle: styles.tabBarLabel,
+              tabBarStyle: {backgroundColor: Colors.cardBackground},
+            })}>
+            <Tab.Screen name="Profilseite" component={PoliticianProfile} />
+            {positions?.positions && positions?.positions.length > 0 && (
+              <Tab.Screen name="Positionen" component={PoliticianPositions} />
+            )}
+            {constituency && constituency.length > 0 && (
+              <Tab.Screen name="Wahlkreis" component={PoliticianConstituency} />
+            )}
+          </Tab.Navigator>
         )}
       </View>
     </PoliticianContext.Provider>
@@ -200,19 +169,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  tabBar: {
-    backgroundColor: Colors.cardBackground,
-  },
   tabBarLabel: {
+    fontFamily: 'Inter',
+    fontWeight: '600',
+    fontSize: 15,
     textTransform: 'none',
   },
-  tabBarIndicator: {
-    backgroundColor: Colors.foreground,
-    height: 3,
-    borderLeftWidth: 16,
-    borderRightWidth: 16,
-    borderColor: Colors.cardBackground,
-  },
 });
-
 export default PoliticianView;
