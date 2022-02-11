@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Face, RNCamera, TrackedTextFeature} from 'react-native-camera';
 import {StyleSheet, View} from 'react-native';
 import {DataContext} from '../logic/model';
-import {Colors} from '../theme';
 import {NavigationContext} from '@react-navigation/native';
 import {ErrorIcon, ScanIcon} from '../icons';
 import InfoBanner from '../component/InfoBanner';
@@ -104,62 +103,6 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     maxHeight: '100%',
-  },
-  searchBarContainer: {
-    borderRadius: 8,
-    backgroundColor: Colors.foreground,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 16,
-    marginRight: 16,
-  },
-  searchBarButton: {
-    padding: 16,
-    margin: -16,
-  },
-  searchBarIcon: {
-    width: 24,
-    height: 24,
-    marginLeft: 16,
-    color: Colors.background,
-  },
-  searchBarInput: {
-    flex: 1,
-    fontFamily: 'Inter',
-    fontSize: 17,
-    padding: 16,
-    color: Colors.background,
-  },
-  searchBarLoadingIndicator: {
-    marginRight: 8,
-  },
-  searchBarClearButton: {
-    width: 24,
-    height: 24,
-    marginRight: 16,
-    color: Colors.background,
-  },
-  searchOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: Colors.background,
-  },
-  searchResultContainer: {
-    height: '100%',
-    marginTop: 12,
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  searchNoResult: {
-    fontFamily: 'Inter',
-    fontSize: 17,
-    marginHorizontal: 16,
-    marginTop: 8,
-    color: Colors.foreground,
-  },
-  searchItem: {
-    marginBottom: 12,
-    borderColor: 'rgba(248, 248, 248, 0.22)',
-    borderWidth: 1,
   },
   preview: {
     ...StyleSheet.absoluteFillObject,
