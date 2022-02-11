@@ -11,9 +11,9 @@ export const voteLabels: Record<Vote, string> = {
 };
 
 export const voteColors: Record<Vote, string> = {
-  yes: '#5AB760',
-  no: '#BB3C45',
-  abstain: 'rgba(57, 105, 245, 0.3)',
+  yes: '#45C66F',
+  no: '#E54A6F',
+  abstain: '#1382E3',
   no_show: 'rgba(248, 248, 248, 0.12)',
 };
 
@@ -30,7 +30,6 @@ const VoteTag = ({style, vote}: VoteTagProps) => {
       backgroundColor={voteColors[vote]}
       bold
       spacing
-      uppercase
     />
   );
 };
