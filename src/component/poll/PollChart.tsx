@@ -77,19 +77,19 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 54.5,
     paddingVertical: 24,
     alignItems: 'center',
   },
   chartContainer: {
     flex: 1,
+    flexDirection: 'row-reverse',
+    marginLeft: 14,
   },
   voteNumberCardContainer: {
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'flex-start',
-    padding: 0,
+    marginLeft: 14,
   },
   voteNumberContainer: {
     flexDirection: 'row',
