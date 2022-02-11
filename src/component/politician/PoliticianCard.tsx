@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {Colors} from '../theme';
-import PoliticianPicture from './PoliticianPicture';
-import {ApiParty} from '../logic/api';
-import PartyTag from './PartyTag';
-import {Vote} from '../logic/data';
-import VoteTag from './utils/VoteTag';
+import {Colors} from '../../theme';
+import PoliticianPicture from '../PoliticianPicture';
+import {ApiParty} from '../../logic/api';
+import PartyTag from '../PartyTag';
+import {Vote} from '../../logic/data';
+import VoteTag from '../utils/VoteTag';
 
 interface CardPoliticianProps {
   politicianId: number;

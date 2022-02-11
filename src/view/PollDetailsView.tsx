@@ -21,7 +21,7 @@ import {fetch_api} from '../logic/fetch';
 import {RouteProp} from '@react-navigation/native';
 import BackButton from '../component/BackButton';
 import {getChartData} from '../utils/date';
-import PoliticianCard from '../component/PoliticianCard';
+import PoliticianCard from '../component/politician/PoliticianCard';
 import PollChart from '../component/poll/PollChart';
 import PollVoteCard from '../component/poll/PollVoteCard';
 

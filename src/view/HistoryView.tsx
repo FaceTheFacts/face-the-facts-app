@@ -20,7 +20,7 @@ import {
 import {Colors} from '../theme';
 import {HistoryItem} from '../logic/db';
 import {DataContext} from '../logic/model';
-import PoliticianList from '../component/PoliticianList';
+import PoliticianList from '../component/politician/PoliticianList';
 import {useQuery} from 'react-query';
 import {ApiSearchPolitician} from '../logic/api';
 import {fetch_api} from '../logic/fetch';
@@ -28,7 +28,7 @@ import Icon from '../component/Icon';
 import {SearchIcon} from '../icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
-import PoliticianItem from '../component/PoliticianItem';
+import PoliticianItem from '../component/politician/PoliticianItem';
 import SkeletonPoliticianItem from '../component/skeleton/SkeletonPoliticianItem';
 
 const HistoryView = () => {

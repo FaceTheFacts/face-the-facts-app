@@ -1,13 +1,13 @@
 import React, {useContext} from 'react';
-import {DataContext} from '../logic/model';
+import {DataContext} from '../../logic/model';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Colors} from '../theme';
-import PartyTag from './PartyTag';
-import PoliticianPicture from './PoliticianPicture';
+import {Colors} from '../../theme';
+import PartyTag from '../PartyTag';
+import PoliticianPicture from '../PoliticianPicture';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../view/RootStackParams';
-import {ApiParty} from '../logic/api';
+import {RootStackParamList} from '../../view/RootStackParams';
+import {ApiParty} from '../../logic/api';
 
 export interface PoliticianItemProps {
   politicianId: number;
