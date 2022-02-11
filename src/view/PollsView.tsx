@@ -80,8 +80,9 @@ const PollsView = ({route}: PollsViewProps) => {
       {filter.length > 0 && (
         <View style={styles.filterCategoryContainer}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {filter.map(topic => (
+            {filter.map((topic, index) => (
               <TouchableOpacity
+                key={index}
                 style={styles.categoryBtn}
                 onPress={() => {
                   setFilter(filter.filter(value => value !== topic));
