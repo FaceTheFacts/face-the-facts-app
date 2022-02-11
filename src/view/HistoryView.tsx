@@ -129,7 +129,7 @@ const HistoryView = () => {
         style={styles.searchWrapper}
         behavior="height"
         keyboardVerticalOffset={insets.top}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={styles.searchBarContainerWrapper}>
           <View
             style={StyleSheet.flatten([
               styles.searchBarContainer,
@@ -296,6 +296,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 12,
   },
+  searchBarContainerWrapper: {
+    flexDirection: 'row',
+  },
   searchBarButton: {
     marginRight: 12,
     alignSelf: 'center',
@@ -317,12 +320,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingHorizontal: 8,
     paddingVertical: 12,
-    color: Colors.foreground,
-  },
-  searchBarClearButton: {
-    width: 24,
-    height: 24,
-    marginRight: 16,
     color: Colors.foreground,
   },
   searchOverlay: {
@@ -359,9 +356,6 @@ const styles = StyleSheet.create({
   noResultContainer: {
     backgroundColor: Colors.background,
     padding: 12,
-  },
-  searchItem: {
-    marginBottom: 12,
   },
 });
 
