@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     lineHeight: 14.52,
     fontFamily: 'Inter',
     color: Colors.foreground,
+    textTransform: 'uppercase',
   },
   subtitle: {
     color: Colors.foreground,

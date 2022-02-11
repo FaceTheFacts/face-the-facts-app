@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'Inter',
     color: Colors.foreground,
+    textTransform: 'uppercase',
   },
   subtitle: {
     color: Colors.foreground,
