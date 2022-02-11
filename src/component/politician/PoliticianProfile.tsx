@@ -30,10 +30,10 @@ const PoliticianProfile = () => {
       screenOptions={() => ({
         swipeEnabled: false,
         sceneContainerStyle: {backgroundColor: Colors.background},
-        tabBarActiveTintColor: '#FCFCFC',
+        tabBarActiveTintColor: Colors.baseWhite,
         tabBarInactiveTintColor: '#FCFCFC66',
         tabBarIndicatorStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: Colors.foreground,
         },
         tabBarLabelStyle: styles.tabBarLabel,
         tabBarStyle: {backgroundColor: Colors.background},

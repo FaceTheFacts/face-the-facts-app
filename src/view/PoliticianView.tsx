@@ -138,10 +138,10 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
             sceneContainerStyle={{backgroundColor: Colors.background}}
             screenOptions={() => ({
               swipeEnabled: false,
-              tabBarActiveTintColor: '#FCFCFC',
+              tabBarActiveTintColor: Colors.baseWhite,
               tabBarInactiveTintColor: '#FCFCFC66',
               tabBarIndicatorStyle: {
-                backgroundColor: '#FCFCFC',
+                backgroundColor: Colors.baseWhite,
               },
               tabBarLabelStyle: styles.tabBarLabel,
               tabBarStyle: {backgroundColor: Colors.cardBackground},

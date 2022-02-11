@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   },
   topicSelected: {
     flexDirection: 'row',
-    backgroundColor: '#FCFCFC',
+    backgroundColor: Colors.baseWhite,
     padding: 12,
     borderRadius: 8,
     marginRight: 8,
