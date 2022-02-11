@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
-import {Vote} from '../logic/data';
+import {Vote} from '../logic/api';
 import {Colors} from '../theme';
 import ReadMoreHTML from '../component/utils/ReadMoreHTML';
 import type {

@@ -10,7 +10,7 @@ import {
 import {ApiPoliticianProfile, ApiPoll, ApiVote} from '../../logic/api';
 import VoteTag from '../utils/VoteTag';
 import {Colors} from '../../theme';
-import {PollResult, Vote} from '../../logic/data';
+import {PollResult, Vote} from '../../logic/api';
 import {NavigationContext} from '@react-navigation/native';
 import {formatDate} from '../../utils/util';
 

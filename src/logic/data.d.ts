@@ -1,3 +1,5 @@
+import {PositionAnswer, Vote} from './api';
+
 export interface Dataset {
   politicians: Politician[];
   parties: Party[];
@@ -99,13 +101,6 @@ export interface Politician {
   links?: string[];
   positions?: PoliticianPosition[];
 }
-
-export type Vote = 'yes' | 'no' | 'abstain' | 'no_show';
-
-export type PollResult = 'yes' | 'no';
-
-export type PositionAnswer = 'agree' | 'disagree' | 'neutral';
-
 export interface PoliticianPosition {
   id: string;
   reason?: string;

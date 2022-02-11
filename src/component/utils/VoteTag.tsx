@@ -1,5 +1,5 @@
 import React from 'react';
-import {Vote} from '../../logic/data';
+import {Vote} from '../../logic/api';
 import Tag from './Tag';
 import {StyleProp, ViewStyle} from 'react-native';
 

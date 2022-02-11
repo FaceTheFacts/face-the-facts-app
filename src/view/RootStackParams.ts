@@ -5,7 +5,7 @@ import {
   ApiVote,
   IPoliticianContext,
 } from '../logic/api';
-import {Vote} from '../logic/data';
+import {Vote} from '../logic/api';
 
 //to do: Define the params of the other routes
 export type RootStackParamList = {

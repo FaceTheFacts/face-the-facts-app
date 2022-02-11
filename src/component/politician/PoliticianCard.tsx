@@ -4,7 +4,7 @@ import {Colors} from '../../theme';
 import PoliticianPicture from '../PoliticianPicture';
 import {ApiParty} from '../../logic/api';
 import PartyTag from '../PartyTag';
-import {Vote} from '../../logic/data';
+import {Vote} from '../../logic/api';
 import VoteTag from '../utils/VoteTag';
 
 interface CardPoliticianProps {
