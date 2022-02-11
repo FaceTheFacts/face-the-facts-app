@@ -41,7 +41,7 @@ const PollCard = ({
       key={poll.id}
       style={StyleSheet.flatten([styles.container, style])}
       onPress={() => {
-        navigator.push('PollDetailsScreen', {
+        navigator.push('PollDetails', {
           poll,
           vote,
           candidateVote,
