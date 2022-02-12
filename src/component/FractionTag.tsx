@@ -1,7 +1,7 @@
 import React from 'react';
 import Tag from './utils/Tag';
 import {StyleProp, ViewStyle} from 'react-native';
-import {getFractionStyle} from '../utils/date';
+import {getFractionStyle} from '../utils/util';
 
 export interface FractionTagProps {
   style?: StyleProp<ViewStyle>;

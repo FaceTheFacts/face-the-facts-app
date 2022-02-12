@@ -12,84 +12,15 @@ import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
 import Wrap from '../utils/Wrap';
-import {Vote} from '../../logic/data';
 import PollCard from '../poll/PollCard';
-import {
-  AdministrationIcon,
-  AgricultureIcon,
-  CultureIcon,
-  DefenceIcon,
-  DevelopmentIcon,
-  EconomyIcon,
-  EducationIcon,
-  EnergyIcon,
-  EnvironmentIcon,
-  EuropeanUnionIcon,
-  FinanceIcon,
-  ForeignPolicyIcon,
-  ForeignTradeIcon,
-  HealthIcon,
-  HomeSecurityIcon,
-  HousingIcon,
-  LabourIcon,
-  LawIcon,
-  MediaIcon,
-  MigrationIcon,
-  NewStatesIcon,
-  ParliamentaryAffairsIcon,
-  PoliticsIcon,
-  ScienceIcon,
-  SocialSecurityIcon,
-  SocietyIcon,
-  TourismIcon,
-  TrafficIcon,
-} from '../../icons';
 import SpeechCard from '../speech/SpeechCard';
 import NewsCard from '../news/NewsCard';
-import {formatDate} from '../../utils/date';
-
-type TopicIcon = {
-  label: string;
-  icon: string;
-};
-
-export const possibleVotes: Vote[] = ['yes', 'no', 'abstain', 'no_show'];
+import {formatDate, topicTypes} from '../../utils/util';
 
 const PoliticianOverview = () => {
   const politician = useContext(PoliticianContext);
   const navigator = useContext<any>(NavigationContext)!;
   const {width} = useWindowDimensions();
-
-  const topicTypes: Record<number, TopicIcon> = {
-    1: {label: 'Medien', icon: MediaIcon},
-    2: {label: 'Arbeit', icon: LabourIcon},
-    3: {label: 'Bildung', icon: EducationIcon},
-    4: {label: 'Europäische Union', icon: EuropeanUnionIcon},
-    5: {label: 'Landwirtschaft', icon: AgricultureIcon},
-    6: {label: 'Parlamentsangelegenheiten', icon: ParliamentaryAffairsIcon},
-    7: {label: 'Kultur', icon: CultureIcon},
-    8: {label: 'Recht', icon: LawIcon},
-    9: {label: 'Umwelt', icon: EnvironmentIcon},
-    10: {label: 'Verkehr', icon: TrafficIcon},
-    11: {label: 'Außenwirtschaft', icon: ForeignTradeIcon},
-    12: {label: 'Tourismus', icon: TourismIcon},
-    13: {label: 'Verteidigung', icon: DefenceIcon},
-    14: {label: 'Soziale Sicherung', icon: SocialSecurityIcon},
-    15: {label: 'Wissenschaft', icon: ScienceIcon},
-    16: {label: 'Gesellschaft', icon: SocietyIcon},
-    17: {label: 'Entwicklungspolitik', icon: DevelopmentIcon},
-    18: {label: 'Bauwesen', icon: HousingIcon},
-    19: {label: 'Wirtschaft', icon: EconomyIcon},
-    20: {label: 'Energie', icon: EnergyIcon},
-    21: {label: 'Außenpolitik', icon: ForeignPolicyIcon},
-    22: {label: 'Öffentliche Finanzen', icon: FinanceIcon},
-    23: {label: 'Innere Sicherheit', icon: HomeSecurityIcon},
-    24: {label: 'Staat und Verwaltung', icon: AdministrationIcon},
-    25: {label: 'Zuwanderung', icon: MigrationIcon},
-    26: {label: 'Neue Bundesländer', icon: NewStatesIcon},
-    27: {label: 'Politisches Leben', icon: PoliticsIcon},
-    28: {label: 'Gesundheit', icon: HealthIcon},
-  };
 
   return (
     <ScrollView style={styles.containerWrapper}>
@@ -124,10 +55,14 @@ const PoliticianOverview = () => {
           <>
             <TouchableOpacity
               style={styles.pollsHeader}
-              /* onPress={() => {navigator.push('PollsScreen', {politician,});}} */
-            >
+              onPress={() => {
+                navigator.push('Polls', {politician});
+              }}>
               <Text style={styles.pollsTitle}>Abstimmungen</Text>
-              <Text style={styles.moreButton}>mehr</Text>
+              {politician?.profile &&
+                politician.profile.votes_and_polls.length > 5 && (
+                  <Text style={styles.moreButton}>mehr</Text>
+                )}
             </TouchableOpacity>
             <ScrollView
               style={styles.pollContainer}
@@ -156,12 +91,14 @@ const PoliticianOverview = () => {
             <TouchableOpacity
               style={styles.pollsHeader}
               onPress={() => {
-                navigator.push('NewsScreen', {
+                navigator.push('News', {
                   politician,
                 });
               }}>
               <Text style={styles.pollsTitle}>Artikel</Text>
-              <Text style={styles.moreButton}>mehr</Text>
+              {politician?.news && politician.news.items.length > 5 && (
+                <Text style={styles.moreButton}>mehr</Text>
+              )}
             </TouchableOpacity>
             <ScrollView
               style={styles.pollContainer}
@@ -186,12 +123,14 @@ const PoliticianOverview = () => {
             <TouchableOpacity
               style={styles.pollsHeader}
               onPress={() => {
-                navigator.push('SpeechesScreen', {
+                navigator.push('Speeches', {
                   politician,
                 });
               }}>
               <Text style={styles.pollsTitle}>Reden</Text>
-              <Text style={styles.moreButton}>mehr</Text>
+              {politician?.speeches && politician.speeches.items.length > 5 && (
+                <Text style={styles.moreButton}>mehr</Text>
+              )}
             </TouchableOpacity>
             <ScrollView
               style={styles.pollContainer}
@@ -246,6 +185,7 @@ const PoliticianOverview = () => {
 const styles = StyleSheet.create({
   containerWrapper: {
     flex: 1,
+    backgroundColor: Colors.background,
   },
   container: {
     paddingHorizontal: 12,

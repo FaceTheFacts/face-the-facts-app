@@ -10,9 +10,9 @@ import {
 import {ApiPoliticianProfile, ApiPoll, ApiVote} from '../../logic/api';
 import VoteTag from '../utils/VoteTag';
 import {Colors} from '../../theme';
-import {PollResult, Vote} from '../../logic/data';
+import {PollResult, Vote} from '../../logic/api';
 import {NavigationContext} from '@react-navigation/native';
-import {formatDate} from '../../utils/date';
+import {formatDate} from '../../utils/util';
 
 const pollResultLabels: Record<PollResult, string> = {
   yes: 'Antrag angenommen',
@@ -41,7 +41,7 @@ const PollCard = ({
       key={poll.id}
       style={StyleSheet.flatten([styles.container, style])}
       onPress={() => {
-        navigator.push('PollDetailsScreen', {
+        navigator.push('PollDetails', {
           poll,
           vote,
           candidateVote,

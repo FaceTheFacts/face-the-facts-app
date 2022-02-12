@@ -73,6 +73,8 @@ const FollowFeed = ({
           fetch_api<SpeechResponse>(
             `politician/${politicianId}?sidejobs_end=100&votes_end=100`,
           ),
+        staleTime: 60 * 10000000, // 10000 minute = around 1 week
+        cacheTime: 60 * 10000000,
       };
     }),
   );
@@ -87,6 +89,8 @@ const FollowFeed = ({
           request<any>(
             `https://de.openparliament.tv/api/v1/search/media?abgeordnetenwatchID=${politicianId}&page[size]=100&sort=date-desc`,
           ),
+        staleTime: 60 * 10000000, // 10000 minute = around 1 week
+        cacheTime: 60 * 10000000,
       };
     }),
   );
@@ -200,7 +204,7 @@ const FollowFeed = ({
         </Text>
         <TouchableOpacity
           style={styles.searchBtn}
-          onPress={() => setSelected('scanner')}>
+          onPress={() => setSelected('politicians')}>
           <Text style={styles.header4}>Politiker suchen</Text>
         </TouchableOpacity>
       </View>

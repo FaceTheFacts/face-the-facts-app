@@ -6,16 +6,16 @@ import {
   SafeAreaView,
   View,
   useWindowDimensions,
+  TouchableOpacity,
 } from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
 import {ApiPaginatedData, ApiSpeech, IPoliticianContext} from '../logic/api';
-import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
+import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export interface SpeechesViewProps {
   route: RouteProp<{params: {politician: IPoliticianContext}}, 'params'>;
@@ -36,6 +36,8 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
     `speechesView:${politician?.profile?.id}`,
     ({pageParam = 1}) => fetchSpeeches(pageParam),
     {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
       placeholderData: {
         pages: [politician.speeches],
         pageParams: [],
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'Inter',
     color: Colors.foreground,
+    textTransform: 'uppercase',
   },
   subtitle: {
     color: Colors.foreground,

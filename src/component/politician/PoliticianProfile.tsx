@@ -1,124 +1,64 @@
-import React, {useContext, useState} from 'react';
-import {Animated, StyleSheet, View} from 'react-native';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
-import {Colors} from '../../theme';
-import {PoliticianContext} from '../../view/PoliticianView';
+import React, {useContext} from 'react';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import PoliticianOverview from './PoliticianOverview';
 import PoliticianCV from './PoliticianCV';
 import PoliticianLinks from './PoliticianLinks';
-import {Route} from 'react-native-tab-view/lib/typescript/types';
-
-const renderScene = SceneMap({
-  overview: PoliticianOverview,
-  cv: PoliticianCV,
-  links: PoliticianLinks,
-});
+import {StyleSheet} from 'react-native';
+import {Colors} from '../../theme';
+import {PoliticianContext} from '../../view/PoliticianView';
 
 const PoliticianProfile = () => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const Tab = createMaterialTopTabNavigator();
   const politician = useContext(PoliticianContext);
-  const routes = [
-    (politician?.profile?.topic_ids_of_latest_committee.length !== 0 ||
-      politician?.profile?.votes_and_polls.length !== 0 ||
-      politician?.profile?.sidejobs.length !== 0) && {
-      key: 'overview',
-      title: 'Übersicht',
-    },
-    politician?.profile?.cvs.length !== 0 && {
-      key: 'cv',
-      title: 'Biografie',
-    },
-    {
-      key: 'links',
-      title: 'Weblinks',
-    },
-  ].filter(Boolean) as Route[];
+
+  if (
+    (!(
+      politician?.profile &&
+      politician?.profile.topic_ids_of_latest_committee.length > 0
+    ) ||
+      !(
+        politician?.profile && politician?.profile?.votes_and_polls.length > 0
+      ) ||
+      !(politician?.profile && politician?.profile?.sidejobs.length > 0)) &&
+    !(politician?.profile && politician.profile.cvs.length > 0)
+  ) {
+    return <PoliticianLinks />;
+  }
 
   return (
-    <View style={styles.container}>
-      <TabView
-        onIndexChange={setTabIndex}
-        navigationState={{
-          index: tabIndex,
-          routes,
-        }}
-        renderScene={renderScene}
-        renderTabBar={props => {
-          if (props.navigationState.routes.length <= 1) {
-            return <></>;
-          }
-
-          return (
-            <TabBar
-              {...props}
-              style={styles.tabBar}
-              activeColor={Colors.foreground}
-              inactiveColor={Colors.inactive}
-              labelStyle={styles.tabBarLabel}
-              renderIndicator={({
-                width,
-                style,
-                position,
-                getTabWidth,
-                navigationState: {routes},
-              }) => {
-                const inputRange = routes.map((_, i) => i);
-                const outputRange = routes.reduce<number[]>((acc, _, i) => {
-                  if (i === 0) {
-                    return [0];
-                  }
-                  return [...acc, acc[i - 1] + getTabWidth(i - 1)];
-                }, []);
-
-                return (
-                  <>
-                    <Animated.View
-                      style={StyleSheet.flatten([
-                        style,
-                        {
-                          width,
-                          height: '100%',
-                          padding: 8,
-                          transform: [
-                            {
-                              translateX: position.interpolate({
-                                inputRange,
-                                outputRange,
-                                extrapolate: 'clamp',
-                              }),
-                            },
-                          ],
-                        },
-                      ])}>
-                      <View style={styles.indicator} />
-                    </Animated.View>
-                  </>
-                );
-              }}
-            />
-          );
-        }}
-        swipeEnabled={false}
-      />
-    </View>
+    <Tab.Navigator
+      screenOptions={() => ({
+        swipeEnabled: false,
+        sceneContainerStyle: {backgroundColor: Colors.background},
+        tabBarActiveTintColor: Colors.baseWhite,
+        tabBarInactiveTintColor: '#FCFCFC66',
+        tabBarIndicatorStyle: {
+          backgroundColor: Colors.foreground,
+        },
+        tabBarLabelStyle: styles.tabBarLabel,
+        tabBarStyle: {backgroundColor: Colors.background},
+      })}>
+      {((politician?.profile &&
+        politician?.profile.topic_ids_of_latest_committee.length > 0) ||
+        (politician?.profile &&
+          politician?.profile?.votes_and_polls.length > 0) ||
+        (politician?.profile && politician?.profile?.sidejobs.length > 0)) && (
+        <Tab.Screen name="Übersicht" component={PoliticianOverview} />
+      )}
+      {politician?.profile && politician.profile.cvs.length > 0 && (
+        <Tab.Screen name="Biografie" component={PoliticianCV} />
+      )}
+      <Tab.Screen name="Weblinks" component={PoliticianLinks} />
+    </Tab.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tabBar: {
-    backgroundColor: Colors.background,
-  },
   tabBarLabel: {
+    fontFamily: 'Inter',
+    fontWeight: '400',
+    fontSize: 13,
     textTransform: 'none',
   },
-  indicator: {
-    flex: 1,
-    backgroundColor: Colors.cardBackground,
-    borderRadius: 8,
-  },
 });
-
 export default PoliticianProfile;

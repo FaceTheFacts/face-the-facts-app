@@ -1,33 +1,27 @@
 import React, {useContext} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
-import {DataContext} from '../../logic/model';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {PoliticianContext} from '../../view/PoliticianView';
-import PoliticianRow from '../PoliticianRow';
 import {Colors} from '../../theme';
+import PoliticianItem from './PoliticianItem';
 
 const PoliticianConstituency = () => {
-  const data = useContext(DataContext);
   const politician = useContext(PoliticianContext);
-  const constituency = data.lookupConstituencies(politician.constituency!)!;
-  const parentPoliticianId = politician.id;
-
   return (
     <View style={styles.container}>
-      <Text style={styles.numberLabel}>Wahlkreis {constituency.number}</Text>
-      <Text style={styles.nameLabel}>{constituency.name}</Text>
-      <View style={styles.separator} />
-      <FlatList
-        style={styles.politicianList}
-        data={constituency.politicians}
-        keyExtractor={item => item}
-        renderItem={info => (
-          <PoliticianRow
-            style={styles.politicianRow}
-            politician={data.lookupPolitician(info.item)!}
-            parentPoliticianId={parentPoliticianId}
-          />
-        )}
-      />
+      <ScrollView>
+        {politician?.constituency &&
+          politician?.constituency.map(
+            (constituencyCandidate, index) =>
+              constituencyCandidate.id !== politician.profile?.id && (
+                <PoliticianItem
+                  key={index}
+                  politicianId={constituencyCandidate.id}
+                  politicianName={constituencyCandidate.label}
+                  party={constituencyCandidate.party}
+                />
+              ),
+          )}
+      </ScrollView>
     </View>
   );
 };
@@ -35,33 +29,12 @@ const PoliticianConstituency = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingHorizontal: 12,
+    backgroundColor: Colors.background,
   },
-  numberLabel: {
-    color: Colors.foreground,
-    fontSize: 13,
-    fontFamily: 'Inter',
-    marginBottom: 2,
-  },
-  nameLabel: {
-    color: Colors.foreground,
-    fontSize: 17,
-    fontFamily: 'Inter',
-  },
-  separator: {
-    backgroundColor: Colors.foreground,
-    height: 1,
-    opacity: 0.2,
-    marginTop: 12,
-    marginBottom: 4,
-  },
-  politicianList: {
-    marginHorizontal: -16,
-    paddingHorizontal: 16,
-  },
-  politicianRow: {
-    marginVertical: 4,
-  },
+  iosSafeBottom: {flex: 0, backgroundColor: Colors.background},
 });
 
 export default PoliticianConstituency;

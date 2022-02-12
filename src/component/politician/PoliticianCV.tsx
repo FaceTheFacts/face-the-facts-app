@@ -20,6 +20,7 @@ const PoliticianCV = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: Colors.background,
   },
   step: {
     backgroundColor: Colors.cardBackground,

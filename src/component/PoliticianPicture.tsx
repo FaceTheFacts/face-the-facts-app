@@ -19,7 +19,7 @@ const PoliticianPicture = ({
   }, [politicianId]);
 
   if (!image) {
-    return <ProfilePicturePlaceholder />;
+    return <ProfilePicturePlaceholder size={size} />;
   }
 
   return (

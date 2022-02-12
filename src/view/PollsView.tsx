@@ -1,110 +1,175 @@
-import React, {useContext, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  useWindowDimensions,
   SafeAreaView,
+  View,
 } from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
-import {DataContext} from '../logic/model';
 import PollCard from '../component/poll/PollCard';
-import {Politician} from '../logic/data';
 import Icon from '../component/Icon';
-import Wrap from '../component/utils/Wrap';
 import BackButton from '../component/BackButton';
+import {ApiVoteAndPoll, IPoliticianContext} from '../logic/api';
+import {useQuery} from 'react-query';
+import {fetch_api} from '../logic/fetch';
+import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/util';
+import {ClearIcon, FilterIcon} from '../icons';
+import {Modalize} from 'react-native-modalize';
+import BottomSheet from '../component/utils/BottomSheet';
+import PollFilter from '../component/poll/PollFilter';
 
 export interface PollsViewProps {
-  route: RouteProp<{params: {politician: Politician}}, 'params'>;
+  route: RouteProp<{params: PollViewParams}, 'params'>;
 }
 
+type PollViewParams = {
+  politician: IPoliticianContext;
+};
+
 const PollsView = ({route}: PollsViewProps) => {
-  const {politician} = route.params;
-  const data = useContext(DataContext);
-  const [filter, setFilter] = useState<string[]>([]);
-  const [visibleCount, setVisibleCount] = useState(20);
-  const {width} = useWindowDimensions();
+  const [filter, setFilter] = useState<number[]>([]);
+  const [filterQuery, setFilterQuery] = useState<string>('');
+  const politician = route.params.politician;
+  const politicianId = politician.profile?.id;
+  const modal = useRef<Modalize>(null);
+  useEffect(() => {
+    let query = '';
+    filter.forEach(filterItem => {
+      query += `filters=${filterItem + 1}&`;
+    });
+    setFilterQuery(query);
+  }, [filter]);
 
-  let visiblePolls = data.polls.filter(poll => poll.id in politician.votes!);
-
-  const [pollTopics] = useState(() =>
-    data.pollTopics.filter(topic =>
-      visiblePolls.some(poll => poll.topic?.includes(topic.id)),
-    ),
+  const {
+    data: polls,
+    isLoading: pollsLoading,
+    isSuccess: pollsSuccess,
+  } = useQuery<ApiVoteAndPoll[] | undefined, Error>(
+    `polls:${politicianId}-${filterQuery}`,
+    () => fetch_api<ApiVoteAndPoll[]>(`polls/${politicianId}?${filterQuery}`),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
-
-  if (filter.length) {
-    visiblePolls = visiblePolls.filter(poll =>
-      poll.topic?.some(id => filter.includes(id)),
-    );
-  }
-
-  const collapsed = visiblePolls.length > visibleCount;
-  if (collapsed) {
-    visiblePolls = visiblePolls.slice(0, visibleCount);
-  }
 
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
-      <BackButton />
-      <ScrollView style={styles.container}>
-        <Text style={styles.subtitle}>nach Themen filtern</Text>
-        <ScrollView horizontal style={styles.topicsContainer}>
-          <Wrap style={{width: width * 3}} spacing={8}>
-            {pollTopics.map(topic => (
+      <View style={styles.header}>
+        <View style={styles.backButtonContainer}>
+          <BackButton />
+        </View>
+        <View style={styles.titleContainer} />
+        <View style={styles.filterContainer}>
+          <TouchableOpacity
+            style={styles.filterBtn}
+            onPress={() => modal.current?.open()}>
+            <Icon style={styles.icon} icon={FilterIcon} />
+            <Text style={styles.filterText}>Filtern</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View>
+        <View style={styles.separatorLine} />
+      </View>
+      {filter.length > 0 && (
+        <View style={styles.filterCategoryContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {filter.map((topic, index) => (
               <TouchableOpacity
-                key={topic.id}
-                style={StyleSheet.flatten([
-                  styles.topic,
-                  filter.includes(topic.id) && styles.topicSelected,
-                ])}
+                key={index}
+                style={styles.categoryBtn}
                 onPress={() => {
-                  setFilter(
-                    filter.includes(topic.id)
-                      ? filter.filter(value => value !== topic.id)
-                      : [...filter, topic.id],
-                  );
-                  setVisibleCount(20);
+                  setFilter(filter.filter(value => value !== topic));
                 }}>
-                <Icon
-                  style={StyleSheet.flatten([
-                    styles.topicIcon,
-                    filter.includes(topic.id) && styles.topicContentSelected,
-                  ])}
-                  icon={{viewBox: '0 0 24 24', d: topic.icon}}
-                />
-                <Text
-                  style={StyleSheet.flatten([
-                    styles.topicLabel,
-                    filter.includes(topic.id) && styles.topicContentSelected,
-                  ])}>
-                  {topic.title}
+                <Text style={styles.categoryText}>
+                  {topicTypes[topic + 1].label}
                 </Text>
+                <Icon style={styles.clearIcon} icon={ClearIcon} />
               </TouchableOpacity>
             ))}
-          </Wrap>
-        </ScrollView>
-        <Text style={styles.subtitle}>Alle Abstimmungen</Text>
-        {visiblePolls.map(poll => (
-          <PollCard
-            key={poll.id}
-            style={styles.poll}
-            poll={poll}
-            candidateVote={politician.votes![poll.id]}
-          />
-        ))}
-        {collapsed && (
-          <TouchableOpacity
-            style={styles.showMoreButton}
-            onPress={() => setVisibleCount(visibleCount + 20)}>
-            <Text style={styles.showMoreText}>mehr anzeigen</Text>
-          </TouchableOpacity>
-        )}
+          </ScrollView>
+        </View>
+      )}
+      <ScrollView style={styles.container}>
+        {pollsLoading &&
+          politician?.profile?.votes_and_polls.map((poll, index) => (
+            <View key={index}>
+              {index !== 0 ? (
+                checkPreviousMonth(
+                  poll.Poll.field_poll_date,
+                  politician?.profile!.votes_and_polls[index - 1].Poll
+                    .field_poll_date,
+                ) && (
+                  <View style={styles.monthContainer}>
+                    <Text style={styles.month}>
+                      {formatMonth(poll.Poll.field_poll_date)}
+                    </Text>
+                  </View>
+                )
+              ) : (
+                <View style={styles.monthContainer}>
+                  <Text style={styles.month}>
+                    {formatMonth(poll.Poll.field_poll_date)}
+                  </Text>
+                </View>
+              )}
+              <View style={styles.pollCardContainer}>
+                <PollCard
+                  key={poll.Poll.id}
+                  poll={poll.Poll}
+                  vote={poll.Vote}
+                  candidateVote={poll.Vote.vote}
+                  politician={politician.profile}
+                />
+              </View>
+            </View>
+          ))}
+        {pollsSuccess &&
+          polls &&
+          polls.map((poll, index) => (
+            <View key={index}>
+              {index !== 0 ? (
+                checkPreviousMonth(
+                  poll.Poll.field_poll_date,
+                  polls[index - 1].Poll.field_poll_date,
+                ) && (
+                  <View style={styles.monthContainer}>
+                    <Text style={styles.month}>
+                      {formatMonth(poll.Poll.field_poll_date)}
+                    </Text>
+                  </View>
+                )
+              ) : (
+                <View style={styles.monthContainer}>
+                  <Text style={styles.month}>
+                    {formatMonth(poll.Poll.field_poll_date)}
+                  </Text>
+                </View>
+              )}
+              <View style={styles.pollCardContainer}>
+                <PollCard
+                  key={poll.Poll.id}
+                  poll={poll.Poll}
+                  vote={poll.Vote}
+                  candidateVote={poll.Vote.vote}
+                  politician={politician.profile}
+                />
+              </View>
+            </View>
+          ))}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />
+      <BottomSheet
+        modalRef={modal}
+        modalStyle={styles.modalStyle}
+        adjustToContentHeight={true}>
+        <PollFilter filter={filter} setFilter={setFilter} />
+      </BottomSheet>
     </>
   );
 };
@@ -118,24 +183,90 @@ const styles = StyleSheet.create({
     flex: 0,
     backgroundColor: Colors.background,
   },
-  container0: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 60,
+    backgroundColor: Colors.cardBackground,
+  },
+  backButtonContainer: {
     flex: 1,
+  },
+  titleContainer: {
+    flex: 1,
+  },
+  filterContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+    padding: 12,
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: '600',
+    fontFamily: 'Inter',
+    color: Colors.foreground,
+  },
+  filterBtn: {
+    borderColor: Colors.white40,
+    borderWidth: 2,
+    borderRadius: 100,
+    paddingVertical: 7,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+  },
+  filterText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.baseWhite,
+  },
+  filterCategoryContainer: {
     backgroundColor: Colors.background,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    paddingTop: 12,
+  },
+  categoryBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.cardBackground,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginHorizontal: 2,
+    borderRadius: 20,
+  },
+  categoryText: {
+    color: Colors.foreground,
+    fontSize: 13,
+    paddingRight: 12,
+  },
+  clearIcon: {
+    color: Colors.foreground,
+    width: 10,
+    height: 10,
+  },
+  modalStyle: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    backgroundColor: Colors.background,
+  },
+  icon: {
+    color: Colors.foreground,
+    alignSelf: 'center',
+    width: 13,
+    height: 13,
+    marginRight: 8,
+  },
+  separatorLine: {
+    height: 1,
+    backgroundColor: 'rgba(252, 252, 252, 0.25)',
   },
   container: {
     flex: 1,
-    paddingHorizontal: 16,
     backgroundColor: Colors.background,
-  },
-  subtitle: {
-    color: Colors.foreground,
-    opacity: 0.7,
-    fontSize: 12,
-    fontWeight: '600',
-    fontFamily: 'Inter',
-    textTransform: 'uppercase',
-    marginTop: 16,
-    marginBottom: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
   },
   topicsContainer: {
     overflow: 'visible',
@@ -150,12 +281,6 @@ const styles = StyleSheet.create({
   topicSelected: {
     backgroundColor: Colors.foreground,
   },
-  topicIcon: {
-    width: 16,
-    height: 16,
-    color: Colors.foreground,
-    marginRight: 8,
-  },
   topicLabel: {
     color: Colors.foreground,
     fontSize: 13,
@@ -164,21 +289,25 @@ const styles = StyleSheet.create({
   topicContentSelected: {
     color: Colors.cardBackground,
   },
-  poll: {
-    marginBottom: 8,
-  },
-  showMoreButton: {
+  monthContainer: {
     backgroundColor: Colors.cardBackground,
-    padding: 12,
     borderRadius: 8,
     alignSelf: 'center',
-    marginTop: 8,
-    marginBottom: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginVertical: 6,
   },
-  showMoreText: {
-    color: Colors.foreground,
-    fontSize: 13,
+  month: {
+    textAlign: 'center',
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 14.52,
     fontFamily: 'Inter',
+    color: Colors.foreground,
+    textTransform: 'uppercase',
+  },
+  pollCardContainer: {
+    marginVertical: 6,
   },
 });
 

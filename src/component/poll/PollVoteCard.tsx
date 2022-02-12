@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 import {ApiPollDetail} from '../../logic/api';
 import {Colors} from '../../theme';
-import {getWidth} from '../../utils/date';
+import {getWidth} from '../../utils/util';
 import FractionTag from '../FractionTag';
 
 interface PollVoteCardProps {

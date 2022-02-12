@@ -1,5 +1,3 @@
-import {PositionAnswer, Vote} from './data';
-
 export interface ApiSearchPolitician {
   id: number;
   label: string;
@@ -29,6 +27,7 @@ export interface IPoliticianContext {
   positions?: ApiPositions;
   speeches?: ApiPaginatedData<ApiSpeech>;
   news?: ApiNews;
+  constituency?: ApiSearchPolitician[];
 }
 
 export interface ApiVoteAndPoll {
@@ -239,3 +238,14 @@ export interface PoliTrackImage {
   height: number;
   width: number;
 }
+
+export type TopicIcon = {
+  label: string;
+  icon: string;
+};
+
+export type Vote = 'yes' | 'no' | 'abstain' | 'no_show';
+
+export type PollResult = 'yes' | 'no';
+
+export type PositionAnswer = 'agree' | 'disagree' | 'neutral';

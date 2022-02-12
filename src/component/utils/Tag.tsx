@@ -11,6 +11,7 @@ export interface TagProps {
   spacing?: boolean;
   uppercase?: boolean;
   width?: boolean;
+  abstain?: boolean;
 }
 
 const Tag = ({
@@ -23,6 +24,7 @@ const Tag = ({
   spacing = false,
   uppercase = false,
   width = false,
+  abstain = false,
 }: TagProps) => {
   const styles = StyleSheet.create({
     container: {
@@ -35,7 +37,7 @@ const Tag = ({
       width: width ? 50 : undefined,
     },
     label: {
-      fontSize: 12,
+      fontSize: abstain ? 11 : 13,
       fontFamily: 'Inter',
       color: foregroundColor,
       fontWeight: bold ? '600' : 'normal',

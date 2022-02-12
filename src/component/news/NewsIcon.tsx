@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Image} from 'react-native';
-import {getLogoPath} from '../../utils/date';
+import {getLogoPath} from '../../utils/util';
 
 export interface NewsIconProps {
   size?: number;

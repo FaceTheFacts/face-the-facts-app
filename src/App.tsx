@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Host} from 'react-native-portalize';
 import {DataContext, FaceTheFactsData} from './logic/model';
-import {NavigationContainer} from '@react-navigation/native';
+import {DarkTheme, NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import MainView from './view/MainView';
-import HomeView from './view/HomeView';
-import EmbeddedView from './view/EmbeddedView';
 import PoliticianView from './view/PoliticianView';
 import {
   SafeAreaView,
@@ -22,14 +20,15 @@ import PollDetailsView from './view/PollDetailsView';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import SpeechesView from './view/SpeechesView';
 import NewsView from './view/NewsView';
+import {RootStackParamList} from './view/RootStackParams';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
+const queryClient = new QueryClient();
 
 const App = () => {
   const [data, setData] = useState<FaceTheFactsData | null>(null);
   const [missingData, setMissingData] = useState(false);
-  // Create a QueryClient
-  const queryClient = new QueryClient();
+
   useEffect(() => {
     FaceTheFactsData.load(setData, () => setMissingData(true));
   }, []);
@@ -71,21 +70,38 @@ const App = () => {
         <StatusBar barStyle="light-content" />
         <Host>
           <View style={styles.container}>
-            <NavigationContainer>
-              <Stack.Navigator headerMode="none">
-                <Stack.Screen name="main" component={MainView} />
-                <Stack.Screen name="home" component={HomeView} />
-                <Stack.Screen name="embedded" component={EmbeddedView} />
+            <NavigationContainer theme={DarkTheme}>
+              <Stack.Navigator>
+                {/* Main contains Home, Scanner and History */}
                 <Stack.Screen
-                  name="PoliticianScreen"
-                  component={PoliticianView}
+                  name="Main"
+                  component={MainView}
+                  options={{headerShown: false}}
                 />
-                <Stack.Screen name="PollsScreen" component={PollsView} />
-                <Stack.Screen name="NewsScreen" component={NewsView} />
-                <Stack.Screen name="SpeechesScreen" component={SpeechesView} />
                 <Stack.Screen
-                  name="PollDetailsScreen"
+                  name="Politician"
+                  component={PoliticianView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="Polls"
+                  component={PollsView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="News"
+                  component={NewsView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="Speeches"
+                  component={SpeechesView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="PollDetails"
                   component={PollDetailsView}
+                  options={{headerShown: false}}
                 />
               </Stack.Navigator>
             </NavigationContainer>

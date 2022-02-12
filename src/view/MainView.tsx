@@ -15,7 +15,7 @@ import {
 } from '../icons';
 
 const MainView = () => {
-  const [selected, setSelected] = useState('scanner');
+  const [selected, setSelected] = useState('home');
 
   return (
     <View style={styles.container}>

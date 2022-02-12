@@ -86,6 +86,7 @@ const PoliticianPositions = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: Colors.background,
   },
   position: {
     flexDirection: 'row',

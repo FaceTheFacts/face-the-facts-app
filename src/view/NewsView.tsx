@@ -4,7 +4,7 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import BackButton from '../component/BackButton';
 import {ApiNews, IPoliticianContext} from '../logic/api';
-import {checkPreviousMonth, formatDate, formatMonth} from '../utils/date';
+import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import NewsScreenCard from '../component/news/NewsScreenCard';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
@@ -21,6 +21,10 @@ const NewsView = ({route}: NewsViewProps) => {
       fetch_api<ApiNews>(
         `politician/${politician.profile?.id}/news?page=1&size=100`,
       ),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
   let news = politician.news;
   if (status === 'success') {
@@ -134,6 +138,7 @@ const styles = StyleSheet.create({
     lineHeight: 14.52,
     fontFamily: 'Inter',
     color: Colors.foreground,
+    textTransform: 'uppercase',
   },
   subtitle: {
     color: Colors.foreground,

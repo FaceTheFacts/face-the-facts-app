@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
-import {Vote} from '../logic/data';
+import {Vote} from '../logic/api';
 import {Colors} from '../theme';
 import ReadMoreHTML from '../component/utils/ReadMoreHTML';
 import type {
@@ -20,8 +20,8 @@ import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {RouteProp} from '@react-navigation/native';
 import BackButton from '../component/BackButton';
-import {getChartData} from '../utils/date';
-import PoliticianCard from '../component/PoliticianCard';
+import {getChartData} from '../utils/util';
+import PoliticianCard from '../component/politician/PoliticianCard';
 import PollChart from '../component/poll/PollChart';
 import PollVoteCard from '../component/poll/PollVoteCard';
 
@@ -42,6 +42,10 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
   const pollDetailsQuery = useQuery<Array<ApiPollDetail> | undefined, Error>(
     `poll:${poll.id}:details`,
     () => fetch_api<Array<ApiPollDetail>>(`poll/${poll.id}/details`),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
   );
   const chartData = getChartData(pollDetailsQuery?.data);
   return (
@@ -68,8 +72,13 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
           />
         </View>
         <View style={styles.separatorLine} />
-        <View>
-          <PoliticianCard politician={politician} vote={candidateVote} />
+        <View style={styles.politicianCardContainer}>
+          <PoliticianCard
+            politicianId={politician.id}
+            politicianName={politician.label}
+            party={politician.party}
+            vote={candidateVote}
+          />
         </View>
         <PollChart chartData={chartData} />
         <PollVoteCard pollData={pollDetailsQuery.data} />
@@ -112,6 +121,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.foreground,
     opacity: 0.12,
     marginHorizontal: 12,
+  },
+  politicianCardContainer: {
+    marginTop: 6,
   },
 });
 

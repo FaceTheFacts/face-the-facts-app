@@ -14,12 +14,14 @@
     "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/masked-view": "^0.1.11",
-    "@react-navigation/native": "^5.9.4",
-    "@react-navigation/stack": "^5.14.5",
+    "@react-navigation/material-top-tabs": "^6.1.1",
+    "@react-navigation/native": "^6.0.8",
+    "@react-navigation/stack": "^6.1.1",
     "@types/react": "^17",
     "compress-json": "^1.0.4",
     "flexsearch": "^0.7.11",
     "react": "17.0.2",
+    "react-content-loader": "^6.1.0",
     "react-native": "0.66.1",
     "react-native-blur": "^3.2.2",
     "react-native-camera": "^3.44.1",
@@ -55,7 +57,7 @@
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.2",
     "react-test-renderer": "17.0.2",
-    "typescript": "^3.8.3"
+    "typescript": "^4.1.0"
   },
   "resolutions": {
     "@types/react": "^17"
