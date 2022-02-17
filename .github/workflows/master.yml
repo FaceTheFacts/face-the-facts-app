@@ -72,6 +72,9 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
 
+      - name: Create env.json
+        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"'} >> env.json
+
       - name: Create data.json mock
         run: echo "[]" >> data.json
 
