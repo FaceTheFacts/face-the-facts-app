@@ -65,3 +65,6 @@ politicians.json
 data.json
 
 service-account.json
+
+# Environment
+env.json
