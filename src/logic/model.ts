@@ -44,10 +44,10 @@ export class FaceTheFactsData {
     onData: (data: FaceTheFactsData) => void,
     onNoData: () => void,
   ): Promise<void> {
-    // if (__DEV__) {
-    //   onData(new FaceTheFactsData(require('../../data.json')));
-    //   return;
-    // }
+    if (__DEV__) {
+      onData(new FaceTheFactsData(require('../../data.json')));
+      return;
+    }
 
     const headers: Headers = {};
     let fileAlreadyExists = false;
