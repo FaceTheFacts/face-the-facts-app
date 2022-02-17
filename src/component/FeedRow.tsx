@@ -1,8 +1,16 @@
 import React, {ReactNode} from 'react';
-import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  TouchableOpacity,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import PoliticianPicture from './PoliticianPicture';
 import {Colors} from '../theme';
 import {PoliticianInfo} from './feed/FeedRowContent';
+import {RootStackParamList} from '../view/RootStackParams';
 
 interface FeedRowProps {
   politicians: PoliticianInfo[];
@@ -12,6 +20,7 @@ interface FeedRowProps {
 
 const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
   const {width} = useWindowDimensions();
+  const navigation = useNavigation<RootStackParamList>();
 
   return (
     <>
@@ -24,9 +33,18 @@ const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
             </View>
           </View>
         ) : (
-          <View style={styles.image}>
+          <TouchableOpacity
+            style={styles.image}
+            onPress={() =>
+              // @ts-expect-error
+              navigation.navigate('Politician', {
+                politicianId: politicians[0].id,
+                politicianName: politicians[0].label,
+                party: politicians[0].party,
+              })
+            }>
             <PoliticianPicture politicianId={+politicians[0].id} size={48} />
-          </View>
+          </TouchableOpacity>
         )}
         <View style={[{width: width - 80}]}>
           {children}
