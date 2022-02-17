@@ -22,6 +22,6 @@ export type RootStackParamList = {
     poll: ApiPoll;
     vote: ApiVote;
     candidateVote: Vote;
-    politician: ApiPoliticianProfile;
+    politician?: ApiPoliticianProfile;
   };
 };

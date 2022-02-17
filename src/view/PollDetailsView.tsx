@@ -29,7 +29,7 @@ type PollDetailsViewParams = {
   poll: ApiPoll;
   vote: ApiVote;
   candidateVote: Vote;
-  politician: ApiPoliticianProfile;
+  politician?: ApiPoliticianProfile;
 };
 
 interface PollDetailsViewProps {
@@ -72,14 +72,16 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
           />
         </View>
         <View style={styles.separatorLine} />
-        <View style={styles.politicianCardContainer}>
-          <PoliticianCard
-            politicianId={politician.id}
-            politicianName={politician.label}
-            party={politician.party}
-            vote={candidateVote}
-          />
-        </View>
+        {politician && (
+          <View style={styles.politicianCardContainer}>
+            <PoliticianCard
+              politicianId={politician.id}
+              politicianName={politician.label}
+              party={politician.party}
+              vote={candidateVote}
+            />
+          </View>
+        )}
         <PollChart chartData={chartData} />
         <PollVoteCard pollData={pollDetailsQuery.data} />
       </ScrollView>

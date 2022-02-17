@@ -146,7 +146,10 @@ const FollowFeed = ({
                 politicians: [],
               },
             };
-            poll.content.politicians.push(politician);
+            poll.content.politicians.push({
+              ...politician,
+              vote: voteAndPoll.Vote.vote,
+            });
             pollsMap.set(pollId, poll);
           }
         });
@@ -156,7 +159,7 @@ const FollowFeed = ({
       speechQueries.forEach(query => {
         // @ts-ignore
         const speeches: ApiSpeechData[] = query.data.data;
-        speeches.forEach(speech => {
+        speeches?.forEach(speech => {
           const title = speech.relationships.agendaItem.data.attributes.title;
           const politicianId =
             speech.relationships.people.data[0].attributes.additionalInformation
@@ -166,6 +169,7 @@ const FollowFeed = ({
           const politician: PoliticianInfo = {
             id: profile.id,
             label: profile.label,
+            party: profile.party,
           };
 
           const speechTab: Tab<SpeechTab> = {
