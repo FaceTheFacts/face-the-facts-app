@@ -116,6 +116,7 @@ const FollowFeed = ({
         const politician: PoliticianInfo = {
           id: profile.id,
           label: profile.label,
+          party: profile.party,
         };
 
         profile.sidejobs.forEach(sideJob => {

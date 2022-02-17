@@ -2,11 +2,12 @@ import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {Colors} from '../../theme';
 import {NavigationContext} from '@react-navigation/native';
-import {ApiSidejob, ApiVoteAndPoll} from '../../logic/api';
+import {ApiParty, ApiSidejob, ApiVoteAndPoll} from '../../logic/api';
 
 export interface PoliticianInfo {
   id: number;
   label: string;
+  party: ApiParty;
 }
 
 export type PollTab = ApiVoteAndPoll & {
