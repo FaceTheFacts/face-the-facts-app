@@ -14,6 +14,7 @@ export type RootStackParamList = {
     politicianId: number;
     politicianName: string;
     party: ApiParty;
+    toSideJobs?: boolean;
   };
   News: {politician: IPoliticianContext};
   Speeches: {politician: IPoliticianContext};

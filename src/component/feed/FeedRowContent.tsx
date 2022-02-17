@@ -64,30 +64,28 @@ export const PollRowContent = ({poll}: PollRowProps) => {
         modalRef={modal}
         modalStyle={styles.modalStyle}
         adjustToContentHeight={true}>
-        <>
-          <TouchableOpacity
-            style={styles.redirectBtn}
-            onPress={() => {
-              modal.current?.close();
-              navigator.push('PollDetails', {
-                poll: poll.Poll,
-                vote: poll.Vote,
-                candidateVote: poll.Vote.vote,
-              });
-            }}>
-            <Icon style={styles.arrowIcon} icon={ArrowUpRightFromSquare} />
-            <Text style={styles.redirectBtnText}>zur Abstimmung</Text>
-          </TouchableOpacity>
-          {poll.politicians.map(politician => (
-            <PoliticianCard
-              key={politician.id}
-              politicianId={politician.id}
-              politicianName={politician.label}
-              party={politician.party}
-              vote={politician.vote!}
-            />
-          ))}
-        </>
+        <TouchableOpacity
+          style={styles.redirectBtn}
+          onPress={() => {
+            modal.current?.close();
+            navigator.push('PollDetails', {
+              poll: poll.Poll,
+              vote: poll.Vote,
+              candidateVote: poll.Vote.vote,
+            });
+          }}>
+          <Icon style={styles.arrowIcon} icon={ArrowUpRightFromSquare} />
+          <Text style={styles.redirectBtnText}>zur Abstimmung</Text>
+        </TouchableOpacity>
+        {poll.politicians.map(politician => (
+          <PoliticianCard
+            key={politician.id}
+            politicianId={politician.id}
+            politicianName={politician.label}
+            party={politician.party}
+            vote={politician.vote!}
+          />
+        ))}
       </BottomSheet>
     </View>
   );
@@ -114,6 +112,7 @@ export const SideJobRowContent = ({sideJob}: SideJobRowProps) => {
             politicianId: sideJob.politicians[0].id,
             politicianName: sideJob.politicians[0].label,
             party: sideJob.politicians[0].party,
+            toSideJobs: true,
           });
         }}>
         <Text style={styles.linkText}>Nebentätigkeit</Text>

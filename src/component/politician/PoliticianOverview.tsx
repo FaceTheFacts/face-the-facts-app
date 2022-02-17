@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,7 +7,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import {NavigationContext} from '@react-navigation/native';
+import {NavigationContext, useFocusEffect} from '@react-navigation/native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import Icon from '../Icon';
@@ -17,13 +17,29 @@ import SpeechCard from '../speech/SpeechCard';
 import NewsCard from '../news/NewsCard';
 import {formatDate, topicTypes} from '../../utils/util';
 
-const PoliticianOverview = () => {
+interface PoliticianOverviewProps {
+  toSideJobs?: boolean;
+}
+
+const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
+  toSideJobs,
+}) => {
   const politician = useContext(PoliticianContext);
   const navigator = useContext<any>(NavigationContext)!;
+  const ref = useRef<ScrollView>(null);
   const {width} = useWindowDimensions();
+  const [scrollY, setScrollY] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (toSideJobs) {
+        ref.current?.scrollTo({y: scrollY});
+      }
+    }, [scrollY, toSideJobs]),
+  );
 
   return (
-    <ScrollView style={styles.containerWrapper}>
+    <ScrollView ref={ref} style={styles.containerWrapper}>
       <View style={styles.container}>
         {politician?.profile?.topic_ids_of_latest_committee &&
           politician.profile.topic_ids_of_latest_committee.length > 0 && (
@@ -153,7 +169,7 @@ const PoliticianOverview = () => {
         )}
         {politician?.profile?.sidejobs &&
           politician.profile.sidejobs.length > 0 && (
-            <>
+            <View onLayout={e => setScrollY(e.nativeEvent.layout.y)}>
               <Text style={styles.subtitleFocus}>Nebentätigkeiten</Text>
               {politician?.profile?.sidejobs.map((sidejob, index) => (
                 <View key={index} style={styles.sideJob}>
@@ -175,7 +191,7 @@ const PoliticianOverview = () => {
                   </View>
                 </View>
               ))}
-            </>
+            </View>
           )}
       </View>
     </ScrollView>
