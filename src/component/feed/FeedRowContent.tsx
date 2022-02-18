@@ -78,13 +78,24 @@ export const PollRowContent = ({poll}: PollRowProps) => {
           <Text style={styles.redirectBtnText}>zur Abstimmung</Text>
         </TouchableOpacity>
         {poll.politicians.map(politician => (
-          <PoliticianCard
+          <TouchableOpacity
             key={politician.id}
-            politicianId={politician.id}
-            politicianName={politician.label}
-            party={politician.party}
-            vote={politician.vote!}
-          />
+            onPress={() => {
+              modal.current?.close();
+              navigator.push('PollDetails', {
+                poll: poll.Poll,
+                vote: poll.Vote,
+                candidateVote: poll.Vote.vote,
+                politician: politician,
+              });
+            }}>
+            <PoliticianCard
+              politicianId={politician.id}
+              politicianName={politician.label}
+              party={politician.party}
+              vote={politician.vote}
+            />
+          </TouchableOpacity>
         ))}
       </BottomSheet>
     </View>
