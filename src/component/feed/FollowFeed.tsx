@@ -25,6 +25,7 @@ import {
   SpeechResponse,
   ApiSpeechData,
 } from '../../logic/api';
+import {checkPreviousMonth, formatMonth} from '../../utils/util';
 
 type ValueOf<T> = T[keyof T];
 
@@ -217,6 +218,8 @@ const FollowFeed = ({
   }
 
   const renderTab = (tab: Tab<Row>, index: number) => {
+    console.log(tab.content.created);
+
     switch (tab.type) {
       case 'poll':
         return (
@@ -259,7 +262,32 @@ const FollowFeed = ({
   return (
     <View style={styles.container}>
       <ScrollView>
-        {visibleTabs.map((tab, index) => renderTab(tab, index))}
+        {visibleTabs.map((tab, index) => (
+          <View key={index}>
+            {/* TODO: refactor, bad practice */}
+            {index > 0 ? (
+              checkPreviousMonth(
+                tab.content.created,
+                visibleTabs[index - 1].content.created,
+              ) ? (
+                <View style={styles.monthContainer}>
+                  <Text style={styles.month}>
+                    {formatMonth(tab.content.created)}
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.separatorLine} />
+              )
+            ) : (
+              <View style={styles.monthContainer}>
+                <Text style={styles.month}>
+                  {formatMonth(tab.content.created)}
+                </Text>
+              </View>
+            )}
+            {renderTab(tab, index)}
+          </View>
+        ))}
         {tabs.length > visibleCount && (
           <TouchableOpacity
             style={styles.showMoreButton}
@@ -310,6 +338,29 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
     fontSize: 13,
     fontFamily: 'Inter',
+  },
+  monthContainer: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 8,
+    alignSelf: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginVertical: 6,
+  },
+  month: {
+    textAlign: 'center',
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 14.52,
+    fontFamily: 'Inter',
+    color: Colors.foreground,
+    textTransform: 'uppercase',
+  },
+  separatorLine: {
+    height: 1,
+    backgroundColor: Colors.foreground,
+    opacity: 0.12,
+    marginHorizontal: 12,
   },
 });
 

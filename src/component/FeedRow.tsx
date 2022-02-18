@@ -51,7 +51,6 @@ const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
           <Text style={styles.descText}>{desc}</Text>
         </View>
       </View>
-      <View style={styles.separatorLine} />
     </>
   );
 };
@@ -79,13 +78,6 @@ const styles = StyleSheet.create({
     color: Colors.baseWhite,
     marginTop: 4,
     flexWrap: 'wrap',
-  },
-  separatorLine: {
-    height: 1,
-    backgroundColor: Colors.foreground,
-    opacity: 0.12,
-    marginHorizontal: 12,
-    // marginTop: 16,
   },
 });
 
