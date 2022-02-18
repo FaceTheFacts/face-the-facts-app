@@ -6,7 +6,7 @@ import {
   POLLS_TOGGLE_KEY,
   SIDEJOBS_TOGGLE_KEY,
   SPEECHES_TOGGLE_KEY,
-  ARTICLES_TOGGLE_KEY,
+  //ARTICLES_TOGGLE_KEY,
 } from '../../view/HomeView';
 
 interface FeedFilterProps {
@@ -24,12 +24,12 @@ const FeedFilter = ({
   showPolls,
   showSideJobs,
   showSpeeches,
-  showArticles,
+  //showArticles,
   setShowPolls,
   setShowSideJobs,
   setShowSpeeches,
-  setShowArticles,
-}: FeedFilterProps) => {
+}: //setShowArticles,
+FeedFilterProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading2}>Filtern</Text>
@@ -50,12 +50,12 @@ const FeedFilter = ({
         isEnabled={showPolls}
         setIsEnabled={setShowPolls}
       />
-      <ToggleSwitch
+      {/* <ToggleSwitch
         key={ARTICLES_TOGGLE_KEY}
         label={'Artikel'}
         isEnabled={showArticles}
         setIsEnabled={setShowArticles}
-      />
+      /> */}
       <ToggleSwitch
         key={SIDEJOBS_TOGGLE_KEY}
         label={'Nebentätigkeiten'}
