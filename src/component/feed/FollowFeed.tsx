@@ -265,7 +265,10 @@ const FollowFeed = ({
             style={styles.showMoreButton}
             onPress={() => {
               setVisibleCount(visibleCount + 20);
-              setVisibleTabs(tabs.slice(0, visibleCount));
+              setVisibleTabs(prevTabs => [
+                ...prevTabs,
+                ...tabs.slice(visibleCount, visibleCount + 20),
+              ]);
             }}>
             <Text style={styles.showMoreText}>mehr anzeigen</Text>
           </TouchableOpacity>

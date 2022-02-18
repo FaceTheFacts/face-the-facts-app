@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 17,
     paddingHorizontal: 0,
+    marginLeft: 16,
     fontWeight: '600',
   },
   filterBtn: {
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingVertical: 8,
     paddingHorizontal: 16,
+    marginRight: 16,
     flexDirection: 'row',
   },
   filterText: {
