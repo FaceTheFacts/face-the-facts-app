@@ -26,6 +26,7 @@ type PoliticianViewParams = {
   politicianId: number;
   politicianName: string;
   party: ApiParty;
+  toSideJobs?: boolean;
 };
 
 interface PoliticianViewProps {
@@ -132,7 +133,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
         <PoliticianHeader />
         {!(positions?.positions && positions?.positions.length > 0) &&
         !(constituency && constituency.length > 0) ? (
-          <PoliticianProfile />
+          <PoliticianProfile toSideJobs={route.params.toSideJobs} />
         ) : (
           <Tab.Navigator
             sceneContainerStyle={{backgroundColor: Colors.background}}
@@ -146,7 +147,12 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
               tabBarLabelStyle: styles.tabBarLabel,
               tabBarStyle: {backgroundColor: Colors.cardBackground},
             })}>
-            <Tab.Screen name="Profilseite" component={PoliticianProfile} />
+            <Tab.Screen
+              name="Profilseite"
+              children={() => (
+                <PoliticianProfile toSideJobs={route.params.toSideJobs} />
+              )}
+            />
             {positions?.positions && positions?.positions.length > 0 && (
               <Tab.Screen name="Positionen" component={PoliticianPositions} />
             )}

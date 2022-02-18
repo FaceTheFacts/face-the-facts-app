@@ -14,6 +14,7 @@ export type RootStackParamList = {
     politicianId: number;
     politicianName: string;
     party: ApiParty;
+    toSideJobs?: boolean;
   };
   News: {politician: IPoliticianContext};
   Speeches: {politician: IPoliticianContext};
@@ -22,6 +23,6 @@ export type RootStackParamList = {
     poll: ApiPoll;
     vote: ApiVote;
     candidateVote: Vote;
-    politician: ApiPoliticianProfile;
+    politician?: ApiPoliticianProfile;
   };
 };

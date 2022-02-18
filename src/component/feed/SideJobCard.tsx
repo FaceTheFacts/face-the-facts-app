@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Colors} from '../../theme';
-import CardPolitician from '../CardPolitician';
+//import CardPolitician from '../CardPolitician';
 
 interface SideJobCardProps {
   politicianId: string;
@@ -12,7 +12,7 @@ interface SideJobCardProps {
 }
 
 const SideJobCard = ({
-  politicianId,
+  //politicianId,
   date,
   desc,
   organization,
@@ -20,7 +20,7 @@ const SideJobCard = ({
 }: SideJobCardProps) => {
   return (
     <View style={styles.container}>
-      <CardPolitician politicianId={politicianId} />
+      {/* <CardPolitician politicianId={politicianId} /> */}
       <View style={styles.separatorLine} />
       <View style={styles.cardContainer}>
         <Text style={styles.dateText}>{date}</Text>

@@ -35,7 +35,8 @@ const HomeView = (props: HomeViewProps) => {
   const [showSpeeches, setShowSpeeches] = useState(true);
   const [showArticles, setShowArticles] = useState(true);
   const [routes] = useState([
-    {key: 'parliament', title: 'Bundestag'},
+    // NOTE:  remove the line below to enable parliament tab
+    // {key: 'parliament', title: 'Bundestag'},
     {key: 'follow', title: 'Folge ich'},
   ]);
   const modal = useRef<Modalize>(null);
@@ -53,10 +54,10 @@ const HomeView = (props: HomeViewProps) => {
         getItem(`@facethefacts:${SPEECHES_TOGGLE_KEY}`),
         getItem(`@facethefacts:${ARTICLES_TOGGLE_KEY}`),
       ]);
-      setShowPolls(pollsToggleValue || false);
-      setShowSideJobs(sideJobsToggleValue || false);
-      setShowSpeeches(speechesToggleValue || false);
-      setShowArticles(articlesToggleValue || false);
+      setShowPolls(pollsToggleValue ?? true);
+      setShowSideJobs(sideJobsToggleValue ?? true);
+      setShowSpeeches(speechesToggleValue ?? true);
+      setShowArticles(articlesToggleValue ?? true);
     })();
   }, []);
 
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 17,
     paddingHorizontal: 0,
+    marginLeft: 16,
     fontWeight: '600',
   },
   filterBtn: {
@@ -185,6 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingVertical: 8,
     paddingHorizontal: 16,
+    marginRight: 16,
     flexDirection: 'row',
   },
   filterText: {
