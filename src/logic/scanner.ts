@@ -3,7 +3,7 @@ import {
   TrackedTextFeatureRecursive,
 } from 'react-native-camera';
 import {makeToken} from './tokenizer';
-import {FaceTheFactsData, Politician} from './model';
+import {FaceTheFactsData} from './model';
 
 interface NameFragment {
   id: string;
@@ -15,7 +15,7 @@ export class PoliticianScanner {
 
   public constructor(private readonly data: FaceTheFactsData) {}
 
-  public analyze(features: TrackedTextFeature[]): Politician | null {
+  public analyze(features: TrackedTextFeature[]): number | null {
     features.forEach(feature => this.analyzeFeature(feature));
 
     if (this.foundTokens.length === 0) {
@@ -60,7 +60,7 @@ export class PoliticianScanner {
       return null;
     }
     const id = [...fullNames][0];
-    return this.data.lookupPolitician(id);
+    return +id;
   }
 
   private analyzeFeature(feature: TrackedTextFeatureRecursive): void {
