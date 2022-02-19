@@ -21,7 +21,7 @@ const MOCK_SPEECH = {
 };
 
 const MOCK_SIDEJOB = {
-  politicianId: '145862',
+  politicianId: 145862,
   date: '27.09.2021',
   desc: 'Mitglied des Verwaltungsrates, ehrenamtlich',
   organization: 'Sparkasse Uecker-Randow',
