@@ -218,8 +218,6 @@ const FollowFeed = ({
   }
 
   const renderTab = (tab: Tab<Row>, index: number) => {
-    console.log(tab.content.created);
-
     switch (tab.type) {
       case 'poll':
         return (

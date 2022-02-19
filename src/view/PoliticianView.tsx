@@ -47,10 +47,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
     isError: profileError,
   } = useQuery<ApiPoliticianProfile | undefined, Error>(
     `politician:${politicianId}`,
-    () =>
-      fetch_api<ApiPoliticianProfile>(
-        `politician/${politicianId}?sidejobs_end=15&votes_end=6`,
-      ),
+    () => fetch_api<ApiPoliticianProfile>(`politician/${politicianId}`),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,

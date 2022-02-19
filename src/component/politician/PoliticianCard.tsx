@@ -7,7 +7,7 @@ import PartyTag from '../PartyTag';
 import {Vote} from '../../logic/api';
 import VoteTag from '../utils/VoteTag';
 
-interface CardPoliticianProps {
+interface PoliticianCardProps {
   politicianId: number;
   politicianName: string;
   party: ApiParty;
@@ -19,7 +19,7 @@ const PoliticianCard = ({
   politicianName,
   party,
   vote,
-}: CardPoliticianProps) => {
+}: PoliticianCardProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.politicianContainer}>
