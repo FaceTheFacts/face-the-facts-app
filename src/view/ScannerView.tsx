@@ -5,14 +5,16 @@ import {DataContext} from '../logic/model';
 import {NavigationContext} from '@react-navigation/native';
 import {ErrorIcon, ScanIcon} from '../icons';
 import InfoBanner from '../component/InfoBanner';
-import {Politician} from '../logic/data';
+import {ApiSearchPolitician} from '../logic/api';
+import {fetch_api} from '../logic/fetch';
+import {useQuery} from 'react-query';
 
 const ScannerView = () => {
   // Scanning
   const camera = useRef<RNCamera | null>(null);
   const [texts, setTexts] = useState<TrackedTextFeature[]>([]);
   const [faces, setFaces] = useState<Face[]>([]);
-  const [showPolitician, setShowPolitician] = useState<Politician | null>(null);
+  const [showPolitician, setShowPolitician] = useState<number | null>(null);
 
   // State
   const [focussed, setFocussed] = useState(true);
@@ -20,6 +22,17 @@ const ScannerView = () => {
 
   const dataContext = useContext(DataContext);
   const navigator = useContext<any>(NavigationContext)!;
+
+  const {data: scanData} = useQuery<ApiSearchPolitician[] | undefined, Error>(
+    `scanpolitician:${showPolitician}`,
+    () =>
+      fetch_api<ApiSearchPolitician[]>(`image-scanner?id=${showPolitician}`),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+      enabled: !!showPolitician,
+    },
+  );
 
   useEffect(
     () => navigator.addListener('focus', () => setFocussed(true)),
@@ -42,18 +55,21 @@ const ScannerView = () => {
       setFocussed(false);
       setTexts([]);
       setFaces([]);
-      dataContext.dbManager.pushHistoryItem(scannedPolitician.id);
+      dataContext.dbManager.pushHistoryItem(scannedPolitician);
     }
   }
-
   useEffect(() => {
-    if (showPolitician) {
-      navigator.push('PoliticianScreen', {politician: showPolitician});
+    if (showPolitician && scanData) {
+      navigator.push('Politician', {
+        politicianId: scanData[0].id,
+        politicianName: scanData[0].label,
+        party: scanData[0].party,
+      });
       setShowPolitician(null);
       setFocussed(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showPolitician]);
+  }, [showPolitician, scanData]);
 
   return (
     <View style={styles.container}>
