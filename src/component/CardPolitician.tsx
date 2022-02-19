@@ -1,33 +1,56 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Colors} from '../theme';
-import {DataContext} from '../logic/model';
 import PoliticianPicture from './PoliticianPicture';
+import {ApiPoliticianProfile} from '../logic/api';
+import {fetch_api} from '../logic/fetch';
+import {useQuery} from 'react-query';
 
 interface CardPoliticianProps {
   politicianId: number;
 }
 
 const CardPolitician = ({politicianId}: CardPoliticianProps) => {
-  const data = useContext(DataContext);
-  const politician = data.lookupPolitician(politicianId.toString())!;
-  const party = data.lookupParty(politician.partyId)!;
+  const {
+    data: profile,
+    isLoading: profileLoading,
+    isError: profileError,
+  } = useQuery<ApiPoliticianProfile | undefined, Error>(
+    `politician:${politicianId}`,
+    () =>
+      fetch_api<ApiPoliticianProfile>(
+        `politician/${politicianId}?sidejobs_end=0&votes_end=0`,
+      ),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
+  );
+
+  if (profileLoading) {
+    return <Text>Loading</Text>;
+  }
+
+  if (profileError) {
+    return <Text>Error</Text>;
+  }
+
   return (
     <View style={styles.container}>
       <PoliticianPicture politicianId={politicianId} size={48} />
       <View style={styles.info}>
-        <Text style={styles.nameText}>{politician.name}</Text>
+        <Text style={styles.nameText}>{profile?.label}</Text>
         <View
           style={StyleSheet.flatten([
             styles.partyTag,
-            {backgroundColor: party.backgroundColor},
+            {backgroundColor: profile?.party.party_style.background_color},
           ])}>
           <Text
             style={StyleSheet.flatten([
               styles.tagText,
-              {color: party.foregroundColor},
+              {color: profile?.party.party_style.foreground_color},
             ])}>
-            {party.displayName}
+            {profile?.party.label}
           </Text>
         </View>
       </View>
