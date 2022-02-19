@@ -4,7 +4,7 @@ import {Colors} from '../../theme';
 //import CardPolitician from '../CardPolitician';
 
 interface SideJobCardProps {
-  politicianId: string;
+  politicianId: number;
   date: string;
   desc: string;
   organization: string;
