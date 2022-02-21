@@ -19,8 +19,8 @@ import {
   ApiSpeech,
   IPoliticianContext,
 } from '../logic/api';
-import PoliticianProfile from '../component/politician/PoliticianProfile';
 import SkeletonPoliticianProfile from '../component/skeleton/SkeletonPoliticianProfile';
+import PoliticianProfile from '../component/politician/PoliticianProfile';
 
 type PoliticianViewParams = {
   politicianId: number;
