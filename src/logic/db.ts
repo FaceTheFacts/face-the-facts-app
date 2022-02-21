@@ -1,5 +1,4 @@
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {Politician} from './data';
 
 SQLite.enablePromise(true);
 
@@ -13,7 +12,7 @@ export class DBManager {
   private historyItems: HistoryItem[] | null = null;
   private database: SQLiteDatabase | null = null;
 
-  public constructor(private readonly politicians: Map<string, Politician>) {}
+  public constructor(private readonly politicians: Map<string, string>) {}
 
   public async getFollowedIds(): Promise<Set<number>> {
     await this.loadFollowedIds();
@@ -22,6 +21,7 @@ export class DBManager {
 
   public async getHistoryItems(): Promise<HistoryItem[]> {
     await this.loadHistoryItems();
+    console.log(this.historyItems);
     return this.historyItems!;
   }
 

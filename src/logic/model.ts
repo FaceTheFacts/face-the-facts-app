@@ -2,7 +2,6 @@ import {TrackedTextFeature} from 'react-native-camera';
 import {PoliticianScanner} from './scanner';
 import {makeToken} from './tokenizer';
 import {createContext} from 'react';
-import {Politician} from './data';
 import {
   CachesDirectoryPath,
   downloadFile,
@@ -65,18 +64,17 @@ export class FaceTheFactsData {
 
     return new FaceTheFactsData(data);
   }
-  private readonly politicianDb: Map<string, Politician>;
+  private readonly politicians: Map<string, string>;
   private readonly scanTokens: Map<string, string[][]>;
   private readonly scanTokenMap: Map<string, Set<string>>;
 
   public readonly dbManager: DBManager;
 
-  public constructor(dataset: string[]) {
+  public constructor(dataset: string[][]) {
     // @ts-ignore
-    this.politicians = new Map(dataset);
+    this.politicians = new Map(dataset.map(value => [value[1], value[0]]));
     this.scanTokens = new Map();
     this.scanTokenMap = new Map();
-    this.politicianDb = new Map();
 
     dataset.forEach(item => {
       const key = item[0];
@@ -102,7 +100,7 @@ export class FaceTheFactsData {
         }),
       );
     });
-    this.dbManager = new DBManager(this.politicianDb);
+    this.dbManager = new DBManager(this.politicians);
   }
 
   public scanPolitician(features: TrackedTextFeature[]): number | null {
