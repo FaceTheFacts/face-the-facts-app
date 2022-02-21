@@ -196,8 +196,8 @@ const styles = StyleSheet.create({
     color: Colors.baseWhite,
   },
   modalStyle: {
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     backgroundColor: Colors.background,
   },
   icon: {
