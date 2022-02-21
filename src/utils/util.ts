@@ -28,7 +28,12 @@ import {
   TourismIcon,
   TrafficIcon,
 } from '../icons';
-import {ApiPartyStyle, ApiPollDetail, TopicIcon} from '../logic/api';
+import {
+  ApiPartyStyle,
+  ApiPollDetail,
+  PositionAnswer,
+  TopicIcon,
+} from '../logic/api';
 
 function sameDay(a: Date, b: Date): boolean {
   return (
@@ -416,3 +421,25 @@ export const topicTypesArr = [
   {label: 'Politisches Leben', icon: PoliticsIcon},
   {label: 'Gesundheit', icon: HealthIcon},
 ];
+
+export const answerLongLabels: Record<PositionAnswer, string> = {
+  agree: 'Kandidat:in stimmt zu',
+  disagree: 'Kandidat:in stimmt nicht zu',
+  neutral: 'Kandidat:in sieht es Neutral',
+};
+
+export const answerShortLabels: Record<PositionAnswer, string> = {
+  agree: 'Ja',
+  disagree: 'Nein',
+  neutral: 'Neutral',
+};
+
+export const answerColors: Record<PositionAnswer, string> = {
+  agree: '#45C66F',
+  disagree: '#E54A6F',
+  neutral: 'rgba(248, 248, 248, 0.12)',
+};
+
+export function getPosition(position: PositionAnswer) {
+  return answerLongLabels[position];
+}
