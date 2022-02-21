@@ -1,25 +1,23 @@
-import React, {useContext, useState} from 'react';
-import {
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
-import Icon from '../Icon';
-import {ArrowForwardIos, ClearIcon} from '../../icons';
 import {ApiPosition} from '../../logic/api';
 import PositionAnswerTag from '../utils/PositionAnswerTag';
+import {Modalize} from 'react-native-modalize';
+import BottomSheet from '../utils/BottomSheet';
+import PositionModal from './PositionModal';
 
 const PoliticianPositions = () => {
   const politician = useContext(PoliticianContext);
-  const [openedCandidatePosition, setOpenedCandidatePosition] =
-    useState<ApiPosition | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [openedCandidatePosition, setOpenedCandidatePosition] = useState<
+    ApiPosition | undefined
+  >(politician?.positions?.positions[0]);
+  const modal = useRef<Modalize>(null);
+  useEffect(() => {
+    setOpenedCandidatePosition(openedCandidatePosition);
+    console.log('Render');
+  }, [openedCandidatePosition]);
   return (
     <>
       <ScrollView style={styles.container}>
@@ -30,7 +28,7 @@ const PoliticianPositions = () => {
               style={styles.position}
               onPress={() => {
                 setOpenedCandidatePosition(candidatePosition);
-                setModalOpen(true);
+                modal.current?.open();
               }}>
               <Text style={styles.title}>
                 {candidatePosition.position_statement.statement}
@@ -40,45 +38,20 @@ const PoliticianPositions = () => {
                 center
                 answer={candidatePosition.position}
               />
-              <Icon style={styles.arrow} icon={ArrowForwardIos} />
             </TouchableOpacity>
           );
         })}
       </ScrollView>
-      {openedCandidatePosition && (
-        <Modal
-          animationType="fade"
-          transparent
-          visible={modalOpen}
-          onRequestClose={() => setModalOpen(false)}>
-          <View style={styles.modalWrapper}>
-            <Pressable
-              style={styles.modalBarrier}
-              onPress={() => setModalOpen(false)}
-            />
-            <TouchableOpacity onPress={() => setModalOpen(false)}>
-              <Icon style={styles.modalClose} icon={ClearIcon} />
-            </TouchableOpacity>
-            <View style={styles.modalContainer}>
-              <Text style={styles.modalDescription}>
-                {openedCandidatePosition!.position_statement.statement}
-              </Text>
-              <View style={styles.modalSeparator} />
-              <PositionAnswerTag answer={openedCandidatePosition.position} />
-              {openedCandidatePosition.reason && (
-                <>
-                  <Text style={styles.modalReasonLabel}>
-                    Begründung von {politician?.profile?.label}:
-                  </Text>
-                  <Text style={styles.modalReason}>
-                    "{openedCandidatePosition.reason}"
-                  </Text>
-                </>
-              )}
-            </View>
-          </View>
-        </Modal>
-      )}
+      <BottomSheet
+        modalRef={modal}
+        modalStyle={styles.modalStyle}
+        adjustToContentHeight={true}>
+        <PositionModal
+          statement={openedCandidatePosition!.position_statement.statement}
+          reason={openedCandidatePosition!.reason}
+          position={openedCandidatePosition!.position}
+        />
+      </BottomSheet>
     </>
   );
 };
@@ -108,6 +81,11 @@ const styles = StyleSheet.create({
     height: 14,
     color: Colors.foreground,
     marginLeft: 16,
+  },
+  modalStyle: {
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    backgroundColor: Colors.background,
   },
   modalBarrier: {
     ...StyleSheet.absoluteFillObject,
