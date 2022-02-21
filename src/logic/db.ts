@@ -21,7 +21,6 @@ export class DBManager {
 
   public async getHistoryItems(): Promise<HistoryItem[]> {
     await this.loadHistoryItems();
-    console.log(this.historyItems);
     return this.historyItems!;
   }
 
