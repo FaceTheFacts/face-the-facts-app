@@ -20,7 +20,7 @@ const SpeechPlayer = ({politician, date, title, video}: SpeechPlayerProps) => {
   const {width} = useWindowDimensions();
   const ref = useRef<Video | null>(null);
   return (
-    <ScrollView>
+    <ScrollView scrollEnabled={false}>
       <View style={styles.headerContainer}>
         <Text style={styles.title}>{politician ? politician : 'Rede'}</Text>
         <Text style={styles.date}>{date}</Text>
