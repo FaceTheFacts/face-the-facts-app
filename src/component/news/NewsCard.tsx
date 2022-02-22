@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
-    marginRight: 8,
+    marginHorizontal: 4,
   },
   iconContainer: {
     position: 'absolute',
