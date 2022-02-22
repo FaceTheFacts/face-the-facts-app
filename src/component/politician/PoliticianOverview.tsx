@@ -182,13 +182,13 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
                   <Text style={styles.sideJobOrganization}>
                     {sidejob.sidejob_organization.label}
                   </Text>
-                  <View style={styles.sideJobBottomContainer}>
-                    {sidejob.income_level && (
+                  {sidejob.income_level && (
+                    <View style={styles.sideJobBottomContainer}>
                       <Text style={styles.sideJobIncome}>
                         {sidejob.income_level}
                       </Text>
-                    )}
-                  </View>
+                    </View>
+                  )}
                 </View>
               ))}
             </View>
