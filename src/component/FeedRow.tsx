@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useContext} from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import PoliticianPicture from './PoliticianPicture';
 import {Colors} from '../theme';
 import {PoliticianInfo} from './feed/FeedRowContent';
 import {RootStackParamList} from '../view/RootStackParams';
+import {DataContext} from '../logic/model';
 
 interface FeedRowProps {
   politicians: PoliticianInfo[];
@@ -21,7 +22,7 @@ interface FeedRowProps {
 const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
   const {width} = useWindowDimensions();
   const navigation = useNavigation<RootStackParamList>();
-
+  const database = useContext(DataContext);
   return (
     <>
       <View style={styles.container}>
@@ -35,14 +36,15 @@ const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
         ) : (
           <TouchableOpacity
             style={styles.image}
-            onPress={() =>
+            onPress={() => {
+              database.dbManager.pushHistoryItem(politicians[0].id);
               // @ts-expect-error
               navigation.navigate('Politician', {
                 politicianId: politicians[0].id,
                 politicianName: politicians[0].label,
                 party: politicians[0].party,
-              })
-            }>
+              });
+            }}>
             <PoliticianPicture politicianId={+politicians[0].id} size={48} />
           </TouchableOpacity>
         )}
