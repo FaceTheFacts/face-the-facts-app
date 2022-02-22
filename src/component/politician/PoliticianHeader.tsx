@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   },
   unFollowBtn: {
     backgroundColor: Colors.baseWhite,
-    borderWidth: 2,
     paddingVertical: 8,
     paddingHorizontal: 8,
     marginTop: 10,

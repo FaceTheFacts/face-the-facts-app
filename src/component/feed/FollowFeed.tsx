@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.background,
     alignItems: 'center',
+    paddingTop: 12,
   },
   header4: {
     color: Colors.foreground,
@@ -343,7 +344,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    marginVertical: 6,
   },
   month: {
     textAlign: 'center',

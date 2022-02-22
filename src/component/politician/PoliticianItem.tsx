@@ -33,7 +33,7 @@ const PoliticianItem = ({
       style={styles.container}
       onPress={() => {
         database.dbManager.pushHistoryItem(politicianId);
-        navigator.navigate('Politician', {
+        navigator.push('Politician', {
           politicianId,
           politicianName,
           party,

@@ -5,34 +5,31 @@ import {Colors} from '../../theme';
 
 const PoliticianCV = () => {
   const politician = useContext(PoliticianContext);
-
   return (
     <ScrollView style={styles.container}>
-      {politician?.profile?.cvs?.map((step, index) => (
-        <View key={index} style={styles.step}>
-          <Text style={styles.label}>{step.raw_text}</Text>
-        </View>
-      ))}
+      <View style={styles.step}>
+        <Text style={styles.desc}>
+          {politician?.profile?.cvs[0].short_description}
+        </Text>
+        <Text style={styles.label}>{politician?.profile?.cvs[0].raw_text}</Text>
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    margin: 12,
     backgroundColor: Colors.background,
   },
   step: {
-    backgroundColor: Colors.cardBackground,
-    padding: 12,
-    borderRadius: 8,
     marginBottom: 16,
   },
-  date: {
+  desc: {
     color: Colors.foreground,
     fontSize: 13,
     fontFamily: 'Inter',
-    opacity: 0.7,
+    paddingBottom: 12,
   },
   label: {
     color: Colors.foreground,

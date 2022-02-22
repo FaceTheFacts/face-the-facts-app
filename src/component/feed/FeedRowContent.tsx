@@ -1,6 +1,7 @@
 import React, {useContext, useRef} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {Colors} from '../../theme';
+import {DataContext} from '../../logic/model';
 import {NavigationContext} from '@react-navigation/native';
 import {ApiParty, ApiSidejob, ApiVoteAndPoll, Vote} from '../../logic/api';
 import BottomSheet from '../utils/BottomSheet';
@@ -112,13 +113,14 @@ interface SideJobRowProps {
 
 export const SideJobRowContent = ({sideJob}: SideJobRowProps) => {
   const navigator = useContext<any>(NavigationContext)!;
-
+  const database = useContext(DataContext);
   return (
     <View style={styles.title}>
       <Text style={styles.boldText}>{sideJob.politicians[0].label}</Text>
       <Text style={styles.titleText}> hat an eine </Text>
       <TouchableOpacity
         onPress={() => {
+          database.dbManager.pushHistoryItem(sideJob.politicians[0].id);
           navigator.push('Politician', {
             politicianId: sideJob.politicians[0].id,
             politicianName: sideJob.politicians[0].label,

@@ -10,6 +10,7 @@ export const Colors = {
   white70: 'rgba(252 ,252 ,252, 0.7)',
   darkBlue8: 'rgba(42 , 43, 54, 1)',
   darkBlue20: '#464750',
-  baseGreen: '#4CB16D',
+  baseGreen: '#45C66F',
+  baseRed: '#E54A6F',
   baseBlueLight: '#2695F5',
 };

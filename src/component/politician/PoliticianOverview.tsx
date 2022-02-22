@@ -173,22 +173,22 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
               <Text style={styles.subtitleFocus}>Nebentätigkeiten</Text>
               {politician?.profile?.sidejobs.map((sidejob, index) => (
                 <View key={index} style={styles.sideJob}>
+                  {sidejob.created && (
+                    <Text style={styles.sideJobDate}>
+                      {formatDate(sidejob.created)}
+                    </Text>
+                  )}
                   <Text style={styles.sideJobTitle}>{sidejob.label}</Text>
                   <Text style={styles.sideJobOrganization}>
                     {sidejob.sidejob_organization.label}
                   </Text>
-                  <View style={styles.sideJobBottomContainer}>
-                    {sidejob.income_level && (
+                  {sidejob.income_level && (
+                    <View style={styles.sideJobBottomContainer}>
                       <Text style={styles.sideJobIncome}>
                         {sidejob.income_level}
                       </Text>
-                    )}
-                    {sidejob.created && (
-                      <Text style={styles.sideJobDate}>
-                        {formatDate(sidejob.created)}
-                      </Text>
-                    )}
-                  </View>
+                    </View>
+                  )}
                 </View>
               ))}
             </View>
@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
   containerWrapper: {
     flex: 1,
     backgroundColor: Colors.background,
+    marginBottom: 16,
   },
   container: {
     paddingHorizontal: 12,
@@ -241,6 +242,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.cardBackground,
     padding: 12,
     borderRadius: 8,
+    alignItems: 'center',
   },
   committeeIcon: {
     width: 20,
@@ -290,7 +292,6 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   sideJobBottomContainer: {
-    flexDirection: 'row',
     borderTopColor: Colors.inactive,
     borderTopWidth: 1,
     marginTop: 8,
@@ -308,7 +309,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Inter',
     opacity: 0.7,
-    textAlign: 'right',
+    marginBottom: 4,
   },
 });
 

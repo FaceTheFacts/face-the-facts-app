@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
     height: 10,
   },
   modalStyle: {
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     backgroundColor: Colors.background,
   },
   icon: {
