@@ -425,7 +425,7 @@ export const topicTypesArr = [
 export const answerLongLabels: Record<PositionAnswer, string> = {
   agree: 'Kandidat:in stimmt zu',
   disagree: 'Kandidat:in stimmt nicht zu',
-  neutral: 'Kandidat:in sieht es Neutral',
+  neutral: 'Kandidat:in sieht es neutral',
 };
 
 export const answerShortLabels: Record<PositionAnswer, string> = {
@@ -437,7 +437,7 @@ export const answerShortLabels: Record<PositionAnswer, string> = {
 export const answerColors: Record<PositionAnswer, string> = {
   agree: '#45C66F',
   disagree: '#E54A6F',
-  neutral: 'rgba(248, 248, 248, 0.12)',
+  neutral: '',
 };
 
 export function getPosition(position: PositionAnswer) {
