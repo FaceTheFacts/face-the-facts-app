@@ -16,7 +16,6 @@ const PoliticianPositions = () => {
   const modal = useRef<Modalize>(null);
   useEffect(() => {
     setOpenedCandidatePosition(openedCandidatePosition);
-    console.log('Render');
   }, [openedCandidatePosition]);
   return (
     <>
