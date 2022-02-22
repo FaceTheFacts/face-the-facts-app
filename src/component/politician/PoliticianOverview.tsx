@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
   containerWrapper: {
     flex: 1,
     backgroundColor: Colors.background,
+    marginBottom: 16,
   },
   container: {
     paddingHorizontal: 12,

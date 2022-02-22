@@ -111,8 +111,9 @@ const PoliticianLinks = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    padding: 12,
     backgroundColor: Colors.background,
+    marginBottom: 16,
   },
   link: {
     flexDirection: 'row',
