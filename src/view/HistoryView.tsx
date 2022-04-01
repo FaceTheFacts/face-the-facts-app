@@ -22,7 +22,7 @@ import {HistoryItem} from '../logic/db';
 import {DataContext} from '../logic/model';
 import PoliticianList from '../component/politician/PoliticianList';
 import {useQuery} from 'react-query';
-import {ApiSearchPolitician} from '../logic/api';
+import {ApiPoliticianHeader} from '../logic/api';
 import {fetch_api} from '../logic/fetch';
 import Icon from '../component/Icon';
 import {SearchIcon} from '../icons';
@@ -30,19 +30,18 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
 import PoliticianItem from '../component/politician/PoliticianItem';
 import SkeletonPoliticianItem from '../component/skeleton/SkeletonPoliticianItem';
+import ErrorCard from '../component/Error';
 
 const HistoryView = () => {
   const data = useContext(DataContext);
   const insets = useSafeAreaInsets();
   const timeout = useRef<NodeJS.Timeout | null>(null);
   const [items, setItems] = useState<HistoryItem[] | null>(null);
-
   const [searching, setSearching] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const inputRef = useRef<TextInput>(null);
   const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
     data.dbManager.getHistoryItems().then(setItems);
   }, [data]);
@@ -62,11 +61,13 @@ const HistoryView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searching]);
 
-  const {data: searchData, status} = useQuery<
-    ApiSearchPolitician[] | undefined,
-    Error
-  >(`search-${searchQuery}`, () =>
-    fetch_api<ApiSearchPolitician[]>(`search?text=${searchQuery}`),
+  const {
+    data: searchData,
+    status,
+    isError,
+  } = useQuery<ApiPoliticianHeader[] | undefined, Error>(
+    `search-${searchQuery}`,
+    () => fetch_api<ApiPoliticianHeader[]>(`search?text=${searchQuery}`),
   );
 
   function startSearching(): void {
@@ -111,11 +112,15 @@ const HistoryView = () => {
     }, []),
   );
 
+  if (isError) {
+    return <ErrorCard />;
+  }
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.header}>
-        <Text style={styles.title}>Politiker</Text>
+        <Text style={styles.title}>Politiker:innen</Text>
       </View>
       <Animated.View
         style={[
@@ -139,7 +144,7 @@ const HistoryView = () => {
             <TextInput
               ref={inputRef}
               style={styles.searchBarInput}
-              placeholder="Suche"
+              placeholder="Suche nach Name oder PLZ"
               placeholderTextColor={Colors.foreground}
               onFocus={startSearching}
               onBlur={() => setSearching(searchInput !== '')}
