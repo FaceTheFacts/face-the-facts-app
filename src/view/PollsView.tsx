@@ -12,7 +12,7 @@ import {Colors} from '../theme';
 import PollCard from '../component/poll/PollCard';
 import Icon from '../component/Icon';
 import BackButton from '../component/BackButton';
-import {ApiVoteAndPoll, IPoliticianContext} from '../logic/api';
+import {ApiVoteAndPoll, ApiPoliticianContext} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/util';
@@ -20,13 +20,14 @@ import {ClearIcon, FilterIcon} from '../icons';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import PollFilter from '../component/poll/PollFilter';
+import ErrorCard from '../component/Error';
 
 export interface PollsViewProps {
   route: RouteProp<{params: PollViewParams}, 'params'>;
 }
 
 type PollViewParams = {
-  politician: IPoliticianContext;
+  politician: ApiPoliticianContext;
 };
 
 const PollsView = ({route}: PollsViewProps) => {
@@ -47,6 +48,7 @@ const PollsView = ({route}: PollsViewProps) => {
     data: polls,
     isLoading: pollsLoading,
     isSuccess: pollsSuccess,
+    isError: pollsError,
   } = useQuery<ApiVoteAndPoll[] | undefined, Error>(
     `polls:${politicianId}-${filterQuery}`,
     () => fetch_api<ApiVoteAndPoll[]>(`polls/${politicianId}?${filterQuery}`),
@@ -55,6 +57,10 @@ const PollsView = ({route}: PollsViewProps) => {
       cacheTime: 60 * 10000000,
     },
   );
+
+  if (pollsError) {
+    return <ErrorCard />;
+  }
 
   return (
     <>
@@ -72,9 +78,6 @@ const PollsView = ({route}: PollsViewProps) => {
             <Text style={styles.filterText}>Filtern</Text>
           </TouchableOpacity>
         </View>
-      </View>
-      <View>
-        <View style={styles.separatorLine} />
       </View>
       {filter.length > 0 && (
         <View style={styles.filterCategoryContainer}>
@@ -189,6 +192,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 60,
     backgroundColor: Colors.cardBackground,
+    borderBottomColor: 'rgba(255, 255, 255, 0.25)',
+    borderBottomWidth: 1,
   },
   backButtonContainer: {
     flex: 1,
@@ -225,7 +230,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     paddingHorizontal: 12,
     flexDirection: 'row',
-    paddingTop: 12,
+    paddingVertical: 12,
   },
   categoryBtn: {
     flexDirection: 'row',
@@ -257,10 +262,6 @@ const styles = StyleSheet.create({
     width: 13,
     height: 13,
     marginRight: 8,
-  },
-  separatorLine: {
-    height: 1,
-    backgroundColor: 'rgba(252, 252, 252, 0.25)',
   },
   container: {
     flex: 1,
