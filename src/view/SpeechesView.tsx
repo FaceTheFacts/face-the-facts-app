@@ -12,27 +12,27 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
-import {ApiPaginatedData, ApiSpeech, IPoliticianContext} from '../logic/api';
+import {ApiSpeeches, ApiPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 
 export interface SpeechesViewProps {
-  route: RouteProp<{params: {politician: IPoliticianContext}}, 'params'>;
+  route: RouteProp<{params: {politician: ApiPoliticianContext}}, 'params'>;
 }
 
 const SpeechesView = ({route}: SpeechesViewProps) => {
   const {politician} = route.params;
   const {width} = useWindowDimensions();
   const fetchSpeeches = (pageParam: number) =>
-    fetch_api<ApiPaginatedData<ApiSpeech>>(
+    fetch_api<ApiSpeeches>(
       `politician/${politician?.profile?.id}/speeches?page=${pageParam}`,
     );
   const {
     data: speeches,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery<ApiPaginatedData<ApiSpeech> | undefined, Error>(
+  } = useInfiniteQuery<ApiSpeeches | undefined, Error>(
     `speechesView:${politician?.profile?.id}`,
     ({pageParam = 1}) => fetchSpeeches(pageParam),
     {
@@ -59,7 +59,6 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
         </View>
         <View style={styles.rightContainer} />
       </View>
-      <View style={styles.separatorLine} />
       <ScrollView style={styles.container}>
         {speeches?.pages.map((page, pageIndex) =>
           page?.items.map((speech, speechIndex) => (
@@ -80,7 +79,7 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
               )}
               <View style={styles.speechCardContainer}>
                 <SpeechCard
-                  politician={politician.profile?.label!}
+                  politicianName={politician.profile?.label!}
                   title={speech.title}
                   date={formatDate(speech.date)}
                   video={speech.videoFileURI}
@@ -117,6 +116,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 60,
     backgroundColor: Colors.cardBackground,
+    borderBottomColor: 'rgba(255, 255, 255, 0.25)',
+    borderBottomWidth: 1,
   },
   container: {
     flex: 1,
@@ -137,10 +138,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'Inter',
     color: Colors.foreground,
-  },
-  separatorLine: {
-    height: 1,
-    backgroundColor: 'rgba(1,1,1,0.6)',
   },
   monthContainer: {
     backgroundColor: Colors.cardBackground,
