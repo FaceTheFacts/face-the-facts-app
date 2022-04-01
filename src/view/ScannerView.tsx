@@ -112,7 +112,7 @@ const ScannerView = () => {
         <InfoBanner
           style={styles.infoBanner}
           icon={ScanIcon}
-          title="Nach Plakaten suchen"
+          title="Plakat suchen"
           subtitle="Achte darauf, dass der Name des:der Kandidat:in gut lesbar ist."
         />
       )}
