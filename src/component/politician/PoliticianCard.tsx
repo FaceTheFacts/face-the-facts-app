@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StyleProp, ViewStyle} from 'react-native';
 import {Colors} from '../../theme';
 import PoliticianPicture from '../PoliticianPicture';
 import {ApiParty} from '../../logic/api';
@@ -12,6 +12,7 @@ interface PoliticianCardProps {
   politicianName: string;
   party: ApiParty;
   vote?: Vote;
+  styling?: StyleProp<ViewStyle>;
 }
 
 const PoliticianCard = ({
@@ -19,9 +20,10 @@ const PoliticianCard = ({
   politicianName,
   party,
   vote,
+  styling,
 }: PoliticianCardProps) => {
   return (
-    <View style={styles.container}>
+    <View style={styling ? [styles.container, styling] : styles.container}>
       <View style={styles.politicianContainer}>
         <PoliticianPicture politicianId={politicianId} size={48} />
         <View style={styles.info}>
@@ -43,12 +45,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 12,
     backgroundColor: Colors.cardBackground,
     borderRadius: 8,
+  },
+  pollContainer: {
     marginHorizontal: 12,
     marginTop: 6,
     marginBottom: 6,
+    padding: 12,
   },
   politicianContainer: {
     flexDirection: 'row',
