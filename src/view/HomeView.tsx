@@ -3,7 +3,7 @@ import {TouchableOpacity, StyleSheet, Text, SafeAreaView} from 'react-native';
 import {TabBar, TabView, SceneRendererProps} from 'react-native-tab-view';
 import {Colors} from '../theme';
 import FollowFeed from '../component/feed/FollowFeed';
-import ParliamentFeed from '../component/feed/ParliamentFeed';
+import Dashboard from '../component/dashboard/Dashboard';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import FeedFilter from '../component/feed/FeedFilter';
@@ -35,8 +35,7 @@ const HomeView = (props: HomeViewProps) => {
   const [showSpeeches, setShowSpeeches] = useState(true);
   const [showArticles, setShowArticles] = useState(true);
   const [routes] = useState([
-    // NOTE:  remove the line below to enable parliament tab
-    // {key: 'parliament', title: 'Bundestag'},
+    {key: 'parliament', title: 'Bundestag'},
     {key: 'follow', title: 'Folge ich'},
   ]);
   const modal = useRef<Modalize>(null);
@@ -88,7 +87,7 @@ const HomeView = (props: HomeViewProps) => {
   const renderScene = ({route}: SceneRenderer) => {
     switch (route.key) {
       case 'parliament':
-        return <ParliamentFeed />;
+        return <Dashboard />;
       case 'follow':
         return (
           <FollowFeed
@@ -124,12 +123,14 @@ const HomeView = (props: HomeViewProps) => {
                 <Text style={{...styles.label, color}}>{route.title}</Text>
               )}
             />
-            <TouchableOpacity
-              style={styles.filterBtn}
-              onPress={() => modal.current?.open()}>
-              <Icon style={styles.icon} icon={FilterIcon} />
-              <Text style={styles.filterText}>Filtern</Text>
-            </TouchableOpacity>
+            {index === 1 && (
+              <TouchableOpacity
+                style={styles.filterBtn}
+                onPress={() => modal.current?.open()}>
+                <Icon style={styles.icon} icon={FilterIcon} />
+                <Text style={styles.filterText}>Filtern</Text>
+              </TouchableOpacity>
+            )}
           </SafeAreaView>
         )}
       />
@@ -157,9 +158,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: 13,
+    paddingLeft: 16,
     paddingRight: 16,
     backgroundColor: Colors.darkBlue8,
+    borderBottomColor: 'rgba(255, 255, 255, 0.25)',
+    borderBottomWidth: 1,
   },
   tabBar: {
     flex: 1,
@@ -170,15 +173,14 @@ const styles = StyleSheet.create({
     shadowColor: 'transparent',
     shadowOpacity: 0,
     elevation: 0,
+    marginLeft: 4,
   },
   tab: {
     width: 'auto',
-    paddingHorizontal: 8,
   },
   label: {
     fontSize: 17,
     paddingHorizontal: 0,
-    marginLeft: 16,
     fontWeight: '600',
   },
   filterBtn: {
