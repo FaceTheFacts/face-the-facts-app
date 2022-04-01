@@ -5,22 +5,22 @@ import PoliticianConstituency from '../component/politician/PoliticianConstituen
 import BackButton from '../component/BackButton';
 import {Colors} from '../theme';
 import PoliticianHeader from '../component/politician/PoliticianHeader';
-import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {
   ApiNews,
-  ApiPaginatedData,
   ApiParty,
   ApiPoliticianProfile,
   ApiPositions,
-  ApiSearchPolitician,
-  ApiSpeech,
-  IPoliticianContext,
+  ApiPoliticianContext,
+  ApiSpeeches,
+  ApiPoliticianConstituency,
 } from '../logic/api';
 import SkeletonPoliticianProfile from '../component/skeleton/SkeletonPoliticianProfile';
 import PoliticianProfile from '../component/politician/PoliticianProfile';
+import ErrorCard from '../component/Error';
 
 type PoliticianViewParams = {
   politicianId: number;
@@ -33,7 +33,9 @@ interface PoliticianViewProps {
   route: RouteProp<{params: PoliticianViewParams}, 'params'>;
 }
 
-export const PoliticianContext = createContext<IPoliticianContext | null>(null);
+export const PoliticianContext = createContext<ApiPoliticianContext | null>(
+  null,
+);
 
 const PoliticianView = ({route}: PoliticianViewProps) => {
   const politicianId = route.params.politicianId;
@@ -53,15 +55,9 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
       cacheTime: 60 * 10000000,
     },
   );
-  const {data: speeches} = useQuery<
-    ApiPaginatedData<ApiSpeech> | undefined,
-    Error
-  >(
+  const {data: speeches} = useQuery<ApiSpeeches | undefined, Error>(
     `speeches:${politicianId}`,
-    () =>
-      fetch_api<ApiPaginatedData<ApiSpeech>>(
-        `politician/${politicianId}/speeches?page=1`,
-      ),
+    () => fetch_api<ApiSpeeches>(`politician/${politicianId}/speeches?page=1`),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
@@ -90,12 +86,12 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
   );
 
   const {data: constituency, isLoading: constituencyLoading} = useQuery<
-    ApiSearchPolitician[] | undefined,
+    ApiPoliticianConstituency | undefined,
     Error
   >(
     `constituency:${politicianId}`,
     () =>
-      fetch_api<ApiSearchPolitician[]>(
+      fetch_api<ApiPoliticianConstituency>(
         `politician/${politicianId}/constituencies`,
       ),
     {
@@ -114,7 +110,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
     );
   }
   if (profileError) {
-    return <Text>Error ..</Text>;
+    return <ErrorCard />;
   }
 
   return (
@@ -129,7 +125,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
         <BackButton />
         <PoliticianHeader />
         {!(positions?.positions && positions?.positions.length > 0) &&
-        !(constituency && constituency.length > 0) ? (
+        !(constituency && constituency.politicians.length > 0) ? (
           <PoliticianProfile toSideJobs={route.params.toSideJobs} />
         ) : (
           <Tab.Navigator
@@ -153,7 +149,7 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
             {positions?.positions && positions?.positions.length > 0 && (
               <Tab.Screen name="Positionen" component={PoliticianPositions} />
             )}
-            {constituency && constituency.length > 0 && (
+            {constituency && constituency.politicians.length > 0 && (
               <Tab.Screen name="Wahlkreis" component={PoliticianConstituency} />
             )}
           </Tab.Navigator>
