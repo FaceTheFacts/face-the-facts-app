@@ -3,19 +3,24 @@ import {ScrollView, StyleSheet, Text, SafeAreaView, View} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import BackButton from '../component/BackButton';
-import {ApiNews, IPoliticianContext} from '../logic/api';
+import {ApiNews, ApiPoliticianContext} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import NewsScreenCard from '../component/news/NewsScreenCard';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
+import ErrorCard from '../component/Error';
 
 export interface NewsViewProps {
-  route: RouteProp<{params: {politician: IPoliticianContext}}, 'params'>;
+  route: RouteProp<{params: {politician: ApiPoliticianContext}}, 'params'>;
 }
 
 const NewsView = ({route}: NewsViewProps) => {
   const {politician} = route.params;
-  const {data: newsData, status: status} = useQuery<ApiNews | undefined, Error>(
+  const {
+    data: newsData,
+    status: status,
+    isError,
+  } = useQuery<ApiNews | undefined, Error>(
     `newsScreen:${politician.profile?.id}`,
     () =>
       fetch_api<ApiNews>(
@@ -30,6 +35,10 @@ const NewsView = ({route}: NewsViewProps) => {
   if (status === 'success') {
     news = newsData;
   }
+
+  if (isError) {
+    return <ErrorCard />;
+  }
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -41,9 +50,6 @@ const NewsView = ({route}: NewsViewProps) => {
           <Text style={styles.title}>Artikel</Text>
         </View>
         <View style={styles.rightContainer} />
-      </View>
-      <View>
-        <View style={styles.separatorLine} />
       </View>
       <ScrollView style={styles.container}>
         {news?.items.map((newsItem, index) => (
@@ -98,6 +104,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 60,
     backgroundColor: Colors.cardBackground,
+    borderBottomColor: 'rgba(255, 255, 255, 0.25)',
+    borderBottomWidth: 1,
   },
   backButtonContainer: {
     flex: 1,
@@ -114,10 +122,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'Inter',
     color: Colors.foreground,
-  },
-  separatorLine: {
-    height: 1,
-    backgroundColor: 'rgba(1,1,1,0.6)',
   },
   container: {
     flex: 1,
