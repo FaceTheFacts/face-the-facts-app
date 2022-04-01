@@ -36,12 +36,12 @@ const MainView = () => {
             {
               name: 'scanner',
               icons: [ScannerIcon, ScannerIconSolid],
-              label: 'Scan',
+              label: 'Scannen',
             },
             {
               name: 'politicians',
               icons: [PoliticiansIcon, PoliticiansIconSolid],
-              label: 'Politiker',
+              label: 'Politiker:innen',
             },
           ]}
           selected={selected}
