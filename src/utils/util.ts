@@ -30,7 +30,7 @@ import {
 } from '../icons';
 import {
   ApiPartyStyle,
-  ApiPollDetail,
+  ApiPollResult,
   PositionAnswer,
   TopicIcon,
 } from '../logic/api';
@@ -160,6 +160,7 @@ const logoPathMap: Record<string, any> = {
   faz: require('../../assets/logo/fazLogo.png'),
   taz: require('../../assets/logo/tazLogo.png'),
   zeit: require('../../assets/logo/zeitLogo.png'),
+  'zeit-online': require('../../assets/logo/zeitLogo.png'),
   sueddeutsche: require('../../assets/logo/sueddeutscheLogo.png'),
   tagesschau: require('../../assets/logo/tagesschauLogo.png'),
 };
@@ -176,7 +177,7 @@ const minimumWidth = 7;
 export function getWidth(
   width: number,
   voteNumber: number,
-  partyVote: ApiPollDetail,
+  partyVote: ApiPollResult,
 ) {
   const total =
     partyVote.total_yes +
@@ -216,7 +217,7 @@ export function getWidth(
   return containerWidth * (voteNumber / total);
 }
 
-export function getChartData(partyVotes?: ApiPollDetail[]) {
+export function getChartData(partyVotes?: ApiPollResult[]) {
   let yes = 0;
   let no = 0;
   let abstain = 0;
@@ -228,11 +229,10 @@ export function getChartData(partyVotes?: ApiPollDetail[]) {
       abstain += partyVote.total_abstain;
       noShow += partyVote.total_no_show;
     });
-    const total = yes + no + abstain + noShow;
-    return [total, yes, no, abstain, noShow];
+    return [yes, no, abstain, noShow];
   }
   // returning 0 breaks react-native-pie-chart
-  return [4, 1, 1, 1, 1];
+  return [1, 1, 1, 1];
 }
 
 const fractionStyleMap: Record<string, ApiPartyStyle> = {
@@ -437,7 +437,7 @@ export const answerShortLabels: Record<PositionAnswer, string> = {
 export const answerColors: Record<PositionAnswer, string> = {
   agree: '#45C66F',
   disagree: '#E54A6F',
-  neutral: '',
+  neutral: '#2695F5',
 };
 
 export function getPosition(position: PositionAnswer) {
