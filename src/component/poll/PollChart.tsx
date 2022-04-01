@@ -4,22 +4,31 @@ import PieChart from 'react-native-pie-chart';
 import {Colors} from '../../theme';
 
 interface PollChartProps {
-  chartData: number[];
+  yes_votes: number;
+  no_votes: number;
+  abstain_votes: number;
+  no_show_votes: number;
 }
 
-const PollChart = ({chartData}: PollChartProps) => {
+const PollChart = ({
+  yes_votes,
+  no_votes,
+  abstain_votes,
+  no_show_votes,
+}: PollChartProps) => {
+  const total = yes_votes + no_votes + abstain_votes + no_show_votes;
   return (
     <View style={styles.votesCard}>
       <View style={styles.titleContainer}>
         <Text style={styles.cardTitle}>Gesamt</Text>
-        <Text style={styles.totalVote}>{chartData[0]} Abgeordnete</Text>
+        <Text style={styles.totalVote}>{total} Abgeordnete</Text>
       </View>
       <View style={styles.separatorLine} />
       <View style={styles.contentContainer}>
         <View style={styles.chartContainer}>
           <PieChart
             widthAndHeight={100}
-            series={chartData.slice(1, 5)}
+            series={[yes_votes, no_votes, abstain_votes, no_show_votes]}
             sliceColor={['#45C66F', '#E54A6F', '#1382E3', '#464750']}
             doughnut={true}
             coverRadius={0.7}
@@ -29,19 +38,21 @@ const PollChart = ({chartData}: PollChartProps) => {
         <View style={styles.voteNumberCardContainer}>
           <View style={styles.voteNumberContainer}>
             <View style={[styles.vote, styles.yes]} />
-            <Text style={styles.voteNumberText}>Ja: {chartData[1]}</Text>
+            <Text style={styles.voteNumberText}>Ja: {yes_votes}</Text>
           </View>
           <View style={styles.voteNumberContainer}>
             <View style={[styles.vote, styles.no]} />
-            <Text style={styles.voteNumberText}>Nein: {chartData[2]}</Text>
+            <Text style={styles.voteNumberText}>Nein: {no_votes}</Text>
           </View>
           <View style={styles.voteNumberContainer}>
             <View style={[styles.vote, styles.abstain]} />
-            <Text style={styles.voteNumberText}>Enthalten: {chartData[3]}</Text>
+            <Text style={styles.voteNumberText}>
+              Enthalten: {abstain_votes}
+            </Text>
           </View>
           <View style={styles.voteNumberContainer}>
             <View style={[styles.vote, styles.noShow]} />
-            <Text style={styles.voteNumberText}>Abwesend: {chartData[4]}</Text>
+            <Text style={styles.voteNumberText}>Abwesend: {no_show_votes}</Text>
           </View>
         </View>
       </View>
