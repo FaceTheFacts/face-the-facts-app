@@ -28,10 +28,20 @@ export class DBManager {
     const date = new Date();
     await this.openDatabase();
     await this.database!.executeSql(
-      'INSERT INTO history(politician_id, date) VALUES (?, ?)',
+      'DELETE FROM history WHERE politician_id = ?',
+      [politicianId.toString()],
+    );
+    await this.database!.executeSql(
+      'INSERT OR IGNORE INTO history(politician_id, date) VALUES (?, ?)',
       [politicianId.toString(), date.toISOString()],
     );
     if (this.historyItems) {
+      for (let i = 0; i < this.historyItems.length; i++) {
+        if (this.historyItems[i].politicianId === politicianId) {
+          this.historyItems.splice(i, 1);
+          break;
+        }
+      }
       this.historyItems.push({
         politicianId,
         date,
@@ -114,7 +124,7 @@ export class DBManager {
     });
     await this.database.executeSql(`CREATE TABLE IF NOT EXISTS history (
         id            INTEGER   NOT NULL PRIMARY KEY AUTOINCREMENT,
-        politician_id TEXT      NOT NULL,
+        politician_id TEXT      NOT NULL UNIQUE,
         date          TIMESTAMP NOT NULL
     )`);
     await this.database.executeSql(`CREATE TABLE IF NOT EXISTS follow (
