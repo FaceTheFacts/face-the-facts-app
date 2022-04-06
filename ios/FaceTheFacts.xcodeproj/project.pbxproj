@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		004EBD25267E3AC6001FCD0C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 004EBD24267E3AC6001FCD0C /* GoogleService-Info.plist */; };
-		006B95DA26D569D1000EB869 /* powered_by_abgeordnetenwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 006B95D826D569D1000EB869 /* powered_by_abgeordnetenwatch.png */; };
+		006B95DA26D569D1000EB869 /* abgeordnetenwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 006B95D826D569D1000EB869 /* abgeordnetenwatch.png */; };
 		006B95DC26D56A14000EB869 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 006B95DB26D56A14000EB869 /* splash.png */; };
 		00E356F31AD99517003FC87E /* FaceTheFactsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FaceTheFactsTests.m */; };
 		12ED9BE543B0154823657AC7 /* libPods-FaceTheFacts-FaceTheFactsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 243AE206E91B014554F41C51 /* libPods-FaceTheFacts-FaceTheFactsTests.a */; };
@@ -19,6 +19,8 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		856912AE52FA41B8B5B34E4F /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB76851FDA2C4FDDA46866CD /* Inter-Medium.ttf */; };
 		881DF794353F4B8A9F24B61F /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89043628020E4F53A7F854DA /* Inter-Light.ttf */; };
+		A6E4CFCD27FDF457008CEE4A /* poliTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = A6E4CFCB27FDF456008CEE4A /* poliTrack.png */; };
+		A6E4CFCE27FDF457008CEE4A /* openParliamentTV.png in Resources */ = {isa = PBXBuildFile; fileRef = A6E4CFCC27FDF456008CEE4A /* openParliamentTV.png */; };
 		BBF7A640A2D647B680FD5FEC /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97A0336281C34A019DC27587 /* Inter-ExtraLight.ttf */; };
 		CC81CC75573C372187AC6764 /* libPods-FaceTheFacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAEA4081528AAC2CDA3BEDA6 /* libPods-FaceTheFacts.a */; };
 		D28EE645E0704A9EB042DF59 /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8C54B4DCE5749AE9D7834DF /* Inter-Thin.ttf */; };
@@ -40,7 +42,7 @@
 
 /* Begin PBXFileReference section */
 		004EBD24267E3AC6001FCD0C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		006B95D826D569D1000EB869 /* powered_by_abgeordnetenwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = powered_by_abgeordnetenwatch.png; path = ../src/powered_by_abgeordnetenwatch.png; sourceTree = "<group>"; };
+		006B95D826D569D1000EB869 /* abgeordnetenwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = abgeordnetenwatch.png; path = ../src/abgeordnetenwatch.png; sourceTree = "<group>"; };
 		006B95DB26D56A14000EB869 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash.png; path = ../src/splash.png; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* FaceTheFactsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceTheFactsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,6 +63,8 @@
 		89043628020E4F53A7F854DA /* Inter-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.ttf"; path = "../assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		97A0336281C34A019DC27587 /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraLight.ttf"; path = "../assets/fonts/Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
 		A1CE4041363F7EAA06827F09 /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; sourceTree = "<group>"; };
+		A6E4CFCB27FDF456008CEE4A /* poliTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = poliTrack.png; path = ../src/poliTrack.png; sourceTree = "<group>"; };
+		A6E4CFCC27FDF456008CEE4A /* openParliamentTV.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = openParliamentTV.png; path = ../src/openParliamentTV.png; sourceTree = "<group>"; };
 		BAEA4081528AAC2CDA3BEDA6 /* libPods-FaceTheFacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FaceTheFacts.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D02F8522DE7908F187D52D59 /* Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DD8A1F2DB6424091940EED0A /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
@@ -117,8 +121,10 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				004EBD24267E3AC6001FCD0C /* GoogleService-Info.plist */,
+				A6E4CFCB27FDF456008CEE4A /* poliTrack.png */,
+				A6E4CFCC27FDF456008CEE4A /* openParliamentTV.png */,
 				006B95DB26D56A14000EB869 /* splash.png */,
-				006B95D826D569D1000EB869 /* powered_by_abgeordnetenwatch.png */,
+				006B95D826D569D1000EB869 /* abgeordnetenwatch.png */,
 			);
 			name = FaceTheFacts;
 			sourceTree = "<group>";
@@ -286,7 +292,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				006B95DA26D569D1000EB869 /* powered_by_abgeordnetenwatch.png in Resources */,
+				A6E4CFCD27FDF457008CEE4A /* poliTrack.png in Resources */,
+				A6E4CFCE27FDF457008CEE4A /* openParliamentTV.png in Resources */,
+				006B95DA26D569D1000EB869 /* abgeordnetenwatch.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				004EBD25267E3AC6001FCD0C /* GoogleService-Info.plist in Resources */,
