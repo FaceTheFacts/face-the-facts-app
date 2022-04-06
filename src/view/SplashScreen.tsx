@@ -8,8 +8,6 @@ import abgeordnetenwatch from '../abgeordnetenwatch.png';
 
 const SplashScreen = () => {
   const {width, height} = useWindowDimensions();
-  console.log(width);
-
   const styles = StyleSheet.create({
     container: {
       backgroundColor: Colors.background,
