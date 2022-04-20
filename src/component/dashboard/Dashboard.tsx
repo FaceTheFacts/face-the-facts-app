@@ -33,7 +33,7 @@ const Dashboard = () => {
     database.dbManager.getFollowedIds().then(setFollowedIds);
   }, [database]);
   let query = '';
-  Array.from(followedIds).map(id => (query += `followIds=${id}&`));
+  Array.from(followedIds).map(id => (query += `follow_ids=${id}&`));
 
   const {
     data: speeches,
