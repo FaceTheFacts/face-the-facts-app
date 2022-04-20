@@ -32,10 +32,7 @@ const PollFilter = ({filter, setFilter}: PollFilterProps) => {
         Wähle ein Thema aus, nach dem die Abstimmungen gefiltert werden sollen
       </Text>
       <View style={styles.separatorLine} />
-      <ScrollView
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.topicScrollContainer}>
           <View style={styles.topicRow}>
             {topicTypes.slice(0, 7).map((topic, index) => (

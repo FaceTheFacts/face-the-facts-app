@@ -14,7 +14,7 @@ export const voteColors: Record<Vote, string> = {
   yes: '#45C66F',
   no: '#E54A6F',
   abstain: '#1382E3',
-  no_show: 'rgba(248, 248, 248, 0.12)',
+  no_show: '#464750',
 };
 
 export interface VoteTagProps {

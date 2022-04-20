@@ -16,6 +16,7 @@ import PollCard from '../poll/PollCard';
 import SpeechCard from '../speech/SpeechCard';
 import NewsCard from '../news/NewsCard';
 import {formatDate, topicTypes} from '../../utils/util';
+import SideJobCard from '../SideJobCard';
 
 interface PoliticianOverviewProps {
   toSideJobs?: boolean;
@@ -83,7 +84,6 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
             <ScrollView
               style={styles.pollContainer}
               horizontal
-              pagingEnabled
               showsHorizontalScrollIndicator={false}>
               {politician?.profile?.votes_and_polls.map(poll => (
                 <PollCard
@@ -119,7 +119,6 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
             <ScrollView
               style={styles.pollContainer}
               horizontal
-              pagingEnabled
               showsHorizontalScrollIndicator={false}>
               {politician?.news?.items.map((news, index) => (
                 <NewsCard
@@ -144,19 +143,18 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
                 });
               }}>
               <Text style={styles.pollsTitle}>Reden</Text>
-              {politician?.speeches && politician.speeches.items.length > 5 && (
+              {politician?.speeches && !politician.speeches.is_last_page && (
                 <Text style={styles.moreButton}>mehr</Text>
               )}
             </TouchableOpacity>
             <ScrollView
               style={styles.pollContainer}
               horizontal
-              pagingEnabled
               showsHorizontalScrollIndicator={false}>
               {politician?.speeches?.items.slice(0, 5).map((speech, index) => (
                 <SpeechCard
                   key={index}
-                  politician={politician.profile?.label!}
+                  politicianName={politician.profile?.label!}
                   title={speech.title}
                   date={formatDate(speech.date)}
                   video={speech.videoFileURI}
@@ -172,24 +170,13 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
             <View onLayout={e => setScrollY(e.nativeEvent.layout.y)}>
               <Text style={styles.subtitleFocus}>Nebentätigkeiten</Text>
               {politician?.profile?.sidejobs.map((sidejob, index) => (
-                <View key={index} style={styles.sideJob}>
-                  {sidejob.created && (
-                    <Text style={styles.sideJobDate}>
-                      {formatDate(sidejob.created)}
-                    </Text>
-                  )}
-                  <Text style={styles.sideJobTitle}>{sidejob.label}</Text>
-                  <Text style={styles.sideJobOrganization}>
-                    {sidejob.sidejob_organization.label}
-                  </Text>
-                  {sidejob.income_level && (
-                    <View style={styles.sideJobBottomContainer}>
-                      <Text style={styles.sideJobIncome}>
-                        {sidejob.income_level}
-                      </Text>
-                    </View>
-                  )}
-                </View>
+                <SideJobCard
+                  key={index}
+                  date={sidejob.created}
+                  label={sidejob.label}
+                  organization={sidejob.sidejob_organization.label}
+                  income={sidejob.income_level}
+                />
               ))}
             </View>
           )}
@@ -272,44 +259,6 @@ const styles = StyleSheet.create({
   pollContainer: {
     overflow: 'visible',
     marginHorizontal: -4,
-  },
-  sideJob: {
-    backgroundColor: Colors.cardBackground,
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  sideJobTitle: {
-    color: Colors.foreground,
-    fontSize: 13,
-    fontFamily: 'Inter',
-    marginBottom: 2,
-  },
-  sideJobOrganization: {
-    color: Colors.foreground,
-    fontSize: 13,
-    fontFamily: 'Inter',
-    opacity: 0.7,
-  },
-  sideJobBottomContainer: {
-    borderTopColor: Colors.inactive,
-    borderTopWidth: 1,
-    marginTop: 8,
-    paddingTop: 8,
-  },
-  sideJobIncome: {
-    color: Colors.foreground,
-    fontSize: 13,
-    fontFamily: 'Inter',
-    opacity: 0.7,
-  },
-  sideJobDate: {
-    flex: 1,
-    color: Colors.foreground,
-    fontSize: 13,
-    fontFamily: 'Inter',
-    opacity: 0.7,
-    marginBottom: 4,
   },
 });
 

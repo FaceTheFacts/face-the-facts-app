@@ -38,7 +38,9 @@ const NewsCard = ({title, date, image, url, source}: NewsCardProps) => {
         </View>
       </View>
       <View style={styles.cardContent}>
-        <Text style={styles.titleText}>{title}</Text>
+        <Text style={styles.titleText} numberOfLines={3} ellipsizeMode={'tail'}>
+          {title}
+        </Text>
         <Text style={styles.dateText}>{date}</Text>
       </View>
     </TouchableOpacity>

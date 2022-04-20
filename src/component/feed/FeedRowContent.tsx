@@ -31,6 +31,7 @@ interface PollRowProps {
 export const PollRowContent = ({poll}: PollRowProps) => {
   const modal = useRef<Modalize>(null);
   const navigator = useContext<any>(NavigationContext)!;
+  const database = useContext(DataContext);
 
   return (
     <View style={styles.title}>
@@ -82,12 +83,12 @@ export const PollRowContent = ({poll}: PollRowProps) => {
           <TouchableOpacity
             key={politician.id}
             onPress={() => {
+              database.dbManager.pushHistoryItem(politician.id);
               modal.current?.close();
-              navigator.push('PollDetails', {
-                poll: poll.Poll,
-                vote: poll.Vote,
-                candidateVote: poll.Vote.vote,
-                politician: politician,
+              navigator.push('Politician', {
+                politicianId: politician.id,
+                politicianName: politician.label,
+                party: politician.party,
               });
             }}>
             <PoliticianCard
@@ -95,6 +96,7 @@ export const PollRowContent = ({poll}: PollRowProps) => {
               politicianName={politician.label}
               party={politician.party}
               vote={politician.vote}
+              styling={styles.politicianCard}
             />
           </TouchableOpacity>
         ))}
@@ -117,7 +119,7 @@ export const SideJobRowContent = ({sideJob}: SideJobRowProps) => {
   return (
     <View style={styles.title}>
       <Text style={styles.boldText}>{sideJob.politicians[0].label}</Text>
-      <Text style={styles.titleText}> hat an eine </Text>
+      <Text style={styles.titleText}> hat eine </Text>
       <TouchableOpacity
         onPress={() => {
           database.dbManager.pushHistoryItem(sideJob.politicians[0].id);
@@ -152,7 +154,7 @@ export const SpeechRowContent = ({speech}: SpeechRowProps) => {
   return (
     <View style={styles.title}>
       <Text style={styles.boldText}>{speech.politicians[0].label}</Text>
-      <Text style={styles.titleText}> hat an eine </Text>
+      <Text style={styles.titleText}> hat eine </Text>
       <TouchableOpacity onPress={() => modal.current?.open()}>
         <Text style={styles.linkText}>Rede</Text>
       </TouchableOpacity>
@@ -240,5 +242,11 @@ const styles = StyleSheet.create({
   },
   politicianContainer: {
     backgroundColor: Colors.cardBackground,
+  },
+  politicianCard: {
+    marginHorizontal: 12,
+    marginTop: 6,
+    marginBottom: 6,
+    padding: 12,
   },
 });

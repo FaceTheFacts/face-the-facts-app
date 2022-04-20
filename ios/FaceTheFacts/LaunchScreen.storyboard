@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-Regular.ttf">
+            <string>Inter-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
@@ -15,23 +21,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="powered_by_abgeordnetenwatch.png" translatesAutoresizingMaskIntoConstraints="NO" id="Je8-xB-Wen">
-                                <rect key="frame" x="90" y="583" width="195" height="34"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="abgeordnetenwatch.png" translatesAutoresizingMaskIntoConstraints="NO" id="Je8-xB-Wen">
+                                <rect key="frame" x="90" y="585.5" width="180" height="31.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Je8-xB-Wen" secondAttribute="height" multiplier="800:140" id="JuY-Hx-rI7"/>
+                                    <constraint firstAttribute="width" constant="180" id="duH-Gy-URR"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash.png" translatesAutoresizingMaskIntoConstraints="NO" id="xv7-1G-xAO">
-                                <rect key="frame" x="75" y="313" width="225" height="40"/>
+                                <rect key="frame" x="75" y="313.5" width="210" height="40"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="openParliamentTV.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zbh-YM-2AT">
+                                <rect key="frame" x="177" y="572" width="108" height="13.5"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="powered by" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xz0-1k-ITK">
+                                <rect key="frame" x="149" y="558" width="62" height="14"/>
+                                <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="11"/>
+                                <color key="textColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poliTrack.png" translatesAutoresizingMaskIntoConstraints="NO" id="zeC-A2-5zt">
+                                <rect key="frame" x="75" y="572" width="78" height="13.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="78" id="jmH-a9-XAN"/>
+                                </constraints>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="mOW-oU-BCz"/>
                         <color key="backgroundColor" red="0.094117647058823528" green="0.098039215686274508" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Zbh-YM-2AT" firstAttribute="leading" secondItem="zeC-A2-5zt" secondAttribute="trailing" constant="24" id="3re-JR-Qua"/>
                             <constraint firstItem="Je8-xB-Wen" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="90" id="8yx-zP-xY0"/>
+                            <constraint firstItem="Je8-xB-Wen" firstAttribute="top" secondItem="zeC-A2-5zt" secondAttribute="bottom" id="Lib-M9-5ki"/>
                             <constraint firstAttribute="trailing" secondItem="Je8-xB-Wen" secondAttribute="trailing" constant="90" id="NeN-AH-9V6"/>
                             <constraint firstAttribute="trailing" secondItem="xv7-1G-xAO" secondAttribute="trailing" constant="75" id="Sjd-Hi-ObT"/>
                             <constraint firstItem="xv7-1G-xAO" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="75" id="VmN-KK-N4W"/>
+                            <constraint firstItem="zeC-A2-5zt" firstAttribute="leading" secondItem="mOW-oU-BCz" secondAttribute="leading" constant="75" id="eRv-D7-2fg"/>
+                            <constraint firstItem="zeC-A2-5zt" firstAttribute="top" secondItem="Xz0-1k-ITK" secondAttribute="bottom" id="gNX-Nu-U5l"/>
+                            <constraint firstItem="Je8-xB-Wen" firstAttribute="top" secondItem="Zbh-YM-2AT" secondAttribute="bottom" id="ksZ-ty-eJC"/>
                             <constraint firstItem="xv7-1G-xAO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="lYG-6b-ski"/>
+                            <constraint firstItem="Xz0-1k-ITK" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="rYa-JT-3cI"/>
+                            <constraint firstItem="Je8-xB-Wen" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="shr-GB-o3x"/>
+                            <constraint firstItem="mOW-oU-BCz" firstAttribute="trailing" secondItem="Zbh-YM-2AT" secondAttribute="trailing" constant="75" id="srO-EB-6Um"/>
+                            <constraint firstItem="Zbh-YM-2AT" firstAttribute="top" secondItem="Xz0-1k-ITK" secondAttribute="bottom" id="xfx-Mh-zdz"/>
                             <constraint firstAttribute="bottom" secondItem="Je8-xB-Wen" secondAttribute="bottom" constant="50" id="xsF-13-leG"/>
                         </constraints>
                     </view>
@@ -42,7 +74,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="powered_by_abgeordnetenwatch.png" width="200" height="35"/>
+        <image name="abgeordnetenwatch.png" width="180" height="18"/>
+        <image name="openParliamentTV.png" width="118" height="13.25"/>
+        <image name="poliTrack.png" width="78" height="13.5"/>
         <image name="splash.png" width="212" height="40"/>
     </resources>
 </document>

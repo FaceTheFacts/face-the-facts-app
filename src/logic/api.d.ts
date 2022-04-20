@@ -1,8 +1,7 @@
-export interface ApiSearchPolitician {
+export interface ApiPoliticianHeader {
   id: number;
   label: string;
   party: ApiParty;
-  image_url: string;
 }
 
 export interface ApiEntities<T> {
@@ -22,12 +21,12 @@ export interface ApiPolitician {
   positions: ApiPositions;
 }
 
-export interface IPoliticianContext {
+export interface ApiPoliticianContext {
   profile?: ApiPoliticianProfile;
   positions?: ApiPositions;
-  speeches?: ApiPaginatedData<ApiSpeech>;
+  speeches?: ApiSpeeches;
   news?: ApiNews;
-  constituency?: ApiSearchPolitician[];
+  constituency?: ApiPoliticianConstituency;
 }
 
 export interface ApiVoteAndPoll {
@@ -109,6 +108,13 @@ export interface ApiPoll {
   poll_passed: boolean;
 }
 
+export interface ApiPollVotes {
+  yes: ApiPoliticianHeader[];
+  no: ApiPoliticianHeader[];
+  abstain: ApiPoliticianHeader[];
+  no_show: ApiPoliticianHeader[];
+}
+
 export interface ApiSidejob {
   id: number;
   entity_type: string;
@@ -123,6 +129,11 @@ export interface ApiSidejobOrganisation {
   id: number;
   entity_type: string;
   label: string;
+}
+
+export interface ApiSidejobsBundestag {
+  sidejob: ApiSidejob;
+  politician: ApiPoliticianHeader;
 }
 
 export interface ApiPositions {
@@ -140,10 +151,11 @@ export interface ApiPosition {
 }
 
 export interface ApiPollDetails {
-  items: ApiEntities<ApiPollDetail>;
+  poll_results: ApiPollResult[];
+  poll_links: ApiPollLink[];
 }
 
-export interface ApiPollDetail {
+export interface ApiPollResult {
   id: number;
   poll_id: number;
   fraction: {
@@ -156,6 +168,11 @@ export interface ApiPollDetail {
   total_no: number;
   total_abstain: number;
   total_no_show: number;
+}
+
+export interface ApiPollLink {
+  title: string;
+  uri: string;
 }
 
 interface SpeechAttribute {
@@ -192,6 +209,14 @@ interface ApiSpeechData {
   relationships: SpeechRelationship;
 }
 
+interface ApiSpeeches {
+  items: ApiSpeech[];
+  total: number;
+  page: number;
+  size: number;
+  is_last_page: boolean;
+  politician_id: number;
+}
 interface SpeechResponse {
   meta: {
     api: unknown;
@@ -218,6 +243,29 @@ export interface ApiSpeech {
   date: string;
 }
 
+export interface ApiSpeechBundestag {
+  videoFileURI: string;
+  title: string;
+  date: string;
+  speaker: ApiPoliticianHeader;
+}
+
+export interface ApiPollBundestagData {
+  poll: ApiPoll;
+  result: {
+    yes: number;
+    no: number;
+    abstain: number;
+    no_show: number;
+  };
+  politicians: number[];
+  last_politician: string;
+}
+
+export interface ApiPollBundestag {
+  data: ApiPollBundestagData[];
+  last_page: boolean;
+}
 export interface ApiNews {
   items: ApiNewsArticle[];
 }
@@ -232,6 +280,11 @@ export interface ApiNewsArticle {
   url: string;
 }
 
+export interface ApiPoliticianConstituency {
+  constituency_number: number;
+  constituency_name: string;
+  politicians: ApiPoliticianHeader[];
+}
 export interface PoliTrackImage {
   url: string;
   title: string;

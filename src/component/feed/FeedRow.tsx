@@ -1,4 +1,4 @@
-import React, {ReactNode, useContext} from 'react';
+import React, {ReactNode, useContext, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,11 +7,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import PoliticianPicture from './PoliticianPicture';
-import {Colors} from '../theme';
-import {PoliticianInfo} from './feed/FeedRowContent';
-import {RootStackParamList} from '../view/RootStackParams';
-import {DataContext} from '../logic/model';
+import PoliticianPicture from '../PoliticianPicture';
+import {Colors} from '../../theme';
+import {PoliticianInfo} from './FeedRowContent';
+import {RootStackParamList} from '../../view/RootStackParams';
+import {DataContext} from '../../logic/model';
+import BottomSheet from '../utils/BottomSheet';
+import PoliticianCard from '../politician/PoliticianCard';
+import {Modalize} from 'react-native-modalize';
 
 interface FeedRowProps {
   politicians: PoliticianInfo[];
@@ -23,16 +26,19 @@ const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
   const {width} = useWindowDimensions();
   const navigation = useNavigation<RootStackParamList>();
   const database = useContext(DataContext);
+  const modal = useRef<Modalize>(null);
   return (
     <>
       <View style={styles.container}>
         {politicians.length > 1 ? (
-          <View style={styles.image}>
+          <TouchableOpacity
+            style={styles.image}
+            onPress={() => modal.current?.open()}>
             <PoliticianPicture politicianId={+politicians[0].id} size={32} />
             <View style={styles.imageOverlay}>
               <PoliticianPicture politicianId={+politicians[1].id} size={32} />
             </View>
-          </View>
+          </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={styles.image}
@@ -53,6 +59,32 @@ const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
           <Text style={styles.descText}>{desc}</Text>
         </View>
       </View>
+      <BottomSheet
+        modalRef={modal}
+        modalStyle={styles.modalStyle}
+        adjustToContentHeight={true}>
+        {politicians.map(politician => (
+          <TouchableOpacity
+            key={politician.id}
+            onPress={() => {
+              modal.current?.close();
+              database.dbManager.pushHistoryItem(politician.id);
+              // @ts-expect-error
+              navigation.push('Politician', {
+                politicianId: politician.id,
+                politicianName: politician.label,
+                party: politician.party,
+              });
+            }}>
+            <PoliticianCard
+              politicianId={politician.id}
+              politicianName={politician.label}
+              party={politician.party}
+              styling={styles.politicianCard}
+            />
+          </TouchableOpacity>
+        ))}
+      </BottomSheet>
     </>
   );
 };
@@ -80,6 +112,18 @@ const styles = StyleSheet.create({
     color: Colors.baseWhite,
     marginTop: 4,
     flexWrap: 'wrap',
+  },
+  modalStyle: {
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    backgroundColor: Colors.background,
+    paddingTop: 12,
+  },
+  politicianCard: {
+    marginHorizontal: 12,
+    marginTop: 6,
+    marginBottom: 6,
+    padding: 12,
   },
 });
 

@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: Colors.cardBackground,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(252,252,252,0.2)',
+    borderBottomColor: 'rgba(252,252,252,0.25)',
   },
   contentContainer: {
     backgroundColor: Colors.background,

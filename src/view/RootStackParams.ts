@@ -1,9 +1,12 @@
 import {
+  ApiPaginatedData,
   ApiParty,
   ApiPoliticianProfile,
   ApiPoll,
+  ApiPollBundestag,
+  ApiSpeechBundestag,
   ApiVote,
-  IPoliticianContext,
+  ApiPoliticianContext,
 } from '../logic/api';
 import {Vote} from '../logic/api';
 
@@ -16,9 +19,12 @@ export type RootStackParamList = {
     party: ApiParty;
     toSideJobs?: boolean;
   };
-  News: {politician: IPoliticianContext};
-  Speeches: {politician: IPoliticianContext};
-  Polls: {politician: IPoliticianContext};
+  News: {politician: ApiPoliticianContext};
+  Speeches: {politician: ApiPoliticianContext};
+  DashboardSpeeches: {speeches: ApiPaginatedData<ApiSpeechBundestag>};
+  DashboardSidejobs: any;
+  Polls: {politician: ApiPoliticianContext};
+  DashboardPolls: {polls: ApiPaginatedData<ApiPollBundestag>};
   PollDetails: {
     poll: ApiPoll;
     vote: ApiVote;

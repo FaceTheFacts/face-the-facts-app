@@ -17,13 +17,13 @@ import {
   SpeechTab,
   SpeechRowContent,
 } from './FeedRowContent';
-import FeedRow from '../FeedRow';
+import FeedRow from './FeedRow';
 import {useQueries} from 'react-query';
-import {fetch_api, request} from '../../logic/fetch';
+import {fetch_api} from '../../logic/fetch';
 import {
   ApiPoliticianProfile,
   SpeechResponse,
-  ApiSpeechData,
+  ApiSpeeches,
 } from '../../logic/api';
 import {checkPreviousMonth, formatMonth} from '../../utils/util';
 
@@ -60,6 +60,7 @@ const FollowFeed = ({
   const [visibleCount, setVisibleCount] = useState(20);
   const [tabs, setTabs] = useState<Tab<Row>[]>([]);
   const [visibleTabs, setVisibleTabs] = useState<Tab<Row>[]>([]);
+  const [page, setPage] = useState<number>(1);
   const [followedIds, setFollowedIds] = useState<Set<number>>(new Set());
 
   useEffect(() => {
@@ -85,13 +86,14 @@ const FollowFeed = ({
   const speechQueries = useQueries(
     Array.from(followedIds).map(politicianId => {
       return {
-        queryKey: ['politician:speech', politicianId],
+        queryKey: ['politician:speech', politicianId, page],
         queryFn: () =>
-          request<any>(
-            `https://de.openparliament.tv/api/v1/search/media?abgeordnetenwatchID=${politicianId}&page[size]=100&sort=date-desc`,
+          fetch_api<ApiSpeeches>(
+            `politician/${politicianId}/speeches?page=${page}`,
           ),
         staleTime: 60 * 10000000, // 10000 minute = around 1 week
         cacheTime: 60 * 10000000,
+        keepPreviousData: true,
       };
     }),
   );
@@ -159,14 +161,10 @@ const FollowFeed = ({
       let speechTabs: Tab<SpeechTab>[] = [];
       speechQueries.forEach(query => {
         // @ts-ignore
-        const speeches: ApiSpeechData[] = query.data.data;
+        const speeches: ApiSpeech[] = query.data.items;
         speeches?.forEach(speech => {
-          const title = speech.relationships.agendaItem.data.attributes.title;
-          const politicianId =
-            speech.relationships.people.data[0].attributes.additionalInformation
-              .abgeordnetenwatchID;
-
-          const profile = profilesMap.get(Number(politicianId))!;
+          const title = speech.title;
+          const profile = profilesMap.get(Number(query.data?.politician_id))!;
           const politician: PoliticianInfo = {
             id: profile.id,
             label: profile.label,
@@ -177,9 +175,9 @@ const FollowFeed = ({
             type: 'speech',
             content: {
               politicians: [politician],
-              videoFileURI: speech.attributes.videoFileURI,
+              videoFileURI: speech.videoFileURI,
               title,
-              created: speech.attributes.dateEnd,
+              created: speech.date,
             },
           };
           speechTabs.push(speechTab);
@@ -206,12 +204,12 @@ const FollowFeed = ({
     return (
       <View style={styles.container}>
         <Text style={styles.header4}>
-          Folge Politikern, um Neues über sie zu erfahren.
+          Folge Politiker:innen, um Neues über sie zu erfahren.
         </Text>
         <TouchableOpacity
           style={styles.searchBtn}
           onPress={() => setSelected('politicians')}>
-          <Text style={styles.header4}>Politiker suchen</Text>
+          <Text style={styles.header4}>Politiker:innen suchen</Text>
         </TouchableOpacity>
       </View>
     );
@@ -290,13 +288,14 @@ const FollowFeed = ({
           <TouchableOpacity
             style={styles.showMoreButton}
             onPress={() => {
+              setPage(page + 1);
               setVisibleCount(visibleCount + 20);
               setVisibleTabs(prevTabs => [
                 ...prevTabs,
                 ...tabs.slice(visibleCount, visibleCount + 20),
               ]);
             }}>
-            <Text style={styles.showMoreText}>mehr anzeigen</Text>
+            <Text style={styles.showMoreText}>mehr</Text>
           </TouchableOpacity>
         )}
       </ScrollView>

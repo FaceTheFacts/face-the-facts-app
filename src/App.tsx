@@ -20,7 +20,10 @@ import PollDetailsView from './view/PollDetailsView';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import SpeechesView from './view/SpeechesView';
 import NewsView from './view/NewsView';
+import DashboardSpeechesView from './view/DashboardSpeechesView';
 import {RootStackParamList} from './view/RootStackParams';
+import DashboardSidejobsView from './view/DashboardSidejobsView';
+import DashboardPollsView from './view/DashboardPollsView';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const queryClient = new QueryClient();
@@ -101,6 +104,21 @@ const App = () => {
                 <Stack.Screen
                   name="PollDetails"
                   component={PollDetailsView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="DashboardSpeeches"
+                  component={DashboardSpeechesView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="DashboardSidejobs"
+                  component={DashboardSidejobsView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="DashboardPolls"
+                  component={DashboardPollsView}
                   options={{headerShown: false}}
                 />
               </Stack.Navigator>

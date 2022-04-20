@@ -9,32 +9,30 @@ import {
 } from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
-import PollCard from '../component/poll/PollCard';
 import Icon from '../component/Icon';
 import BackButton from '../component/BackButton';
-import {ApiVoteAndPoll, ApiPoliticianContext} from '../logic/api';
-import {useQuery} from 'react-query';
+import {ApiPollBundestag, ApiPollBundestagData} from '../logic/api';
+import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/util';
 import {ClearIcon, FilterIcon} from '../icons';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import PollFilter from '../component/poll/PollFilter';
-import ErrorCard from '../component/Error';
+import DashboardPollCard from '../component/poll/DashboardPollCard';
 
-export interface PollsViewProps {
+export interface DashboardPollsViewProps {
   route: RouteProp<{params: PollViewParams}, 'params'>;
 }
 
 type PollViewParams = {
-  politician: ApiPoliticianContext;
+  polls: ApiPollBundestagData[];
 };
 
-const PollsView = ({route}: PollsViewProps) => {
+const DashboardPollsView = ({route}: DashboardPollsViewProps) => {
+  const polls = route.params.polls;
   const [filter, setFilter] = useState<number[]>([]);
   const [filterQuery, setFilterQuery] = useState<string>('');
-  const politician = route.params.politician;
-  const politicianId = politician.profile?.id;
   const modal = useRef<Modalize>(null);
   useEffect(() => {
     let query = '';
@@ -43,23 +41,34 @@ const PollsView = ({route}: PollsViewProps) => {
     });
     setFilterQuery(query);
   }, [filter]);
-
+  const fetchallPolls = (pageParam = 1) =>
+    fetch_api<ApiPollBundestag>(
+      `bundestag/allpolls?page=${pageParam}&${filterQuery}`,
+    );
   const {
-    data: polls,
-    isLoading: pollsLoading,
-    isSuccess: pollsSuccess,
-    isError: pollsError,
-  } = useQuery<ApiVoteAndPoll[] | undefined, Error>(
-    `polls:${politicianId}-${filterQuery}`,
-    () => fetch_api<ApiVoteAndPoll[]>(`polls/${politicianId}?${filterQuery}`),
+    data: pollsData,
+    isLoading,
+    isSuccess,
+    isError,
+    fetchNextPage,
+  } = useInfiniteQuery<ApiPollBundestag | undefined, Error>(
+    `allpolls Bundestag: ${filterQuery}`,
+    ({pageParam = 1}) => fetchallPolls(pageParam),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
+      keepPreviousData: true,
+      getNextPageParam: (lastpage, pages) => {
+        if (!lastpage?.last_page) {
+          return pages?.length + 1;
+        } else {
+          return pages.length;
+        }
+      },
     },
   );
-
-  if (pollsError) {
-    return <ErrorCard />;
+  if (isError) {
+    <Text>Error ..</Text>;
   }
 
   return (
@@ -78,6 +87,9 @@ const PollsView = ({route}: PollsViewProps) => {
             <Text style={styles.filterText}>Filtern</Text>
           </TouchableOpacity>
         </View>
+      </View>
+      <View>
+        <View style={styles.separatorLine} />
       </View>
       {filter.length > 0 && (
         <View style={styles.filterCategoryContainer}>
@@ -99,72 +111,91 @@ const PollsView = ({route}: PollsViewProps) => {
         </View>
       )}
       <ScrollView style={styles.container}>
-        {pollsLoading &&
-          politician?.profile?.votes_and_polls.map((poll, index) => (
-            <View key={index}>
-              {index !== 0 ? (
-                checkPreviousMonth(
-                  poll.Poll.field_poll_date,
-                  politician?.profile!.votes_and_polls[index - 1].Poll
-                    .field_poll_date,
-                ) && (
-                  <View style={styles.monthContainer}>
-                    <Text style={styles.month}>
-                      {formatMonth(poll.Poll.field_poll_date)}
-                    </Text>
-                  </View>
-                )
-              ) : (
-                <View style={styles.monthContainer}>
-                  <Text style={styles.month}>
-                    {formatMonth(poll.Poll.field_poll_date)}
-                  </Text>
-                </View>
-              )}
-              <View style={styles.pollCardContainer}>
-                <PollCard
-                  key={poll.Poll.id}
-                  poll={poll.Poll}
-                  vote={poll.Vote}
-                  candidateVote={poll.Vote.vote}
-                  politician={politician.profile}
-                />
-              </View>
-            </View>
-          ))}
-        {pollsSuccess &&
-          polls &&
+        {isLoading &&
           polls.map((poll, index) => (
             <View key={index}>
               {index !== 0 ? (
                 checkPreviousMonth(
-                  poll.Poll.field_poll_date,
-                  polls[index - 1].Poll.field_poll_date,
+                  poll.poll.field_poll_date,
+                  polls[index - 1].poll.field_poll_date,
                 ) && (
                   <View style={styles.monthContainer}>
                     <Text style={styles.month}>
-                      {formatMonth(poll.Poll.field_poll_date)}
+                      {formatMonth(poll.poll.field_poll_date)}
                     </Text>
                   </View>
                 )
               ) : (
                 <View style={styles.monthContainer}>
                   <Text style={styles.month}>
-                    {formatMonth(poll.Poll.field_poll_date)}
+                    {formatMonth(poll.poll.field_poll_date)}
                   </Text>
                 </View>
               )}
               <View style={styles.pollCardContainer}>
-                <PollCard
-                  key={poll.Poll.id}
-                  poll={poll.Poll}
-                  vote={poll.Vote}
-                  candidateVote={poll.Vote.vote}
-                  politician={politician.profile}
+                <DashboardPollCard
+                  key={index}
+                  poll={poll.poll}
+                  result={poll.result}
+                  politicians={poll.politicians}
+                  last_politician={poll.last_politician}
                 />
               </View>
             </View>
           ))}
+        {isSuccess &&
+          pollsData &&
+          pollsData?.pages.map((page, pageIndex) =>
+            page?.data.map((poll, pollIndex) => (
+              <View key={pageIndex + pollIndex}>
+                {pollIndex !== 0 ? (
+                  checkPreviousMonth(
+                    pollsData.pages[pageIndex]!.data[pollIndex - 1].poll
+                      .field_poll_date,
+                    poll.poll.field_poll_date,
+                  ) && (
+                    <View style={styles.monthContainer}>
+                      <Text style={styles.month}>
+                        {formatMonth(poll.poll.field_poll_date)}
+                      </Text>
+                    </View>
+                  )
+                ) : pageIndex !== 0 ? (
+                  checkPreviousMonth(
+                    pollsData.pages[pageIndex - 1]!.data[
+                      pollsData.pages[pageIndex - 1]!.data.length - 1
+                    ].poll.field_poll_date,
+                    poll.poll.field_poll_date,
+                  ) && (
+                    <View style={styles.monthContainer}>
+                      <Text style={styles.month}>
+                        {formatMonth(poll.poll.field_poll_date)}
+                      </Text>
+                    </View>
+                  )
+                ) : (
+                  <View style={styles.monthContainer}>
+                    <Text style={styles.month}>
+                      {formatMonth(poll.poll.field_poll_date)}
+                    </Text>
+                  </View>
+                )}
+                <View style={styles.pollCardContainer}>
+                  <DashboardPollCard
+                    poll={poll.poll}
+                    result={poll.result}
+                    politicians={poll.politicians}
+                    last_politician={poll.last_politician}
+                  />
+                </View>
+              </View>
+            )),
+          )}
+        {isSuccess && !pollsData?.pages[pollsData.pages.length - 1]?.last_page && (
+          <TouchableOpacity onPress={() => fetchNextPage()}>
+            <Text style={styles.moreButton}>mehr</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />
       <BottomSheet
@@ -192,8 +223,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 60,
     backgroundColor: Colors.cardBackground,
-    borderBottomColor: 'rgba(255, 255, 255, 0.25)',
-    borderBottomWidth: 1,
   },
   backButtonContainer: {
     flex: 1,
@@ -263,6 +292,10 @@ const styles = StyleSheet.create({
     height: 13,
     marginRight: 8,
   },
+  separatorLine: {
+    height: 1,
+    backgroundColor: 'rgba(252, 252, 252, 0.25)',
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -310,6 +343,22 @@ const styles = StyleSheet.create({
   pollCardContainer: {
     marginVertical: 6,
   },
+  moreButton: {
+    color: Colors.foreground,
+    opacity: 1,
+    fontSize: 13,
+    textAlign: 'center',
+    fontWeight: '600',
+    fontFamily: 'Inter',
+    borderRadius: 4,
+    borderColor: Colors.moreButtonBorder,
+    borderWidth: 1.5,
+    marginVertical: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    width: 60,
+    alignSelf: 'center',
+  },
 });
 
-export default PollsView;
+export default DashboardPollsView;

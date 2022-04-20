@@ -5,9 +5,10 @@ import {DataContext} from '../logic/model';
 import {NavigationContext} from '@react-navigation/native';
 import {ErrorIcon, ScanIcon} from '../icons';
 import InfoBanner from '../component/InfoBanner';
-import {ApiSearchPolitician} from '../logic/api';
+import {ApiPoliticianHeader} from '../logic/api';
 import {fetch_api} from '../logic/fetch';
 import {useQuery} from 'react-query';
+import ErrorCard from '../component/Error';
 
 const ScannerView = () => {
   // Scanning
@@ -23,10 +24,13 @@ const ScannerView = () => {
   const dataContext = useContext(DataContext);
   const navigator = useContext<any>(NavigationContext)!;
 
-  const {data: scanData} = useQuery<ApiSearchPolitician[] | undefined, Error>(
+  const {data: scanData, isError} = useQuery<
+    ApiPoliticianHeader[] | undefined,
+    Error
+  >(
     `scanpolitician:${showPolitician}`,
     () =>
-      fetch_api<ApiSearchPolitician[]>(`image-scanner?id=${showPolitician}`),
+      fetch_api<ApiPoliticianHeader[]>(`image-scanner?id=${showPolitician}`),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
@@ -71,6 +75,9 @@ const ScannerView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showPolitician, scanData]);
 
+  if (isError) {
+    return <ErrorCard />;
+  }
   return (
     <View style={styles.container}>
       {focussed && (
@@ -105,7 +112,7 @@ const ScannerView = () => {
         <InfoBanner
           style={styles.infoBanner}
           icon={ScanIcon}
-          title="Nach Plakaten suchen"
+          title="Plakat suchen"
           subtitle="Achte darauf, dass der Name des:der Kandidat:in gut lesbar ist."
         />
       )}

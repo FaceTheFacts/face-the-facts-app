@@ -1,15 +1,19 @@
-import React, {useRef} from 'react';
+import {NavigationContext} from '@react-navigation/native';
+import React, {useContext, useRef} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import {Modalize} from 'react-native-modalize';
+import {ApiParty} from '../../logic/api';
+import {DataContext} from '../../logic/model';
 import {Colors} from '../../theme';
-import CardPolitician from '../CardPolitician';
+import PoliticianCard from '../politician/PoliticianCard';
 import BottomSheet from '../utils/BottomSheet';
 import SpeechPlayer from './SpeechPlayer';
 
 interface SpeechCardProps {
   politicianId?: number;
-  politician?: string;
+  party?: ApiParty;
+  politicianName: string;
   title: string;
   date: string;
   video: string;
@@ -19,7 +23,8 @@ interface SpeechCardProps {
 
 const SpeechCard = ({
   politicianId,
-  politician,
+  party,
+  politicianName,
   title,
   date,
   video,
@@ -30,17 +35,46 @@ const SpeechCard = ({
   const handleClickOpen = () => {
     modal.current!.open();
   };
-
-  return (
+  const navigator = useContext(NavigationContext);
+  const database = useContext(DataContext);
+  return politicianId && politicianName && party ? (
+    <View style={[styles.container, {height: cardHeight}, {width: cardWidth}]}>
+      <TouchableOpacity
+        onPress={() => {
+          database.dbManager.pushHistoryItem(politicianId);
+          navigator?.navigate('Politician', {
+            politicianId: politicianId,
+            politicianName: politicianName,
+            party: party,
+          });
+        }}>
+        <PoliticianCard
+          politicianId={politicianId}
+          politicianName={politicianName}
+          party={party}
+        />
+      </TouchableOpacity>
+      <View style={styles.separatorLine} />
+      <TouchableOpacity onPress={handleClickOpen} style={styles.cardContent}>
+        <Text style={styles.descText}>{title}</Text>
+        <Text style={styles.dateText}>{date}</Text>
+      </TouchableOpacity>
+      <BottomSheet
+        modalRef={modal}
+        modalStyle={styles.modalStyle}
+        adjustToContentHeight={true}>
+        <SpeechPlayer
+          politician={politicianName}
+          title={title}
+          date={date}
+          video={video}
+        />
+      </BottomSheet>
+    </View>
+  ) : (
     <TouchableOpacity
       onPress={handleClickOpen}
       style={[styles.container, {height: cardHeight}, {width: cardWidth}]}>
-      {politicianId && (
-        <>
-          <CardPolitician politicianId={politicianId} />
-          <View style={styles.separatorLine} />
-        </>
-      )}
       <View style={styles.cardContent}>
         <Text style={styles.descText}>{title}</Text>
         <Text style={styles.dateText}>{date}</Text>
@@ -50,7 +84,7 @@ const SpeechCard = ({
         modalStyle={styles.modalStyle}
         adjustToContentHeight={true}>
         <SpeechPlayer
-          politician={politician}
+          politician={politicianName}
           title={title}
           date={date}
           video={video}

@@ -12,34 +12,37 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
-import {ApiSpeeches, ApiPoliticianContext} from '../logic/api';
+import {ApiPaginatedData, ApiSpeechBundestag} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 
-export interface SpeechesViewProps {
-  route: RouteProp<{params: {politician: ApiPoliticianContext}}, 'params'>;
+export interface DashboardSpeechesViewProps {
+  route: RouteProp<
+    {params: {speeches: ApiPaginatedData<ApiSpeechBundestag>}},
+    'params'
+  >;
 }
 
-const SpeechesView = ({route}: SpeechesViewProps) => {
-  const {politician} = route.params;
+const DashboardSpeechesView = ({route}: DashboardSpeechesViewProps) => {
+  const {speeches} = route.params;
   const {width} = useWindowDimensions();
   const fetchSpeeches = (pageParam: number) =>
-    fetch_api<ApiSpeeches>(
-      `politician/${politician?.profile?.id}/speeches?page=${pageParam}`,
+    fetch_api<ApiPaginatedData<ApiSpeechBundestag>>(
+      `bundestag/speeches?page=${pageParam}`,
     );
   const {
-    data: speeches,
+    data: speechesData,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery<ApiSpeeches | undefined, Error>(
-    `speechesView:${politician?.profile?.id}`,
+  } = useInfiniteQuery<ApiPaginatedData<ApiSpeechBundestag> | undefined, Error>(
+    'speechesView: Bundestag',
     ({pageParam = 1}) => fetchSpeeches(pageParam),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
       placeholderData: {
-        pages: [politician.speeches],
+        pages: [speeches],
         pageParams: [],
       },
       keepPreviousData: true,
@@ -59,14 +62,15 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
         </View>
         <View style={styles.rightContainer} />
       </View>
+      <View style={styles.separatorLine} />
       <ScrollView style={styles.container}>
-        {speeches?.pages.map((page, pageIndex) =>
+        {speechesData?.pages.map((page, pageIndex) =>
           page?.items.map((speech, speechIndex) => (
             <View key={pageIndex + speechIndex}>
               {speechIndex !== 0 ? (
                 checkPreviousMonth(
                   speech.date,
-                  politician?.speeches!.items[speechIndex + -1].date,
+                  speeches!.items[speechIndex + -1].date,
                 ) && (
                   <View style={styles.monthContainer}>
                     <Text style={styles.month}>{formatMonth(speech.date)}</Text>
@@ -79,11 +83,13 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
               )}
               <View style={styles.speechCardContainer}>
                 <SpeechCard
-                  politicianName={politician.profile?.label!}
+                  politicianId={speech.speaker.id}
+                  politicianName={speech.speaker.label}
+                  party={speech.speaker.party}
                   title={speech.title}
                   date={formatDate(speech.date)}
                   video={speech.videoFileURI}
-                  cardHeight={87}
+                  cardHeight={117}
                   cardWidth={width - 24}
                 />
               </View>
@@ -139,6 +145,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     color: Colors.foreground,
   },
+  separatorLine: {
+    height: 1,
+    backgroundColor: 'rgba(1,1,1,0.6)',
+  },
   monthContainer: {
     backgroundColor: Colors.cardBackground,
     borderRadius: 8,
@@ -186,4 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SpeechesView;
+export default DashboardSpeechesView;

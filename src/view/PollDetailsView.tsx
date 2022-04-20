@@ -5,17 +5,13 @@ import {
   Text,
   View,
   SafeAreaView,
-  StatusBar,
+  TouchableOpacity,
+  Linking,
 } from 'react-native';
-import {Vote} from '../logic/api';
+import {ApiPollDetails, Vote} from '../logic/api';
 import {Colors} from '../theme';
 import ReadMoreHTML from '../component/utils/ReadMoreHTML';
-import type {
-  ApiPoliticianProfile,
-  ApiPoll,
-  ApiPollDetail,
-  ApiVote,
-} from '../logic/api';
+import type {ApiPoliticianProfile, ApiPoll, ApiVote} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {RouteProp} from '@react-navigation/native';
@@ -24,11 +20,16 @@ import {getChartData} from '../utils/util';
 import PoliticianCard from '../component/politician/PoliticianCard';
 import PollChart from '../component/poll/PollChart';
 import PollVoteCard from '../component/poll/PollVoteCard';
+import Icon from '../component/Icon';
+import {ArrowUpRightFromSquare} from '../icons';
+import {Modalize} from 'react-native-modalize';
+import BottomSheet from '../component/utils/BottomSheet';
+import ErrorCard from '../component/Error';
 
 type PollDetailsViewParams = {
   poll: ApiPoll;
   vote: ApiVote;
-  candidateVote: Vote;
+  candidateVote?: Vote;
   politician?: ApiPoliticianProfile;
 };
 
@@ -39,24 +40,45 @@ interface PollDetailsViewProps {
 const PollDetailsView = ({route}: PollDetailsViewProps) => {
   const {poll, candidateVote, politician} = route.params;
   const scrollView = useRef<ScrollView | null>(null);
-  const pollDetailsQuery = useQuery<Array<ApiPollDetail> | undefined, Error>(
+  const modal = useRef<Modalize>(null);
+  const {data: pollDetails, isError} = useQuery<
+    ApiPollDetails | undefined,
+    Error
+  >(
     `poll:${poll.id}:details`,
-    () => fetch_api<Array<ApiPollDetail>>(`poll/${poll.id}/details`),
+    () => fetch_api<ApiPollDetails>(`poll/${poll.id}/details`),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
     },
   );
-  const chartData = getChartData(pollDetailsQuery?.data);
+  const chartData = getChartData(pollDetails?.poll_results);
+
+  if (isError) {
+    return <ErrorCard />;
+  }
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
-
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={Colors.cardBackground}
-      />
-      <BackButton />
+      <View style={styles.header}>
+        <View style={styles.backButtonContainer}>
+          <BackButton />
+        </View>
+        <View style={styles.filterContainer}>
+          {pollDetails && pollDetails.poll_links && (
+            <TouchableOpacity
+              style={styles.redirectBtn}
+              onPress={() => {
+                pollDetails.poll_links.length > 1
+                  ? modal.current?.open()
+                  : Linking.openURL(pollDetails.poll_links[0].uri);
+              }}>
+              <Icon style={styles.arrowIcon} icon={ArrowUpRightFromSquare} />
+              <Text style={styles.redirectBtnText}>weiterführende Links</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
       <ScrollView
         ref={scrollView}
         scrollEnabled={true}
@@ -79,12 +101,38 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
               politicianName={politician.label}
               party={politician.party}
               vote={candidateVote}
+              styling={styles.politicianCard}
             />
           </View>
         )}
-        <PollChart chartData={chartData} />
-        <PollVoteCard pollData={pollDetailsQuery.data} />
+        {pollDetails && pollDetails.poll_results && (
+          <>
+            <PollChart
+              yes_votes={chartData[0]}
+              no_votes={chartData[1]}
+              abstain_votes={chartData[2]}
+              no_show_votes={chartData[3]}
+            />
+            <PollVoteCard pollData={pollDetails.poll_results} />
+          </>
+        )}
       </ScrollView>
+      {pollDetails && pollDetails.poll_links && (
+        <BottomSheet
+          modalRef={modal}
+          modalStyle={styles.modalStyle}
+          adjustToContentHeight={true}>
+          {pollDetails?.poll_links.map((link, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.linkBtn}
+              onPress={() => Linking.openURL(link.uri)}>
+              <Icon style={styles.arrowIcon} icon={ArrowUpRightFromSquare} />
+              <Text style={styles.linkBtnText}>{link.title}</Text>
+            </TouchableOpacity>
+          ))}
+        </BottomSheet>
+      )}
       <SafeAreaView style={styles.iosSafeBottom} />
     </>
   );
@@ -94,6 +142,54 @@ const styles = StyleSheet.create({
   iosSafeTop: {
     flex: 0,
     backgroundColor: Colors.cardBackground,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 60,
+    backgroundColor: Colors.cardBackground,
+    borderBottomColor: 'rgba(255, 255, 255, 0.25)',
+    borderBottomWidth: 1,
+  },
+  backButtonContainer: {
+    flex: 1,
+  },
+  filterContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  arrowIcon: {
+    color: Colors.foreground,
+    height: 13,
+    width: 13,
+    marginTop: 2,
+    marginRight: 8,
+  },
+  redirectBtn: {
+    flexDirection: 'row',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: Colors.cardBackground,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    borderRadius: 4,
+    marginVertical: 16,
+    marginRight: 12,
+    borderColor: 'rgba(252, 252, 252, 0.4)',
+    borderWidth: 1,
+  },
+  redirectBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: Colors.foreground,
+  },
+  politicianCard: {
+    marginHorizontal: 12,
+    marginTop: 6,
+    marginBottom: 6,
+    padding: 12,
   },
   iosSafeBottom: {
     flex: 0,
@@ -126,6 +222,27 @@ const styles = StyleSheet.create({
   },
   politicianCardContainer: {
     marginTop: 6,
+  },
+  modalStyle: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    backgroundColor: Colors.background,
+    paddingVertical: 6,
+  },
+  linkBtn: {
+    flexDirection: 'row',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 4,
+    marginVertical: 6,
+    margin: 12,
+  },
+  linkBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: Colors.foreground,
   },
 });
 

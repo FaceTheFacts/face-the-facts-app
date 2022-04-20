@@ -1,52 +1,54 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   SafeAreaView,
   View,
-  useWindowDimensions,
   TouchableOpacity,
 } from 'react-native';
-import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
-import SpeechCard from '../component/speech/SpeechCard';
+import SidejobCard from '../component/SideJobCard';
 import BackButton from '../component/BackButton';
-import {ApiSpeeches, ApiPoliticianContext} from '../logic/api';
-import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
+import {ApiPaginatedData, ApiSidejobsBundestag} from '../logic/api';
+import {checkPreviousMonth, formatMonth} from '../utils/util';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
+import {NavigationContext} from '@react-navigation/native';
+import {DataContext} from '../logic/model';
+import SkeletonDashboardSidejob from '../component/skeleton/SkeletonDashboardSidejob';
 
-export interface SpeechesViewProps {
-  route: RouteProp<{params: {politician: ApiPoliticianContext}}, 'params'>;
-}
-
-const SpeechesView = ({route}: SpeechesViewProps) => {
-  const {politician} = route.params;
-  const {width} = useWindowDimensions();
-  const fetchSpeeches = (pageParam: number) =>
-    fetch_api<ApiSpeeches>(
-      `politician/${politician?.profile?.id}/speeches?page=${pageParam}`,
+const DashboardSidejobView = () => {
+  const navigator = useContext(NavigationContext);
+  const database = useContext(DataContext);
+  const fetchSidejobs = (pageParam: number) =>
+    fetch_api<ApiPaginatedData<ApiSidejobsBundestag>>(
+      `bundestag/allsidejobs?page=${pageParam}`,
     );
   const {
-    data: speeches,
+    data: sidejobsData,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery<ApiSpeeches | undefined, Error>(
-    `speechesView:${politician?.profile?.id}`,
-    ({pageParam = 1}) => fetchSpeeches(pageParam),
-    {
-      staleTime: 60 * 10000000, // 10000 minute = around 1 week
-      cacheTime: 60 * 10000000,
-      placeholderData: {
-        pages: [politician.speeches],
-        pageParams: [],
-      },
-      keepPreviousData: true,
-      getNextPageParam: (lastPage, pages) =>
-        !lastPage?.is_last_page && pages.length + 1,
-    },
-  );
+    isLoading,
+    isError,
+  } = useInfiniteQuery<
+    ApiPaginatedData<ApiSidejobsBundestag> | undefined,
+    Error
+  >('sidejobsView: Bundestag', ({pageParam = 1}) => fetchSidejobs(pageParam), {
+    staleTime: 60 * 10000000, // 10000 minute = around 1 week
+    cacheTime: 60 * 10000000,
+    keepPreviousData: true,
+    getNextPageParam: (lastPage, pages) =>
+      !lastPage?.is_last_page && pages.length + 1,
+  });
+
+  if (isError) {
+    return <Text>Error</Text>;
+  }
+
+  if (isLoading) {
+    <SkeletonDashboardSidejob />;
+  }
   return (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
@@ -55,38 +57,55 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
           <BackButton />
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Reden</Text>
+          <Text style={styles.title}>Nebentätigkeiten</Text>
         </View>
         <View style={styles.rightContainer} />
       </View>
       <ScrollView style={styles.container}>
-        {speeches?.pages.map((page, pageIndex) =>
-          page?.items.map((speech, speechIndex) => (
-            <View key={pageIndex + speechIndex}>
-              {speechIndex !== 0 ? (
+        {sidejobsData?.pages.map((page, pageIndex) =>
+          page?.items.map((sidejob, sidejobIndex) => (
+            <View key={pageIndex + sidejobIndex}>
+              {sidejobIndex !== 0 ? (
                 checkPreviousMonth(
-                  speech.date,
-                  politician?.speeches!.items[speechIndex + -1].date,
+                  sidejob.sidejob.created,
+                  sidejobsData!.pages[pageIndex]!.items[sidejobIndex + -1]
+                    .sidejob.created,
                 ) && (
                   <View style={styles.monthContainer}>
-                    <Text style={styles.month}>{formatMonth(speech.date)}</Text>
+                    <Text style={styles.month}>
+                      {formatMonth(sidejob.sidejob.created)}
+                    </Text>
                   </View>
                 )
               ) : (
                 <View style={styles.monthContainer}>
-                  <Text style={styles.month}>{formatMonth(speech.date)}</Text>
+                  <Text style={styles.month}>
+                    {formatMonth(sidejob.sidejob.created)}
+                  </Text>
                 </View>
               )}
-              <View style={styles.speechCardContainer}>
-                <SpeechCard
-                  politicianName={politician.profile?.label!}
-                  title={speech.title}
-                  date={formatDate(speech.date)}
-                  video={speech.videoFileURI}
-                  cardHeight={87}
-                  cardWidth={width - 24}
+              <TouchableOpacity
+                style={styles.sidejobCardContainer}
+                onPress={() => {
+                  database.dbManager.pushHistoryItem(sidejob.politician.id);
+                  navigator?.navigate('Politician', {
+                    politicianId: sidejob.politician.id,
+                    politicianName: sidejob.politician.label,
+                    party: sidejob.politician.party,
+                    toSideJobs: true,
+                  });
+                }}>
+                <SidejobCard
+                  politicianId={sidejob.politician.id}
+                  politicianName={sidejob.politician.label}
+                  party={sidejob.politician.party}
+                  label={sidejob.sidejob.label}
+                  date={sidejob.sidejob.created}
+                  organization={sidejob.sidejob.sidejob_organization.label}
+                  income={sidejob.sidejob.income_level}
+                  fromView={true}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
           )),
         )}
@@ -127,7 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    flex: 1,
+    flex: 2,
   },
   rightContainer: {
     flex: 1,
@@ -164,7 +183,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 8,
   },
-  speechCardContainer: {
+  sidejobCardContainer: {
     alignSelf: 'center',
     marginVertical: 6,
   },
@@ -186,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SpeechesView;
+export default DashboardSidejobView;
