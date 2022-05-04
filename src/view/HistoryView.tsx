@@ -96,7 +96,7 @@ const HistoryView = () => {
     timeout.current = setTimeout(() => {
       setSearchQuery(searchInput);
       timeout.current = null;
-    }, 300);
+    }, 500);
 
     return () => {
       if (timeout.current) {
