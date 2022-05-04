@@ -26,7 +26,7 @@ import DashboardSidejobsView from './view/DashboardSidejobsView';
 import DashboardPollsView from './view/DashboardPollsView';
 import * as Sentry from '@sentry/react-native';
 
-const env = require('../../env.json');
+const env = require('../env.json');
 if (!env.SENTRY_DSN) {
   console.error('SENTRY_DNS in env.json is missing');
 }

@@ -1,1 +1,5 @@
-{"BASE_URL": "https://<url>", "SENTRY_DNS": "https://<url>"}
+{
+  "BASE_URL": "https://<url>",
+  "SENTRY_DSN": "https://<url>",
+  "SCAN_DATA_URL": "https://<url>"
+}

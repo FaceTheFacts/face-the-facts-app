@@ -38,8 +38,12 @@ export class FaceTheFactsData {
     }
 
     try {
+      const env = require('../../env.json');
+      if (!env.SCAN_DATA_URL) {
+        console.error('SCANDATA in env.json is missing');
+      }
       const {statusCode} = await downloadFile({
-        fromUrl: 'https://database.facethefacts-api.de/data.json',
+        fromUrl: env.SCAN_DATA_URL,
         toFile: cacheDatabaseFile,
         headers,
       }).promise;
