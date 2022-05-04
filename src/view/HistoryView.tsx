@@ -144,7 +144,7 @@ const HistoryView = () => {
             <TextInput
               ref={inputRef}
               style={styles.searchBarInput}
-              placeholder="Suche nach Name oder PLZ"
+              placeholder="Suche"
               placeholderTextColor={Colors.foreground}
               onFocus={startSearching}
               onBlur={() => setSearching(searchInput !== '')}
