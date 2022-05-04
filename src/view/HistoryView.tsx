@@ -199,7 +199,8 @@ const HistoryView = () => {
                 searchData && status === 'success' && (
                   <ScrollView
                     style={styles.searchResultContainer}
-                    keyboardDismissMode="interactive">
+                    keyboardDismissMode="interactive"
+                    showsVerticalScrollIndicator={false}>
                     {searchData?.map(politician => (
                       <PoliticianItem
                         key={politician.id}

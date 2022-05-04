@@ -86,7 +86,7 @@ const Dashboard = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       {speeches && (
         <View style={styles.topContainer}>
           <View style={styles.header}>
@@ -133,7 +133,7 @@ const Dashboard = () => {
               <Text style={styles.btnText}>mehr</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.scrollContainer}>
+          <View style={styles.scrollContainer}>
             {polls.map((poll, index) => (
               <DashboardPollCard
                 key={index}
@@ -143,7 +143,7 @@ const Dashboard = () => {
                 last_politician={poll.last_politician}
               />
             ))}
-          </ScrollView>
+          </View>
         </View>
       )}
       {sidejobs && (

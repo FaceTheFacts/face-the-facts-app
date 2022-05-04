@@ -74,7 +74,7 @@ const linkTypes: LinkType[] = [
 const PoliticianLinks = () => {
   const politician = useContext(PoliticianContext);
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <TouchableOpacity
         onPress={() =>
           Linking.openURL(politician?.profile?.abgeordnetenwatch_url!)

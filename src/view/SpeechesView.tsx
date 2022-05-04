@@ -59,7 +59,7 @@ const SpeechesView = ({route}: SpeechesViewProps) => {
         </View>
         <View style={styles.rightContainer} />
       </View>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {speeches?.pages.map((page, pageIndex) =>
           page?.items.map((speech, speechIndex) => (
             <View key={pageIndex + speechIndex}>

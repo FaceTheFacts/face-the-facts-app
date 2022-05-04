@@ -1,5 +1,11 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import {ApiPosition} from '../../logic/api';
@@ -41,6 +47,7 @@ const PoliticianPositions = () => {
           );
         })}
       </ScrollView>
+      <SafeAreaView style={styles.iosSafeTop} />
       <BottomSheet
         modalRef={modal}
         modalStyle={styles.modalStyle}
@@ -58,6 +65,11 @@ const PoliticianPositions = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: Colors.background,
+    //marginBottom: 32,
+  },
+  iosSafeTop: {
+    flex: 0,
     backgroundColor: Colors.background,
   },
   position: {

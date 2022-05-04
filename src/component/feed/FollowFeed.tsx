@@ -257,7 +257,7 @@ const FollowFeed = ({
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {visibleTabs.map((tab, index) => (
           <View key={index}>
             {/* TODO: refactor, bad practice */}

@@ -51,7 +51,7 @@ const NewsView = ({route}: NewsViewProps) => {
         </View>
         <View style={styles.rightContainer} />
       </View>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {news?.items.map((newsItem, index) => (
           <View key={index}>
             {index !== 0 ? (

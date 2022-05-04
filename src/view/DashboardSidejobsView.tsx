@@ -61,7 +61,7 @@ const DashboardSidejobView = () => {
         </View>
         <View style={styles.rightContainer} />
       </View>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {sidejobsData?.pages.map((page, pageIndex) =>
           page?.items.map((sidejob, sidejobIndex) => (
             <View key={pageIndex + sidejobIndex}>

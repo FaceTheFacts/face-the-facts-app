@@ -37,7 +37,7 @@ const PoliticianList = ({politicianIds}: PoliticianListProps) => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       {historyQuery?.data?.map((politician, index) => (
         <PoliticianItem
           key={index}
