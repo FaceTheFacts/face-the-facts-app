@@ -56,7 +56,9 @@ const SpeechCard = ({
       </TouchableOpacity>
       <View style={styles.separatorLine} />
       <TouchableOpacity onPress={handleClickOpen} style={styles.cardContent}>
-        <Text style={styles.descText}>{title}</Text>
+        <Text style={styles.descText} numberOfLines={1} ellipsizeMode={'tail'}>
+          {title}
+        </Text>
         <Text style={styles.dateText}>{date}</Text>
       </TouchableOpacity>
       <BottomSheet
