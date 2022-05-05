@@ -69,7 +69,7 @@ jobs:
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
 
       - name: Create env.json
-        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"' '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"' '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"'} >> env.json
+        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"','"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"','"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"'} >> env.json
 
       - name: Create data.json mock
         run: echo "[]" >> data.json
