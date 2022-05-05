@@ -6,7 +6,7 @@ import {Colors} from '../../theme';
 const PoliticianCV = () => {
   const politician = useContext(PoliticianContext);
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.step}>
         <Text style={styles.desc}>
           {politician?.profile?.cvs[0].short_description}

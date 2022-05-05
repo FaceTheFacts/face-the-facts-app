@@ -4,6 +4,7 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "android": "react-native run-android",
+    "android-fix": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest --passWithNoTests",
@@ -17,6 +18,7 @@
     "@react-navigation/material-top-tabs": "^6.1.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/stack": "^6.1.1",
+    "@sentry/react-native": "^3.4.1",
     "@types/react": "^17",
     "compress-json": "^1.0.4",
     "flexsearch": "^0.7.11",

@@ -40,7 +40,10 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
   );
 
   return (
-    <ScrollView ref={ref} style={styles.containerWrapper}>
+    <ScrollView
+      ref={ref}
+      style={styles.containerWrapper}
+      showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         {politician?.profile?.topic_ids_of_latest_committee &&
           politician.profile.topic_ids_of_latest_committee.length > 0 && (
@@ -189,7 +192,7 @@ const styles = StyleSheet.create({
   containerWrapper: {
     flex: 1,
     backgroundColor: Colors.background,
-    marginBottom: 16,
+    marginBottom: 32,
   },
   container: {
     paddingHorizontal: 12,

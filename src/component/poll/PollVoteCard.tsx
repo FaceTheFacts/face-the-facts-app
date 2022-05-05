@@ -256,6 +256,7 @@ const PollVoteCard = ({pollData}: PollVoteCardProps) => {
             </View>
             <ScrollView
               style={{flexGrow: 1, height: '90%'}}
+              showsVerticalScrollIndicator={false}
               contentContainerStyle={{flexGrow: 1}}>
               {votes.slice(0, offset).map((politician, voteIndex) => (
                 <Pressable

@@ -96,7 +96,7 @@ const HistoryView = () => {
     timeout.current = setTimeout(() => {
       setSearchQuery(searchInput);
       timeout.current = null;
-    }, 300);
+    }, 500);
 
     return () => {
       if (timeout.current) {
@@ -144,7 +144,7 @@ const HistoryView = () => {
             <TextInput
               ref={inputRef}
               style={styles.searchBarInput}
-              placeholder="Suche nach Name oder PLZ"
+              placeholder="Suche"
               placeholderTextColor={Colors.foreground}
               onFocus={startSearching}
               onBlur={() => setSearching(searchInput !== '')}
@@ -199,7 +199,8 @@ const HistoryView = () => {
                 searchData && status === 'success' && (
                   <ScrollView
                     style={styles.searchResultContainer}
-                    keyboardDismissMode="interactive">
+                    keyboardDismissMode="interactive"
+                    showsVerticalScrollIndicator={false}>
                     {searchData?.map(politician => (
                       <PoliticianItem
                         key={politician.id}

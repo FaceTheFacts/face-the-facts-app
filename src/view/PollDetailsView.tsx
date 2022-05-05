@@ -82,6 +82,7 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
       <ScrollView
         ref={scrollView}
         scrollEnabled={true}
+        showsVerticalScrollIndicator={false}
         style={styles.container}>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{poll.label}</Text>

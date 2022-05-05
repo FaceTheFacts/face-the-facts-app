@@ -63,7 +63,7 @@ const DashboardSpeechesView = ({route}: DashboardSpeechesViewProps) => {
         <View style={styles.rightContainer} />
       </View>
       <View style={styles.separatorLine} />
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {speechesData?.pages.map((page, pageIndex) =>
           page?.items.map((speech, speechIndex) => (
             <View key={pageIndex + speechIndex}>

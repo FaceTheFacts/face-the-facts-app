@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {ScrollView, StyleSheet, View, Text} from 'react-native';
+import {ScrollView, StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
 import PoliticianItem from './PoliticianItem';
@@ -14,7 +14,7 @@ const PoliticianConstituency = () => {
       <Text style={styles.constituencyName}>
         {politician?.constituency?.constituency_name}
       </Text>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {politician?.constituency &&
           politician?.constituency.politicians.map(
             (constituencyCandidate, index) =>
@@ -28,6 +28,7 @@ const PoliticianConstituency = () => {
               ),
           )}
       </ScrollView>
+      <SafeAreaView style={styles.iosSafeBottom} />
     </View>
   );
 };
@@ -36,6 +37,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 12,
+    backgroundColor: Colors.background,
+  },
+  iosSafeBottom: {
+    flex: 0,
     backgroundColor: Colors.background,
   },
   constituencyNumber: {
@@ -52,7 +57,6 @@ const styles = StyleSheet.create({
     color: 'rgba(252, 252, 252, 1)',
     paddingBottom: 12,
   },
-  iosSafeBottom: {flex: 0, backgroundColor: Colors.background},
 });
 
 export default PoliticianConstituency;

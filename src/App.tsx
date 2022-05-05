@@ -24,7 +24,27 @@ import DashboardSpeechesView from './view/DashboardSpeechesView';
 import {RootStackParamList} from './view/RootStackParams';
 import DashboardSidejobsView from './view/DashboardSidejobsView';
 import DashboardPollsView from './view/DashboardPollsView';
+import * as Sentry from '@sentry/react-native';
 
+const env = require('../env.json');
+if (!env.SENTRY_DSN) {
+  console.error('SENTRY_DNS in env.json is missing');
+}
+
+Sentry.init({
+  dsn: env.SENTRY_DSN,
+  tracesSampleRate: 0.5,
+  // Release Health
+  enableAutoSessionTracking: true,
+  // Sessions close after app is 10 seconds in the background.
+  sessionTrackingIntervalMillis: 10000,
+  // Performance Monitoring
+  integrations: [
+    new Sentry.ReactNativeTracing({
+      tracingOrigins: ['localhost', /^\//, /^https:\/\/www\./],
+    }),
+  ],
+});
 const Stack = createStackNavigator<RootStackParamList>();
 const queryClient = new QueryClient();
 
@@ -170,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Sentry.wrap(App);
