@@ -142,8 +142,8 @@ android {
         applicationId "com.facethefacts"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "1.3"
+        versionCode 20
+        versionName "2.0"
         missingDimensionStrategy 'react-native-camera', 'mlkit'
     }
     splits {
