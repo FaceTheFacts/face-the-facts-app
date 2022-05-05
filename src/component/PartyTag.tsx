@@ -1,11 +1,11 @@
 import React from 'react';
+import {Party} from '../logic/data';
 import Tag from './utils/Tag';
 import {StyleProp, ViewStyle} from 'react-native';
-import {ApiParty} from '../logic/api';
 
 export interface PartyTagProps {
   style?: StyleProp<ViewStyle>;
-  party: ApiParty;
+  party: Party;
 }
 
 const PartyTag = ({style, party}: PartyTagProps) => {

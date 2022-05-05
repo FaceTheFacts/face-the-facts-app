@@ -2,11 +2,10 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../theme';
 import Icon from './Icon';
-import {SVGIcon} from '../icons';
 
 export interface TabMenuItem {
   name: string;
-  icons: [SVGIcon, SVGIcon];
+  icon: string;
   label: string;
 }
 
@@ -20,7 +19,7 @@ export interface TabMenuProps {
 const TabMenu = ({items, selected, onSelect}: TabMenuProps) => {
   return (
     <View style={styles.container}>
-      {items.map(({name, icons, label}) => (
+      {items.map(({name, icon, label}) => (
         <TouchableOpacity
           key={name}
           style={styles.itemWrapper}
@@ -30,10 +29,7 @@ const TabMenu = ({items, selected, onSelect}: TabMenuProps) => {
               styles.item,
               selected === name && styles.selectedItem,
             ])}>
-            <Icon
-              style={styles.icon}
-              icon={selected === name ? icons[1] : icons[0]}
-            />
+            <Icon style={styles.icon} icon={icon} />
             <Text style={styles.label}>{label}</Text>
           </View>
         </TouchableOpacity>
@@ -65,8 +61,8 @@ const styles = StyleSheet.create({
   icon: {
     color: Colors.foreground,
     alignSelf: 'center',
-    width: 21,
-    height: 21,
+    width: 30,
+    height: 30,
   },
   label: {
     marginTop: 4,

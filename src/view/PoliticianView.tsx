@@ -118,11 +118,6 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
       value={{profile, news, speeches, positions, constituency}}>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.container}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor={Colors.cardBackground}
-        />
-        <BackButton />
         <PoliticianHeader />
         {!(positions?.positions && positions?.positions.length > 0) &&
         !(constituency && constituency.politicians.length > 0) ? (
@@ -160,13 +155,8 @@ const PoliticianView = ({route}: PoliticianViewProps) => {
 };
 
 const styles = StyleSheet.create({
-  iosSafeTop: {
-    flex: 0,
-    backgroundColor: Colors.cardBackground,
-  },
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
   tabBarLabel: {
     fontFamily: 'Inter',

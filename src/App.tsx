@@ -151,10 +151,6 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
   missingData: {
     backgroundColor: Colors.background,
     height: '100%',

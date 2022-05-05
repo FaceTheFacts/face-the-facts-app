@@ -1,15 +1,14 @@
 {
   "name": "facethefacts",
   "version": "0.0.1",
-  "license": "GPL-3.0-or-later",
+  "private": true,
   "scripts": {
     "android": "react-native run-android",
     "android-fix": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest --passWithNoTests",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prebuild-android": "mkdir -p android/app/src/main/assets && npx jetify && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/"
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.11",
@@ -41,9 +40,7 @@
     "react-native-sqlite-storage": "^5.0.0",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.1.1",
-    "react-native-video": "^5.2.0",
-    "react-native-webview": "^11.6.4",
-    "react-query": "^3.32.1"
+    "react-native-webview": "^11.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -53,7 +50,6 @@
     "@types/lodash": "^4.14.172",
     "@types/react-native": "^0.64.5",
     "@types/react-native-sqlite-storage": "^5.0.0",
-    "@types/react-native-video": "^5.0.11",
     "@types/react-test-renderer": "^16.9.2",
     "babel-jest": "^26.6.3",
     "eslint": "^7.14.0",

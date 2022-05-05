@@ -10,6 +10,7 @@ import {
 import {NavigationContext, useFocusEffect} from '@react-navigation/native';
 import {PoliticianContext} from '../../view/PoliticianView';
 import {Colors} from '../../theme';
+import {DataContext} from '../../logic/model';
 import Icon from '../Icon';
 import Wrap from '../utils/Wrap';
 import PollCard from '../poll/PollCard';
@@ -184,6 +185,9 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
             </View>
           )}
       </View>
+      <BottomSheet modalRef={pollsModal} modalTopOffset={60}>
+        <PollsView politician={politician} />
+      </BottomSheet>
     </ScrollView>
   );
 };
@@ -195,37 +199,17 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   container: {
-    paddingHorizontal: 12,
+    padding: 16,
   },
   subtitle: {
     color: Colors.foreground,
-    opacity: 1,
-    fontSize: 17,
+    opacity: 0.7,
+    fontSize: 12,
     fontWeight: '600',
     fontFamily: 'Inter',
-    marginTop: 18,
-    marginBottom: 6,
-  },
-  subtitleFocus: {
-    color: Colors.foreground,
-    opacity: 1,
-    fontSize: 17,
-    fontWeight: '600',
-    fontFamily: 'Inter',
-    marginTop: 18,
-    marginBottom: 14,
-  },
-  moreButton: {
-    color: Colors.foreground,
-    opacity: 1,
-    fontSize: 13,
-    fontWeight: '600',
-    fontFamily: 'Inter',
-    borderRadius: 4,
-    borderColor: Colors.moreButtonBorder,
-    borderWidth: 1.5,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    textTransform: 'uppercase',
+    marginTop: 16,
+    marginBottom: 8,
   },
   committee: {
     flexDirection: 'row',
@@ -247,17 +231,23 @@ const styles = StyleSheet.create({
   },
   pollsHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 16,
     marginBottom: 8,
   },
   pollsTitle: {
     flex: 1,
     color: Colors.foreground,
-    opacity: 1,
-    fontSize: 17,
+    opacity: 0.7,
+    fontSize: 12,
     fontWeight: '600',
     fontFamily: 'Inter',
+    textTransform: 'uppercase',
+  },
+  pollsArrow: {
+    width: 12,
+    height: 12,
+    color: Colors.foreground,
+    opacity: 0.7,
   },
   pollContainer: {
     overflow: 'visible',

@@ -97,6 +97,7 @@ const PoliticianProfile = ({toSideJobs}: PoliticianProfileProps) => {
                       ])}>
                       <View style={styles.indicator} />
                     </Animated.View>
+                    <View style={styles.separatorLine} />
                   </>
                 );
               }}
@@ -122,7 +123,13 @@ const styles = StyleSheet.create({
   indicator: {
     flex: 1,
     backgroundColor: Colors.cardBackground,
-    borderRadius: 8,
+    borderRadius: 4,
+  },
+  separatorLine: {
+    width: '100%',
+    height: 1,
+    backgroundColor: Colors.foreground,
+    opacity: 0.2,
   },
 });
 

@@ -30,19 +30,5 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:435674290079:ios:2770bb736fcd99aee48faa</string>
-	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
-	<true />
-	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
-	<false />
-	<key>FirebaseDataCollectionDefaultEnabled</key>
-	<false/>
-	<key>GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED</key>
-	<false />
-	<key>GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS</key>
-	<false />
-	<key>firebase_performance_collection_deactivated</key>
-	<true />
-	<key>FirebaseScreenReportingEnabled</key>
-	<false />
 </dict>
 </plist>

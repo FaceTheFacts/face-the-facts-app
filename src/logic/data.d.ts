@@ -87,8 +87,9 @@ export interface Election {
   displayName: string;
   politicians: string[];
 }
+
 export interface Politician {
-  id: number;
+  id: string;
   popularity: number;
   name: string;
   partyId: string;

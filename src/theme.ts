@@ -3,7 +3,6 @@ export const Colors = {
   foreground: '#ffffff',
   inactive: 'rgba(255,255,255,0.4)',
   cardBackground: '#2A2B36',
-  moreButtonBorder: 'rgba(252,252,252,0.4)',
   placeholderColor: 'rgba(0, 0, 0, 0.5)',
   baseWhite: '#fcfcfc',
   white40: 'rgba(252 ,252 ,252, 0.4)',

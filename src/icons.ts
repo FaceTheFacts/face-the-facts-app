@@ -1,8 +1,3 @@
-export interface SVGIcon {
-  viewBox: string;
-  d: string;
-}
-
 // Paths of icons from the Material Icons set
 export const ArrowBackIos = {
   viewBox: '0 0 24 24',

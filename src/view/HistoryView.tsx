@@ -18,7 +18,7 @@ import {
   View,
 } from 'react-native';
 import {Colors} from '../theme';
-import {HistoryItem} from '../logic/db';
+import {HistoryItem} from '../logic/history';
 import {DataContext} from '../logic/model';
 import PoliticianList from '../component/politician/PoliticianList';
 import {useQuery} from 'react-query';
@@ -43,7 +43,7 @@ const HistoryView = () => {
   const inputRef = useRef<TextInput>(null);
   const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
   useEffect(() => {
-    data.dbManager.getHistoryItems().then(setItems);
+    data.historyManager.getItems().then(setItems);
   }, [data]);
 
   useEffect(() => {

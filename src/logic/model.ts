@@ -11,7 +11,7 @@ import {
   stat,
 } from 'react-native-fs';
 import {decompress} from 'compress-json';
-import {DBManager} from './db';
+import {HistoryManager} from './history';
 
 const cacheDatabaseFile = `${CachesDirectoryPath}/data.json`;
 
@@ -72,7 +72,7 @@ export class FaceTheFactsData {
   private readonly scanTokens: Map<string, string[][]>;
   private readonly scanTokenMap: Map<string, Set<string>>;
 
-  public readonly dbManager: DBManager;
+  public readonly historyManager: HistoryManager;
 
   public constructor(dataset: string[][]) {
     // @ts-ignore
@@ -94,12 +94,12 @@ export class FaceTheFactsData {
         scanTokens.push(spaceSplit.map(makeToken));
       }
 
-      this.scanTokens.set(strId, scanTokens);
+      this.scanTokens.set(id, scanTokens);
 
       scanTokens.forEach(tokenBundle =>
         tokenBundle.forEach(token => {
-          if (!this.scanTokenMap.get(token)?.add(strId)) {
-            this.scanTokenMap.set(token, new Set([strId]));
+          if (!this.scanTokenMap.get(token)?.add(id)) {
+            this.scanTokenMap.set(token, new Set([id]));
           }
         }),
       );
