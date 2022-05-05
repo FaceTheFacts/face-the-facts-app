@@ -1,30 +1,56 @@
-import React, {useContext} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useContext, useState, useEffect} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import PoliticianPicture from '../PoliticianPicture';
 import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
-import {DataContext} from '../../logic/model';
 import Tag from '../utils/Tag';
 import Wrap from '../utils/Wrap';
 import {PoliticianContext} from '../../view/PoliticianView';
+import {DataContext} from '../../logic/model';
 
 const PoliticianHeader = () => {
   const politician = useContext(PoliticianContext);
   const data = useContext(DataContext);
+  const [isFollowed, setIsFollowed] = useState(false);
 
-  return (
+  useEffect(() => {
+    data.dbManager.isIdFollowed(politician?.profile?.id!).then(setIsFollowed);
+  }, [data, politician]);
+
+  return politician?.profile ? (
     <View style={styles.container}>
-      <PoliticianPicture politicianId={politician.id} size={80} />
+      <PoliticianPicture politicianId={politician.profile.id!} size={80} />
       <View style={styles.rightContainer}>
-        <Text style={styles.name}>{politician.name}</Text>
+        <Text style={styles.name}>{politician.profile.label}</Text>
         <Wrap spacing={4}>
-          <PartyTag party={data.lookupParty(politician.partyId)!} />
-          {politician.occupation?.map((occupation, index) => (
+          <PartyTag party={politician.profile.party} />
+          {politician.profile.occupations?.map((occupation, index) => (
             <Tag key={index} content={occupation} />
           ))}
         </Wrap>
+        <Wrap spacing={4}>
+          <TouchableOpacity
+            style={isFollowed ? styles.unFollowBtn : styles.followBtn}
+            onPress={() => {
+              if (isFollowed) {
+                data.dbManager.removeFollowedId(politician.profile!.id);
+                setIsFollowed(false);
+              } else {
+                data.dbManager.pushFollowId(politician.profile!.id);
+                setIsFollowed(true);
+              }
+            }}>
+            {isFollowed ? (
+              <Text style={styles.unFollowText}>Folge ich</Text>
+            ) : (
+              <Text style={styles.followText}>Folgen</Text>
+            )}
+          </TouchableOpacity>
+        </Wrap>
       </View>
     </View>
+  ) : (
+    <></>
   );
 };
 
@@ -32,9 +58,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: Colors.cardBackground,
-    padding: 24,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+    paddingTop: 4,
+    paddingBottom: 12,
+    paddingHorizontal: 12,
   },
   rightContainer: {
     flex: 1,

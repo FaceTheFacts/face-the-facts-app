@@ -4,7 +4,7 @@ import ProfilePicturePlaceholder from './ProfilePicturePlaceholder';
 import {resolvePoliticianPicture} from '../logic/picture';
 
 export interface PoliticianPictureProps {
-  politicianId: string;
+  politicianId: number;
   size?: number;
 }
 

@@ -116,16 +116,6 @@ const ScannerView = () => {
           subtitle="Achte darauf, dass der Name des:der Kandidat:in gut lesbar ist."
         />
       )}
-      {showPolitician && (
-        <PoliticianModal
-          politician={showPolitician}
-          autoOpen
-          onClosed={() => {
-            setShowPolitician(null);
-            setFocussed(true);
-          }}
-        />
-      )}
     </View>
   );
 };

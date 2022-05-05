@@ -26,22 +26,22 @@ const PoliticianPositions = () => {
   return (
     <>
       <ScrollView style={styles.container}>
-        {politician.positions!.map(candidatePosition => {
-          const position = data.lookupPosition(candidatePosition.id)!;
-
+        {politician?.positions?.positions?.map(candidatePosition => {
           return (
             <TouchableOpacity
-              key={position.id}
+              key={candidatePosition.id}
               style={styles.position}
               onPress={() => {
                 setOpenedCandidatePosition(candidatePosition);
                 modal.current?.open();
               }}>
-              <Text style={styles.title}>{position.title}</Text>
+              <Text style={styles.title}>
+                {candidatePosition.position_statement.statement}
+              </Text>
               <PositionAnswerTag
                 short
                 center
-                answer={candidatePosition.answer}
+                answer={candidatePosition.position}
               />
             </TouchableOpacity>
           );

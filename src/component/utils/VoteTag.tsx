@@ -7,7 +7,7 @@ export const voteLabels: Record<Vote, string> = {
   yes: 'Ja',
   no: 'Nein',
   abstain: 'Enthalten',
-  none: 'Abwesend',
+  no_show: 'Abwesend',
 };
 
 export const voteColors: Record<Vote, string> = {
