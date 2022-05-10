@@ -308,7 +308,15 @@ const fractionStyleMap: Record<string, ApiPartyStyle> = {
     id: 39,
     display_name: 'EVP',
     foreground_color: '#FFFFFF',
-    background_color: '#3AA6F4',
+    background_color: '#0057A1',
+    border_color: '#FEE205',
+  },
+  'CDU/CSU (EVP)': {
+    id: 39,
+    display_name: 'EVP',
+    foreground_color: '#FFFFFF',
+    background_color: '#0057A1',
+    border_color: '#FEE205',
   },
   'S&D': {
     id: 31,
@@ -322,11 +330,41 @@ const fractionStyleMap: Record<string, ApiPartyStyle> = {
     foreground_color: '#FFFFFF',
     background_color: '#40A962',
   },
+  'DIE GRÜNEN/PIRATEN/ÖDP (Grüne/EFA)': {
+    id: 35,
+    display_name: 'Grüne',
+    foreground_color: '#FFFFFF',
+    background_color: '#40A962',
+  },
   'GUE/NGL': {
     id: 34,
     display_name: 'Linke',
     foreground_color: '#FFFFFF',
     background_color: '#76232F',
+  },
+  'DIE LINKE (GUE/NGL)': {
+    id: 34,
+    display_name: 'Linke',
+    foreground_color: '#FFFFFF',
+    background_color: '#76232F',
+  },
+  'FDP/FREIE WÄHLER (ALDE)': {
+    id: 4,
+    display_name: 'ALDE',
+    foreground_color: '#181924',
+    background_color: '#FFE06D',
+  },
+  'AfD (EFDD)': {
+    id: 9,
+    display_name: 'EFDD',
+    foreground_color: '#FFFFFF',
+    background_color: '#01A5B5',
+  },
+  'AfD (ENF)': {
+    id: 9,
+    display_name: 'ENF',
+    foreground_color: '#FFFFFF',
+    background_color: '#016FB8',
   },
   ID: {
     id: 39,
@@ -341,6 +379,18 @@ const fractionStyleMap: Record<string, ApiPartyStyle> = {
     background_color: '#FFE06D',
   },
   EKR: {
+    id: 39,
+    display_name: 'EKR',
+    foreground_color: '#FFFFFF',
+    background_color: '#1382E3',
+  },
+  'SPD (S&D)': {
+    id: 1,
+    display_name: 'S&D',
+    foreground_color: '#FFFFFF',
+    background_color: '#E74343',
+  },
+  'ALFA/FAMILIEN-PARTEI (EKR)': {
     id: 39,
     display_name: 'EKR',
     foreground_color: '#FFFFFF',
