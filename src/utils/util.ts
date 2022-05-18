@@ -145,9 +145,12 @@ export function formatMonth(date: string): string {
 }
 
 export function checkPreviousMonth(
-  previousDate: string,
+  previousDate: string | undefined,
   currentDate: string,
 ): boolean {
+  if (!previousDate) {
+    return false;
+  }
   const currentMonth = currentDate.slice(5, 7);
   const previousMonth = previousDate.slice(5, 7);
   return currentMonth !== previousMonth;

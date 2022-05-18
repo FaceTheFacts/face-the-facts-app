@@ -103,6 +103,7 @@ const Dashboard = () => {
           </View>
           <ScrollView
             horizontal
+            contentContainerStyle={{paddingRight: 24}}
             showsHorizontalScrollIndicator={false}
             style={styles.scrollContainer}>
             {speeches.items.map((speech, index) => (
@@ -116,6 +117,7 @@ const Dashboard = () => {
                 video={speech.videoFileURI}
                 cardHeight={143}
                 cardWidth={width * 0.71}
+                verticalScroll
               />
             ))}
           </ScrollView>
@@ -160,6 +162,7 @@ const Dashboard = () => {
           </View>
           <ScrollView
             horizontal
+            contentContainerStyle={{paddingRight: 24}}
             showsHorizontalScrollIndicator={false}
             style={styles.scrollContainer}>
             {sidejobs.map((sidejob, index) => (
