@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  TouchableOpacity,
+} from 'react-native';
 import {Colors} from '../../theme';
 const PartyDonationCard = () => {
   const data = {
@@ -8,17 +14,70 @@ const PartyDonationCard = () => {
     date: '12.10.2021',
     spender: 'Günter Slave aus Dresden',
   };
+  const data2 = {
+    party: 'MLPfasdfD',
+    amount: '50asdfasdf.000',
+    date: '12.10asdfsdaf.2021',
+    spender: 'Günter Slave aus Dresden',
+  };
+  const data3 = {
+    party: 'MLPfasdfD',
+    amount: '50asdfasdf.000',
+    date: '12.10asdfsdaf.2021',
+    spender: 'Günter Slave aus Dresden',
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.partyName}>{data.party}</Text>
-        <Text style={styles.donationAmount}>{data.amount} €</Text>
+    //Loop through the array and display the data
+
+    <View>
+      <Text style={styles.headerText}>Header</Text>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.header}></View>
+
+          <Text style={styles.partyName}>{data.party}</Text>
+          <Text style={styles.donationAmount}>{data.amount} €</Text>
+        </View>
+        <View style={styles.separatorLine} />
+        <View>
+          <Text style={styles.dateText}>{data.date}</Text>
+          <Text style={styles.spenderText}>{data.spender}</Text>
+        </View>
       </View>
-      <View style={styles.separatorLine} />
       <View>
-        <Text style={styles.dateText}>{data.date}</Text>
-        <Text style={styles.spenderText}>{data.spender}</Text>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.partyName}>{data.party}</Text>
+            <Text style={styles.donationAmount}>{data.amount} €</Text>
+          </View>
+          <View style={styles.separatorLine} />
+          <View>
+            <Text style={styles.dateText}>{data.date}</Text>
+            <Text style={styles.spenderText}>{data.spender}</Text>
+          </View>
+        </View>
+      </View>
+
+      <View>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.partyName}>{data.party}</Text>
+            <Text style={styles.donationAmount}>{data.amount} €</Text>
+          </View>
+          <View style={styles.separatorLine} />
+          <View>
+            <Text style={styles.dateText}>{data.date}</Text>
+            <Text style={styles.spenderText}>{data.spender}</Text>
+          </View>
+        </View>
+        <TouchableOpacity
+          style={styles.moreBtn}
+          onPress={() => {
+            navigator?.navigate('DashboardSidejobs');
+          }}>
+          <Text style={styles.btnText}>mehssr</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -33,6 +92,12 @@ const styles = StyleSheet.create({
     marginLeft: 12,
 
     marginBottom: 12,
+  },
+
+  headerText: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: Colors.baseWhite,
   },
 
   partyName: {
@@ -73,6 +138,18 @@ const styles = StyleSheet.create({
     lineHeight: 15.73,
     fontWeight: '400',
     color: Colors.baseWhite,
+  },
+  btnText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.baseWhite,
+  },
+  moreBtn: {
+    borderColor: Colors.white40,
+    borderWidth: 2,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 4,
   },
 });
 

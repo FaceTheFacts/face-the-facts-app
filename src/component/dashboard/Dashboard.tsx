@@ -24,7 +24,8 @@ import SkeletonDashboard from '../skeleton/SkeletonDashboard';
 import SpeechCard from '../speech/SpeechCard';
 import SideJobCard from '../SideJobCard';
 import ErrorCard from '../Error';
-import PartyDonationCard from '../partydonation/PartydonationCard';
+//import PartyDonationCard from '../partydonation/PartydonationCard';
+import PartyspendingCard from '../partyspending/PartyspendingCard';
 
 const Dashboard = () => {
   const navigator = useContext(NavigationContext);
@@ -51,6 +52,41 @@ const Dashboard = () => {
       cacheTime: 60 * 10000000,
     },
   );
+  const partyDonations = [
+    {
+      party: {
+        id: 1,
+        label: 'SPD',
+        party_style: {
+          id: 1,
+          display_name: 'SPD',
+          foreground_color: '#FFFFFF',
+          background_color: '#E95050',
+          border_color: undefined,
+        },
+      },
+      amountText: 'Gesamt',
+      amountNumber: '1.4 Mio €',
+
+      spender: 'Ø 450.000 €/ Jahr',
+    },
+    {
+      party: {
+        id: 1,
+        label: 'SPD',
+        party_style: {
+          id: 1,
+          display_name: 'SPD',
+          foreground_color: '#FFFFFF',
+          background_color: '#E95050',
+          border_color: undefined,
+        },
+      },
+      amountText: 'Gesamt',
+      amountNumber: '1.4 Mio €',
+      spender: 'Ø 450.000 €/ Jahr',
+    },
+  ];
 
   const {
     data: polls,
@@ -102,6 +138,7 @@ const Dashboard = () => {
               <Text style={styles.btnText}>mehr</Text>
             </TouchableOpacity>
           </View>
+
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -122,6 +159,7 @@ const Dashboard = () => {
           </ScrollView>
         </View>
       )}
+
       {polls && (
         <View style={styles.container}>
           <View style={styles.header}>
@@ -188,12 +226,24 @@ const Dashboard = () => {
             ))}
           </ScrollView>
         </View>
-
-
       )}
-        <PartyDonationCard />
-          
-          
+
+      {/*                
+      <PartyDonationCard />
+                  */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.scrollContainer}>
+        {partyDonations.map((partyDonation, index) => (
+          <PartyspendingCard
+            party={partyDonation.party}
+            amountText={partyDonation.amountText}
+            amountNumber={partyDonation.amountNumber}
+            spender={partyDonation.spender}
+          />
+        ))}
+      </ScrollView>
     </ScrollView>
   );
 };
