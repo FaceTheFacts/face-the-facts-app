@@ -73,10 +73,10 @@ const Dashboard = () => {
     {
       party: {
         id: 1,
-        label: 'SPD',
+        label: 'CDU',
         party_style: {
           id: 1,
-          display_name: 'SPD',
+          display_name: 'CDU',
           foreground_color: '#FFFFFF',
           background_color: '#E95050',
           border_color: undefined,
@@ -231,6 +231,16 @@ const Dashboard = () => {
       {/*                
       <PartyDonationCard />
                   */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Parteispenden</Text>
+        <TouchableOpacity
+          style={styles.moreBtn}
+          onPress={() => {
+            navigator?.navigate('DashboardPolls', {polls});
+          }}>
+          <Text style={styles.btnText}>mehr</Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

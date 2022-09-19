@@ -9,6 +9,9 @@ import {
 import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
 import {ApiParty} from '../../logic/api';
+// Import gifted charts
+import {LineChart} from 'react-native-gifted-charts';
+import {values} from 'lodash';
 
 //Define the interface for the party spending card props
 interface PartyspendingCardProps {
@@ -17,6 +20,19 @@ interface PartyspendingCardProps {
   amountNumber: string;
   spender: string;
 }
+
+//Function to add a label to the first and last data point
+
+const data = [
+  {value: 0},
+  {value: 0},
+  {value: 2},
+  {value: 0},
+  {value: 0},
+  {value: 4},
+  {value: 0},
+  {value: 0},
+];
 
 //Define the party spending card component
 
@@ -30,7 +46,6 @@ const PartyspendingCard = ({
     //Loop through the array and display the data
 
     <View>
-      <Text style={styles.headerText}>Parteispenden</Text>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.header}></View>
@@ -44,9 +59,31 @@ const PartyspendingCard = ({
           </View>
         </View>
         <View style={styles.separatorLine} />
-        <Text style={styles.donationAmount}>
-          Placeholder graph 2014 --------^------
-        </Text>
+
+        <View style={styles.linee}>
+          <LineChart
+            data={data}
+            hideRules
+            areaChart
+            startFillColor={'rgba(231, 67, 67, 0)'}
+            endFillColor={'rgba(231, 67, 67, 0.62)'}
+            startOpacity={0.4}
+            endOpacity={0.1}
+            color={'#E74343'}
+            thickness={3}
+            hideDataPoints
+            hideXAxisText
+            adjustToWidth
+            initialSpacing={0}
+            hideOrigin
+            //set max height
+            maxHeight={50}
+            //set min height
+            minHeight={10}
+            maxValue={10}
+          />
+        </View>
+        <Text style={styles.donationAmount}></Text>
         <View style={styles.separatorLine} />
         <View>
           <Text style={styles.spenderText}>{spender}</Text>
@@ -57,6 +94,9 @@ const PartyspendingCard = ({
 };
 
 const styles = StyleSheet.create({
+  linee: {
+    //responsive layout, fit the chart to the screen width
+  },
   container: {
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
