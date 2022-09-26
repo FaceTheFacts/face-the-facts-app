@@ -1,99 +1,133 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {Colors} from '../../theme';
-const PartyDonationCard = () => {
-  const data = {
-    party: 'MLPD',
-    amount: '50.000',
-    date: '12.10.2021',
-    spender: 'Günter Slave aus Dresden',
+import PartyTag from '../PartyTag';
+import {ApiParty} from '../../logic/api';
+import {LineChart} from 'react-native-chart-kit';
+import {Dimensions} from 'react-native';
+
+interface PartyDonationCardProps {
+  party: ApiParty;
+  donations: number[];
+  donations_total: number;
+}
+
+const PartyDonationCard = ({
+  party,
+  donations,
+  donations_total,
+}: PartyDonationCardProps) => {
+  const screenWidth = Dimensions.get('window').width;
+  const chartConfig = {
+    backgroundGradientFrom: Colors.cardBackground,
+    backgroundGradientFromOpacity: 1,
+    backgroundGradientTo: Colors.cardBackground,
+    backgroundGradientToOpacity: 1,
+    color: () => party.party_style.background_color,
+    strokeWidth: 2, // optional, default 3
+    useShadowColorFromDataset: false, // optional
   };
-  const data2 = {
-    party: 'MLPfasdfD',
-    amount: '50asdfasdf.000',
-    date: '12.10asdfsdaf.2021',
-    spender: 'Günter Slave aus Dresden',
-  };
-  const data3 = {
-    party: 'MLPfasdfD',
-    amount: '50asdfasdf.000',
-    date: '12.10asdfsdaf.2021',
-    spender: 'Günter Slave aus Dresden',
-  };
+
+  function round(value: number, decimals: number) {
+    return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals);
+  }
+
+  function getSumUpDonationsInMillion(donations_sum: number) {
+    return round(donations_sum / 1000000, 2);
+  }
+
+  function averageDonations(donations_sum: number) {
+    const average = Math.floor(donations_sum / 8);
+    return average.toLocaleString('de-DE');
+  }
 
   return (
-    //Loop through the array and display the data
-
     <View>
-      <Text style={styles.headerText}>Header</Text>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.header}></View>
+        <View style={styles.header} />
+        <View style={styles.politicianContainer}>
+          <PartyTag party={party} />
 
-          <Text style={styles.partyName}>{data.party}</Text>
-          <Text style={styles.donationAmount}>{data.amount} €</Text>
+          <View style={styles.info}>
+            <Text style={styles.nameText}>Gesamt</Text>
+            <Text style={styles.totalAmount}>
+              {getSumUpDonationsInMillion(donations_total)} Mio €
+            </Text>
+          </View>
+        </View>
+        <View style={styles.separatorLine} />
+        <LineChart
+          data={{
+            labels: [],
+            datasets: [
+              {
+                data: donations.reverse(),
+              },
+            ],
+          }}
+          width={screenWidth * 0.75 - 24} // from react-native
+          height={80}
+          withDots={false}
+          withInnerLines={false}
+          withOuterLines={false}
+          withHorizontalLabels={false}
+          chartConfig={chartConfig}
+          fromZero={true}
+          style={{
+            paddingVertical: 0,
+            paddingRight: 0,
+          }}
+        />
+        <View style={styles.dateContainer}>
+          <Text style={styles.dateText}>2014</Text>
+          <Text style={styles.dateText}>2022</Text>
         </View>
         <View style={styles.separatorLine} />
         <View>
-          <Text style={styles.dateText}>{data.date}</Text>
-          <Text style={styles.spenderText}>{data.spender}</Text>
+          <Text style={styles.averageText}>
+            Ø {averageDonations(donations_total)} € / Jahr
+          </Text>
         </View>
-      </View>
-      <View>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.partyName}>{data.party}</Text>
-            <Text style={styles.donationAmount}>{data.amount} €</Text>
-          </View>
-          <View style={styles.separatorLine} />
-          <View>
-            <Text style={styles.dateText}>{data.date}</Text>
-            <Text style={styles.spenderText}>{data.spender}</Text>
-          </View>
-        </View>
-      </View>
-
-      <View>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.partyName}>{data.party}</Text>
-            <Text style={styles.donationAmount}>{data.amount} €</Text>
-          </View>
-          <View style={styles.separatorLine} />
-          <View>
-            <Text style={styles.dateText}>{data.date}</Text>
-            <Text style={styles.spenderText}>{data.spender}</Text>
-          </View>
-        </View>
-        <TouchableOpacity
-          style={styles.moreBtn}
-          onPress={() => {
-            navigator?.navigate('DashboardSidejobs');
-          }}>
-          <Text style={styles.btnText}>mehssr</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  lineChart: {
+    flex: 1,
+    //responsive layout, fit the chart to the screen width
+  },
   container: {
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
     padding: 12,
     marginRight: 12,
-    marginLeft: 12,
-
     marginBottom: 12,
   },
 
+  politicianContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  info: {
+    marginLeft: 8,
+  },
+  nameText: {
+    fontSize: 11,
+    lineHeight: 11,
+    color: Colors.white70,
+    marginBottom: 3,
+  },
+  totalAmount: {
+    fontFamily: 'Inter',
+    flex: 1,
+    fontWeight: '700',
+    fontSize: 15,
+    lineHeight: 15,
+
+    color: '#FCFCFC',
+  },
   headerText: {
     fontSize: 17,
     fontWeight: '600',
@@ -116,13 +150,18 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
 
+  dateContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
   dateText: {
     fontSize: 11,
     lineHeight: 13.31,
     color: Colors.white70,
   },
 
-  spenderText: {
+  averageText: {
     fontSize: 15,
     color: Colors.white70,
   },
@@ -138,18 +177,6 @@ const styles = StyleSheet.create({
     lineHeight: 15.73,
     fontWeight: '400',
     color: Colors.baseWhite,
-  },
-  btnText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: Colors.baseWhite,
-  },
-  moreBtn: {
-    borderColor: Colors.white40,
-    borderWidth: 2,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 4,
   },
 });
 
