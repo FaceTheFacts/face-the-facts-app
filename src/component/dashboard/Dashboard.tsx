@@ -14,6 +14,7 @@ import {
   ApiSpeechBundestag,
   ApiSidejobsBundestag,
   ApiPollBundestagData,
+  ApiBundestagPartyDonation,
 } from '../../logic/api';
 import {fetch_api} from '../../logic/fetch';
 import {DataContext} from '../../logic/model';
@@ -24,8 +25,7 @@ import SkeletonDashboard from '../skeleton/SkeletonDashboard';
 import SpeechCard from '../speech/SpeechCard';
 import SideJobCard from '../SideJobCard';
 import ErrorCard from '../Error';
-//import PartyDonationCard from '../partydonation/PartydonationCard';
-import PartyspendingCard from '../partyspending/PartyspendingCard';
+import PartyDonationCard from '../partydonation/PartyDonationCard';
 
 const Dashboard = () => {
   const navigator = useContext(NavigationContext);
@@ -52,41 +52,6 @@ const Dashboard = () => {
       cacheTime: 60 * 10000000,
     },
   );
-  const partyDonations = [
-    {
-      party: {
-        id: 1,
-        label: 'SPD',
-        party_style: {
-          id: 1,
-          display_name: 'SPD',
-          foreground_color: '#FFFFFF',
-          background_color: '#E95050',
-          border_color: undefined,
-        },
-      },
-      amountText: 'Gesamt',
-      amountNumber: '1.4 Mio €',
-
-      spender: 'Ø 450.000 €/ Jahr',
-    },
-    {
-      party: {
-        id: 1,
-        label: 'CDU',
-        party_style: {
-          id: 1,
-          display_name: 'CDU',
-          foreground_color: '#FFFFFF',
-          background_color: '#E95050',
-          border_color: undefined,
-        },
-      },
-      amountText: 'Gesamt',
-      amountNumber: '1.4 Mio €',
-      spender: 'Ø 450.000 €/ Jahr',
-    },
-  ];
 
   const {
     data: polls,
@@ -114,16 +79,60 @@ const Dashboard = () => {
     },
   );
 
+  const {
+    data: partydonations,
+    isLoading: partydonationsLoading,
+    isError: partydonationsError,
+  } = useQuery<ApiBundestagPartyDonation[] | undefined, Error>(
+    'partdonations: Bundestag',
+    () => fetch_api<ApiBundestagPartyDonation[]>('homepagepartydonations'),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
+  );
   const {width} = useWindowDimensions();
-  if (pollsLoading || speechesLoading || sidejobsLoading) {
+  if (
+    pollsLoading ||
+    speechesLoading ||
+    sidejobsLoading ||
+    partydonationsLoading
+  ) {
     return <SkeletonDashboard />;
   }
-  if (pollsError || sidejobsError || speechesError) {
+  if (pollsError || sidejobsError || speechesError || partydonationsError) {
     return <ErrorCard />;
   }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      {partydonations && partydonations.length > 0 && (
+        <>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Parteispenden</Text>
+            {/* <TouchableOpacity
+              style={styles.moreBtn}
+              onPress={() => {
+                navigator?.navigate('DashboardPartyDonations', {polls});
+              }}>
+              <Text style={styles.btnText}>mehr</Text>
+            </TouchableOpacity> */}
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.scrollContainer}>
+            {partydonations.map((partydonation, index) => (
+              <PartyDonationCard
+                key={index}
+                party={partydonation.party}
+                donations={partydonation.donations_over_96_months.reverse()}
+                donations_total={partydonation.donations_total}
+              />
+            ))}
+          </ScrollView>
+        </>
+      )}
       {speeches && (
         <View style={styles.topContainer}>
           <View style={styles.header}>
@@ -227,33 +236,6 @@ const Dashboard = () => {
           </ScrollView>
         </View>
       )}
-
-      {/*                
-      <PartyDonationCard />
-                  */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Parteispenden</Text>
-        <TouchableOpacity
-          style={styles.moreBtn}
-          onPress={() => {
-            navigator?.navigate('DashboardPolls', {polls});
-          }}>
-          <Text style={styles.btnText}>mehr</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollContainer}>
-        {partyDonations.map((partyDonation, index) => (
-          <PartyspendingCard
-            party={partyDonation.party}
-            amountText={partyDonation.amountText}
-            amountNumber={partyDonation.amountNumber}
-            spender={partyDonation.spender}
-          />
-        ))}
-      </ScrollView>
     </ScrollView>
   );
 };
