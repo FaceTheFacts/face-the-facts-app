@@ -25,7 +25,7 @@ import SkeletonDashboard from '../skeleton/SkeletonDashboard';
 import SpeechCard from '../speech/SpeechCard';
 import SideJobCard from '../SideJobCard';
 import ErrorCard from '../Error';
-import PartyDonationCard from '../partydonation/PartyDonationCard';
+import PartyDonationCard from '../partydonation/PartydonationCard';
 
 const Dashboard = () => {
   const navigator = useContext(NavigationContext);
