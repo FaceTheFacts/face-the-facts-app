@@ -5,6 +5,7 @@ import PartyTag from '../PartyTag';
 import {ApiParty} from '../../logic/api';
 import {LineChart} from 'react-native-chart-kit';
 import {Dimensions} from 'react-native';
+import {averageDonations, getSumUpDonationsInMillion} from '../../utils/util';
 
 interface PartyDonationCardProps {
   party: ApiParty;
@@ -27,19 +28,6 @@ const PartyDonationCard = ({
     strokeWidth: 2, // optional, default 3
     useShadowColorFromDataset: false, // optional
   };
-
-  function round(value: number, decimals: number) {
-    return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals);
-  }
-
-  function getSumUpDonationsInMillion(donations_sum: number) {
-    return round(donations_sum / 1000000, 2);
-  }
-
-  function averageDonations(donations_sum: number) {
-    const average = Math.floor(donations_sum / 8);
-    return average.toLocaleString('de-DE');
-  }
 
   return (
     <View>
