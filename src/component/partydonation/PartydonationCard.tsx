@@ -1,10 +1,9 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
 import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
 import {ApiParty} from '../../logic/api';
 import {LineChart} from 'react-native-chart-kit';
-import {Dimensions} from 'react-native';
 import {averageDonations, getSumUpDonationsInMillion} from '../../utils/util';
 
 interface PartyDonationCardProps {
@@ -18,7 +17,7 @@ const PartyDonationCard = ({
   donations,
   donations_total,
 }: PartyDonationCardProps) => {
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = useWindowDimensions().width;
   const chartConfig = {
     backgroundGradientFrom: Colors.cardBackground,
     backgroundGradientFromOpacity: 1,
@@ -53,7 +52,7 @@ const PartyDonationCard = ({
               },
             ],
           }}
-          width={screenWidth * 0.75 - 24} // from react-native
+          width={screenWidth * 0.75 - 24}
           height={80}
           withDots={false}
           withInnerLines={false}
@@ -61,10 +60,7 @@ const PartyDonationCard = ({
           withHorizontalLabels={false}
           chartConfig={chartConfig}
           fromZero={true}
-          style={{
-            paddingVertical: 0,
-            paddingRight: 0,
-          }}
+          style={styles.lineChart}
         />
         <View style={styles.dateContainer}>
           <Text style={styles.dateText}>2014</Text>
@@ -83,8 +79,8 @@ const PartyDonationCard = ({
 
 const styles = StyleSheet.create({
   lineChart: {
-    flex: 1,
-    //responsive layout, fit the chart to the screen width
+    paddingVertical: 0,
+    paddingRight: 0,
   },
   container: {
     borderRadius: 8,
@@ -113,15 +109,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 15,
     lineHeight: 15,
-
     color: '#FCFCFC',
   },
-  headerText: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: Colors.baseWhite,
-  },
-
   partyName: {
     fontSize: 15,
     color: '#FCFCFC',
@@ -157,14 +146,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-
-  descText: {
-    marginTop: 2,
-    fontSize: 13,
-    lineHeight: 15.73,
-    fontWeight: '400',
-    color: Colors.baseWhite,
   },
 });
 
