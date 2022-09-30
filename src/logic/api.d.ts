@@ -136,6 +136,22 @@ export interface ApiSidejobsBundestag {
   politician: ApiPoliticianHeader;
 }
 
+export interface ApiPartyDonationOrganization {
+  id: number;
+  donor_name: string;
+  donor_address: string;
+  donor_zip: string;
+  donor_city: string;
+  donor_country: string;
+  donor_foreign: boolean;
+}
+
+export interface ApiBundestagPartyDonation {
+  party: ApiParty;
+  donations_over_96_months: number[];
+  donations_total: number;
+}
+
 export interface ApiPositions {
   id: number;
   positions: ApiPosition[];

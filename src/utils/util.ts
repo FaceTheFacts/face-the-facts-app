@@ -496,3 +496,18 @@ export const answerColors: Record<PositionAnswer, string> = {
 export function getPosition(position: PositionAnswer) {
   return answerLongLabels[position];
 }
+
+// Party Donation related util functions
+
+export function averageDonations(donations_sum: number) {
+  const average = Math.floor(donations_sum / 8);
+  return average.toLocaleString('de-DE');
+}
+
+export function round(value: number, decimals: number) {
+  return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals);
+}
+
+export function getSumUpDonationsInMillion(donations_sum: number) {
+  return round(donations_sum / 1000000, 2);
+}
