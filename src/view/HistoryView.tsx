@@ -40,6 +40,7 @@ const HistoryView = () => {
   const [searching, setSearching] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [newSearch, setNewSearch] = useState(false);
   const inputRef = useRef<TextInput>(null);
   const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -68,6 +69,7 @@ const HistoryView = () => {
   } = useQuery<ApiPoliticianHeader[] | undefined, Error>(
     `search-${searchQuery}`,
     () => fetch_api<ApiPoliticianHeader[]>(`search?text=${searchQuery}`),
+    {enabled: newSearch},
   );
 
   function startSearching(): void {
@@ -94,9 +96,15 @@ const HistoryView = () => {
 
   useEffect(() => {
     timeout.current = setTimeout(() => {
-      setSearchQuery(searchInput);
+      if (searchInput.length > 0) {
+        setSearchQuery(searchInput);
+        setNewSearch(true);
+      } else {
+        setSearchInput('');
+        setNewSearch(false);
+      }
       timeout.current = null;
-    }, 500);
+    }, 800);
 
     return () => {
       if (timeout.current) {
@@ -130,37 +138,35 @@ const HistoryView = () => {
           },
         ]}
       />
-      <KeyboardAvoidingView
-        style={styles.searchWrapper}
-        behavior="height"
-        keyboardVerticalOffset={insets.top}>
-        <View style={styles.searchBarContainerWrapper}>
-          <View
-            style={StyleSheet.flatten([
-              styles.searchBarContainer,
-              insets.top <= 20 && {marginTop: 16},
-            ])}>
-            <Icon style={styles.searchBarIcon} icon={SearchIcon} />
-            <TextInput
-              ref={inputRef}
-              style={styles.searchBarInput}
-              placeholder="Suche"
-              placeholderTextColor={Colors.foreground}
-              onFocus={startSearching}
-              onBlur={() => setSearching(searchInput !== '')}
-              value={searchInput}
-              onChangeText={setSearchInput}
-              autoCompleteType="off"
-              dataDetectorTypes="none"
-              textContentType="none"
-              spellCheck={false}
-              autoCorrect={false}
-              autoCapitalize="words"
-              returnKeyType="search"
-              keyboardAppearance="dark"
-            />
-          </View>
-          {searching && (
+      <View style={styles.searchBarContainerWrapper}>
+        <View
+          style={StyleSheet.flatten([
+            styles.searchBarContainer,
+            insets.top <= 20 && {marginTop: 16},
+          ])}>
+          <Icon style={styles.searchBarIcon} icon={SearchIcon} />
+          <TextInput
+            ref={inputRef}
+            style={styles.searchBarInput}
+            placeholder="Suche"
+            placeholderTextColor={Colors.foreground}
+            onFocus={startSearching}
+            onBlur={() => setSearching(searchInput !== '')}
+            value={searchInput}
+            onChangeText={setSearchInput}
+            autoCompleteType="off"
+            dataDetectorTypes="none"
+            textContentType="none"
+            spellCheck={false}
+            autoCorrect={false}
+            autoCapitalize="words"
+            returnKeyType="search"
+            keyboardAppearance="dark"
+          />
+        </View>
+        {
+          // Display cancel button if search is active
+          searching && (
             <TouchableOpacity
               style={styles.searchBarButton}
               onPress={() => {
@@ -169,56 +175,13 @@ const HistoryView = () => {
               }}>
               <Text style={styles.searchBarButtonText}>Abbrechen</Text>
             </TouchableOpacity>
-          )}
-        </View>
-        <View style={styles.separatorLine} />
-        {
-          // Start search
-          searching && searchQuery !== '' && (
-            <>
-              {!searchData && status === 'success' ? (
-                <View style={styles.noResultContainer}>
-                  <Text style={styles.searchNoResult}>Keine Ergebnisse</Text>
-                </View>
-              ) : (
-                <>
-                  <View style={styles.separatorLine} />
-                  <Text style={styles.searchResultTitle}>suchergebnisse</Text>
-                </>
-              )}
-              {
-                // Search loading
-                status === 'loading' && (
-                  <View style={styles.searchResultSkeletonContainer}>
-                    <SkeletonPoliticianItem />
-                  </View>
-                )
-              }
-              {
-                // Search successful and displaying results
-                searchData && status === 'success' && (
-                  <ScrollView
-                    style={styles.searchResultContainer}
-                    keyboardDismissMode="interactive"
-                    showsVerticalScrollIndicator={false}>
-                    {searchData?.map(politician => (
-                      <PoliticianItem
-                        key={politician.id}
-                        politicianId={politician.id}
-                        politicianName={politician.label}
-                        party={politician.party}
-                      />
-                    ))}
-                  </ScrollView>
-                )
-              }
-            </>
           )
         }
-      </KeyboardAvoidingView>
+      </View>
+      <View style={styles.separatorLine} />
       {
-        // StartScreen
-        (!searching || (searching && searchQuery === '')) &&
+        // StartScreen displaying search history
+        (!searching || (searching && searchInput.length < 1)) &&
           status !== 'loading' && (
             <View
               style={[styles.historyContainer, searching && {opacity: 0.3}]}>
@@ -239,6 +202,63 @@ const HistoryView = () => {
               )}
             </View>
           )
+      }
+      {
+        // Start search
+        searching && (
+          <KeyboardAvoidingView
+            style={styles.searchWrapper}
+            behavior="height"
+            keyboardVerticalOffset={insets.top}>
+            {!searchData &&
+              status === 'success' &&
+              searchInput === searchQuery && (
+                <View style={styles.noResultContainer}>
+                  <Text style={styles.searchNoResult}>Keine Ergebnisse</Text>
+                </View>
+              )}
+            {
+              // Search loading
+              (status === 'loading' ||
+                (searchInput.length > 0 &&
+                  (searchInput !== searchQuery || searchQuery === ''))) && (
+                <>
+                  <View style={styles.separatorLine} />
+                  <Text style={styles.searchResultTitle}>suchergebnisse</Text>
+                  <View style={styles.searchResultSkeletonContainer}>
+                    <SkeletonPoliticianItem />
+                  </View>
+                </>
+              )
+            }
+            {
+              // Search successful and displaying results
+              searchData &&
+                status === 'success' &&
+                searchInput.length > 0 &&
+                searchInput === searchQuery &&
+                newSearch && (
+                  <>
+                    <View style={styles.separatorLine} />
+                    <Text style={styles.searchResultTitle}>suchergebnisse</Text>
+                    <ScrollView
+                      style={styles.searchResultContainer}
+                      keyboardDismissMode="interactive"
+                      showsVerticalScrollIndicator={false}>
+                      {searchData?.map(politician => (
+                        <PoliticianItem
+                          key={politician.id}
+                          politicianId={politician.id}
+                          politicianName={politician.label}
+                          party={politician.party}
+                        />
+                      ))}
+                    </ScrollView>
+                  </>
+                )
+            }
+          </KeyboardAvoidingView>
+        )
       }
     </View>
   );
@@ -304,6 +324,7 @@ const styles = StyleSheet.create({
   },
   searchBarContainerWrapper: {
     flexDirection: 'row',
+    backgroundColor: Colors.cardBackground,
   },
   searchBarButton: {
     marginRight: 12,
