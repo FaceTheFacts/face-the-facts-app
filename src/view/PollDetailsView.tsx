@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
   },
   linkBtn: {
     flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: Colors.cardBackground,
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
   linkBtnText: {
     fontSize: 13,
     fontWeight: '600',
-    textAlign: 'center',
+    textAlign: 'left',
     color: Colors.foreground,
   },
 });
