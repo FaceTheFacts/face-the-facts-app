@@ -1,5 +1,8 @@
 {
   "BASE_URL": "https://<url>",
   "SENTRY_DSN": "https://<url>",
-  "SCAN_DATA_URL": "https://<url>"
+  "SCAN_DATA_URL": "https://<url>",
+  "APPLE_ACCOUNT": "apple account email",
+  "ITC_TEAM_ID": "itc team id",
+  "TEAM_ID": "team id"
 }
