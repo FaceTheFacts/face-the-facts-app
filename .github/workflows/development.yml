@@ -69,7 +69,7 @@ jobs:
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
 
       - name: Create env.json
-        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"'} >> env.json
+        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
 
       - name: Create android/sentry.properties
         run: |
