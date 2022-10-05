@@ -86,3 +86,8 @@ jobs:
         run: |
           cd android
           fastlane alpha
+
+      - name: Deploy alpha to Apple Appstore
+        run: |
+          cd ios
+          fastlane beta
