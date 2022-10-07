@@ -7,6 +7,7 @@ import {
   ApiSpeechBundestag,
   ApiVote,
   ApiPoliticianContext,
+  ApiBundestagPartyDonation,
 } from '../logic/api';
 import {Vote} from '../logic/api';
 
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   News: {politician: ApiPoliticianContext};
   Speeches: {politician: ApiPoliticianContext};
   DashboardSpeeches: {speeches: ApiPaginatedData<ApiSpeechBundestag>};
+  PartyDonations: {partydonations: ApiBundestagPartyDonation[]};
   DashboardSidejobs: any;
   Polls: {politician: ApiPoliticianContext};
   DashboardPolls: {polls: ApiPaginatedData<ApiPollBundestag>};

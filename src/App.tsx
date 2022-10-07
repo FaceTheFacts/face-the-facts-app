@@ -97,6 +97,11 @@ const App = () => {
                   options={{headerShown: false}}
                 />
                 <Stack.Screen
+                  name="PartyDonations"
+                  component={PartyDonationView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
                   name="Speeches"
                   component={SpeechesView}
                   options={{headerShown: false}}
