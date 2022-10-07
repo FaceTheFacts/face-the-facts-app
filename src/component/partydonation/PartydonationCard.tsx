@@ -60,6 +60,7 @@ const PartyDonationCard = ({
           chartConfig={chartConfig}
           fromZero={true}
           style={styles.lineChart}
+          bezier
         />
         <View style={styles.dateContainer}>
           <Text style={styles.dateText}>2014</Text>
