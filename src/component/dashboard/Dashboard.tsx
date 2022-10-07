@@ -110,6 +110,15 @@ const Dashboard = () => {
         <View style={styles.topContainer}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Parteispenden</Text>
+            <TouchableOpacity
+              style={styles.moreBtn}
+              onPress={() => {
+                navigator?.navigate('PartyDonations', {
+                  partydonations,
+                });
+              }}>
+              <Text style={styles.btnText}>mehr</Text>
+            </TouchableOpacity>
           </View>
           <ScrollView
             horizontal
@@ -120,7 +129,7 @@ const Dashboard = () => {
               <PartyDonationCard
                 key={index}
                 party={partydonation.party}
-                donations={partydonation.donations_over_32_quarters}
+                donations={partydonation.donations_over_96_months}
                 donations_total={partydonation.donations_total}
               />
             ))}
