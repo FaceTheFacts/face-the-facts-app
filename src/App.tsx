@@ -25,6 +25,7 @@ import {RootStackParamList} from './view/RootStackParams';
 import DashboardSidejobsView from './view/DashboardSidejobsView';
 import DashboardPollsView from './view/DashboardPollsView';
 import * as Sentry from '@sentry/react-native';
+import PartyDonationView from './view/PartyDonationView';
 
 const env = require('../env.json');
 if (!env.SENTRY_DSN) {
@@ -114,6 +115,11 @@ const App = () => {
                 <Stack.Screen
                   name="News"
                   component={NewsView}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen
+                  name="PartyDonations"
+                  component={PartyDonationView}
                   options={{headerShown: false}}
                 />
                 <Stack.Screen
