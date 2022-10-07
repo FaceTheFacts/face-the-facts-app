@@ -20,9 +20,7 @@ const PartyDonationCard = ({
   const screenWidth = useWindowDimensions().width;
   const chartConfig = {
     backgroundGradientFrom: Colors.cardBackground,
-    backgroundGradientFromOpacity: 1,
     backgroundGradientTo: Colors.cardBackground,
-    backgroundGradientToOpacity: 1,
     color: () => party.party_style.background_color,
     strokeWidth: 2, // optional, default 3
     useShadowColorFromDataset: false, // optional
@@ -48,12 +46,12 @@ const PartyDonationCard = ({
             labels: [],
             datasets: [
               {
-                data: donations.reverse(),
+                data: donations,
               },
             ],
           }}
-          width={screenWidth * 0.75 - 24}
-          height={80}
+          width={164}
+          height={72}
           withDots={false}
           withInnerLines={false}
           withOuterLines={false}
@@ -61,6 +59,7 @@ const PartyDonationCard = ({
           chartConfig={chartConfig}
           fromZero={true}
           style={styles.lineChart}
+          bezier
         />
         <View style={styles.dateContainer}>
           <Text style={styles.dateText}>2014</Text>
@@ -79,8 +78,12 @@ const PartyDonationCard = ({
 
 const styles = StyleSheet.create({
   lineChart: {
-    paddingVertical: 0,
     paddingRight: 0,
+    paddingLeft: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    marginTop: 0,
+    marginBottom: 0,
   },
   container: {
     borderRadius: 8,
