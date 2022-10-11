@@ -29,9 +29,10 @@ const ReadMoreHTML = ({
 }: ReadMoreHTMLProps) => {
   const {width} = useWindowDimensions();
   const [expanded, setExpanded] = useState(false);
-  const linkStyles = {
+  const linkStyles: Readonly<Record<string, MixedStyleDeclaration>> = {
     a: {
       color: '#3AA6F4',
+      textDecorationLine: 'none',
     },
   };
   return (
