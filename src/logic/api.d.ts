@@ -148,7 +148,7 @@ export interface ApiPartyDonationOrganization {
 
 export interface ApiBundestagPartyDonation {
   party: ApiParty;
-  donations_over_96_months: number[];
+  donations_over_32_quarters: number[];
   donations_total: number;
 }
 

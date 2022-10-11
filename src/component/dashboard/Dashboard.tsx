@@ -126,7 +126,7 @@ const Dashboard = () => {
               <PartyDonationCard
                 key={index}
                 party={partydonation.party}
-                donations={partydonation.donations_over_96_months.reverse()}
+                donations={partydonation.donations_over_32_quarters}
                 donations_total={partydonation.donations_total}
               />
             ))}
