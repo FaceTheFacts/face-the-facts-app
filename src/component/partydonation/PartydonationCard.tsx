@@ -20,12 +20,11 @@ const PartyDonationCard = ({
   const screenWidth = useWindowDimensions().width;
   const chartConfig = {
     backgroundGradientFrom: Colors.cardBackground,
-    backgroundGradientFromOpacity: 1,
+    fillShadowGradientFromOpacity: 0.6,
+    fillShadowGradientToOpacity: 0.0,
     backgroundGradientTo: Colors.cardBackground,
-    backgroundGradientToOpacity: 1,
     color: () => party.party_style.background_color,
     strokeWidth: 2, // optional, default 3
-    useShadowColorFromDataset: false, // optional
   };
 
   return (
@@ -48,16 +47,17 @@ const PartyDonationCard = ({
             labels: [],
             datasets: [
               {
-                data: donations.reverse(),
+                data: donations,
               },
             ],
           }}
-          width={screenWidth * 0.75 - 24}
-          height={80}
+          width={screenWidth * 0.45}
+          height={48}
           withDots={false}
           withInnerLines={false}
           withOuterLines={false}
           withHorizontalLabels={false}
+          withVerticalLabels={false}
           chartConfig={chartConfig}
           fromZero={true}
           style={styles.lineChart}
@@ -79,8 +79,11 @@ const PartyDonationCard = ({
 
 const styles = StyleSheet.create({
   lineChart: {
-    paddingVertical: 0,
+    paddingLeft: 0,
     paddingRight: 0,
+    paddingTop: 0,
+    paddingBottom: -7,
+    marginTop: 1,
   },
   container: {
     borderRadius: 8,
