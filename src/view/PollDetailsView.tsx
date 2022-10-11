@@ -65,7 +65,7 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
           <BackButton />
         </View>
         <View style={styles.filterContainer}>
-          {pollDetails && pollDetails.poll_links && (
+          {pollDetails && pollDetails.poll_links.length > 0 && (
             <TouchableOpacity
               style={styles.redirectBtn}
               onPress={() => {
@@ -74,7 +74,11 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
                   : Linking.openURL(pollDetails.poll_links[0].uri);
               }}>
               <Icon style={styles.arrowIcon} icon={ArrowUpRightFromSquare} />
-              <Text style={styles.redirectBtnText}>weiterführende Links</Text>
+              <Text style={styles.redirectBtnText}>
+                {pollDetails.poll_links.length > 1
+                  ? 'weiterführende Links'
+                  : 'weiterführender Link'}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
@@ -232,6 +236,7 @@ const styles = StyleSheet.create({
   },
   linkBtn: {
     flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: Colors.cardBackground,
@@ -242,7 +247,7 @@ const styles = StyleSheet.create({
   linkBtnText: {
     fontSize: 13,
     fontWeight: '600',
-    textAlign: 'center',
+    textAlign: 'left',
     color: Colors.foreground,
   },
 });

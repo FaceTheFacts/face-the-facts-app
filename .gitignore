@@ -72,3 +72,4 @@ service-account.json
 
 # Environment
 env.json
+/ios/fastlane/.env.default

@@ -42,6 +42,7 @@ platform :android do
   lane :production do
     gradle(task: 'clean bundleRelease')
     upload_to_play_store(
+      track: 'production',
       skip_upload_metadata: true,
       skip_upload_changelogs: true,
       skip_upload_screenshots: true,

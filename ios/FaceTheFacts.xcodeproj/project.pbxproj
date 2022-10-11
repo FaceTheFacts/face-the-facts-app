@@ -564,7 +564,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = 97A6Z6XG2Q;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = FaceTheFacts/Info.plist;
@@ -580,6 +581,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.facethefacts;
 				PRODUCT_NAME = FaceTheFacts;
+				PROVISIONING_PROFILE_SPECIFIER = "match Development app.facethefacts";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -592,7 +594,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = 97A6Z6XG2Q;
 				INFOPLIST_FILE = FaceTheFacts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -607,6 +611,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.facethefacts;
 				PRODUCT_NAME = FaceTheFacts;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore app.facethefacts";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -14,6 +14,7 @@ import {
   ApiSpeechBundestag,
   ApiSidejobsBundestag,
   ApiPollBundestagData,
+  ApiBundestagPartyDonation,
 } from '../../logic/api';
 import {fetch_api} from '../../logic/fetch';
 import {DataContext} from '../../logic/model';
@@ -24,6 +25,7 @@ import SkeletonDashboard from '../skeleton/SkeletonDashboard';
 import SpeechCard from '../speech/SpeechCard';
 import SideJobCard from '../SideJobCard';
 import ErrorCard from '../Error';
+import PartyDonationCard from '../partydonation/PartydonationCard';
 
 const Dashboard = () => {
   const navigator = useContext(NavigationContext);
@@ -77,18 +79,55 @@ const Dashboard = () => {
     },
   );
 
+  const {
+    data: partydonations,
+    isLoading: partydonationsLoading,
+    isError: partydonationsError,
+  } = useQuery<ApiBundestagPartyDonation[] | undefined, Error>(
+    'partdonations: Bundestag',
+    () => fetch_api<ApiBundestagPartyDonation[]>('homepagepartydonations'),
+    {
+      staleTime: 60 * 10000000, // 10000 minute = around 1 week
+      cacheTime: 60 * 10000000,
+    },
+  );
   const {width} = useWindowDimensions();
-  if (pollsLoading || speechesLoading || sidejobsLoading) {
+  if (
+    pollsLoading ||
+    speechesLoading ||
+    sidejobsLoading ||
+    partydonationsLoading
+  ) {
     return <SkeletonDashboard />;
   }
-  if (pollsError || sidejobsError || speechesError) {
+  if (pollsError || sidejobsError || speechesError || partydonationsError) {
     return <ErrorCard />;
   }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      {speeches && (
+      {partydonations && (
         <View style={styles.topContainer}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Parteispenden</Text>
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.scrollContainer}>
+            {partydonations.map((partydonation, index) => (
+              <PartyDonationCard
+                key={index}
+                party={partydonation.party}
+                donations={partydonation.donations_over_32_quarters}
+                donations_total={partydonation.donations_total}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      )}
+      {speeches && (
+        <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Reden</Text>
             <TouchableOpacity
@@ -101,8 +140,10 @@ const Dashboard = () => {
               <Text style={styles.btnText}>mehr</Text>
             </TouchableOpacity>
           </View>
+
           <ScrollView
             horizontal
+            contentContainerStyle={{paddingRight: 24}}
             showsHorizontalScrollIndicator={false}
             style={styles.scrollContainer}>
             {speeches.items.map((speech, index) => (
@@ -116,11 +157,13 @@ const Dashboard = () => {
                 video={speech.videoFileURI}
                 cardHeight={143}
                 cardWidth={width * 0.71}
+                verticalScroll
               />
             ))}
           </ScrollView>
         </View>
       )}
+
       {polls && (
         <View style={styles.container}>
           <View style={styles.header}>
@@ -160,6 +203,7 @@ const Dashboard = () => {
           </View>
           <ScrollView
             horizontal
+            contentContainerStyle={{paddingRight: 24}}
             showsHorizontalScrollIndicator={false}
             style={styles.scrollContainer}>
             {sidejobs.map((sidejob, index) => (
