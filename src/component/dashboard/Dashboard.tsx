@@ -106,17 +106,10 @@ const Dashboard = () => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      {partydonations && partydonations.length > 0 && (
-        <>
+      {partydonations && (
+        <View style={styles.topContainer}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Parteispenden</Text>
-            {/* <TouchableOpacity
-              style={styles.moreBtn}
-              onPress={() => {
-                navigator?.navigate('DashboardPartyDonations', {polls});
-              }}>
-              <Text style={styles.btnText}>mehr</Text>
-            </TouchableOpacity> */}
           </View>
           <ScrollView
             horizontal
@@ -131,10 +124,10 @@ const Dashboard = () => {
               />
             ))}
           </ScrollView>
-        </>
+        </View>
       )}
       {speeches && (
-        <View style={styles.topContainer}>
+        <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Reden</Text>
             <TouchableOpacity
