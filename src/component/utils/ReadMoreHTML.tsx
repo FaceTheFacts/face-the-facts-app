@@ -29,7 +29,11 @@ const ReadMoreHTML = ({
 }: ReadMoreHTMLProps) => {
   const {width} = useWindowDimensions();
   const [expanded, setExpanded] = useState(false);
-
+  const linkStyles = {
+    a: {
+      color: '#3AA6F4',
+    },
+  };
   return (
     <>
       <View
@@ -42,6 +46,7 @@ const ReadMoreHTML = ({
           baseStyle={baseStyle}
           source={{html}}
           contentWidth={width}
+          tagsStyles={linkStyles}
         />
       </View>
       <TouchableOpacity
