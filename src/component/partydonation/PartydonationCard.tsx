@@ -28,12 +28,11 @@ const PartyDonationCard = ({
   };
 
   return (
-    <View>
+    <>
       <View style={styles.container}>
         <View style={styles.header} />
         <View style={styles.politicianContainer}>
           <PartyTag party={party} />
-
           <View style={styles.info}>
             <Text style={styles.nameText}>Gesamt</Text>
             <Text style={styles.totalAmount}>
@@ -73,26 +72,21 @@ const PartyDonationCard = ({
           </Text>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  lineChart: {
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingTop: 0,
-    paddingBottom: -7,
-    marginTop: 1,
-  },
   container: {
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
     padding: 12,
     marginRight: 12,
-    marginBottom: 12,
   },
-
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   politicianContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -114,22 +108,19 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     color: '#FCFCFC',
   },
-  partyName: {
-    fontSize: 15,
-    color: '#FCFCFC',
-  },
-  donationAmount: {
-    fontSize: 15,
-    color: '#FCFCFC',
-  },
-
   separatorLine: {
     height: 1,
     backgroundColor: Colors.foreground,
     opacity: 0.12,
     marginVertical: 8,
   },
-
+  lineChart: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    paddingTop: 0,
+    paddingBottom: -7,
+    marginTop: 1,
+  },
   dateContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -144,11 +135,6 @@ const styles = StyleSheet.create({
   averageText: {
     fontSize: 15,
     color: Colors.white70,
-  },
-
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
 });
 
