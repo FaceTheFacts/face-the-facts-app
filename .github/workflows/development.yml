@@ -82,12 +82,12 @@ jobs:
       - name: Create data.json mock
         run: echo "[]" >> data.json
 
-      - name: Deploy alpha to Google Playstore
-        run: |
-          cd android
-          fastlane alpha
-
       - name: Deploy alpha to Apple Appstore
         run: |
           cd ios
           fastlane beta
+
+      - name: Deploy alpha to Google Playstore
+        run: |
+          cd android
+          fastlane alpha
