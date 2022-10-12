@@ -43,17 +43,10 @@ platform :ios do
 
 
   lane :beta do
-    setup_ci
-    app_store_connect_api_key(
-      is_key_content_base64: true,
-      in_house: false,
-      )
     match(
       type: "appstore",
       readonly: is_ci,
       app_identifier: "app.facethefacts")
-    #increment_build_number(xcodeproj: "FaceTheFacts.xcodeproj")
-    #increment_version_number(xcodeproj: "FaceTheFacts.xcodeproj")
     build_ios_app(
       workspace: "FaceTheFacts.xcworkspace",
       scheme: "FaceTheFacts",
@@ -62,6 +55,7 @@ platform :ios do
       clean: true
     )        
     upload_to_testflight(
+      api_key_path("fastlane/AppStoreConnectAPIKey.json"),
       skip_waiting_for_build_processing: true,
       skip_submission: true)
   end

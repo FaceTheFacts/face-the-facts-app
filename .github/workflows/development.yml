@@ -85,11 +85,18 @@ jobs:
       - name: Create ios/fastlane/.env.default
         run: |
           cd ios/fastlane
-          echo {MATCH_GIT_BASIC_AUTHORIZATION='"{{secrets.MATCH_GIT_BASIC_AUTHORIZATION}}"'}
-          echo {MATCH_PASSWORD='"{{secrets.MATCH_PASSWORD}}"'}
+          echo {MATCH_GIT_BASIC_AUTHORIZATION='"{{secrets.MATCH_GIT_BASIC_AUTHORIZATION}}"'} >> .env.default
+          echo {MATCH_PASSWORD='"{{secrets.MATCH_PASSWORD}}"'} >> .env.default
           echo {APP_STORE_CONNECT_API_KEY_KEY_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY_ID}}"'} >> .env.default
           echo {APP_STORE_CONNECT_API_KEY_ISSUEER_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_ISSUEER_ID}}"'} >> .env.default
           echo {APP_STORE_CONNECT_API_KEY_KEY='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY}}"'} >> .env.default
+
+      - name: Create ios/fastlane/AppStoreConnectAPIKey.json
+        run: |
+          cd ios/fastlane
+          echo {'"key_id"':'"${{secrets.APP_STORE_CONNECT_API_KEY_KEY_ID}}"'} >> AppStoreConnectAPIKey.json 
+          echo {'"issuer_id"':'"${{secrets.APP_STORE_CONNECT_API_KEY_ISSUEER_ID}}"'} >> AppStoreConnectAPIKey.json
+          echo {'"key"':'"${{secrets.APP_STORE_CONNECT_API_KEY_KEY}}"'} >> AppStoreConnectAPIKey.json
 
       - name: Deploy alpha to Apple Appstore
         run: |
