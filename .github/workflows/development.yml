@@ -85,6 +85,8 @@ jobs:
       - name: Create ios/fastlane/.env.default
         run: |
           cd ios/fastlane
+          echo {MATCH_GIT_BASIC_AUTHORIZATION='"{{secrets.MATCH_GIT_BASIC_AUTHORIZATION}}"'}
+          echo {MATCH_PASSWORD='"{{secrets.MATCH_PASSWORD}}"'}
           echo {APP_STORE_CONNECT_API_KEY_KEY_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY_ID}}"'} >> .env.default
           echo {APP_STORE_CONNECT_API_KEY_ISSUEER_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_ISSUEER_ID}}"'} >> .env.default
           echo {APP_STORE_CONNECT_API_KEY_KEY='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY}}"'} >> .env.default
