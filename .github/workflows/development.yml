@@ -82,6 +82,13 @@ jobs:
       - name: Create data.json mock
         run: echo "[]" >> data.json
 
+      - name: Create ios/fastlane/.env.default
+        run: |
+          cd ios/fastlane
+          echo {APP_STORE_CONNECT_API_KEY_KEY_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY_ID}}"'} >> .env.default
+          echo {APP_STORE_CONNECT_API_KEY_ISSUEER_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_ISSUEER_ID}}"'} >> .env.default
+          echo {APP_STORE_CONNECT_API_KEY_KEY='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY}}"'} >> .env.default
+
       - name: Deploy alpha to Apple Appstore
         run: |
           cd ios
