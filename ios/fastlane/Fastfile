@@ -43,10 +43,11 @@ platform :ios do
 
 
   lane :beta do
-    match(
+    sync_code_signing(
       type: "appstore",
-      readonly: is_ci,
-      app_identifier: "app.facethefacts")
+      readonly: true,
+      app_identifier: "app.facethefacts" 
+    )
     build_ios_app(
       workspace: "FaceTheFacts.xcworkspace",
       scheme: "FaceTheFacts",
