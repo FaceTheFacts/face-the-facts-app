@@ -103,6 +103,8 @@ jobs:
         run: |
           cd ios
           fastlane beta
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
       - name: Deploy alpha to Google Playstore
         run: |
