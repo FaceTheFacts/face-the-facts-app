@@ -18,7 +18,7 @@ jobs:
           node-version: '12.x'
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.x'
+          ruby-version: '3.0'
           bundler-cache: true
       - name: Install Ruby Dependencies
         run: bundle install
@@ -67,7 +67,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
 
