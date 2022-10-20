@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          repository: FaceTheFacts/face-the-facts-app
       - uses: action/checkout@v3
         with:
           repository: FaceTheFacts/fastlane-ios
