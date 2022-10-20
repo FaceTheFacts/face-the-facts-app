@@ -12,7 +12,11 @@ jobs:
     if: ${{ github.event_name == 'push' }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: action/checkout@v3
+        with:
+          repository: FaceTheFacts/fastlane-ios
+          token: ${{ secrets.PAT }}
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
@@ -47,6 +51,7 @@ jobs:
         run: |
           cd ios
           fastlane beta
+        with:
 
   deployment_android:
     runs-on: ubuntu-latest
