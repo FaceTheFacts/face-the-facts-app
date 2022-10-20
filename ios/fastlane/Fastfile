@@ -47,7 +47,8 @@ platform :ios do
       type: "appstore",
       readonly: true,
       app_identifier: "app.facethefacts",
-      verbose: true
+      verbose: true,
+      git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"]
     )
     build_ios_app(
       workspace: "FaceTheFacts.xcworkspace",
