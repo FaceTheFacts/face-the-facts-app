@@ -69,7 +69,7 @@ jobs:
           node-version: '12.x'
       - uses: actions/setup-ruby@v1
         with:
-          ruby-version: '2.x'
+          ruby-version: '3.0'
 
       - name: Build install
         run: cd android && bundle install
