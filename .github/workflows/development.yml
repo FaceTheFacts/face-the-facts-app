@@ -8,7 +8,7 @@ on:
 
 jobs:
   deployment_ios:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: ${{ github.event_name == 'push' }}
 
     steps:
@@ -19,14 +19,6 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.x'
-
-      - name: setup-cocoapods
-        uses: maxim-lobanov/setup-cocoapods@v1
-        with:
-          podfile-path: ios/Podfile.lock
-
-      - name: Build install
-        run: cd ios && pod install
 
       - name: Install packages
         run: yarn install
