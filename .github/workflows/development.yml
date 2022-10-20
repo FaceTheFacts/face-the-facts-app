@@ -20,8 +20,6 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
-      - name: Install Ruby Dependencies
-        run: cd ios && bundle install
 
       - name: Match Repo Clone Test (please delete this)
         env:
