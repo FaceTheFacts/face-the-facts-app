@@ -48,7 +48,7 @@ platform :ios do
       readonly: true,
       app_identifier: "app.facethefacts",
       verbose: true,
-      git_basic_authorization: Base64.strict_encode64(ENV["MATCH_GIT_BASIC_AUTHORIZATION"])
+      git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"]
     )
     build_ios_app(
       workspace: "FaceTheFacts.xcworkspace",
