@@ -7,16 +7,13 @@ on:
     branches: [development]
 
 jobs:
-  eslint:
+  deployment_ios:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-  testing:
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
 
     steps:
       - uses: actions/checkout@v2
+        with:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
@@ -24,13 +21,41 @@ jobs:
         with:
           ruby-version: '2.x'
 
+      - name: Build install
+        run: cd ios && pod install
+
       - name: Install packages
         run: yarn install
 
-      - name: Run javascript tests
-        run: npm run test
+      - name: Create env.json
+        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
 
-  deployment:
+      - name: Create ios/fastlane/.env.default
+        run: |
+          cd ios/fastlane
+          echo {MATCH_GIT_BASIC_AUTHORIZATION='"{{secrets.MATCH_GIT_BASIC_AUTHORIZATION}}"'} >> .env.default
+          echo {MATCH_USERNAME='"{{secrets.MATCH_USERNAME}}"'} .env.default
+          echo {MATCH_PASSWORD='"{{secrets.MATCH_PASSWORD}}"'} >> .env.default
+          echo {APP_STORE_CONNECT_API_KEY_KEY_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY_ID}}"'} >> .env.default
+          echo {APP_STORE_CONNECT_API_KEY_ISSUEER_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_ISSUEER_ID}}"'} >> .env.default
+          echo {APP_STORE_CONNECT_API_KEY_KEY='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY}}"'} >> .env.default
+
+      - name: Create ios/fastlane/AppStoreConnectAPIKey.json
+        run: |
+          cd ios/fastlane
+          echo {'"key_id"':'"${{secrets.APP_STORE_CONNECT_API_KEY_KEY_ID}}"'} >> AppStoreConnectAPIKey.json 
+          echo {'"issuer_id"':'"${{secrets.APP_STORE_CONNECT_API_KEY_ISSUEER_ID}}"'} >> AppStoreConnectAPIKey.json
+          echo {'"key"':'"${{secrets.APP_STORE_CONNECT_API_KEY_KEY}}"'} >> AppStoreConnectAPIKey.json
+
+      - name: Deploy alpha to Apple Appstore
+        run: |
+          cd ios
+          fastlane beta
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          GITHUB_TOKEN: ${{secrets.PAT}}
+
+  deployment_android:
     runs-on: ubuntu-latest
     needs: [eslint, testing]
     if: ${{ github.event_name == 'push' }}
@@ -38,9 +63,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: FaceTheFacts/fastlane-ios.git
-          token: ${{secrets.PAT}}
-          path: FaceTheFacts/fastlane-ios.git
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
@@ -72,9 +94,6 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
 
-      - name: Create env.json
-        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
-
       - name: Create android/sentry.properties
         run: |
           cd android
@@ -85,30 +104,6 @@ jobs:
 
       - name: Create data.json mock
         run: echo "[]" >> data.json
-
-      - name: Create ios/fastlane/.env.default
-        run: |
-          cd ios/fastlane
-          echo {MATCH_GIT_BASIC_AUTHORIZATION='"{{secrets.MATCH_GIT_BASIC_AUTHORIZATION}}"'} >> .env.default
-          echo {MATCH_USERNAME='"{{secrets.MATCH_USERNAME}}"'} .env.default
-          echo {MATCH_PASSWORD='"{{secrets.MATCH_PASSWORD}}"'} >> .env.default
-          echo {APP_STORE_CONNECT_API_KEY_KEY_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY_ID}}"'} >> .env.default
-          echo {APP_STORE_CONNECT_API_KEY_ISSUEER_ID='"${{secrets.APP_STORE_CONNECT_API_KEY_ISSUEER_ID}}"'} >> .env.default
-          echo {APP_STORE_CONNECT_API_KEY_KEY='"${{secrets.APP_STORE_CONNECT_API_KEY_KEY}}"'} >> .env.default
-
-      - name: Create ios/fastlane/AppStoreConnectAPIKey.json
-        run: |
-          cd ios/fastlane
-          echo {'"key_id"':'"${{secrets.APP_STORE_CONNECT_API_KEY_KEY_ID}}"'} >> AppStoreConnectAPIKey.json 
-          echo {'"issuer_id"':'"${{secrets.APP_STORE_CONNECT_API_KEY_ISSUEER_ID}}"'} >> AppStoreConnectAPIKey.json
-          echo {'"key"':'"${{secrets.APP_STORE_CONNECT_API_KEY_KEY}}"'} >> AppStoreConnectAPIKey.json
-
-      - name: Deploy alpha to Apple Appstore
-        run: |
-          cd ios
-          fastlane beta
-        env:
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
       - name: Deploy alpha to Google Playstore
         run: |
