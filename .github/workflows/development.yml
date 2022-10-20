@@ -13,12 +13,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          repository: FaceTheFacts/face-the-facts-app
-      - uses: actions/checkout@v3
-        with:
-          repository: FaceTheFacts/fastlane-ios
-          token: ${{ secrets.PAT }}
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
@@ -35,7 +29,7 @@ jobs:
       - name: Create ios/fastlane/.env.default
         run: |
           cd ios/fastlane
-          echo {MATCH_GIT_BASIC_AUTHORIZATION='"${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}"'} >> .env.default
+          echo {MATCH_GIT_BASIC_AUTHORIZATION='"${{ secrets.PAT }}"'} >> .env.default
           echo {MATCH_USERNAME='"${{ secrets.MATCH_USERNAME }}"'} >> .env.default
           echo {MATCH_PASSWORD='"${{ secrets.MATCH_PASSWORD }}"'} >> .env.default
           echo {APP_STORE_CONNECT_API_KEY_KEY_ID='"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}"'} >> .env.default
