@@ -37,6 +37,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          repository: FaceTheFacts/fastlane-ios.git
+          token: ${{secrets.PAT}}
+          path: FaceTheFacts/fastlane-ios.git
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
