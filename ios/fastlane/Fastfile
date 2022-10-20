@@ -41,6 +41,19 @@ platform :ios do
     )
   end
 
+  desc "Initialize fastlane and match to work with github actions"
+  lane :init_ci do
+    github_action(
+      api_token: ENV["MATCH_GITHUB_API_TOKEN"],
+      org: "FaceTheFacts",
+      repo: "face-the-facts-app",
+      match_org: "FaceTheFacts",
+      match_repo: "fastlane-ios",
+      dotenv_paths: ["fastlane/.env.default"]
+    )
+  end
+
+
 
   lane :beta do
     sync_code_signing(
