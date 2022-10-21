@@ -46,7 +46,7 @@ jobs:
           echo {'"issuer_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"'} >> AppStoreConnectAPIKey.json
           echo {'"key"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"'} >> AppStoreConnectAPIKey.json
 
-      - name: fastlane
+      - name: Deploy beta to App Store
         env:
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION  }}
           MATCH_DEPLOY_KEY: ${{ secrets.MATCH_DEPLOY_KEY  }}
@@ -59,7 +59,8 @@ jobs:
           MATCH_READONLY: true
         run: |
           eval "$(ssh-agent -s)"
-          ssh-add - <<< "${MATCH_DEPLOY_KEY}"
+          ssh-add - <<<"${MATCH_DEPLOY_KEY}"
+          cd ios
           bundle exec fastlane beta
 
   deployment_android:
