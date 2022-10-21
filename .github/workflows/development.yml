@@ -46,12 +46,21 @@ jobs:
           echo {'"issuer_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"'} >> AppStoreConnectAPIKey.json
           echo {'"key"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"'} >> AppStoreConnectAPIKey.json
 
-      - name: Test ci plugin
+      - name: fastlane
         env:
-          MATCH_GITHUB_API_TOKEN: '${{ secrets.MATCH_GITHUB_API_TOKEN }}'
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION  }}
+          MATCH_DEPLOY_KEY: ${{ secrets.MATCH_DEPLOY_KEY  }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD  }}
+          MATCH_USERNAME: ${{ secrets.MATCH_USERNAME  }}
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID  }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID  }}
+          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY  }}
+          GIT_SSH_COMMAND: 'ssh -o StrictHostKeyChecking=no'
+          MATCH_READONLY: true
         run: |
-          cd ios
-          bundle exec fastlane beta --verbose
+          eval "$(ssh-agent -s)"
+          ssh-add - <<< "${MATCH_DEPLOY_KEY}"
+          bundle exec fastlane beta
 
   deployment_android:
     runs-on: ubuntu-latest
