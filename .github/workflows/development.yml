@@ -60,7 +60,7 @@ jobs:
           MATCH_GITHUB_API_TOKEN: '${{ secrets.MATCH_GITHUB_API_TOKEN }}'
         run: |
           cd ios
-          bundle exec fastlane init_ci
+          bundle exec fastlane beta --verbose
 
   deployment_android:
     runs-on: ubuntu-latest
