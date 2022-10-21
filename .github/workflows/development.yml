@@ -61,7 +61,8 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add - <<<"${MATCH_DEPLOY_KEY}"
           cd ios
-          bundle exec fastlane beta
+          pod install
+          bundle exec fastlane beta --verbose
 
   deployment_android:
     runs-on: ubuntu-latest
@@ -117,4 +118,4 @@ jobs:
       - name: Deploy alpha to Google Playstore
         run: |
           cd android
-          bundle exec fastlane alpha
+          bundle exec fastlane alpha --verbose
