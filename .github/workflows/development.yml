@@ -24,15 +24,6 @@ jobs:
       - name: Install Ruby Dependencies
         run: cd ios && bundle install
 
-      - name: Match Repo Clone Test (please delete this)
-        env:
-          GIT_SSH_COMMAND: 'ssh -o StrictHostKeyChecking=no'
-        run: |
-          eval "$(ssh-agent -s)"
-          ssh-add - <<<"${{ secrets.MATCH_DEPLOY_KEY }}"
-          git clone git@github.com:FaceTheFacts/fastlane-ios.git
-          ls fastlane-ios
-
       - name: Install packages
         run: yarn install
 
