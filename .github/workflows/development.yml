@@ -46,6 +46,7 @@ jobs:
           echo {APP_STORE_CONNECT_API_KEY_ISSUER_ID='"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"'} >> .env.default
           echo {APP_STORE_CONNECT_API_KEY_KEY='"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"'} >> .env.default
           echo {MATCH_DEPLOY_KEY='"${{ secrets.MATCH_DEPLOY_KEY }}"'} >> .env.default
+          echo {MATCH_GITHUB_API_TOKEN='"${{ secrets.MATCH_GITHUB_API_TOKEN }}"'} >> .env.default
 
       - name: Create ios/fastlane/AppStoreConnectAPIKey.json
         run: |
