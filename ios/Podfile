@@ -5,7 +5,9 @@ platform :ios, '11.0'
 
 target 'FaceTheFacts' do
   config = use_native_modules!
-
+  
+  pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [ 'TextDetector', 'FaceDetectorMLKit' ]
+  
   use_react_native!(
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
@@ -19,7 +21,7 @@ target 'FaceTheFacts' do
     # Pods for testing
   end
 
-  pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [ 'TextDetector', 'FaceDetectorMLKit' ]
+  
 
   # Enables Flipper.
   #
