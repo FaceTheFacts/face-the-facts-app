@@ -39,6 +39,14 @@ Synchronize all appstore certificates
 
 Register new devices
 
+### ios init_ci
+
+```sh
+[bundle exec] fastlane ios init_ci
+```
+
+Initialize fastlane and match to work with github actions
+
 ### ios beta
 
 ```sh
