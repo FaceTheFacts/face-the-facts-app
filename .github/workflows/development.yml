@@ -18,8 +18,11 @@ jobs:
           node-version: '12.x'
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0'
+          ruby-version: '2.6.8'
           bundler-cache: true
+
+      - name: Install Ruby Dependencies
+        run: cd ios && bundle install
 
       - name: Match Repo Clone Test (please delete this)
         env:
