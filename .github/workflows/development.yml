@@ -13,16 +13,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '16.0'
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.6.8'
           bundler-cache: true
 
       - name: Install Ruby Dependencies
-        run: cd ios && bundle install
+        run: cd ios && bundle install && bundle update fastlane
 
       - name: Install packages
         run: yarn install
@@ -78,15 +78,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '16.0'
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
 
       - name: Build install
-        run: cd android && bundle install
+        run: cd ios && bundle install && bundle update fastlane
 
       - name: Install packages
         run: yarn install
@@ -121,7 +121,7 @@ jobs:
         run: echo "[]" >> data.json
 
       - name: Create env.json
-        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
+        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"'} >> env.json
 
       - name: Deploy alpha to Google Playstore
         run: |
