@@ -114,6 +114,7 @@ const Dashboard = () => {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{paddingRight: 24}}
             style={styles.scrollContainer}>
             {partydonations.map((partydonation, index) => (
               <PartyDonationCard
