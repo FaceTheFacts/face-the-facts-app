@@ -66,6 +66,7 @@ platform :ios do
       verbose: true,
       git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"]
     )
+    unlock_keychain()
     build_ios_app(
       workspace: "FaceTheFacts.xcworkspace",
       scheme: "FaceTheFacts",
