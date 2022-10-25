@@ -86,7 +86,7 @@ jobs:
           ruby-version: '3.0'
 
       - name: Build install
-        run: cd ios && bundle install && bundle update fastlane
+        run: cd android && bundle install && bundle update fastlane
 
       - name: Install packages
         run: yarn install
