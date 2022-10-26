@@ -28,7 +28,7 @@ const PoliticianCard = ({
         <PoliticianPicture politicianId={politicianId} size={48} />
         <View style={styles.info}>
           <Text style={styles.nameText}>{politicianName}</Text>
-          <PartyTag party={party} />
+          <PartyTag party={party.party_style} />
         </View>
       </View>
       {vote && (
