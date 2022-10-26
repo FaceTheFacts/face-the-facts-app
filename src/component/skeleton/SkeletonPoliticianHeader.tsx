@@ -23,7 +23,7 @@ const SkeletonPoliticianHeader = ({
       <View style={styles.rightContainer}>
         <Text style={styles.name}>{politicianName}</Text>
         <Wrap spacing={4}>
-          <PartyTag party={party} />
+          <PartyTag party={party.party_style} />
         </Wrap>
       </View>
     </View>

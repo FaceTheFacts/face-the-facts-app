@@ -23,7 +23,7 @@ const PoliticianHeader = () => {
       <View style={styles.rightContainer}>
         <Text style={styles.name}>{politician.profile.label}</Text>
         <Wrap spacing={4}>
-          <PartyTag party={politician.profile.party} />
+          <PartyTag party={politician.profile.party.party_style} />
           {politician.profile.occupations?.map((occupation, index) => (
             <Tag key={index} content={occupation} />
           ))}

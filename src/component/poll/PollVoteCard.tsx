@@ -274,7 +274,7 @@ const PollVoteCard = ({pollData}: PollVoteCardProps) => {
                   <PoliticianPicture politicianId={politician.id} size={48} />
                   <View style={styles.content}>
                     <Text style={styles.name}>{politician.label}</Text>
-                    <PartyTag party={politician.party} />
+                    <PartyTag party={politician.party.party_style} />
                   </View>
                   <View style={styles.voteContainer}>
                     <VoteTag vote={voteTags[index]} />

@@ -42,7 +42,7 @@ const PoliticianItem = ({
       <PoliticianPicture politicianId={politicianId} size={48} />
       <View style={styles.content}>
         <Text style={styles.name}>{politicianName}</Text>
-        <PartyTag party={party} />
+        <PartyTag party={party.party_style} />
       </View>
     </TouchableOpacity>
   );
