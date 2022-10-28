@@ -499,8 +499,8 @@ export function getPosition(position: PositionAnswer) {
 
 // Party Donation related util functions
 
-export function averageDonations(donations_sum: number) {
-  const average = Math.floor(donations_sum / 8);
+export function averageDonations(donations_sum: number, years: number) {
+  const average = Math.floor(donations_sum / years);
   return average.toLocaleString('de-DE');
 }
 
