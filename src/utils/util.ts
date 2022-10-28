@@ -32,6 +32,7 @@ import {
   ApiPartyStyle,
   ApiPollResult,
   GroupedPartyDonations,
+  PartyDonation,
   PartyDonationWithPartyStyle,
   PositionAnswer,
   TopicIcon,
@@ -534,4 +535,56 @@ export function groupByMonth(donations: PartyDonationWithPartyStyle[]) {
   const end = performance.now();
   console.log('grouped', end - start);
   return Object.values(grouped);
+}
+
+export function groupByMonth(donations: PartyDonationWithPartyStyle[]) {
+  const start = performance.now();
+  const grouped = donations.reduce((acc, donation) => {
+    const month = donation.date.slice(5, 7);
+    const year = donation.date.slice(0, 4);
+    const key = `${year}-${month}`;
+    if (!acc[key]) {
+      acc[key] = {
+        month: monthMap[month],
+        sum: 0,
+        sorted_donations: [],
+      };
+    }
+    acc[key].sorted_donations.push(donation);
+    acc[key].sum += donation.amount;
+    return acc;
+  }, {} as Record<string, GroupedPartyDonations>);
+  const end = performance.now();
+  console.log('grouped', end - start);
+  return Object.values(grouped);
+}
+
+export function sortByDate(donations: PartyDonationWithPartyStyle[]) {
+  const start = performance.now();
+  const sorted = donations.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB.getTime() - dateA.getTime();
+  });
+  const end = performance.now();
+  console.log('sorted', end - start);
+  return sorted;
+}
+
+export function appendPartyStyleToDonation(
+  party_style: ApiPartyStyle,
+  donations: PartyDonation[],
+) {
+  const start = performance.now();
+  const donationWithPartyStyle: PartyDonationWithPartyStyle[] = donations.map(
+    donation => {
+      return {
+        ...donation,
+        party_style,
+      };
+    },
+  );
+  const end = performance.now();
+  console.log('appendPartyStyleToDonation', end - start);
+  return donationWithPartyStyle;
 }
