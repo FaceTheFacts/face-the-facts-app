@@ -538,28 +538,6 @@ export function groupByMonth(donations: PartyDonationWithPartyStyle[]) {
   return Object.values(grouped);
 }
 
-export function groupByMonth(donations: PartyDonationWithPartyStyle[]) {
-  const start = performance.now();
-  const grouped = donations.reduce((acc, donation) => {
-    const month = donation.date.slice(5, 7);
-    const year = donation.date.slice(0, 4);
-    const key = `${year}-${month}`;
-    if (!acc[key]) {
-      acc[key] = {
-        month: monthMap[month],
-        sum: 0,
-        sorted_donations: [],
-      };
-    }
-    acc[key].sorted_donations.push(donation);
-    acc[key].sum += donation.amount;
-    return acc;
-  }, {} as Record<string, GroupedPartyDonations>);
-  const end = performance.now();
-  console.log('grouped', end - start);
-  return Object.values(grouped);
-}
-
 export function sortByDate(donations: PartyDonationWithPartyStyle[]) {
   const start = performance.now();
   const sorted = donations.sort((a, b) => {
@@ -675,4 +653,32 @@ export function getDonationAveragePerYear(
   const end = performance.now();
   console.log('getDonationAveragePerYear', end - start);
   return average;
+}
+
+export function getAverageDonation(
+  donations: ApiPartyDonationDetails,
+  selection: number,
+) {
+  const start = performance.now();
+  let allDonations: PartyDonation[] = [];
+  for (const key in donations) {
+    if (selection < 1) {
+    }
+    // selection 1 = donations less than 8 years old
+    if (selection < 2) {
+    }
+    // selection 2 donations lett than 4 years old
+    if (selection < 3) {
+      allDonations = allDonations.concat(
+        donations[key].donations_less_than_4_years_old,
+      );
+    }
+  }
+  const sum = allDonations.reduce((acc, donation) => {
+    return acc + donation.amount;
+  }, 0);
+  const average = Math.floor(sum / allDonations.length);
+  const end = performance.now();
+  console.log('getAverageDonation', end - start);
+  return average.toLocaleString('de-DE');
 }
