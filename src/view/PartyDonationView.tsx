@@ -6,20 +6,30 @@ import {
   TouchableOpacity,
   SafeAreaView,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import Icon from '../component/Icon';
 import BackButton from '../component/BackButton';
-import {ApiPoliticianContext, ApiBundestagPartyDonation} from '../logic/api';
+import {ApiBundestagPartyDonation, ApiPartyDonationDetails} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
-import {ClearIcon, FilterIcon} from '../icons';
+import {FilterIcon} from '../icons';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import ErrorCard from '../component/Error';
 import {LineChart} from 'react-native-chart-kit';
 import PartyTag from '../component/PartyTag';
+import {
+  formatDate,
+  getAverageDonation,
+  getDonationAveragePerYear,
+  getDonationsSum,
+  getLargestDonor,
+  groupAndSortDonations,
+  round,
+} from '../utils/util';
 
 export interface PartyDonationViewProps {
   route: RouteProp<{params: PartyDonationViewParams}, 'params'>;
@@ -30,17 +40,13 @@ type PartyDonationViewParams = {
 };
 
 const PartyDonationView = ({route}: PartyDonationViewProps) => {
-  const [filter, setFilter] = useState<number[]>([]);
-  const [filterQuery, setFilterQuery] = useState<string>('');
-  const modal = useRef<Modalize>(null);
-  useEffect(() => {
-    let query = '';
-    filter.forEach(filterItem => {
-      query += `filters=${filterItem + 1}&`;
-    });
-    setFilterQuery(query);
-  }, [filter]);
-
+  const screenWidth = useWindowDimensions().width;
+  // selection == 2 -> show donations of past 4 years
+  // selection == 1 -> show donations of past 8 years
+  // selection == 0 -> show donations of all time
+  // TO DO Rename it to time frame
+  const [selection, setSelection] = useState<number>(2);
+  console.log('Render');
   /* const chartConfig = {
     backgroundGradientFrom: Colors.background,
     backgroundGradientTo: Colors.background,
@@ -52,9 +58,9 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
     data: partydonations,
     isLoading: partydonationsLoading,
     isError: partydonationsError,
-  } = useQuery<ApiBundestagPartyDonation[] | undefined, Error>(
-    'partdonations: Bundestag',
-    () => fetch_api<ApiBundestagPartyDonation[]>('homepagepartydonations'),
+  } = useQuery<ApiPartyDonationDetails | undefined, Error>(
+    'partdonation details',
+    () => fetch_api<ApiPartyDonationDetails>('partydonationsdetails'),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,
@@ -63,6 +69,11 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
 
   if (partydonationsError) {
     return <ErrorCard />;
+  }
+
+  if (partydonationsLoading) {
+    // To Do: Loading Screen
+    return <Text>Loading...</Text>;
   }
 
   return (
@@ -75,10 +86,48 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Parteispenden Bundestag</Text>
         </View>
+        <View style={{flex: 1}}></View>
       </View>
       <ScrollView style={styles.container}>
         <View style={styles.filterCategoryContainer}>
-          <Text style={{color: 'white'}}>4 Jahre 8 Jahre Allzeit</Text>
+          <View style={styles.timeframeContainer}>
+            <TouchableOpacity
+              style={selection === 2 ? styles.timeframeButtonActive : {}}
+              onPress={() => setSelection(2)}>
+              <Text
+                style={[
+                  selection === 2
+                    ? styles.timeframeActive
+                    : styles.timeframeText,
+                ]}>
+                4 Jahre
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={selection === 1 ? styles.timeframeButtonActive : {}}
+              onPress={() => setSelection(1)}>
+              <Text
+                style={[
+                  selection === 1
+                    ? styles.timeframeActive
+                    : styles.timeframeText,
+                ]}>
+                8 Jahre
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={selection === 0 ? styles.timeframeButtonActive : {}}
+              onPress={() => setSelection(0)}>
+              <Text
+                style={[
+                  selection === 0
+                    ? styles.timeframeActive
+                    : styles.timeframeText,
+                ]}>
+                Allzeit
+              </Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity
             style={styles.filterBtn}
             onPress={() => modal.current?.open()}>
@@ -86,38 +135,12 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
             <Text style={styles.filterText}>Filtern</Text>
           </TouchableOpacity>
         </View>
-        {partydonations && partydonations.length > 0 && (
+        {/* {partydonations && (
           <View>
             <LineChart
               data={{
                 labels: [],
-                datasets: [
-                  {
-                    data: partydonations[0].donations_over_96_months,
-                    color: () =>
-                      partydonations[0].party.party_style.background_color,
-                  },
-                  {
-                    data: partydonations[1].donations_over_96_months,
-                    color: () =>
-                      partydonations[1].party.party_style.background_color,
-                  },
-                  {
-                    data: partydonations[2].donations_over_96_months,
-                    color: () =>
-                      partydonations[2].party.party_style.background_color,
-                  },
-                  {
-                    data: partydonations[3].donations_over_96_months,
-                    color: () =>
-                      partydonations[3].party.party_style.background_color,
-                  },
-                  {
-                    data: partydonations[4].donations_over_96_months,
-                    color: () =>
-                      partydonations[4].party.party_style.background_color,
-                  },
-                ],
+                datasets: [],
               }}
               width={315}
               height={180}
@@ -147,59 +170,87 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
             />
             <View style={styles.dateContainer}>
               {/*  <Text style={styles.dateText}>2014</Text>
-              <Text style={styles.dateText}>2022</Text> */}
+              <Text style={styles.dateText}>2022</Text> 
+            </View>
+          </View>
+        )}*/}
+        <View style={styles.separatorLine} />
+        {partydonations && (
+          <View>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{color: 'white'}}>Gesamtspenden</Text>
+              <Text style={{color: Colors.white70}}>
+                {getDonationsSum(partydonations, 2)} €
+              </Text>
+            </View>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{color: 'white'}}>Ø Spenden/Jahr</Text>
+              <Text style={{color: Colors.white70}}>
+                {getDonationAveragePerYear(partydonations, 2)} €
+              </Text>
+            </View>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{color: 'white'}}>Ø Spende</Text>
+              <Text style={{color: Colors.white70}}>
+                {getAverageDonation(partydonations, 2)} €
+              </Text>
+            </View>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{color: 'white', marginRight: 8}}>
+                Größter Spender
+              </Text>
+              <Text
+                style={{
+                  color: Colors.white70,
+                  justifyContent: 'flex-end',
+                  textAlign: 'right',
+                  maxWidth: screenWidth * 0.65,
+                }}>
+                {getLargestDonor(partydonations, selection)}
+              </Text>
             </View>
           </View>
         )}
         <View style={styles.separatorLine} />
-        <View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={{color: 'white'}}>Gesamtspenden</Text>
-            <Text style={{color: Colors.white70}}>7.578.513 €</Text>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={{color: 'white'}}>Ø Spenden/Jahr</Text>
-            <Text style={{color: Colors.white70}}>306.538 €</Text>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={{color: 'white'}}>Ø Spende</Text>
-            <Text style={{color: Colors.white70}}>75.523 €</Text>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={{color: 'white'}}>Größter Spender</Text>
-            <Text style={{color: Colors.white70}}>
-              Max Mustermann aus Frankfurt
-            </Text>
-          </View>
-        </View>
-        <View style={styles.separatorLine} />
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={styles.monthContainer}>
-            <Text style={styles.month}>September</Text>
-          </View>
-          <View style={{alignItems: 'center'}}>
-            <Text style={{color: 'white'}}>Gesamt</Text>
-            <Text style={{color: Colors.white70}}>208.000 €</Text>
-          </View>
-        </View>
-        {partydonations?.map((partydonations, index) => (
-          <View key={index} style={styles.card}>
-            <View style={styles.cardContainer}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={styles.dateText}>12.10.2021</Text>
-                <Text style={styles.sum}>52.000€</Text>
+        {partydonations &&
+          groupAndSortDonations(partydonations, selection).map(
+            (groupedDonations, index1) => (
+              <View key={index1}>
+                <View style={styles.cardHeader}>
+                  <View style={styles.monthContainer}>
+                    <Text style={styles.month}>{groupedDonations.month}</Text>
+                  </View>
+                  <View style={styles.totalContainer}>
+                    <Text style={styles.total}>Gesamt</Text>
+                    <Text style={styles.dateText}>
+                      {round(groupedDonations.sum, 0).toLocaleString('de-DE')} €
+                    </Text>
+                  </View>
+                </View>
+                {groupedDonations.sorted_donations.map((donation, index2) => (
+                  <View style={styles.donationCard} key={index2}>
+                    <View style={styles.donationCardHeader}>
+                      <Text style={styles.dateText}>
+                        {formatDate(donation.date)}
+                      </Text>
+                      <Text style={styles.sum}>
+                        {round(donation.amount, 0).toLocaleString('de-DE')} €
+                      </Text>
+                    </View>
+                    <Text style={[styles.orgText, {width: 0.7 * screenWidth}]}>
+                      {donation.party_donation_organization.donor_name} aus{' '}
+                      {donation.party_donation_organization.donor_city}
+                    </Text>
+                    <PartyTag party={donation.party_style} />
+                  </View>
+                ))}
               </View>
-              <Text style={styles.orgText}>
-                Günter Slave-Goldschmidt aus Dresden-Neustadt
-              </Text>
-              <PartyTag party={partydonations.party} />
-            </View>
-          </View>
-        ))}
+            ),
+          )}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />
 
@@ -225,6 +276,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
     height: 60,
     backgroundColor: Colors.cardBackground,
@@ -235,7 +287,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    flex: 2,
+    flex: 4,
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -254,6 +306,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
   },
+  timeframeButtonActive: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 8,
+  },
   filterText: {
     fontSize: 13,
     fontWeight: '600',
@@ -262,9 +318,22 @@ const styles = StyleSheet.create({
   filterCategoryContainer: {
     backgroundColor: Colors.background,
     flexDirection: 'row',
-    paddingHorizontal: 12,
     paddingVertical: 12,
     justifyContent: 'space-between',
+  },
+  timeframeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: 192,
+  },
+  timeframeText: {
+    color: Colors.white40,
+    margin: 8,
+  },
+  timeframeActive: {
+    color: Colors.baseWhite,
+    margin: 8,
   },
   dateContainer: {
     flexDirection: 'row',
@@ -273,7 +342,7 @@ const styles = StyleSheet.create({
 
   dateText: {
     fontSize: 11,
-    lineHeight: 13.31,
+    lineHeight: 13,
     color: Colors.white70,
   },
   categoryBtn: {
@@ -319,13 +388,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   monthContainer: {
     backgroundColor: Colors.cardBackground,
     borderRadius: 8,
     alignSelf: 'flex-start',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    marginVertical: 6,
+    marginVertical: 4,
   },
   month: {
     textAlign: 'center',
@@ -336,28 +409,41 @@ const styles = StyleSheet.create({
     color: Colors.foreground,
     textTransform: 'uppercase',
   },
+  totalContainer: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
   cardContainer: {
     flex: 1,
   },
+  total: {
+    fontSize: 11,
+    lineHeight: 13,
+    fontWeight: '400',
+    color: Colors.baseWhite,
+  },
   sum: {
-    marginTop: 2,
     fontSize: 13,
-    lineHeight: 15.73,
+    lineHeight: 16,
     fontWeight: '400',
     color: Colors.baseWhite,
   },
   orgText: {
-    marginVertical: 5,
-    fontSize: 11,
-    lineHeight: 13.31,
+    fontSize: 13,
+    lineHeight: 16,
     fontWeight: '400',
     color: Colors.white70,
+    marginBottom: 8,
   },
-  card: {
+  donationCard: {
     borderRadius: 8,
     backgroundColor: Colors.cardBackground,
     padding: 12,
-    marginVertical: 8,
+    marginVertical: 4,
+  },
+  donationCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 
