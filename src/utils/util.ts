@@ -31,6 +31,8 @@ import {
 import {
   ApiPartyStyle,
   ApiPollResult,
+  GroupedPartyDonations,
+  PartyDonationWithPartyStyle,
   PositionAnswer,
   TopicIcon,
 } from '../logic/api';
@@ -510,4 +512,26 @@ export function round(value: number, decimals: number) {
 
 export function getSumUpDonationsInMillion(donations_sum: number) {
   return round(donations_sum / 1000000, 2);
+}
+
+export function groupByMonth(donations: PartyDonationWithPartyStyle[]) {
+  const start = performance.now();
+  const grouped = donations.reduce((acc, donation) => {
+    const month = donation.date.slice(5, 7);
+    const year = donation.date.slice(0, 4);
+    const key = `${year}-${month}`;
+    if (!acc[key]) {
+      acc[key] = {
+        month: monthMap[month],
+        sum: 0,
+        sorted_donations: [],
+      };
+    }
+    acc[key].sorted_donations.push(donation);
+    acc[key].sum += donation.amount;
+    return acc;
+  }, {} as Record<string, GroupedPartyDonations>);
+  const end = performance.now();
+  console.log('grouped', end - start);
+  return Object.values(grouped);
 }
