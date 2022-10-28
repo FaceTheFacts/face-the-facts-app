@@ -703,3 +703,35 @@ export function getSumOfEachOrg(donations: PartyDonation[]) {
   console.log('getSumOfEachOrg', end - start);
   return sorted[0];
 }
+
+export function getLargestDonor(
+  donations: ApiPartyDonationDetails,
+  selection: number,
+) {
+  // start timer
+  const start = performance.now();
+  let allDonations: PartyDonation[] = [];
+  for (const key in donations) {
+    if (selection < 1) {
+    }
+    // selection 1 = donations less than 8 years old
+    if (selection < 2) {
+    }
+    // selection 2 donations lett than 4 years old
+    if (selection < 3) {
+      allDonations = allDonations.concat(
+        donations[key].donations_less_than_4_years_old,
+      );
+    }
+  }
+  const largestDonor = getSumOfEachOrg(allDonations);
+  // end timer
+  const end = performance.now();
+  console.log('getLargestDonor', end - start);
+  return (
+    largestDonor.organization.donor_name +
+    ' mit ' +
+    round(largestDonor.sum / 1000000, 2) +
+    ' Mio €'
+  );
+}
