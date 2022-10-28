@@ -29,6 +29,7 @@ import {
   TrafficIcon,
 } from '../icons';
 import {
+  ApiPartyDonationDetails,
   ApiPartyStyle,
   ApiPollResult,
   GroupedPartyDonations,
@@ -587,4 +588,34 @@ export function appendPartyStyleToDonation(
   const end = performance.now();
   console.log('appendPartyStyleToDonation', end - start);
   return donationWithPartyStyle;
+}
+export function groupAndSortDonations(
+  donations: ApiPartyDonationDetails,
+  selection: number,
+) {
+  const start = performance.now();
+  let allDonations: PartyDonationWithPartyStyle[] = [];
+
+  for (const party in donations) {
+    // selection 0 = all donations
+    if (selection < 1) {
+    }
+    // selection 1 = donations less than 8 years old
+    if (selection < 2) {
+    }
+    // selection 2 donations lett than 4 years old
+    if (selection < 3) {
+      let donationWithPartyStyle: PartyDonationWithPartyStyle[] =
+        appendPartyStyleToDonation(
+          donations[party].party_style,
+          donations[party].donations_less_than_4_years_old,
+        );
+      allDonations = allDonations.concat(donationWithPartyStyle);
+    }
+  }
+  allDonations = sortByDate(allDonations);
+  const groupedDonations = groupByMonth(allDonations);
+  const end = performance.now();
+  console.log('groupAndSortDonations took ' + (end - start) + ' seconds.');
+  return groupedDonations;
 }
