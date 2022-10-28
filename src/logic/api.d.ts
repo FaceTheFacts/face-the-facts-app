@@ -152,6 +152,42 @@ export interface ApiBundestagPartyDonation {
   donations_total: number;
 }
 
+export interface ApiPartyDonationDetails {
+  [key: string]: PartyDonationDetails;
+}
+
+export interface PartyDonationDetails {
+  party_style: ApiPartyStyle;
+  donations_older_than_8_years: PartyDonation[];
+  donations_4_to_8_years_old: PartyDonation[];
+  donations_less_than_4_years_old: PartyDonation[];
+}
+
+export interface PartyDonation {
+  id: number;
+  amount: number;
+  date: string;
+  party_donation_organization: ApiPartyDonationOrganization;
+}
+
+export interface PartyDonationWithPartyStyle extends PartyDonation {
+  party_style: ApiPartyStyle;
+}
+
+export interface GroupedPartyDonations {
+  month: string;
+  sum: number;
+  sorted_donations: PartyDonationWithPartyStyle[];
+}
+
+export interface ApiPartyDonationOrganization {
+  id: number;
+  donor_name: string;
+  donor_address: string;
+  donor_zip: string;
+  donor_city: string;
+  donor_foreign: boolean;
+}
 export interface ApiPositions {
   id: number;
   positions: ApiPosition[];
