@@ -32,7 +32,7 @@ const PartyDonationCard = ({
       <View style={styles.container}>
         <View style={styles.header} />
         <View style={styles.politicianContainer}>
-          <PartyTag party={party} />
+          <PartyTag party={party.party_style} />
           <View style={styles.info}>
             <Text style={styles.nameText}>Gesamt</Text>
             <Text style={styles.totalAmount}>
@@ -69,7 +69,7 @@ const PartyDonationCard = ({
         <View style={styles.separatorLine} />
         <View>
           <Text style={styles.averageText}>
-            Ø {averageDonations(donations_total)} € / Jahr
+            Ø {averageDonations(donations_total, 8)} € / Jahr
           </Text>
         </View>
       </View>
