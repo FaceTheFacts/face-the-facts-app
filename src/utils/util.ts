@@ -682,3 +682,24 @@ export function getAverageDonation(
   console.log('getAverageDonation', end - start);
   return average.toLocaleString('de-DE');
 }
+
+export function getSumOfEachOrg(donations: PartyDonation[]) {
+  const start = performance.now();
+  const grouped = donations.reduce((acc, donation) => {
+    const key = donation.party_donation_organization.id;
+    if (!acc[key]) {
+      acc[key] = {
+        organization: donation.party_donation_organization,
+        sum: 0,
+      };
+    }
+    acc[key].sum += donation.amount;
+    return acc;
+  }, {} as Record<string, any>);
+  const sorted = Object.values(grouped).sort((a, b) => {
+    return b.sum - a.sum;
+  });
+  const end = performance.now();
+  console.log('getSumOfEachOrg', end - start);
+  return sorted[0];
+}
