@@ -619,3 +619,30 @@ export function groupAndSortDonations(
   console.log('groupAndSortDonations took ' + (end - start) + ' seconds.');
   return groupedDonations;
 }
+
+export function getDonationsSum(
+  donations: ApiPartyDonationDetails,
+  selection: number,
+) {
+  const start = performance.now();
+  let allDonations: PartyDonation[] = [];
+  for (const key in donations) {
+    if (selection < 1) {
+    }
+    // selection 1 = donations less than 8 years old
+    if (selection < 2) {
+    }
+    // selection 2 donations lett than 4 years old
+    if (selection < 3) {
+      allDonations = allDonations.concat(
+        donations[key].donations_less_than_4_years_old,
+      );
+    }
+  }
+  const sum = allDonations.reduce((acc, donation) => {
+    return acc + donation.amount;
+  }, 0);
+  const end = performance.now();
+  console.log('getDonationsSum', end - start);
+  return round(sum, 0).toLocaleString('de-DE');
+}
