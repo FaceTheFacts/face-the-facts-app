@@ -646,3 +646,33 @@ export function getDonationsSum(
   console.log('getDonationsSum', end - start);
   return round(sum, 0).toLocaleString('de-DE');
 }
+
+export function getDonationAveragePerYear(
+  donations: ApiPartyDonationDetails,
+  selection: number,
+) {
+  const start = performance.now();
+  let allDonations: PartyDonation[] = [];
+  let year: number = 1;
+  for (const key in donations) {
+    if (selection < 1) {
+    }
+    // selection 1 = donations less than 8 years old
+    if (selection < 2) {
+    }
+    // selection 2 donations lett than 4 years old
+    if (selection < 3) {
+      year = 4;
+      allDonations = allDonations.concat(
+        donations[key].donations_less_than_4_years_old,
+      );
+    }
+  }
+  const sum = allDonations.reduce((acc, donation) => {
+    return acc + donation.amount;
+  }, 0);
+  const average = averageDonations(sum, year);
+  const end = performance.now();
+  console.log('getDonationAveragePerYear', end - start);
+  return average;
+}
