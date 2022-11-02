@@ -34,7 +34,6 @@ import {
   ApiPollResult,
   GroupedPartyDonations,
   PartyDonation,
-  PartyDonationWithPartyStyle,
   PositionAnswer,
   TopicIcon,
 } from '../logic/api';
@@ -433,7 +432,7 @@ export function getSumUpDonationsInMillion(donations_sum: number) {
   return round(donations_sum / 1000000, 2);
 }
 
-export function groupByMonth(donations: PartyDonationWithPartyStyle[]) {
+export function groupByMonth(donations: PartyDonation[]) {
   const start = performance.now();
   const grouped = donations.reduce((acc, donation) => {
     const month = donation.date.slice(5, 7);
@@ -455,7 +454,7 @@ export function groupByMonth(donations: PartyDonationWithPartyStyle[]) {
   return Object.values(grouped);
 }
 
-export function sortByDate(donations: PartyDonationWithPartyStyle[]) {
+export function sortByDate(donations: PartyDonation[]) {
   const start = performance.now();
   const sorted = donations.sort((a, b) => {
     const dateA = new Date(a.date);
@@ -466,30 +465,12 @@ export function sortByDate(donations: PartyDonationWithPartyStyle[]) {
   console.log('sorted', end - start);
   return sorted;
 }
-
-export function appendPartyStyleToDonation(
-  party_style: ApiPartyStyle,
-  donations: PartyDonation[],
-) {
-  const start = performance.now();
-  const donationWithPartyStyle: PartyDonationWithPartyStyle[] = donations.map(
-    donation => {
-      return {
-        ...donation,
-        party_style,
-      };
-    },
-  );
-  const end = performance.now();
-  console.log('appendPartyStyleToDonation', end - start);
-  return donationWithPartyStyle;
-}
 export function groupAndSortDonations(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
   const start = performance.now();
-  let allDonations: PartyDonationWithPartyStyle[] = [];
+  let allDonations: PartyDonation[] = [];
 
   for (const party in donations) {
     // selection 0 = all donations
@@ -500,12 +481,9 @@ export function groupAndSortDonations(
     }
     // selection 2 donations lett than 4 years old
     if (selection < 3) {
-      let donationWithPartyStyle: PartyDonationWithPartyStyle[] =
-        appendPartyStyleToDonation(
-          donations[party].party_style,
-          donations[party].donations_less_than_4_years_old,
-        );
-      allDonations = allDonations.concat(donationWithPartyStyle);
+      allDonations = allDonations.concat(
+        donations[party].donations_less_than_4_years_old,
+      );
     }
   }
   allDonations = sortByDate(allDonations);
