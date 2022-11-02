@@ -1,4 +1,5 @@
 import {
+  averageDonations,
   checkPreviousMonth,
   formatDate,
   formatMonth,
@@ -78,4 +79,10 @@ it('given a position, getPosition returns the position statement', () => {
   expect(getPosition('agree')).toBe('Kandidat:in stimmt zu');
   expect(getPosition('disagree')).toBe('Kandidat:in stimmt nicht zu');
   expect(getPosition('neutral')).toBe('Kandidat:in sieht es neutral');
+});
+
+// Testing the averageDonations function
+it('given the sum of donations and the years of donations, averageDonations returns the average donation in the format XX.XXX with out decimal', () => {
+  expect(averageDonations(100000, 2)).toBe('50.000');
+  expect(averageDonations(100000, 3)).toBe('33.333');
 });
