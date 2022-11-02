@@ -29,8 +29,7 @@ const Tag = ({
   const styles = StyleSheet.create({
     container: {
       borderRadius: 4,
-      paddingVertical: borderColor ? 3 : 5,
-      paddingHorizontal: borderColor ? 3 : 5,
+      padding: borderColor ? 3 : 5,
       backgroundColor: backgroundColor,
       borderColor: borderColor,
       borderWidth: borderColor ? 2 : undefined,

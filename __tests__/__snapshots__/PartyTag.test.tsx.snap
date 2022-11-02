@@ -5,7 +5,7 @@ exports[`Party Tag renders correctly 1`] = `
   style={
     Object {
       "alignSelf": "flex-start",
-      "backgroundColor": "#5D6265",
+      "backgroundColor": "rgba(248, 248, 248, 0.12)",
       "borderColor": undefined,
       "borderRadius": 4,
       "borderWidth": undefined,
@@ -17,7 +17,7 @@ exports[`Party Tag renders correctly 1`] = `
   <Text
     style={
       Object {
-        "color": "#FFFFFF",
+        "color": "#F8F8F8",
         "fontFamily": "Inter",
         "fontSize": 13,
         "fontWeight": "600",
@@ -26,8 +26,6 @@ exports[`Party Tag renders correctly 1`] = `
         "textTransform": "none",
       }
     }
-  >
-    test-party
-  </Text>
+  />
 </View>
 `;
