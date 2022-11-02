@@ -1,3 +1,4 @@
+import {ApiPartyDonationDetails, PartyDonation} from '../logic/api';
 import {
   averageDonations,
   checkPreviousMonth,
@@ -10,6 +11,7 @@ import {
   getSumUpDonationsInMillion,
   getWidth,
   round,
+  sortByDate,
 } from './util';
 
 // Testing the formatDate function
@@ -103,4 +105,219 @@ it('given the sum of donations, getSumUpDonationsInMillion returns the rounded s
   expect(getSumUpDonationsInMillion(1000000)).toBe(1);
   expect(getSumUpDonationsInMillion(10000000)).toBe(10);
   expect(getSumUpDonationsInMillion(10000000.65)).toBe(10);
+});
+
+const partyDonationDetailsData: ApiPartyDonationDetails = {
+  '1': {
+    donations_older_than_8_years: [
+      {
+        id: 4,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 100000,
+        date: '2009-01-27',
+        party_donation_organization: {
+          id: 90,
+          donor_name: 'Evonik Industries AG',
+          donor_address: 'Rellinghauser Straße 1-11',
+          donor_zip: '45128',
+          donor_city: 'Essen',
+          donor_foreign: false,
+        },
+      },
+      {
+        id: 8,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 151344.56,
+        date: '2009-02-20',
+        party_donation_organization: {
+          id: 168,
+          donor_name: 'Bayerische Motoren Werke AG',
+          donor_address: 'Petuelring 130',
+          donor_zip: '80788',
+          donor_city: 'München',
+          donor_foreign: false,
+        },
+      },
+    ],
+    donations_4_to_8_years_old: [
+      {
+        id: 151,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 55000,
+        date: '2014-12-18',
+        party_donation_organization: {
+          id: 116,
+          donor_name:
+            'Südwestmetall, Verband der Metall- und Elektroindustrie Baden- Württemberg e.V.',
+          donor_address: 'Löffelstraße 22-24',
+          donor_zip: '70597',
+          donor_city: 'Stuttgart',
+          donor_foreign: false,
+        },
+      },
+      {
+        id: 156,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 100000,
+        date: '2015-05-14',
+        party_donation_organization: {
+          id: 223,
+          donor_name: 'Daimler AG',
+          donor_address: 'Mercedesstraße 137',
+          donor_zip: '70327',
+          donor_city: 'Stuttgart',
+          donor_foreign: false,
+        },
+      },
+    ],
+    donations_less_than_4_years_old: [
+      {
+        id: 273,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 80000,
+        date: '2018-11-08',
+        party_donation_organization: {
+          id: 90,
+          donor_name: 'Evonik Industries AG',
+          donor_address: 'Rellinghauser Straße 1-11',
+          donor_zip: '45128',
+          donor_city: 'Essen',
+          donor_foreign: false,
+        },
+      },
+      {
+        id: 280,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 50001,
+        date: '2018-12-27',
+        party_donation_organization: {
+          id: 11,
+          donor_name:
+            'Verband der Bayerischen Metall- und Elektro-Industrie e.V.',
+          donor_address: 'Max-Joseph-Straße 5',
+          donor_zip: '80333',
+          donor_city: 'München',
+          donor_foreign: false,
+        },
+      },
+    ],
+  },
+};
+
+const sortedSPDPartyDonationsOlderThan8Years: PartyDonation[] = [
+  {
+    id: 8,
+    party: {
+      id: 1,
+      label: 'SPD',
+      party_style: {
+        id: 1,
+        display_name: 'SPD',
+        foreground_color: '#FFFFFF',
+        background_color: '#E95050',
+        border_color: undefined,
+      },
+    },
+    amount: 151344.56,
+    date: '2009-02-20',
+    party_donation_organization: {
+      id: 168,
+      donor_name: 'Bayerische Motoren Werke AG',
+      donor_address: 'Petuelring 130',
+      donor_zip: '80788',
+      donor_city: 'München',
+      donor_foreign: false,
+    },
+  },
+  {
+    id: 4,
+    party: {
+      id: 1,
+      label: 'SPD',
+      party_style: {
+        id: 1,
+        display_name: 'SPD',
+        foreground_color: '#FFFFFF',
+        background_color: '#E95050',
+        border_color: undefined,
+      },
+    },
+    amount: 100000,
+    date: '2009-01-27',
+    party_donation_organization: {
+      id: 90,
+      donor_name: 'Evonik Industries AG',
+      donor_address: 'Rellinghauser Straße 1-11',
+      donor_zip: '45128',
+      donor_city: 'Essen',
+      donor_foreign: false,
+    },
+  },
+];
+
+// Testing the sortByDate function
+it('given a list of partydonations, return a list of partydonations sorty by date in ascending order', () => {
+  expect(
+    sortByDate(partyDonationDetailsData['1'].donations_older_than_8_years),
+  ).toEqual(sortedSPDPartyDonationsOlderThan8Years);
 });
