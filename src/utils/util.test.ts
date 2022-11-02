@@ -7,6 +7,7 @@ import {
   getFractionStyle,
   getLogoPath,
   getPosition,
+  getSumUpDonationsInMillion,
   getWidth,
   round,
 } from './util';
@@ -93,4 +94,13 @@ it('given a number and decimal, round returns the number rounded to the decimal'
   expect(round(1.234, 2)).toBe(1.23);
   expect(round(1.235, 2)).toBe(1.24);
   expect(round(1.234, 0)).toBe(1);
+});
+
+// Testing the getSumUpDonationsInMillion function
+it('given the sum of donations, getSumUpDonationsInMillion returns the rounded sum of donations in million', () => {
+  expect(getSumUpDonationsInMillion(10000)).toBe(0.01);
+  expect(getSumUpDonationsInMillion(100000)).toBe(0.1);
+  expect(getSumUpDonationsInMillion(1000000)).toBe(1);
+  expect(getSumUpDonationsInMillion(10000000)).toBe(10);
+  expect(getSumUpDonationsInMillion(10000000.65)).toBe(10);
 });
