@@ -8,6 +8,7 @@ import {
   getLogoPath,
   getPosition,
   getWidth,
+  round,
 } from './util';
 
 // Testing the formatDate function
@@ -85,4 +86,11 @@ it('given a position, getPosition returns the position statement', () => {
 it('given the sum of donations and the years of donations, averageDonations returns the average donation in the format XX.XXX with out decimal', () => {
   expect(averageDonations(100000, 2)).toBe('50.000');
   expect(averageDonations(100000, 3)).toBe('33.333');
+});
+
+// Testing the round function
+it('given a number and decimal, round returns the number rounded to the decimal', () => {
+  expect(round(1.234, 2)).toBe(1.23);
+  expect(round(1.235, 2)).toBe(1.24);
+  expect(round(1.234, 0)).toBe(1);
 });
