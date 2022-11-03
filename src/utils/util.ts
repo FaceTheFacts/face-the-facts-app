@@ -472,17 +472,23 @@ export function groupAndSortDonations(
   const start = performance.now();
   let allDonations: PartyDonation[] = [];
 
-  for (const party in donations) {
+  for (const partyId in donations) {
     // selection 0 = all donations
     if (selection < 1) {
+      allDonations = allDonations.concat(
+        donations[partyId].donations_older_than_8_years,
+      );
     }
     // selection 1 = donations less than 8 years old
     if (selection < 2) {
+      allDonations = allDonations.concat(
+        donations[partyId].donations_4_to_8_years_old,
+      );
     }
     // selection 2 donations lett than 4 years old
     if (selection < 3) {
       allDonations = allDonations.concat(
-        donations[party].donations_less_than_4_years_old,
+        donations[partyId].donations_less_than_4_years_old,
       );
     }
   }
@@ -499,16 +505,22 @@ export function getDonationsSum(
 ) {
   const start = performance.now();
   let allDonations: PartyDonation[] = [];
-  for (const key in donations) {
+  for (const partyId in donations) {
     if (selection < 1) {
+      allDonations = allDonations.concat(
+        donations[partyId].donations_older_than_8_years,
+      );
     }
     // selection 1 = donations less than 8 years old
     if (selection < 2) {
+      allDonations = allDonations.concat(
+        donations[partyId].donations_older_than_8_years,
+      );
     }
-    // selection 2 donations lett than 4 years old
+    // selection 2 donations less than 4 years old
     if (selection < 3) {
       allDonations = allDonations.concat(
-        donations[key].donations_less_than_4_years_old,
+        donations[partyId].donations_less_than_4_years_old,
       );
     }
   }
