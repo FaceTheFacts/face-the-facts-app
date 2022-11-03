@@ -8,10 +8,15 @@ import {
   checkPreviousMonth,
   formatDate,
   formatMonth,
+  getAverageDonation,
   getChartData,
+  getDonationAveragePerYear,
+  getDonationsSum,
   getFractionStyle,
+  getLargestDonor,
   getLogoPath,
   getPosition,
+  getSumOfEachOrg,
   getSumUpDonationsInMillion,
   getWidth,
   groupByMonth,
@@ -265,6 +270,31 @@ const partyDonationDetailsData: ApiPartyDonationDetails = {
           donor_foreign: false,
         },
       },
+      {
+        id: 281,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 50001,
+        date: '2018-12-28',
+        party_donation_organization: {
+          id: 11,
+          donor_name:
+            'Verband der Bayerischen Metall- und Elektro-Industrie e.V.',
+          donor_address: 'Max-Joseph-Straße 5',
+          donor_zip: '80333',
+          donor_city: 'München',
+          donor_foreign: false,
+        },
+      },
     ],
   },
 };
@@ -397,4 +427,50 @@ it('given a list of partydonations, return a list of partydonations grouped by m
   expect(
     groupByMonth(partyDonationDetailsData['1'].donations_older_than_8_years),
   ).toEqual(groupedSPDPartyDonationsOlderThan8Years);
+});
+
+// Testing for getDonationsSum function
+
+it('given a list of partydonations, return the sum of all donations', () => {
+  expect(getDonationsSum(partyDonationDetailsData, 2)).toBe('180.002');
+});
+
+// Testing for getDonationAveragePerYear function
+
+it('given a list of partydonations, return the average of all donations per year', () => {
+  expect(getDonationAveragePerYear(partyDonationDetailsData, 2)).toBe('45.000');
+});
+
+// Testing for getAverageDonation function
+
+it('given a list of partydonations, return the average of all donations', () => {
+  expect(getAverageDonation(partyDonationDetailsData, 2)).toBe('60.000');
+});
+
+// Testing for getSumOfEachOrg function
+
+it('given a list of partydonations, return the sum of all donations per organization', () => {
+  expect(
+    getSumOfEachOrg(
+      partyDonationDetailsData['1'].donations_less_than_4_years_old,
+    ),
+  ).toEqual({
+    organization: {
+      id: 11,
+      donor_name: 'Verband der Bayerischen Metall- und Elektro-Industrie e.V.',
+      donor_address: 'Max-Joseph-Straße 5',
+      donor_zip: '80333',
+      donor_city: 'München',
+      donor_foreign: false,
+    },
+    sum: 100002,
+  });
+});
+
+// Testing for getLargestDonor function
+
+it('given a list of partydonations, return the largest donor', () => {
+  expect(getLargestDonor(partyDonationDetailsData, 2)).toEqual(
+    'Verband der Bayerischen Metall- und Elektro-Industrie e.V. mit 0.1 Mio €',
+  );
 });
