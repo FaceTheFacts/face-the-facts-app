@@ -1,4 +1,8 @@
-import {ApiPartyDonationDetails, PartyDonation} from '../logic/api';
+import {
+  ApiPartyDonationDetails,
+  PartyDonation,
+  GroupedPartyDonations,
+} from '../logic/api';
 import {
   averageDonations,
   checkPreviousMonth,
@@ -10,6 +14,7 @@ import {
   getPosition,
   getSumUpDonationsInMillion,
   getWidth,
+  groupByMonth,
   round,
   sortByDate,
 } from './util';
@@ -315,9 +320,81 @@ const sortedSPDPartyDonationsOlderThan8Years: PartyDonation[] = [
   },
 ];
 
+const groupedSPDPartyDonationsOlderThan8Years: GroupedPartyDonations[] = [
+  {
+    month: 'Februar',
+    sum: 151344.56,
+    sorted_donations: [
+      {
+        id: 8,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 151344.56,
+        date: '2009-02-20',
+        party_donation_organization: {
+          id: 168,
+          donor_name: 'Bayerische Motoren Werke AG',
+          donor_address: 'Petuelring 130',
+          donor_zip: '80788',
+          donor_city: 'München',
+          donor_foreign: false,
+        },
+      },
+    ],
+  },
+  {
+    month: 'Januar',
+    sum: 100000,
+    sorted_donations: [
+      {
+        id: 4,
+        party: {
+          id: 1,
+          label: 'SPD',
+          party_style: {
+            id: 1,
+            display_name: 'SPD',
+            foreground_color: '#FFFFFF',
+            background_color: '#E95050',
+            border_color: undefined,
+          },
+        },
+        amount: 100000,
+        date: '2009-01-27',
+        party_donation_organization: {
+          id: 90,
+          donor_name: 'Evonik Industries AG',
+          donor_address: 'Rellinghauser Straße 1-11',
+          donor_zip: '45128',
+          donor_city: 'Essen',
+          donor_foreign: false,
+        },
+      },
+    ],
+  },
+];
+
 // Testing the sortByDate function
+
 it('given a list of partydonations, return a list of partydonations sorty by date in ascending order', () => {
   expect(
     sortByDate(partyDonationDetailsData['1'].donations_older_than_8_years),
   ).toEqual(sortedSPDPartyDonationsOlderThan8Years);
+});
+
+// Testing the groupByMonth function
+
+it('given a list of partydonations, return a list of partydonations grouped by month', () => {
+  expect(
+    groupByMonth(partyDonationDetailsData['1'].donations_older_than_8_years),
+  ).toEqual(groupedSPDPartyDonationsOlderThan8Years);
 });
