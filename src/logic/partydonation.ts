@@ -83,34 +83,11 @@ export function groupAndSortDonations(
   return groupedDonations;
 }
 // Calculation used in View for Additional information
-export function getDonationsSum(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  let allDonations: PartyDonation[] = [];
-  for (const partyId in donations) {
-    if (selection < 1) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_older_than_8_years,
-      );
-    }
-    // selection 1 = donations less than 8 years old
-    if (selection < 2) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_older_than_8_years,
-      );
-    }
-    // selection 2 donations less than 4 years old
-    if (selection < 3) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_less_than_4_years_old,
-      );
-    }
-  }
-  const sum = allDonations.reduce((acc, donation) => {
+export function getDonationsSum(donations: PartyDonation[]) {
+  const sum = donations.reduce((acc, donation) => {
     return acc + donation.amount;
   }, 0);
-  return round(sum, 0).toLocaleString('de-DE');
+  return sum;
 }
 
 // Calculation used in View for Additional information
@@ -214,10 +191,10 @@ export function getLargestDonor(
   );
 }
 
-export const getDonationsFromSelection = (
+export function getDonationsFromSelection(
   donations: ApiPartyDonationDetails,
   selection: number,
-) => {
+) {
   let allDonations: PartyDonation[] = [];
   for (const partyId in donations) {
     // selection 0 = all donations
@@ -240,4 +217,20 @@ export const getDonationsFromSelection = (
     }
   }
   return allDonations;
-};
+}
+
+export function getAdditionalDonationInformation(
+  partydonations: ApiPartyDonationDetails,
+  selection: number,
+) {
+  const relevantDonations = getDonationsFromSelection(
+    partydonations,
+    selection,
+  );
+  // Calculations for additional information
+  const totalDonations = getDonationsSum(relevantDonations);
+
+  // Formatting for additional information
+
+  // Returning final object additionalDonationInformation
+}
