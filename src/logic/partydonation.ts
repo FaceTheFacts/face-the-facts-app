@@ -25,73 +25,35 @@ export function formatDonationsInThousands(donations_sum: number) {
   });
 }
 
-// Calculation used as helper function for groupAndSortDonations
-export function groupByMonth(donations: PartyDonation[]) {
-  const grouped = donations.reduce((acc, donation) => {
-    const month = donation.date.slice(5, 7);
-    const year = donation.date.slice(0, 4);
-    const key = `${year}-${month}`;
-    if (!acc[key]) {
-      acc[key] = {
-        month: monthMap[month],
-        sum: 0,
-        sorted_donations: [],
-      };
-    }
-    acc[key].sorted_donations.push(donation);
-    acc[key].sum += donation.amount;
-    return acc;
-  }, {} as Record<string, GroupedPartyDonations>);
-  return Object.values(grouped);
-}
-
-export function getDonations(
+// Helper function to append donations based on timeframe selection
+export function getDonationsFromSelection(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  let allDonations: PartyDonation[] = [];
+  let relevantDonations: PartyDonation[] = [];
   for (const partyId in donations) {
-    // selection 0 = donations older than 8 years
+    // selection 0 = all donations
     if (selection < 1) {
-      allDonations = allDonations.concat(
+      relevantDonations = relevantDonations.concat(
         donations[partyId].donations_older_than_8_years,
       );
     }
     // selection 1 = donations less than 8 years old
     if (selection < 2) {
-      allDonations = allDonations.concat(
+      relevantDonations = relevantDonations.concat(
         donations[partyId].donations_4_to_8_years_old,
       );
     }
-    // selection 2 donations between 4 years and 8 years old
+    // selection 2 donations lett than 4 years old
     if (selection < 3) {
-      allDonations = allDonations.concat(
+      relevantDonations = relevantDonations.concat(
         donations[partyId].donations_less_than_4_years_old,
       );
     }
   }
-  return allDonations;
+  return relevantDonations;
 }
 
-// Calculation used as helper function for groupAndSortDonations
-export function sortByDate(donations: PartyDonation[]) {
-  const sorted = donations.sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return dateB.getTime() - dateA.getTime();
-  });
-  return sorted;
-}
-// Calculation used for List
-export function groupAndSortDonations(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  const allDonations = getDonations(donations, selection);
-  const sortedDonations = sortByDate(allDonations);
-  const groupedDonations = groupByMonth(sortedDonations);
-  return groupedDonations;
-}
 // Calculation used in View for Additional information
 export function getDonationsSum(donations: PartyDonation[]) {
   const sum = donations.reduce((acc, donation) => {
@@ -126,7 +88,7 @@ export function getAverageDonation(donationSum: number, donationCount: number) {
   return average;
 }
 
-// Calculation used as helper for function for getLargestDonor
+// Helper for function for getAdditionalDonationInformation
 export function getLargestDonor(donations: PartyDonation[]) {
   // Group donations by donor
   const groupedDonors = donations.reduce((acc, donation) => {
@@ -147,34 +109,34 @@ export function getLargestDonor(donations: PartyDonation[]) {
   return sortedDonors[0];
 }
 
-// Calculation used as helper function
+// Helper function for groupAndSortDonations
+export function groupByMonth(donations: PartyDonation[]) {
+  const grouped = donations.reduce((acc, donation) => {
+    const month = donation.date.slice(5, 7);
+    const year = donation.date.slice(0, 4);
+    const key = `${year}-${month}`;
+    if (!acc[key]) {
+      acc[key] = {
+        month: monthMap[month],
+        sum: 0,
+        sorted_donations: [],
+      };
+    }
+    acc[key].sorted_donations.push(donation);
+    acc[key].sum += donation.amount;
+    return acc;
+  }, {} as Record<string, GroupedPartyDonations>);
+  return Object.values(grouped);
+}
 
-export function getDonationsFromSelection(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  let relevantDonations: PartyDonation[] = [];
-  for (const partyId in donations) {
-    // selection 0 = all donations
-    if (selection < 1) {
-      relevantDonations = relevantDonations.concat(
-        donations[partyId].donations_older_than_8_years,
-      );
-    }
-    // selection 1 = donations less than 8 years old
-    if (selection < 2) {
-      relevantDonations = relevantDonations.concat(
-        donations[partyId].donations_4_to_8_years_old,
-      );
-    }
-    // selection 2 donations lett than 4 years old
-    if (selection < 3) {
-      relevantDonations = relevantDonations.concat(
-        donations[partyId].donations_less_than_4_years_old,
-      );
-    }
-  }
-  return relevantDonations;
+// Calculation used as helper function for groupAndSortDonations
+export function sortByDate(donations: PartyDonation[]) {
+  const sorted = donations.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB.getTime() - dateA.getTime();
+  });
+  return sorted;
 }
 
 export function getAdditionalDonationInformation(
@@ -213,4 +175,15 @@ export function getAdditionalDonationInformation(
     largestDonor: formattedLargestDonor,
   };
   return additionalDonationInformation;
+}
+
+// Calculation used for List
+export function groupAndSortDonations(
+  donations: ApiPartyDonationDetails,
+  selection: number,
+) {
+  const relevantDonations = getDonationsFromSelection(donations, selection);
+  const sortedDonations = sortByDate(relevantDonations);
+  const groupedDonations = groupByMonth(sortedDonations);
+  return groupedDonations;
 }
