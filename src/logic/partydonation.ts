@@ -119,8 +119,9 @@ export function getAverageDonation(
 }
 
 // Calculation used as helper for function for getLargestDonor
-export function getSumOfEachOrg(donations: PartyDonation[]) {
-  const grouped = donations.reduce((acc, donation) => {
+export function getLargestDonor(donations: PartyDonation[]) {
+  // Group donations by donor
+  const groupedDonors = donations.reduce((acc, donation) => {
     const key = donation.party_donation_organization.id;
     if (!acc[key]) {
       acc[key] = {
@@ -131,39 +132,14 @@ export function getSumOfEachOrg(donations: PartyDonation[]) {
     acc[key].sum += donation.amount;
     return acc;
   }, {} as Record<string, any>);
-  const sorted = Object.values(grouped).sort((a, b) => {
+  // Sort by sum in descending order
+  const sortedDonors = Object.values(groupedDonors).sort((a, b) => {
     return b.sum - a.sum;
   });
-  return sorted[0];
+  return sortedDonors[0];
 }
 
-// Calculation used in View for Additional information
-export function getLargestDonor(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  let allDonations: PartyDonation[] = [];
-  for (const key in donations) {
-    if (selection < 1) {
-    }
-    // selection 1 = donations less than 8 years old
-    if (selection < 2) {
-    }
-    // selection 2 donations lett than 4 years old
-    if (selection < 3) {
-      allDonations = allDonations.concat(
-        donations[key].donations_less_than_4_years_old,
-      );
-    }
-  }
-  const largestDonor = getSumOfEachOrg(allDonations);
-  return (
-    largestDonor.organization.donor_name +
-    ' mit ' +
-    round(largestDonor.sum / 1000000, 2) +
-    ' Mio €'
-  );
-}
+// Calculation used as helper function
 
 export function getDonationsFromSelection(
   donations: ApiPartyDonationDetails,
@@ -205,7 +181,7 @@ export function getAdditionalDonationInformation(
   const totalDonations = getDonationsSum(relevantDonations);
   const averageDonationPerYear = getDonationAveragePerYear(totalDonations, selection);
   const averageDonation = getAverageDonation(totalDonations, relevantDonations.length);
-
+  const largestDonor = getLargestDonor(relevantDonations);
   // Formatting for additional information
 
   // Returning final object additionalDonationInformation
