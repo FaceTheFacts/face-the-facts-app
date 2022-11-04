@@ -7,21 +7,23 @@ import {
   PartyDonation,
 } from './api';
 
+// Calculation for Card and helper function for Addtitional information
 export function averageDonations(donations_sum: number, years: number) {
   const average = Math.floor(donations_sum / years);
   return average.toLocaleString('de-DE');
 }
 
+// Formatting used in View and as helper function for List and Additional information
 export function round(value: number, decimals: number) {
   return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals);
 }
-
+// Formatting used in Card
 export function getSumUpDonationsInMillion(donations_sum: number) {
   return round(donations_sum / 1000000, 2);
 }
 
+// Calculation used as helper function for groupAndSortDonations
 export function groupByMonth(donations: PartyDonation[]) {
-  const start = performance.now();
   const grouped = donations.reduce((acc, donation) => {
     const month = donation.date.slice(5, 7);
     const year = donation.date.slice(0, 4);
@@ -37,27 +39,23 @@ export function groupByMonth(donations: PartyDonation[]) {
     acc[key].sum += donation.amount;
     return acc;
   }, {} as Record<string, GroupedPartyDonations>);
-  const end = performance.now();
-  console.log('grouped', end - start);
   return Object.values(grouped);
 }
 
+// Calculation used as helper function for groupAndSortDonations
 export function sortByDate(donations: PartyDonation[]) {
-  const start = performance.now();
   const sorted = donations.sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
     return dateB.getTime() - dateA.getTime();
   });
-  const end = performance.now();
-  console.log('sorted', end - start);
   return sorted;
 }
+// Calculation used for List
 export function groupAndSortDonations(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  const start = performance.now();
   let allDonations: PartyDonation[] = [];
 
   for (const partyId in donations) {
@@ -82,16 +80,13 @@ export function groupAndSortDonations(
   }
   allDonations = sortByDate(allDonations);
   const groupedDonations = groupByMonth(allDonations);
-  const end = performance.now();
-  console.log('groupAndSortDonations took ' + (end - start) + ' seconds.');
   return groupedDonations;
 }
-
+// Calculation used in View for Additional information
 export function getDonationsSum(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  const start = performance.now();
   let allDonations: PartyDonation[] = [];
   for (const partyId in donations) {
     if (selection < 1) {
@@ -115,16 +110,14 @@ export function getDonationsSum(
   const sum = allDonations.reduce((acc, donation) => {
     return acc + donation.amount;
   }, 0);
-  const end = performance.now();
-  console.log('getDonationsSum', end - start);
   return round(sum, 0).toLocaleString('de-DE');
 }
 
+// Calculation used in View for Additional information
 export function getDonationAveragePerYear(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  const start = performance.now();
   let allDonations: PartyDonation[] = [];
   let year: number = 1;
   for (const key in donations) {
@@ -145,16 +138,14 @@ export function getDonationAveragePerYear(
     return acc + donation.amount;
   }, 0);
   const average = averageDonations(sum, year);
-  const end = performance.now();
-  console.log('getDonationAveragePerYear', end - start);
   return average;
 }
 
+// Calculation used in View for Additional information
 export function getAverageDonation(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  const start = performance.now();
   let allDonations: PartyDonation[] = [];
   for (const key in donations) {
     if (selection < 1) {
@@ -173,13 +164,11 @@ export function getAverageDonation(
     return acc + donation.amount;
   }, 0);
   const average = Math.floor(sum / allDonations.length);
-  const end = performance.now();
-  console.log('getAverageDonation', end - start);
   return average.toLocaleString('de-DE');
 }
 
+// Calculation used as helper for function for getLargestDonor
 export function getSumOfEachOrg(donations: PartyDonation[]) {
-  const start = performance.now();
   const grouped = donations.reduce((acc, donation) => {
     const key = donation.party_donation_organization.id;
     if (!acc[key]) {
@@ -194,17 +183,14 @@ export function getSumOfEachOrg(donations: PartyDonation[]) {
   const sorted = Object.values(grouped).sort((a, b) => {
     return b.sum - a.sum;
   });
-  const end = performance.now();
-  console.log('getSumOfEachOrg', end - start);
   return sorted[0];
 }
 
+// Calculation used in View for Additional information
 export function getLargestDonor(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  // start timer
-  const start = performance.now();
   let allDonations: PartyDonation[] = [];
   for (const key in donations) {
     if (selection < 1) {
@@ -220,9 +206,6 @@ export function getLargestDonor(
     }
   }
   const largestDonor = getSumOfEachOrg(allDonations);
-  // end timer
-  const end = performance.now();
-  console.log('getLargestDonor', end - start);
   return (
     largestDonor.organization.donor_name +
     ' mit ' +
