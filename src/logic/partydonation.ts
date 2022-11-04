@@ -105,7 +105,7 @@ export function getDonationAveragePerYear(
   let years = 1;
   switch (selection) {
     case 0:
-      // To do: figure out how to get the latest year of donation
+      // To do: figure out how to get the latest year of donations
       years = 12;
       return averageDonations(totalDonations, years);
     case 1:
@@ -118,28 +118,11 @@ export function getDonationAveragePerYear(
 
 // Calculation used in View for Additional information
 export function getAverageDonation(
-  donations: ApiPartyDonationDetails,
-  selection: number,
+  donationSum: number,
+  donationCount: number,
 ) {
-  let allDonations: PartyDonation[] = [];
-  for (const key in donations) {
-    if (selection < 1) {
-    }
-    // selection 1 = donations less than 8 years old
-    if (selection < 2) {
-    }
-    // selection 2 donations lett than 4 years old
-    if (selection < 3) {
-      allDonations = allDonations.concat(
-        donations[key].donations_less_than_4_years_old,
-      );
-    }
-  }
-  const sum = allDonations.reduce((acc, donation) => {
-    return acc + donation.amount;
-  }, 0);
-  const average = Math.floor(sum / allDonations.length);
-  return average.toLocaleString('de-DE');
+  const average = donationSum / donationCount;
+  return average
 }
 
 // Calculation used as helper for function for getLargestDonor
@@ -227,7 +210,8 @@ export function getAdditionalDonationInformation(
   );
   // Calculations for additional information
   const totalDonations = getDonationsSum(relevantDonations);
-  const averageDonationPerYear = getDonationAveragePerYear(relevantDonations, selection);
+  const averageDonationPerYear = getDonationAveragePerYear(totalDonations, selection);
+  const averageDonation = getAverageDonation(totalDonations, relevantDonations.length);
 
   // Formatting for additional information
 
