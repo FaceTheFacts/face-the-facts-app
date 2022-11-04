@@ -7,24 +7,19 @@ import {
   PartyDonation,
 } from './api';
 
-// Calculation for Card and helper function for Addtitional information
-export function averageDonations(donations_sum: number, years: number) {
-  const average = Math.floor(donations_sum / years);
-  return average.toLocaleString('de-DE');
-}
-
 // Formatting used in View and as helper function for List and Additional information
 export function round(value: number, decimals: number) {
   return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals);
 }
-// Formatting used in Card
+// Formatting
 export function formatDonationsInMillions(donations_sum: number) {
   const roundedDonationsInMillions = round(donations_sum / 1000000, 2);
-  return '' + roundedDonationsInMillions + ' Mio. €';
+  return '' + roundedDonationsInMillions + ' Mio €';
 }
 
-export function formatDonationsinThousands(donations_sum: number) {
+export function formatDonationsInThousands(donations_sum: number) {
   return round(donations_sum, 0).toLocaleString('de-DE', {
+    maximumFractionDigits: 0,
     style: 'currency',
     currency: 'EUR',
   });
@@ -193,11 +188,11 @@ export function getAdditionalDonationInformation(
   const largestDonor = getLargestDonor(relevantDonations);
 
   // Formatting for additional information
-  const formattedTotalDonations = formatDonationsinThousands(totalDonations);
-  const formattedAverageDonationPerYear = formatDonationsinThousands(
+  const formattedTotalDonations = formatDonationsInThousands(totalDonations);
+  const formattedAverageDonationPerYear = formatDonationsInThousands(
     averageDonationPerYear,
   );
-  const formattedAverageDonation = formatDonationsinThousands(averageDonation);
+  const formattedAverageDonation = formatDonationsInThousands(averageDonation);
   const formattedLargestDonor = {
     sum: formatDonationsInMillions(largestDonor.sum),
     organization: largestDonor.organization,
