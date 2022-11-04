@@ -18,8 +18,16 @@ export function round(value: number, decimals: number) {
   return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals);
 }
 // Formatting used in Card
-export function getSumUpDonationsInMillion(donations_sum: number) {
-  return round(donations_sum / 1000000, 2);
+export function formatDonationsInMillions(donations_sum: number) {
+  const roundedDonationsInMillions = round(donations_sum / 1000000, 2);
+  return '' + roundedDonationsInMillions + ' Mio. €';
+}
+
+export function formatDonationsinThousands(donations_sum: number) {
+  return round(donations_sum, 0).toLocaleString('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+  });
 }
 
 // Calculation used as helper function for groupAndSortDonations
@@ -100,22 +108,20 @@ export function getDonationAveragePerYear(
     case 0:
       // To do: figure out how to get the latest year of donations
       years = 12;
-      return averageDonations(totalDonations, years);
+      return getAverageDonation(totalDonations, years);
     case 1:
       years = 8;
-      return averageDonations(totalDonations, years);
+      return getAverageDonation(totalDonations, years);
     default:
       years = 4;
-      return averageDonations(totalDonations, years);
+      return getAverageDonation(totalDonations, years);
+  }
 }
 
 // Calculation used in View for Additional information
-export function getAverageDonation(
-  donationSum: number,
-  donationCount: number,
-) {
+export function getAverageDonation(donationSum: number, donationCount: number) {
   const average = donationSum / donationCount;
-  return average
+  return average;
 }
 
 // Calculation used as helper for function for getLargestDonor
@@ -170,19 +176,39 @@ export function getDonationsFromSelection(
 }
 
 export function getAdditionalDonationInformation(
-  partydonations: ApiPartyDonationDetails,
+  donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  const relevantDonations = getDonationsFromSelection(
-    partydonations,
-    selection,
-  );
+  const relevantDonations = getDonationsFromSelection(donations, selection);
   // Calculations for additional information
   const totalDonations = getDonationsSum(relevantDonations);
-  const averageDonationPerYear = getDonationAveragePerYear(totalDonations, selection);
-  const averageDonation = getAverageDonation(totalDonations, relevantDonations.length);
+  const averageDonationPerYear = getDonationAveragePerYear(
+    totalDonations,
+    selection,
+  );
+  const averageDonation = getAverageDonation(
+    totalDonations,
+    relevantDonations.length,
+  );
   const largestDonor = getLargestDonor(relevantDonations);
+
   // Formatting for additional information
+  const formattedTotalDonations = formatDonationsinThousands(totalDonations);
+  const formattedAverageDonationPerYear = formatDonationsinThousands(
+    averageDonationPerYear,
+  );
+  const formattedAverageDonation = formatDonationsinThousands(averageDonation);
+  const formattedLargestDonor = {
+    sum: formatDonationsInMillions(largestDonor.sum),
+    organization: largestDonor.organization,
+  };
 
   // Returning final object additionalDonationInformation
+  const additionalDonationInformation = {
+    totalDonations: formattedTotalDonations,
+    averageDonationPerYear: formattedAverageDonationPerYear,
+    averageDonation: formattedAverageDonation,
+    largestDonor: formattedLargestDonor,
+  };
+  return additionalDonationInformation;
 }
