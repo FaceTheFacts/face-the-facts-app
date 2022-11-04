@@ -29,8 +29,10 @@ import {
   groupAndSortDonations,
   getAdditionalDonationInformation,
   round,
+  formatDonationsInThousands,
 } from '../logic/partydonation';
 import {formatDate} from '../utils/util';
+import SkeletonDashboard from '../component/skeleton/SkeletonDashboardSidejob';
 
 export interface PartyDonationViewProps {
   route: RouteProp<{params: PartyDonationViewParams}, 'params'>;
@@ -50,7 +52,6 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
   const [additionalDonationInfo, setAdditionalDonationInfo] = useState<any>();
   const [groupedDonations, setGroupedDonations] =
     useState<GroupedPartyDonations[]>();
-  console.log('Render');
   /* const chartConfig = {
     backgroundGradientFrom: Colors.background,
     backgroundGradientTo: Colors.background,
@@ -86,7 +87,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
 
   if (partydonationsLoading) {
     // To Do: Loading Screen
-    return <Text>Loading...</Text>;
+    return <SkeletonDashboard />;
   }
 
   return (
@@ -240,7 +241,9 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                   </View>
                   <View style={styles.totalContainer}>
                     <Text style={styles.total}>Gesamt</Text>
-                    <Text style={styles.dateText}>{groupedDonations.sum}</Text>
+                    <Text style={styles.dateText}>
+                      {formatDonationsInThousands(groupedDonations.sum)}
+                    </Text>
                   </View>
                 </View>
                 {groupedDonations.sorted_donations.map((donation, index2) => (
@@ -249,7 +252,9 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                       <Text style={styles.dateText}>
                         {formatDate(donation.date)}
                       </Text>
-                      <Text style={styles.sum}>{donation.amount}</Text>
+                      <Text style={styles.sum}>
+                        {formatDonationsInThousands(donation.amount)}
+                      </Text>
                     </View>
                     <Text style={[styles.orgText, {width: 0.7 * screenWidth}]}>
                       {donation.party_donation_organization.donor_name} aus{' '}
