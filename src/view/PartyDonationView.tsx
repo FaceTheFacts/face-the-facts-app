@@ -27,13 +27,11 @@ import {LineChart} from 'react-native-chart-kit';
 import PartyTag from '../component/PartyTag';
 import {formatDate} from '../utils/util';
 import {
-  getAverageDonation,
-  getDonationAveragePerYear,
-  getDonationsSum,
-  getLargestDonor,
   groupAndSortDonations,
+  getAdditionalDonationInformation,
   round,
 } from '../logic/partydonation';
+import {formatDate} from '../utils/util';
 
 export interface PartyDonationViewProps {
   route: RouteProp<{params: PartyDonationViewParams}, 'params'>;
@@ -50,6 +48,9 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
   // selection == 0 -> show donations of all time
   // TO DO Rename it to time frame
   const [selection, setSelection] = useState<number>(2);
+  const [additionalDonationInfo, setAdditionalDonationInfo] = useState<any>();
+  const [groupedDonations, setGroupedDonations] =
+    useState<GroupedPartyDonations[]>();
   console.log('Render');
   /* const chartConfig = {
     backgroundGradientFrom: Colors.background,
@@ -70,6 +71,15 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
       cacheTime: 60 * 10000000,
     },
   );
+
+  useEffect(() => {
+    if (partydonations) {
+      setGroupedDonations(groupAndSortDonations(partydonations, selection));
+      setAdditionalDonationInfo(
+        getAdditionalDonationInformation(partydonations, selection),
+      );
+    }
+  }, [partydonations, selection]);
 
   if (partydonationsError) {
     return <ErrorCard />;
@@ -179,27 +189,27 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
           </View>
         )}*/}
         <View style={styles.separatorLine} />
-        {partydonations && (
+        {additionalDonationInfo && (
           <View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: 'white'}}>Gesamtspenden</Text>
               <Text style={{color: Colors.white70}}>
-                {getDonationsSum(partydonations, 2)} €
+                {additionalDonationInfo.totalDonations}
               </Text>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: 'white'}}>Ø Spenden/Jahr</Text>
               <Text style={{color: Colors.white70}}>
-                {getDonationAveragePerYear(partydonations, 2)} €
+                {additionalDonationInfo.averageDonationPerYear}
               </Text>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: 'white'}}>Ø Spende</Text>
               <Text style={{color: Colors.white70}}>
-                {getAverageDonation(partydonations, 2)} €
+                {additionalDonationInfo.averageDonation}
               </Text>
             </View>
             <View
@@ -214,7 +224,8 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                   textAlign: 'right',
                   maxWidth: screenWidth * 0.65,
                 }}>
-                {getLargestDonor(partydonations, selection)}
+                {additionalDonationInfo.largestDonor.organization.donor_name}{' '}
+                mit {additionalDonationInfo.largestDonor.sum}
               </Text>
             </View>
           </View>
@@ -230,9 +241,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                   </View>
                   <View style={styles.totalContainer}>
                     <Text style={styles.total}>Gesamt</Text>
-                    <Text style={styles.dateText}>
-                      {round(groupedDonations.sum, 0).toLocaleString('de-DE')} €
-                    </Text>
+                    <Text style={styles.dateText}>{groupedDonations.sum}</Text>
                   </View>
                 </View>
                 {groupedDonations.sorted_donations.map((donation, index2) => (
@@ -241,9 +250,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                       <Text style={styles.dateText}>
                         {formatDate(donation.date)}
                       </Text>
-                      <Text style={styles.sum}>
-                        {round(donation.amount, 0).toLocaleString('de-DE')} €
-                      </Text>
+                      <Text style={styles.sum}>{donation.amount}</Text>
                     </View>
                     <Text style={[styles.orgText, {width: 0.7 * screenWidth}]}>
                       {donation.party_donation_organization.donor_name} aus{' '}
