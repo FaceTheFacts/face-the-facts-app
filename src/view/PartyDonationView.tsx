@@ -12,7 +12,11 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import Icon from '../component/Icon';
 import BackButton from '../component/BackButton';
-import {ApiBundestagPartyDonation, ApiPartyDonationDetails} from '../logic/api';
+import {
+  ApiBundestagPartyDonation,
+  ApiPartyDonationDetails,
+  GroupedPartyDonations,
+} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {FilterIcon} from '../icons';
@@ -218,7 +222,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
         <View style={styles.separatorLine} />
         {partydonations &&
           groupAndSortDonations(partydonations, selection).map(
-            (groupedDonations, index1) => (
+            (groupedDonations: GroupedPartyDonations, index1: number) => (
               <View key={index1}>
                 <View style={styles.cardHeader}>
                   <View style={styles.monthContainer}>
@@ -245,7 +249,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                       {donation.party_donation_organization.donor_name} aus{' '}
                       {donation.party_donation_organization.donor_city}
                     </Text>
-                    <PartyTag party={donation.party_style} />
+                    <PartyTag party={donation.party.party_style} />
                   </View>
                 ))}
               </View>
