@@ -99,17 +99,21 @@ export function getDonationsSum(donations: PartyDonation[]) {
 
 // Calculation used in View for Additional information
 export function getDonationAveragePerYear(
-  donations: ApiPartyDonationDetails,
+  totalDonations: number,
   selection: number,
 ) {
-  const allDonations = getDonations(donations, selection);
-  // TODO: get year instead of range of years
-  const year = selection === 0 ? 8 : 4;
-  const sum = allDonations.reduce((acc, donation) => {
-    return acc + donation.amount;
-  }, 0);
-  const average = averageDonations(sum, year);
-  return average;
+  let years = 1;
+  switch (selection) {
+    case 0:
+      // To do: figure out how to get the latest year of donation
+      years = 12;
+      return averageDonations(totalDonations, years);
+    case 1:
+      years = 8;
+      return averageDonations(totalDonations, years);
+    default:
+      years = 4;
+      return averageDonations(totalDonations, years);
 }
 
 // Calculation used in View for Additional information
@@ -189,28 +193,28 @@ export function getDonationsFromSelection(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  let allDonations: PartyDonation[] = [];
+  let relevantDonations: PartyDonation[] = [];
   for (const partyId in donations) {
     // selection 0 = all donations
     if (selection < 1) {
-      allDonations = allDonations.concat(
+      relevantDonations = relevantDonations.concat(
         donations[partyId].donations_older_than_8_years,
       );
     }
     // selection 1 = donations less than 8 years old
     if (selection < 2) {
-      allDonations = allDonations.concat(
+      relevantDonations = relevantDonations.concat(
         donations[partyId].donations_4_to_8_years_old,
       );
     }
     // selection 2 donations lett than 4 years old
     if (selection < 3) {
-      allDonations = allDonations.concat(
+      relevantDonations = relevantDonations.concat(
         donations[partyId].donations_less_than_4_years_old,
       );
     }
   }
-  return allDonations;
+  return relevantDonations;
 }
 
 export function getAdditionalDonationInformation(
@@ -223,6 +227,7 @@ export function getAdditionalDonationInformation(
   );
   // Calculations for additional information
   const totalDonations = getDonationsSum(relevantDonations);
+  const averageDonationPerYear = getDonationAveragePerYear(relevantDonations, selection);
 
   // Formatting for additional information
 
