@@ -213,3 +213,31 @@ export function getLargestDonor(
     ' Mio €'
   );
 }
+
+export const getDonationsFromSelection = (
+  donations: ApiPartyDonationDetails,
+  selection: number,
+) => {
+  let allDonations: PartyDonation[] = [];
+  for (const partyId in donations) {
+    // selection 0 = all donations
+    if (selection < 1) {
+      allDonations = allDonations.concat(
+        donations[partyId].donations_older_than_8_years,
+      );
+    }
+    // selection 1 = donations less than 8 years old
+    if (selection < 2) {
+      allDonations = allDonations.concat(
+        donations[partyId].donations_4_to_8_years_old,
+      );
+    }
+    // selection 2 donations lett than 4 years old
+    if (selection < 3) {
+      allDonations = allDonations.concat(
+        donations[partyId].donations_less_than_4_years_old,
+      );
+    }
+  }
+  return allDonations;
+};
