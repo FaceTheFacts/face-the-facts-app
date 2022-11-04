@@ -5,8 +5,9 @@ import PartyTag from '../PartyTag';
 import {ApiParty} from '../../logic/api';
 import {LineChart} from 'react-native-chart-kit';
 import {
-  averageDonations,
-  getSumUpDonationsInMillion,
+  formatDonationsInMillions,
+  formatDonationsInThousands,
+  getAverageDonation,
 } from '../../logic/partydonation';
 
 interface PartyDonationCardProps {
@@ -39,7 +40,7 @@ const PartyDonationCard = ({
           <View style={styles.info}>
             <Text style={styles.nameText}>Gesamt</Text>
             <Text style={styles.totalAmount}>
-              {getSumUpDonationsInMillion(donations_total)} Mio €
+              {formatDonationsInMillions(donations_total)}
             </Text>
           </View>
         </View>
@@ -72,7 +73,9 @@ const PartyDonationCard = ({
         <View style={styles.separatorLine} />
         <View>
           <Text style={styles.averageText}>
-            Ø {averageDonations(donations_total, 8)} € / Jahr
+            Ø{' '}
+            {formatDonationsInThousands(getAverageDonation(donations_total, 8))}{' '}
+            / Jahr
           </Text>
         </View>
       </View>
