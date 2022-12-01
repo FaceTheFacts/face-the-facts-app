@@ -4,7 +4,10 @@ import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
 import {ApiParty} from '../../logic/api';
 import {LineChart} from 'react-native-chart-kit';
-import {averageDonations, getSumUpDonationsInMillion} from '../../utils/util';
+import {
+  averageDonations,
+  getSumUpDonationsInMillion,
+} from '../../logic/partydonation';
 
 interface PartyDonationCardProps {
   party: ApiParty;
