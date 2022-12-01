@@ -25,15 +25,15 @@ import BottomSheet from '../component/utils/BottomSheet';
 import ErrorCard from '../component/Error';
 import {LineChart} from 'react-native-chart-kit';
 import PartyTag from '../component/PartyTag';
+import {formatDate} from '../utils/util';
 import {
-  formatDate,
   getAverageDonation,
   getDonationAveragePerYear,
   getDonationsSum,
   getLargestDonor,
   groupAndSortDonations,
   round,
-} from '../utils/util';
+} from '../logic/partydonation';
 
 export interface PartyDonationViewProps {
   route: RouteProp<{params: PartyDonationViewParams}, 'params'>;
