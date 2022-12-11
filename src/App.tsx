@@ -24,6 +24,9 @@ import DashboardSpeechesView from './view/DashboardSpeechesView';
 import {RootStackParamList} from './view/RootStackParams';
 import DashboardSidejobsView from './view/DashboardSidejobsView';
 import DashboardPollsView from './view/DashboardPollsView';
+import PartyDonationView from './view/PartyDonationView';
+import {ErrorBoundary} from 'react-error-boundary';
+import ErrorView from './view/ErrorView';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const queryClient = new QueryClient();
@@ -68,70 +71,72 @@ const App = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <DataContext.Provider value={data}>
-        <StatusBar barStyle="light-content" />
-        <Host>
-          <View style={styles.container}>
-            <NavigationContainer theme={DarkTheme}>
-              <Stack.Navigator>
-                {/* Main contains Home, Scanner and History */}
-                <Stack.Screen
-                  name="Main"
-                  component={MainView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="Politician"
-                  component={PoliticianView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="Polls"
-                  component={PollsView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="News"
-                  component={NewsView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="PartyDonations"
-                  component={PartyDonationView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="Speeches"
-                  component={SpeechesView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="PollDetails"
-                  component={PollDetailsView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="DashboardSpeeches"
-                  component={DashboardSpeechesView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="DashboardSidejobs"
-                  component={DashboardSidejobsView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="DashboardPolls"
-                  component={DashboardPollsView}
-                  options={{headerShown: false}}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </View>
-        </Host>
-      </DataContext.Provider>
-    </QueryClientProvider>
+    <ErrorBoundary FallbackComponent={ErrorView}>
+      <QueryClientProvider client={queryClient}>
+        <DataContext.Provider value={data}>
+          <StatusBar barStyle="light-content" />
+          <Host>
+            <View style={styles.container}>
+              <NavigationContainer theme={DarkTheme}>
+                <Stack.Navigator>
+                  {/* Main contains Home, Scanner and History */}
+                  <Stack.Screen
+                    name="Main"
+                    component={MainView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="Politician"
+                    component={PoliticianView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="Polls"
+                    component={PollsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="News"
+                    component={NewsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="PartyDonations"
+                    component={PartyDonationView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="Speeches"
+                    component={SpeechesView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="PollDetails"
+                    component={PollDetailsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="DashboardSpeeches"
+                    component={DashboardSpeechesView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="DashboardSidejobs"
+                    component={DashboardSidejobsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="DashboardPolls"
+                    component={DashboardPollsView}
+                    options={{headerShown: false}}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </View>
+          </Host>
+        </DataContext.Provider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 
