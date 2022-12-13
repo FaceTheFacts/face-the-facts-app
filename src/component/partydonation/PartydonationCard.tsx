@@ -5,8 +5,9 @@ import PartyTag from '../PartyTag';
 import {ApiParty} from '../../logic/api';
 import {LineChart} from 'react-native-chart-kit';
 import {
-  averageDonations,
-  getSumUpDonationsInMillion,
+  formatDonationsInMillions,
+  formatDonationsInThousands,
+  getAverageDonation,
 } from '../../logic/partydonation';
 
 interface PartyDonationCardProps {
