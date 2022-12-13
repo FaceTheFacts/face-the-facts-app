@@ -27,14 +27,11 @@ import {LineChart} from 'react-native-chart-kit';
 import PartyTag from '../component/PartyTag';
 import {formatDate} from '../utils/util';
 import {
-  getAverageDonation,
-  getDonationAveragePerYear,
-  getDonationsSum,
-  getLargestDonor,
   groupAndSortDonations,
   getAdditionalDonationInformation,
-  round,
+  formatDonationsInThousands,
 } from '../logic/partydonation';
+import SkeletonDashboard from '../component/skeleton/SkeletonDashboard';
 
 export interface PartyDonationViewProps {
   route: RouteProp<{params: PartyDonationViewParams}, 'params'>;
@@ -88,7 +85,6 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
   }
 
   if (partydonationsLoading) {
-    // To Do: Loading Screen
     return <SkeletonDashboard />;
   }
 
