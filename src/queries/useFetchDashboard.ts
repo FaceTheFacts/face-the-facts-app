@@ -18,7 +18,7 @@ const queryFunctions = {
   sidejobs: () =>
     fetch_api<ApiSidejobsBundestag[]>('bundestag/sidejobs?size=5'),
   donations: () =>
-    fetch_api<ApiBundestagPartyDonation[]>('bundestag/partydonations'),
+    fetch_api<ApiBundestagPartyDonation[]>('homepagepartydonations'),
 };
 
 export const useFetchDashboard = (followIds: Set<number>) => {
