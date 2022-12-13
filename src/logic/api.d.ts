@@ -340,3 +340,41 @@ export type Vote = 'yes' | 'no' | 'abstain' | 'no_show';
 export type PollResult = 'yes' | 'no';
 
 export type PositionAnswer = 'agree' | 'disagree' | 'neutral';
+
+export interface PoliticianInfo {
+  id: number;
+  label: string;
+  party: ApiParty;
+  vote?: Vote;
+}
+
+export type PollTab = ApiVoteAndPoll & {
+  created: string;
+  politicians: PoliticianInfo[];
+};
+
+type ValueOf<T> = T[keyof T];
+
+export type SideJobTab = ApiSidejob & {
+  politicians: PoliticianInfo[];
+};
+
+export type SpeechTab = {
+  politicians: PoliticianInfo[];
+  videoFileURI: string;
+  title: string;
+  created: string;
+};
+
+type Row = PollTab | SideJobTab | SpeechTab;
+
+export interface TabEntities {
+  poll: PollTab;
+  sideJob: SideJobTab;
+  speech: SpeechTab;
+}
+
+interface Tab<T extends ValueOf<TabEntities>> {
+  type: keyof TabEntities;
+  content: T;
+}
