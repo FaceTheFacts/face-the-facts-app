@@ -7,8 +7,6 @@ export const useFetchFollowFeed = (
   page: number,
   showSpeeches: boolean,
 ) => {
-  console.log('useFetchFollowFeed', followedIds, page, showSpeeches);
-
   const politicianQueries = useQueries(
     Array.from(followedIds).map(politicianId => {
       return {
