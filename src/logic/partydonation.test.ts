@@ -7,6 +7,7 @@ import {
   averageDonations,
   getAverageDonation,
   getDonationAveragePerYear,
+  getDonationsFromSelection,
   getDonationsSum,
   getLargestDonor,
   getSumOfEachOrg,
@@ -388,5 +389,91 @@ it('given a list of partydonations, return the sum of all donations per organiza
 it('given a list of partydonations, return the largest donor', () => {
   expect(getLargestDonor(partyDonationDetailsData, 2)).toEqual(
     'Verband der Bayerischen Metall- und Elektro-Industrie e.V. mit 0.1 Mio €',
+  );
+});
+
+// Testing getDonationsFromSelection function
+it('given a list of partydonations, return all donations from the selection', () => {
+  expect(getDonationsFromSelection(partyDonationDetailsData, 2)).toEqual([
+    {
+      id: 273,
+      party: {
+        id: 1,
+        label: 'SPD',
+        party_style: {
+          id: 1,
+          display_name: 'SPD',
+          foreground_color: '#FFFFFF',
+          background_color: '#E95050',
+          border_color: undefined,
+        },
+      },
+      amount: 80000,
+      date: '2018-11-08',
+      party_donation_organization: {
+        id: 90,
+        donor_name: 'Evonik Industries AG',
+        donor_address: 'Rellinghauser Straße 1-11',
+        donor_zip: '45128',
+        donor_city: 'Essen',
+        donor_foreign: false,
+      },
+    },
+    {
+      id: 280,
+      party: {
+        id: 1,
+        label: 'SPD',
+        party_style: {
+          id: 1,
+          display_name: 'SPD',
+          foreground_color: '#FFFFFF',
+          background_color: '#E95050',
+          border_color: undefined,
+        },
+      },
+      amount: 50001,
+      date: '2018-12-27',
+      party_donation_organization: {
+        id: 11,
+        donor_name:
+          'Verband der Bayerischen Metall- und Elektro-Industrie e.V.',
+        donor_address: 'Max-Joseph-Straße 5',
+        donor_zip: '80333',
+        donor_city: 'München',
+        donor_foreign: false,
+      },
+    },
+    {
+      id: 281,
+      party: {
+        id: 1,
+        label: 'SPD',
+        party_style: {
+          id: 1,
+          display_name: 'SPD',
+          foreground_color: '#FFFFFF',
+          background_color: '#E95050',
+          border_color: undefined,
+        },
+      },
+      amount: 50001,
+      date: '2018-12-28',
+      party_donation_organization: {
+        id: 11,
+        donor_name:
+          'Verband der Bayerischen Metall- und Elektro-Industrie e.V.',
+        donor_address: 'Max-Joseph-Straße 5',
+        donor_zip: '80333',
+        donor_city: 'München',
+        donor_foreign: false,
+      },
+    },
+  ]);
+  expect(getDonationsFromSelection(partyDonationDetailsData, 0)).toEqual(
+    partyDonationDetailsData['1'].donations_older_than_8_years.concat(
+      partyDonationDetailsData['1'].donations_4_to_8_years_old,
+      partyDonationDetailsData['1'].donations_less_than_4_years_old,
+    ),
   );
 });
