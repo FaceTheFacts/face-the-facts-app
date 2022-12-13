@@ -32,6 +32,7 @@ import {
   getDonationsSum,
   getLargestDonor,
   groupAndSortDonations,
+  getAdditionalDonationInformation,
   round,
 } from '../logic/partydonation';
 
@@ -50,7 +51,9 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
   // selection == 0 -> show donations of all time
   // TO DO Rename it to time frame
   const [selection, setSelection] = useState<number>(2);
-  console.log('Render');
+  const [additionalDonationInfo, setAdditionalDonationInfo] = useState<any>();
+  const [groupedDonations, setGroupedDonations] =
+    useState<GroupedPartyDonations[]>();
   /* const chartConfig = {
     backgroundGradientFrom: Colors.background,
     backgroundGradientTo: Colors.background,
@@ -71,13 +74,22 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
     },
   );
 
+  useEffect(() => {
+    if (partydonations) {
+      setGroupedDonations(groupAndSortDonations(partydonations, selection));
+      setAdditionalDonationInfo(
+        getAdditionalDonationInformation(partydonations, selection),
+      );
+    }
+  }, [partydonations, selection]);
+
   if (partydonationsError) {
     return <ErrorCard />;
   }
 
   if (partydonationsLoading) {
     // To Do: Loading Screen
-    return <Text>Loading...</Text>;
+    return <SkeletonDashboard />;
   }
 
   return (
@@ -179,27 +191,27 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
           </View>
         )}*/}
         <View style={styles.separatorLine} />
-        {partydonations && (
+        {additionalDonationInfo && (
           <View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: 'white'}}>Gesamtspenden</Text>
               <Text style={{color: Colors.white70}}>
-                {getDonationsSum(partydonations, 2)} €
+                {additionalDonationInfo.totalDonations}
               </Text>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: 'white'}}>Ø Spenden/Jahr</Text>
               <Text style={{color: Colors.white70}}>
-                {getDonationAveragePerYear(partydonations, 2)} €
+                {additionalDonationInfo.averageDonationPerYear}
               </Text>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: 'white'}}>Ø Spende</Text>
               <Text style={{color: Colors.white70}}>
-                {getAverageDonation(partydonations, 2)} €
+                {additionalDonationInfo.averageDonation}
               </Text>
             </View>
             <View
@@ -214,7 +226,8 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                   textAlign: 'right',
                   maxWidth: screenWidth * 0.65,
                 }}>
-                {getLargestDonor(partydonations, selection)}
+                {additionalDonationInfo.largestDonor.organization.donor_name}{' '}
+                mit {additionalDonationInfo.largestDonor.sum}
               </Text>
             </View>
           </View>
@@ -231,7 +244,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                   <View style={styles.totalContainer}>
                     <Text style={styles.total}>Gesamt</Text>
                     <Text style={styles.dateText}>
-                      {round(groupedDonations.sum, 0).toLocaleString('de-DE')} €
+                      {formatDonationsInThousands(groupedDonations.sum)}
                     </Text>
                   </View>
                 </View>
@@ -242,7 +255,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
                         {formatDate(donation.date)}
                       </Text>
                       <Text style={styles.sum}>
-                        {round(donation.amount, 0).toLocaleString('de-DE')} €
+                        {formatDonationsInThousands(donation.amount)}
                       </Text>
                     </View>
                     <Text style={[styles.orgText, {width: 0.7 * screenWidth}]}>

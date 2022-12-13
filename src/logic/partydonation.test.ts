@@ -4,14 +4,12 @@ import {
   PartyDonation,
 } from './api';
 import {
-  averageDonations,
   getAverageDonation,
   getDonationAveragePerYear,
   getDonationsFromSelection,
   getDonationsSum,
   getLargestDonor,
-  getSumOfEachOrg,
-  getSumUpDonationsInMillion,
+  formatDonationsInMillions,
   groupByMonth,
   round,
   sortByDate,
@@ -316,8 +314,7 @@ const groupedSPDPartyDonationsOlderThan8Years: GroupedPartyDonations[] = [
 
 // Testing the averageDonations function
 it('given the sum of donations and the years of donations, averageDonations returns the average donation in the format XX.XXX with out decimal', () => {
-  expect(averageDonations(100000, 2)).toBe('50.000');
-  expect(averageDonations(100000, 3)).toBe('33.333');
+  expect(getAverageDonation(100000, 2)).toBe(50000);
 });
 
 // Testing the round function
@@ -329,11 +326,11 @@ it('given a number and decimal, round returns the number rounded to the decimal'
 
 // Testing the getSumUpDonationsInMillion function
 it('given the sum of donations, getSumUpDonationsInMillion returns the rounded sum of donations in million', () => {
-  expect(getSumUpDonationsInMillion(10000)).toBe(0.01);
-  expect(getSumUpDonationsInMillion(100000)).toBe(0.1);
-  expect(getSumUpDonationsInMillion(1000000)).toBe(1);
-  expect(getSumUpDonationsInMillion(10000000)).toBe(10);
-  expect(getSumUpDonationsInMillion(10000000.65)).toBe(10);
+  expect(formatDonationsInMillions(10000)).toBe('0.01 Mio €');
+  expect(formatDonationsInMillions(100000)).toBe('0.1 Mio €');
+  expect(formatDonationsInMillions(1000000)).toBe('1 Mio €');
+  expect(formatDonationsInMillions(10000000)).toBe('10 Mio €');
+  expect(formatDonationsInMillions(10000000.65)).toBe('10 Mio €');
 });
 
 // Testing the sortByDate function
@@ -352,24 +349,28 @@ it('given a list of partydonations, return a list of partydonations grouped by m
 
 // Testing for getDonationsSum function
 it('given a list of partydonations, return the sum of all donations', () => {
-  expect(getDonationsSum(partyDonationDetailsData, 2)).toBe('180.002');
+  expect(
+    getDonationsSum(
+      partyDonationDetailsData['1'].donations_less_than_4_years_old,
+    ),
+  ).toBe(180002);
 });
 
 // Testing for getDonationAveragePerYear function
 
 it('given a list of partydonations, return the average of all donations per year', () => {
-  expect(getDonationAveragePerYear(partyDonationDetailsData, 2)).toBe('45.000');
+  expect(getDonationAveragePerYear(100000, 2)).toBe(25000);
 });
 
 // Testing for getAverageDonation function
 it('given a list of partydonations, return the average of all donations', () => {
-  expect(getAverageDonation(partyDonationDetailsData, 2)).toBe('60.000');
+  expect(getAverageDonation(100000, 10)).toBe(10000);
 });
 
-// Testing for getSumOfEachOrg function
-it('given a list of partydonations, return the sum of all donations per organization', () => {
+// Testing for getLargestDonor function
+it('given a list of partydonations, return the largest donor', () => {
   expect(
-    getSumOfEachOrg(
+    getLargestDonor(
       partyDonationDetailsData['1'].donations_less_than_4_years_old,
     ),
   ).toEqual({
