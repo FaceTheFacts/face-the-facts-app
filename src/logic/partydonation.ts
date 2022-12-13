@@ -182,8 +182,27 @@ export function groupAndSortDonations(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  const relevantDonations = getDonationsFromSelection(donations, selection);
-  const sortedDonations = sortByDate(relevantDonations);
+  const allDonations = getDonationsFromSelection(donations, selection);
+  const sortedDonations = sortByDate(allDonations);
   const groupedDonations = groupByMonth(sortedDonations);
   return groupedDonations;
+}
+
+// Calculation used as helper for function for getLargestDonor
+export function getSumOfEachOrg(donations: PartyDonation[]) {
+  const grouped = donations.reduce((acc, donation) => {
+    const key = donation.party_donation_organization.id;
+    if (!acc[key]) {
+      acc[key] = {
+        organization: donation.party_donation_organization,
+        sum: 0,
+      };
+    }
+    acc[key].sum += donation.amount;
+    return acc;
+  }, {} as Record<string, any>);
+  const sorted = Object.values(grouped).sort((a, b) => {
+    return b.sum - a.sum;
+  });
+  return sorted[0];
 }
