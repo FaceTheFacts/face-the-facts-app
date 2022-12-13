@@ -29,11 +29,9 @@ import {formatDate} from '../utils/util';
 import {
   groupAndSortDonations,
   getAdditionalDonationInformation,
-  round,
   formatDonationsInThousands,
 } from '../logic/partydonation';
-import {formatDate} from '../utils/util';
-import SkeletonDashboard from '../component/skeleton/SkeletonDashboardSidejob';
+import SkeletonDashboard from '../component/skeleton/SkeletonDashboard';
 
 export interface PartyDonationViewProps {
   route: RouteProp<{params: PartyDonationViewParams}, 'params'>;
@@ -87,7 +85,6 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
   }
 
   if (partydonationsLoading) {
-    // To Do: Loading Screen
     return <SkeletonDashboard />;
   }
 
