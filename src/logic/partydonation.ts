@@ -129,34 +129,6 @@ export function groupByMonth(donations: PartyDonation[]) {
   return Object.values(grouped);
 }
 
-export function getDonations(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  let allDonations: PartyDonation[] = [];
-  for (const partyId in donations) {
-    // selection 0 = donations older than 8 years
-    if (selection < 1) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_older_than_8_years,
-      );
-    }
-    // selection 1 = donations less than 8 years old
-    if (selection < 2) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_4_to_8_years_old,
-      );
-    }
-    // selection 2 donations between 4 years and 8 years old
-    if (selection < 3) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_less_than_4_years_old,
-      );
-    }
-  }
-  return allDonations;
-}
-
 // Calculation used as helper function for groupAndSortDonations
 export function sortByDate(donations: PartyDonation[]) {
   const sorted = donations.sort((a, b) => {
@@ -210,62 +182,10 @@ export function groupAndSortDonations(
   donations: ApiPartyDonationDetails,
   selection: number,
 ) {
-  const allDonations = getDonations(donations, selection);
+  const allDonations = getDonationsFromSelection(donations, selection);
   const sortedDonations = sortByDate(allDonations);
   const groupedDonations = groupByMonth(sortedDonations);
   return groupedDonations;
-}
-// Calculation used in View for Additional information
-export function getDonationsSum(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  const allDonations = getDonations(donations, selection);
-  const sum = allDonations.reduce((acc, donation) => {
-    return acc + donation.amount;
-  }, 0);
-  return round(sum, 0).toLocaleString('de-DE');
-}
-
-// Calculation used in View for Additional information
-export function getDonationAveragePerYear(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  const allDonations = getDonations(donations, selection);
-  // TODO: get year instead of range of years
-  const year = selection === 0 ? 8 : 4;
-  const sum = allDonations.reduce((acc, donation) => {
-    return acc + donation.amount;
-  }, 0);
-  const average = averageDonations(sum, year);
-  return average;
-}
-
-// Calculation used in View for Additional information
-export function getAverageDonation(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  let allDonations: PartyDonation[] = [];
-  for (const key in donations) {
-    if (selection < 1) {
-    }
-    // selection 1 = donations less than 8 years old
-    if (selection < 2) {
-    }
-    // selection 2 donations lett than 4 years old
-    if (selection < 3) {
-      allDonations = allDonations.concat(
-        donations[key].donations_less_than_4_years_old,
-      );
-    }
-  }
-  const sum = allDonations.reduce((acc, donation) => {
-    return acc + donation.amount;
-  }, 0);
-  const average = Math.floor(sum / allDonations.length);
-  return average.toLocaleString('de-DE');
 }
 
 // Calculation used as helper for function for getLargestDonor
@@ -286,59 +206,3 @@ export function getSumOfEachOrg(donations: PartyDonation[]) {
   });
   return sorted[0];
 }
-
-// Calculation used in View for Additional information
-export function getLargestDonor(
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) {
-  let allDonations: PartyDonation[] = [];
-  for (const key in donations) {
-    if (selection < 1) {
-    }
-    // selection 1 = donations less than 8 years old
-    if (selection < 2) {
-    }
-    // selection 2 donations lett than 4 years old
-    if (selection < 3) {
-      allDonations = allDonations.concat(
-        donations[key].donations_less_than_4_years_old,
-      );
-    }
-  }
-  const largestDonor = getSumOfEachOrg(allDonations);
-  return (
-    largestDonor.organization.donor_name +
-    ' mit ' +
-    round(largestDonor.sum / 1000000, 2) +
-    ' Mio €'
-  );
-}
-
-export const getDonationsFromSelection = (
-  donations: ApiPartyDonationDetails,
-  selection: number,
-) => {
-  let allDonations: PartyDonation[] = [];
-  for (const partyId in donations) {
-    // selection 0 = all donations
-    if (selection < 1) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_older_than_8_years,
-      );
-    }
-    // selection 1 = donations less than 8 years old
-    if (selection < 2) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_4_to_8_years_old,
-      );
-    }
-    // selection 2 donations lett than 4 years old
-    if (selection < 3) {
-      allDonations = allDonations.concat(
-        donations[partyId].donations_less_than_4_years_old,
-      );
-    }
-  }
-  return allDonations;
-};

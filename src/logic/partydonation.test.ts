@@ -386,13 +386,6 @@ it('given a list of partydonations, return the largest donor', () => {
   });
 });
 
-// Testing for getLargestDonor function
-it('given a list of partydonations, return the largest donor', () => {
-  expect(getLargestDonor(partyDonationDetailsData, 2)).toEqual(
-    'Verband der Bayerischen Metall- und Elektro-Industrie e.V. mit 0.1 Mio €',
-  );
-});
-
 // Testing getDonationsFromSelection function
 it('given a list of partydonations, return all donations from the selection', () => {
   expect(getDonationsFromSelection(partyDonationDetailsData, 2)).toEqual([
