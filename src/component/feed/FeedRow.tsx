@@ -1,7 +1,6 @@
 import React, {ReactNode, useContext, useRef} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   useWindowDimensions,
   TouchableOpacity,
@@ -9,20 +8,19 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import PoliticianPicture from '../PoliticianPicture';
 import {Colors} from '../../theme';
-import {PoliticianInfo} from './FeedRowContent';
 import {RootStackParamList} from '../../view/RootStackParams';
 import {DataContext} from '../../logic/model';
 import BottomSheet from '../utils/BottomSheet';
 import PoliticianCard from '../politician/PoliticianCard';
 import {Modalize} from 'react-native-modalize';
+import {PoliticianInfo} from '../../logic/api';
 
 interface FeedRowProps {
   politicians: PoliticianInfo[];
   children: ReactNode;
-  desc: string;
 }
 
-const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
+const FeedRow = ({politicians, children}: FeedRowProps) => {
   const {width} = useWindowDimensions();
   const navigation = useNavigation<RootStackParamList>();
   const database = useContext(DataContext);
@@ -54,10 +52,7 @@ const FeedRow = ({politicians, children, desc}: FeedRowProps) => {
             <PoliticianPicture politicianId={+politicians[0].id} size={48} />
           </TouchableOpacity>
         )}
-        <View style={[{width: width - 80}]}>
-          {children}
-          <Text style={styles.descText}>{desc}</Text>
-        </View>
+        <View style={[{width: width - 80}]}>{children}</View>
       </View>
       <BottomSheet
         modalRef={modal}
@@ -106,12 +101,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     bottom: 16,
     left: 16,
-  },
-  descText: {
-    fontSize: 11,
-    color: Colors.baseWhite,
-    marginTop: 4,
-    flexWrap: 'wrap',
   },
   modalStyle: {
     borderTopLeftRadius: 12,
