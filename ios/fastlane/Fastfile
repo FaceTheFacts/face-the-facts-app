@@ -59,14 +59,23 @@ platform :ios do
 
   lane :beta do
     setup_ci()
+    create_keychain(
+      name: "build",
+      password: ENV["KEYCHAIN_PASSWORD"],
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: false
+    )
     match(
       type: "appstore",
       readonly: true,
       app_identifier: "app.facethefacts",
       verbose: true,
-      git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"]
+      git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"],
+      keychain_name: "build",
+      keychain_password: ENV["KEYCHAIN_PASSWORD"]
     )
-    unlock_keychain()
     build_ios_app(
       workspace: "FaceTheFacts.xcworkspace",
       scheme: "FaceTheFacts",
