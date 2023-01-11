@@ -64,6 +64,7 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID  }}
           APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY  }}
           GIT_SSH_COMMAND: 'ssh -o StrictHostKeyChecking=no'
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           MATCH_READONLY: true
         run: |
           eval "$(ssh-agent -s)"
