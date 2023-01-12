@@ -80,6 +80,7 @@ platform :ios do
       workspace: "FaceTheFacts.xcworkspace",
       scheme: "FaceTheFacts",
       export_method: "app-store",
+      xcargs: "-allowProvisioningUpdates",
       include_bitcode: false,
       silent: true,
       clean: true
