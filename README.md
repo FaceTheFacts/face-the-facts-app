@@ -12,8 +12,7 @@ React Native is using NPM for package management. Please make sure to [install t
 2. Navigate to the root folder of the project on your command line/terminal
 3. `yarn install`
 4. [Follow the tutorial by React Native for your environment](https://reactnative.dev/docs/0.65/environment-setup) (make sure to select the tab `React Native CLI Quickstart`)
-5. Add the `env.json` file with the BASE_URL, SENTRY_DSN and SCAN_DATA_URL of the API. For the iOS fastlane deployment you will also have to add APPLE_ACCOUNT, ITC_TEAM_ID and TEAM_ID. You can find a template called `template_env.json` in the root directory. Just rename it and add the URL (local or global one)
-6. Add the `sentry.properties` file with defaults.url, defaults.org, defaults.project and auth.token to /ios and /android. You can find in a template called `sentry.properties.sample`in both directories. Just rename it and enter the parameters. More information regarding Sentry you can find [here](https://docs.sentry.io/platforms/react-native/)
+5. Add the `env.json` file with the BASE_URL and SCAN_DATA_URL of the API. For the iOS fastlane deployment you will also have to add APPLE_ACCOUNT, ITC_TEAM_ID and TEAM_ID. You can find a template called `template_env.json` in the root directory. Just rename it and add the URL (local or global one)
 7. For running the ios emulator make sure you have [cocoa pods](https://guides.cocoapods.org/using/getting-started.html) setup. Then navigate to the ios folder and run `pod install`
 8. The app should be running now 🎉
 

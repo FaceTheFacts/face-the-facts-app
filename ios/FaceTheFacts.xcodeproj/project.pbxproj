@@ -234,7 +234,6 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				837547EA55189A87B01F563F /* [CP] Embed Pods Frameworks */,
 				9776AB58DC134D96AB854788 /* [CP] Copy Pods Resources */,
-				361B10D3F35C40BB8FDBFF32 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -327,7 +326,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nset -e\n\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nset -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		157426AA9EF4183A6B3A6B0C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -345,20 +344,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		361B10D3F35C40BB8FDBFF32 /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Upload Debug Symbols to Sentry";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym\n";
 		};
 		4BEFF8DCD9B6E8E025D24207 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

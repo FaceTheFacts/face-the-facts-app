@@ -28,15 +28,7 @@ jobs:
         run: yarn install
 
       - name: Create env.json
-        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
-
-      - name: Create ios/sentry.properties
-        run: |
-          cd ios
-          echo "defaults.url=${{ secrets.SENTRY_URL }}" >> sentry.properties
-          echo "defaults.org=${{ secrets.SENTRY_ORG }}" >> sentry.properties
-          echo "defaults.project=${{ secrets.SENTRY_PROJ }}" >> sentry.properties
-          echo "auth.token=${{ secrets.SENTRY_TOKEN }}" >> sentry.properties
+        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
 
       - name: Create ios/fastlane/.env.default
         run: |
@@ -110,19 +102,11 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
 
-      - name: Create android/sentry.properties
-        run: |
-          cd android
-          echo "defaults.url=${{ secrets.SENTRY_URL }}" >> sentry.properties
-          echo "defaults.org=${{ secrets.SENTRY_ORG }}" >> sentry.properties
-          echo "defaults.project=${{ secrets.SENTRY_PROJ }}" >> sentry.properties
-          echo "auth.token=${{ secrets.SENTRY_TOKEN }}" >> sentry.properties
-
       - name: Create data.json mock
         run: echo "[]" >> data.json
 
       - name: Create env.json
-        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"'} >> env.json
+        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"'} >> env.json
 
       - name: Deploy alpha to Google Playstore
         run: |
