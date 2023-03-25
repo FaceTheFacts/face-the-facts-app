@@ -1,5 +1,4 @@
 import React from 'react';
-//import {render} from '@testing-library/react-native';
 import Dashboard from '../src/component/dashboard/Dashboard';
 import {useFetchDashboard} from '../src/queries/useFetchDashboard';
 import {DataContext} from '../src/logic/model';
