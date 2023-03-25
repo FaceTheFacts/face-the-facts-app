@@ -30,10 +30,9 @@ const NewsPicture = ({
       style={[
         styles.image,
         {borderBottomLeftRadius: radius, borderBottomRightRadius: radius},
+        {width: width, height: height},
       ]}
       source={imageSource}
-      width={width}
-      height={height}
     />
   );
 };
