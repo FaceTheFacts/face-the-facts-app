@@ -136,22 +136,44 @@ export interface ApiSidejobsBundestag {
   politician: ApiPoliticianHeader;
 }
 
-export interface ApiPartyDonationOrganization {
-  id: number;
-  donor_name: string;
-  donor_address: string;
-  donor_zip: string;
-  donor_city: string;
-  donor_country: string;
-  donor_foreign: boolean;
-}
-
 export interface ApiBundestagPartyDonation {
   party: ApiParty;
   donations_over_32_quarters: number[];
   donations_total: number;
 }
 
+export interface ApiPartyDonationDetails {
+  [key: string]: PartyDonationDetails;
+}
+
+export interface PartyDonationDetails {
+  donations_older_than_8_years: PartyDonation[];
+  donations_4_to_8_years_old: PartyDonation[];
+  donations_less_than_4_years_old: PartyDonation[];
+}
+
+export interface PartyDonation {
+  id: number;
+  party: ApiParty;
+  amount: number;
+  date: string;
+  party_donation_organization: ApiPartyDonationOrganization;
+}
+
+export interface GroupedPartyDonations {
+  month: string;
+  sum: number;
+  sorted_donations: PartyDonation[];
+}
+
+export interface ApiPartyDonationOrganization {
+  id: number;
+  donor_name: string;
+  donor_address: string;
+  donor_zip: string;
+  donor_city: string;
+  donor_foreign: boolean;
+}
 export interface ApiPositions {
   id: number;
   positions: ApiPosition[];
@@ -318,3 +340,41 @@ export type Vote = 'yes' | 'no' | 'abstain' | 'no_show';
 export type PollResult = 'yes' | 'no';
 
 export type PositionAnswer = 'agree' | 'disagree' | 'neutral';
+
+export interface PoliticianInfo {
+  id: number;
+  label: string;
+  party: ApiParty;
+  vote?: Vote;
+}
+
+export type PollTab = ApiVoteAndPoll & {
+  created: string;
+  politicians: PoliticianInfo[];
+};
+
+type ValueOf<T> = T[keyof T];
+
+export type SideJobTab = ApiSidejob & {
+  politicians: PoliticianInfo[];
+};
+
+export type SpeechTab = {
+  politicians: PoliticianInfo[];
+  videoFileURI: string;
+  title: string;
+  created: string;
+};
+
+type Row = PollTab | SideJobTab | SpeechTab;
+
+export interface TabEntities {
+  poll: PollTab;
+  sideJob: SideJobTab;
+  speech: SpeechTab;
+}
+
+interface Tab<T extends ValueOf<TabEntities>> {
+  type: keyof TabEntities;
+  content: T;
+}

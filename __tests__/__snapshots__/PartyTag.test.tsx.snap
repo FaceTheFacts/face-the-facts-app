@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Party Tag renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "flex-start",
+      "backgroundColor": "rgba(248, 248, 248, 0.12)",
+      "borderColor": undefined,
+      "borderRadius": 4,
+      "borderWidth": undefined,
+      "padding": 5,
+      "width": undefined,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#F8F8F8",
+        "fontFamily": "Inter",
+        "fontSize": 13,
+        "fontWeight": "600",
+        "marginLeft": 0,
+        "marginRight": 0,
+        "textTransform": "none",
+      }
+    }
+  />
+</View>
+`;

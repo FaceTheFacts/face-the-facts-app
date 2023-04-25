@@ -8,10 +8,9 @@ import {
   TouchableOpacity,
   Linking,
 } from 'react-native';
-import {ApiPollDetails, Vote} from '../logic/api';
+import {ApiPollDetails} from '../logic/api';
 import {Colors} from '../theme';
 import ReadMoreHTML from '../component/utils/ReadMoreHTML';
-import type {ApiPoliticianProfile, ApiPoll, ApiVote} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {RouteProp} from '@react-navigation/native';
@@ -25,16 +24,10 @@ import {ArrowUpRightFromSquare} from '../icons';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import ErrorCard from '../component/Error';
-
-type PollDetailsViewParams = {
-  poll: ApiPoll;
-  vote: ApiVote;
-  candidateVote?: Vote;
-  politician?: ApiPoliticianProfile;
-};
+import {RootStackParamList} from './RootStackParams';
 
 interface PollDetailsViewProps {
-  route: RouteProp<{params: PollDetailsViewParams}, 'params'>;
+  route: RouteProp<RootStackParamList, 'PollDetails'>;
 }
 
 const PollDetailsView = ({route}: PollDetailsViewProps) => {

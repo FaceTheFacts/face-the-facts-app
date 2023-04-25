@@ -24,10 +24,8 @@ const PoliticianPicture = ({
 
   return (
     <Image
-      style={styles.image}
+      style={[styles.image, {width: size, height: size}]}
       source={{uri: image}}
-      width={size}
-      height={size}
     />
   );
 };

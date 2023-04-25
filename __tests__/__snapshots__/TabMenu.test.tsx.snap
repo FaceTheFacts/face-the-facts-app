@@ -1,0 +1,289 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TabMenu renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignContent": "flex-end",
+      "flexDirection": "row",
+      "justifyContent": "space-around",
+      "paddingBottom": 16,
+      "paddingTop": 16,
+    }
+  }
+>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    nativeID="animatedComponent"
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "flex": 1,
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "opacity": 0.3,
+        }
+      }
+    >
+      <RNSVGSvgView
+        align="xMidYMid"
+        bbHeight={21}
+        bbWidth={21}
+        color={4294967295}
+        focusable={false}
+        meetOrSlice={0}
+        minX={0}
+        minY={0}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "borderWidth": 0,
+            },
+            Object {
+              "alignSelf": "center",
+              "color": "#ffffff",
+              "height": 21,
+              "width": 21,
+            },
+            Object {
+              "flex": 0,
+              "height": 21,
+              "width": 21,
+            },
+          ]
+        }
+        tintColor={4294967295}
+        vbHeight={512}
+        vbWidth={576}
+      >
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M277.4 4.002C283.5-1.334 292.5-1.334 298.6 4.002L570.6 244C577.2 249.8 577.8 259.1 571.1 266.6C566.2 273.2 556 273.8 549.4 267.1L512 234.1V432C512 476.2 476.2 512 432 512H144C99.82 512 64 476.2 64 432V234.1L26.59 267.1C19.96 273.8 9.849 273.2 4.003 266.6C-1.844 259.1-1.212 249.8 5.414 244L277.4 4.002zM96 206.7V432C96 458.5 117.5 480 144 480H432C458.5 480 480 458.5 480 432V206.7L288 37.34L96 206.7z"
+            fill={
+              Array [
+                2,
+              ]
+            }
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+      </RNSVGSvgView>
+      <Text
+        style={
+          Object {
+            "color": "#ffffff",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "marginTop": 4,
+          }
+        }
+      >
+        Test1
+      </Text>
+    </View>
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    nativeID="animatedComponent"
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "flex": 1,
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "opacity": 0.3,
+        }
+      }
+    >
+      <RNSVGSvgView
+        align="xMidYMid"
+        bbHeight={21}
+        bbWidth={21}
+        color={4294967295}
+        focusable={false}
+        meetOrSlice={0}
+        minX={0}
+        minY={0}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "borderWidth": 0,
+            },
+            Object {
+              "alignSelf": "center",
+              "color": "#ffffff",
+              "height": 21,
+              "width": 21,
+            },
+            Object {
+              "flex": 0,
+              "height": 21,
+              "width": 21,
+            },
+          ]
+        }
+        tintColor={4294967295}
+        vbHeight={512}
+        vbWidth={448}
+      >
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M144 32h-128C7.156 32 0 39.16 0 48v128C0 184.8 7.156 192 16 192S32 184.8 32 176V64h112C152.8 64 160 56.84 160 48S152.8 32 144 32zM144 448H32v-112C32 327.2 24.84 320 16 320S0 327.2 0 336v128C0 472.8 7.156 480 16 480h128C152.8 480 160 472.8 160 464S152.8 448 144 448zM432 320c-8.844 0-16 7.156-16 16V448h-112c-8.844 0-16 7.156-16 16s7.156 16 16 16h128c8.844 0 16-7.156 16-16v-128C448 327.2 440.8 320 432 320zM432 32h-128C295.2 32 288 39.16 288 48S295.2 64 304 64H416v112C416 184.8 423.2 192 432 192S448 184.8 448 176v-128C448 39.16 440.8 32 432 32z"
+            fill={
+              Array [
+                2,
+              ]
+            }
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+      </RNSVGSvgView>
+      <Text
+        style={
+          Object {
+            "color": "#ffffff",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "marginTop": 4,
+          }
+        }
+      >
+        Test2
+      </Text>
+    </View>
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    nativeID="animatedComponent"
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "flex": 1,
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "opacity": 0.3,
+        }
+      }
+    >
+      <RNSVGSvgView
+        align="xMidYMid"
+        bbHeight={21}
+        bbWidth={21}
+        color={4294967295}
+        focusable={false}
+        meetOrSlice={0}
+        minX={0}
+        minY={0}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "borderWidth": 0,
+            },
+            Object {
+              "alignSelf": "center",
+              "color": "#ffffff",
+              "height": 21,
+              "width": 21,
+            },
+            Object {
+              "flex": 0,
+              "height": 21,
+              "width": 21,
+            },
+          ]
+        }
+        tintColor={4294967295}
+        vbHeight={512}
+        vbWidth={640}
+      >
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M319.9 320c57.41 0 103.1-46.56 103.1-104c0-57.44-46.54-104-103.1-104c-57.41 0-103.1 46.56-103.1 104C215.9 273.4 262.5 320 319.9 320zM319.9 144c39.68 0 71.96 32.3 71.96 72S359.5 288 319.9 288S247.9 255.7 247.9 216S280.2 144 319.9 144zM369.9 352H270.1C191.6 352 128 411.7 128 485.3C128 500.1 140.7 512 156.4 512h327.2C499.3 512 512 500.1 512 485.3C512 411.7 448.4 352 369.9 352zM160.2 480c3.021-53.41 51.19-96 109.1-96H369.9c58.78 0 106.9 42.59 109.1 96H160.2zM512 160c44.18 0 80-35.82 80-80S556.2 0 512 0c-44.18 0-80 35.82-80 80S467.8 160 512 160zM512 32c26.47 0 48 21.53 48 48S538.5 128 512 128s-48-21.53-48-48S485.5 32 512 32zM128 160c44.18 0 80-35.82 80-80S172.2 0 128 0C83.82 0 48 35.82 48 80S83.82 160 128 160zM128 32c26.47 0 48 21.53 48 48S154.5 128 128 128S80 106.5 80 80S101.5 32 128 32zM561.1 192H496c-11.16 0-22.08 2.5-32.47 7.438c-7.984 3.797-11.39 13.34-7.594 21.31s13.38 11.39 21.31 7.594C483.3 225.5 489.6 224 496 224h65.08C586.1 224 608 246.7 608 274.7V288c0 8.844 7.156 16 16 16S640 296.8 640 288V274.7C640 229.1 604.6 192 561.1 192zM162.8 228.3c7.938 3.797 17.53 .375 21.31-7.594c3.797-7.969 .3906-17.52-7.594-21.31C166.1 194.5 155.2 192 144 192H78.92C35.41 192 0 229.1 0 274.7V288c0 8.844 7.156 16 16 16S32 296.8 32 288V274.7C32 246.7 53.05 224 78.92 224H144C150.4 224 156.7 225.5 162.8 228.3z"
+            fill={
+              Array [
+                2,
+              ]
+            }
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+      </RNSVGSvgView>
+      <Text
+        style={
+          Object {
+            "color": "#ffffff",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "marginTop": 4,
+          }
+        }
+      >
+        Test3
+      </Text>
+    </View>
+  </View>
+</View>
+`;

@@ -1,17 +1,17 @@
-import React from 'react';
 import {ScrollView, StyleSheet, Text, SafeAreaView, View} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import BackButton from '../component/BackButton';
-import {ApiNews, ApiPoliticianContext} from '../logic/api';
+import {ApiNews} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import NewsScreenCard from '../component/news/NewsScreenCard';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import ErrorCard from '../component/Error';
+import {RootStackParamList} from './RootStackParams';
 
 export interface NewsViewProps {
-  route: RouteProp<{params: {politician: ApiPoliticianContext}}, 'params'>;
+  route: RouteProp<RootStackParamList, 'News'>;
 }
 
 const NewsView = ({route}: NewsViewProps) => {
