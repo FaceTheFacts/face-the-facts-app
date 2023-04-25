@@ -59,6 +59,7 @@ platform :ios do
 
   lane :beta do
     setup_ci()
+    xcversion(version: "14.3")
     create_keychain(
       name: "build",
       password: ENV["KEYCHAIN_PASSWORD"],
