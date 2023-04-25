@@ -22,7 +22,11 @@ jobs:
           bundler-cache: true
 
       - name: Install Ruby Dependencies
-        run: cd ios && bundle install && bundle update fastlane
+        run: |
+          cd ios
+          rm Gemfile.lock
+          bundle install
+          bundle update fastlane
 
       - name: Install packages
         run: yarn install
@@ -73,7 +77,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.0'
+          node-version: '16.x'
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
