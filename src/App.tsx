@@ -37,6 +37,7 @@ if (!env.SENTRY_DSN) {
 }
 
 Sentry.init({
+  enableNative: false,
   dsn: env.SENTRY_DSN,
   tracesSampleRate: 0.5,
   // Release Health
