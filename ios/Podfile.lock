@@ -487,8 +487,14 @@ PODS:
   - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
+  - RNSentry (5.3.1):
+    - React-Core
+    - Sentry/HybridSDK (= 8.4.0)
   - RNSVG (13.8.0):
     - React-Core
+  - Sentry/HybridSDK (8.4.0):
+    - SentryPrivate (= 8.4.0)
+  - SentryPrivate (8.4.0)
   - SocketRocket (0.6.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -568,6 +574,7 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -599,6 +606,8 @@ SPEC REPOS:
     - OpenSSL-Universal
     - PromisesObjC
     - Protobuf
+    - Sentry
+    - SentryPrivate
     - SocketRocket
     - YogaKit
 
@@ -695,15 +704,17 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  boost: a7c83b31436843459a1961bfd74b96033dc77234
+  boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 61839cba7a48c570b7ac3e1cd8a4d0948382202f
   FBReactNativeSpec: 5a14398ccf5e27c1ca2d7109eb920594ce93c10d
   Flipper: 26fc4b7382499f1281eb8cb921e5c3ad6de91fe0
@@ -716,7 +727,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 5337263514dd6f09803962437687240c5dc39aa4
+  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleMLKit: 3c1f895592d95625eb57b8e66d4f13a5d36f9b49
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
@@ -773,11 +784,14 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNSentry: 68d5b2339fc7cd864e8076279345cc90174fa583
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
+  Sentry: 16d46dd5ca10e7f4469a2611805a3de123188add
+  SentryPrivate: 2bb4f8d9ff558b25ac70b66c1dedc58a7c43630b
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: c618b544ff8bd8865cdca602f00cbcdb92fd6d31
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 1c9a32c5be0ff29776b351e0bc6e657e99b670d7
+PODFILE CHECKSUM: 8d5c3aa5c3613ffbe1d3e6a0608ec671372aaccf
 
 COCOAPODS: 1.12.0
