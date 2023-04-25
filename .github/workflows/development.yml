@@ -33,18 +33,18 @@ jobs:
       - name: Create ios/fastlane/.env.default
         run: |
           cd ios/fastlane
-          echo {APP_STORE_CONNECT_API_KEY_KEY_ID='"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}"'} >> .env.default
-          echo {APP_STORE_CONNECT_API_KEY_ISSUER_ID='"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"'} >> .env.default
-          echo {APP_STORE_CONNECT_API_KEY_KEY='"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"'} >> .env.default
-          echo {MATCH_DEPLOY_KEY='"${{ secrets.MATCH_DEPLOY_KEY }}"'} >> .env.default
-          echo {MATCH_GITHUB_API_TOKEN='"${{ secrets.MATCH_GITHUB_API_TOKEN }}"'} >> .env.default
+          echo APP_STORE_CONNECT_API_KEY_KEY_ID='"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}"' >> .env.default
+          echo APP_STORE_CONNECT_API_KEY_ISSUER_ID='"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"' >> .env.default
+          echo APP_STORE_CONNECT_API_KEY_KEY='"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"' >> .env.default
+          echo MATCH_DEPLOY_KEY='"${{ secrets.MATCH_DEPLOY_KEY }}"' >> .env.default
+          echo MATCH_GITHUB_API_TOKEN='"${{ secrets.MATCH_GITHUB_API_TOKEN }}"' >> .env.default
 
       - name: Create ios/fastlane/AppStoreConnectAPIKey.json
         run: |
           cd ios/fastlane
-          echo {'"key_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}"'} >> AppStoreConnectAPIKey.json 
-          echo {'"issuer_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"'} >> AppStoreConnectAPIKey.json
-          echo {'"key"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"'} >> AppStoreConnectAPIKey.json
+          echo '"key_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}"' >> AppStoreConnectAPIKey.json 
+          echo '"issuer_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"' >> AppStoreConnectAPIKey.json
+          echo '"key"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"' >> AppStoreConnectAPIKey.json
 
       - name: Deploy beta to App Store
         env:
@@ -94,7 +94,7 @@ jobs:
           cd android
           echo ${{ secrets.SERVICE_ACCOUNT_JSON }} | base64 --decode > service-account.json
 
-      - name: Create android/gradle.properties
+      - name: Create android/key.properties
         run: |
           cd android
           echo "storeFile=${{ secrets.KEYSTORE_FILE }}" >> key.properties
@@ -106,7 +106,7 @@ jobs:
         run: echo "[]" >> data.json
 
       - name: Create env.json
-        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"'} >> env.json
+        run: echo '{"BASE_URL":"${{ secrets.BASE_URL }}", "SCAN_DATA_URL":"${{ secrets.SCAN_DATA_URL }}"}' >> env.json
 
       - name: Deploy alpha to Google Playstore
         run: |
