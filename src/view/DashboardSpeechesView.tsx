@@ -18,12 +18,10 @@ import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import SkeletonDashboardSpeeches from '../component/skeleton/SkeletonSpeechesDashboard';
 import ErrorCard from '../component/Error';
+import {RootStackParamList} from './RootStackParams';
 
 export interface DashboardSpeechesViewProps {
-  route: RouteProp<
-    {params: {speeches: ApiPaginatedData<ApiSpeechBundestag>}},
-    'params'
-  >;
+  route: RouteProp<RootStackParamList, 'DashboardSpeeches'>;
 }
 
 const DashboardSpeechesView = ({route}: DashboardSpeechesViewProps) => {

@@ -32,14 +32,11 @@ import {
   formatDonationsInThousands,
 } from '../logic/partydonation';
 import SkeletonDashboard from '../component/skeleton/SkeletonDashboard';
+import {RootStackParamList} from './RootStackParams';
 
 export interface PartyDonationViewProps {
-  route: RouteProp<{params: PartyDonationViewParams}, 'params'>;
+  route: RouteProp<RootStackParamList, 'PartyDonations'>;
 }
-
-type PartyDonationViewParams = {
-  partydonation: ApiBundestagPartyDonation[];
-};
 
 const PartyDonationView = ({route}: PartyDonationViewProps) => {
   const screenWidth = useWindowDimensions().width;

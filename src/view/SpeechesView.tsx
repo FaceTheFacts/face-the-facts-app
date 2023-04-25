@@ -12,15 +12,16 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import SpeechCard from '../component/speech/SpeechCard';
 import BackButton from '../component/BackButton';
-import {ApiSpeeches, ApiPoliticianContext} from '../logic/api';
+import {ApiSpeeches} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import SkeletonDashboardSpeeches from '../component/skeleton/SkeletonSpeechesDashboard';
 import ErrorCard from '../component/Error';
+import {RootStackParamList} from './RootStackParams';
 
 export interface SpeechesViewProps {
-  route: RouteProp<{params: {politician: ApiPoliticianContext}}, 'params'>;
+  route: RouteProp<RootStackParamList, 'Speeches'>;
 }
 
 const SpeechesView = ({route}: SpeechesViewProps) => {

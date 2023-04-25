@@ -11,7 +11,6 @@ import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {
   ApiNews,
-  ApiParty,
   ApiPoliticianProfile,
   ApiPositions,
   ApiPoliticianContext,
@@ -21,16 +20,10 @@ import {
 import SkeletonPoliticianProfile from '../component/skeleton/SkeletonPoliticianProfile';
 import PoliticianProfile from '../component/politician/PoliticianProfile';
 import ErrorCard from '../component/Error';
-
-type PoliticianViewParams = {
-  politicianId: number;
-  politicianName: string;
-  party: ApiParty;
-  toSideJobs?: boolean;
-};
+import {RootStackParamList} from './RootStackParams';
 
 interface PoliticianViewProps {
-  route: RouteProp<{params: PoliticianViewParams}, 'params'>;
+  route: RouteProp<RootStackParamList, 'Politician'>;
 }
 
 export const PoliticianContext = createContext<ApiPoliticianContext | null>(
