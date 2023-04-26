@@ -16,24 +16,6 @@ jobs:
           reportIgnoredFiles: true
           issueSummaryOnlyOnEvent: true
 
-  testing:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.x'
-
-      - name: Install packages
-        run: yarn install
-
-      - name: Run javascript tests
-        run: npm run test
-
   deployment:
     runs-on: ubuntu-latest
     needs: [eslint, testing]

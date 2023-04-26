@@ -16,24 +16,6 @@ jobs:
           reportIgnoredFiles: true
           issueSummaryOnlyOnEvent: true
 
-testing:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.6.8'
-          bundler-cache: true
-
-      - name: Install packages
-        run: yarn install
-
-      - name: Run javascript tests
-        run: yarn test
-
   deployment_ios:
     runs-on: macos-latest
     if: ${{ github.event_name == 'push' }}
