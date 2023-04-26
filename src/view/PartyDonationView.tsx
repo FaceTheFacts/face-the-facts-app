@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+/* import React, {useEffect, useRef, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -53,7 +53,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
     backgroundGradientTo: Colors.background,
     color: (opacity = 1) => `rgba(256, 256, 256, ${opacity})`,
     strokeWidth: 2, // optional, default 3
-  }; */
+  }; 
 
   const {
     data: partydonations,
@@ -182,7 +182,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
               <Text style={styles.dateText}>2022</Text> 
             </View>
           </View>
-        )}*/}
+        )}}
         <View style={styles.separatorLine} />
         {additionalDonationInfo && (
           <View>
@@ -270,7 +270,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
         modalStyle={styles.modalStyle}
         adjustToContentHeight={true}>
         <Text>Filter</Text>
-      </BottomSheet> */}
+      </BottomSheet> }
     </>
   );
 };
@@ -457,4 +457,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PartyDonationView;
+export default PartyDonationView; */
