@@ -7,6 +7,33 @@ on:
     branches: [development]
 
 jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bradennapier/eslint-plus-action@v3.4.2
+        with:
+          reportIgnoredFiles: true
+          issueSummaryOnlyOnEvent: true
+
+testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6.8'
+          bundler-cache: true
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Run javascript tests
+        run: yarn test
+
   deployment_ios:
     runs-on: macos-latest
     if: ${{ github.event_name == 'push' }}
@@ -49,6 +76,11 @@ jobs:
           echo '"key_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}"' >> AppStoreConnectAPIKey.json 
           echo '"issuer_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"' >> AppStoreConnectAPIKey.json
           echo '"key"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"' >> AppStoreConnectAPIKey.json
+
+      - name: Generate main.jsbundle
+        run: |
+          cd ios
+          yarn build:ios
 
       - name: Deploy beta to App Store
         env:
@@ -115,4 +147,4 @@ jobs:
       - name: Deploy alpha to Google Playstore
         run: |
           cd android
-          bundle exec fastlane alpha --verbose
+          bundle exec fastlane alpha
