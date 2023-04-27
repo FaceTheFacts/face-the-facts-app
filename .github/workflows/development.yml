@@ -43,15 +43,6 @@ jobs:
       - name: Create env.json
         run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
 
-      - name: Create ios/fastlane/.env.default
-        run: |
-          cd ios/fastlane
-          echo APP_STORE_CONNECT_API_KEY_KEY_ID='"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}"' >> .env.default
-          echo APP_STORE_CONNECT_API_KEY_ISSUER_ID='"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"' >> .env.default
-          echo APP_STORE_CONNECT_API_KEY_KEY='"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"' >> .env.default
-          echo MATCH_DEPLOY_KEY='"${{ secrets.MATCH_DEPLOY_KEY }}"' >> .env.default
-          echo MATCH_GITHUB_API_TOKEN='"${{ secrets.MATCH_GITHUB_API_TOKEN }}"' >> .env.default
-
       - name: Create ios/fastlane/AppStoreConnectAPIKey.json
         run: |
           cd ios/fastlane
@@ -59,20 +50,12 @@ jobs:
           echo '"issuer_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"' >> AppStoreConnectAPIKey.json
           echo '"key"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"' >> AppStoreConnectAPIKey.json
 
-      - name: Generate main.jsbundle
-        run: |
-          cd ios
-          yarn build:ios
-
       - name: Deploy beta to App Store
         env:
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION  }}
           MATCH_DEPLOY_KEY: ${{ secrets.MATCH_DEPLOY_KEY  }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD  }}
           MATCH_USERNAME: ${{ secrets.MATCH_USERNAME  }}
-          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID  }}
-          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID  }}
-          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY  }}
           GIT_SSH_COMMAND: 'ssh -o StrictHostKeyChecking=no'
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           MATCH_READONLY: true
