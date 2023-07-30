@@ -1,4 +1,4 @@
-/* import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -48,12 +48,12 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
   const [additionalDonationInfo, setAdditionalDonationInfo] = useState<any>();
   const [groupedDonations, setGroupedDonations] =
     useState<GroupedPartyDonations[]>();
-  /* const chartConfig = {
+  const chartConfig = {
     backgroundGradientFrom: Colors.background,
     backgroundGradientTo: Colors.background,
     color: (opacity = 1) => `rgba(256, 256, 256, ${opacity})`,
     strokeWidth: 2, // optional, default 3
-  }; 
+  };
 
   const {
     data: partydonations,
@@ -144,7 +144,7 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
             <Text style={styles.filterText}>Filtern</Text>
           </TouchableOpacity>
         </View>
-        {/* {partydonations && (
+        {partydonations && (
           <View>
             <LineChart
               data={{
@@ -178,11 +178,11 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
               bezier
             />
             <View style={styles.dateContainer}>
-              {/*  <Text style={styles.dateText}>2014</Text>
-              <Text style={styles.dateText}>2022</Text> 
+              <Text style={styles.dateText}>2014</Text>
+              <Text style={styles.dateText}>2022</Text>
             </View>
           </View>
-        )}}
+        )}
         <View style={styles.separatorLine} />
         {additionalDonationInfo && (
           <View>
@@ -263,14 +263,13 @@ const PartyDonationView = ({route}: PartyDonationViewProps) => {
           )}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />
-
-      {/* Filter Popup
-        <BottomSheet
+      Filter Popup
+      <BottomSheet
         modalRef={modal}
         modalStyle={styles.modalStyle}
         adjustToContentHeight={true}>
         <Text>Filter</Text>
-      </BottomSheet> }
+      </BottomSheet>
     </>
   );
 };
@@ -457,4 +456,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PartyDonationView; */
+export default PartyDonationView;
