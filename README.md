@@ -17,7 +17,5 @@ React Native is using NPM for package management. Please make sure to [install t
 
 ## Continuous Integration/Deployment
 
-This repository includes an automatic CI/CD pipeline for checking the respective push/pull-request event and in case of code is merged or pushed into the `master` or `development` branches, it project will be automatically build and published to the Google PlayStore using Fastlane. For the `development` branch it will go to the `alpha` testing track and for `master` to the `production` track. Note that the update needs to be confirmed by a FaceTheFacts core-maintainer before going live. A ruff overview of this flow can be found in the diagram below:
-![CI/CD Flow](img/ci_cd-flow-app.png)
-
-The automatic deployment for IOS will follow.
+This repository includes an automatic CI/CD pipeline for checking the respective push/pull-request event and in case of code is merged or pushed into the `master` or `development` branches, it project will be automatically build and published to the Google PlayStore and to Apple AppStore using Fastlane. For the `development` branch it will go to the `alpha` testing track and for `master` to the `production` track. Note that the update needs to be confirmed by a FaceTheFacts core-maintainer before going live. An overview of this flow can be found in the diagram below:
+![CI:CD diagramm](https://github.com/FaceTheFacts/face-the-facts-app/assets/61158193/c3ab5f15-b529-463e-9cc2-b4ab87c961a9)
