@@ -247,14 +247,6 @@ interface ApiSpeechData {
   relationships: SpeechRelationship;
 }
 
-interface ApiSpeeches {
-  items: ApiSpeech[];
-  total: number;
-  page: number;
-  size: number;
-  is_last_page: boolean;
-  politician_id: number;
-}
 interface SpeechResponse {
   meta: {
     api: unknown;
@@ -272,7 +264,10 @@ export interface ApiPaginatedData<T> {
   total: number;
   page: number;
   size: number;
-  is_last_page: boolean;
+}
+
+interface ApiSpeeches extends ApiPaginatedData<ApiSpeech> {
+  politician_id: number;
 }
 
 export interface ApiSpeech {
