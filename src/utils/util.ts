@@ -413,3 +413,7 @@ export const answerColors: Record<PositionAnswer, string> = {
 export function getPosition(position: PositionAnswer) {
   return answerLongLabels[position];
 }
+
+export function isZipCode(input: string) {
+  return /^\d+$/.test(input);
+}
