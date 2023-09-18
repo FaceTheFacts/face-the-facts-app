@@ -68,7 +68,10 @@ const HistoryView = () => {
     isError,
   } = useQuery<ApiPoliticianHeader[] | undefined, Error>(
     `search-${searchQuery}`,
-    () => fetch_api<ApiPoliticianHeader[]>(`search?text=${searchQuery}`),
+    () =>
+      fetch_api<ApiPoliticianHeader[]>(
+        `search?text=${encodeURIComponent(searchQuery)}`,
+      ),
     {enabled: newSearch},
   );
 
