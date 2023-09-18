@@ -38,6 +38,7 @@
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.19.0",
     "react-native-sqlite-storage": "^6.0.1",
+    "react-native-ssl-pinning": "^1.5.7",
     "react-native-svg": "^13.7.0",
     "react-native-tab-view": "^3.3.4",
     "react-native-video": "^5.2.1",

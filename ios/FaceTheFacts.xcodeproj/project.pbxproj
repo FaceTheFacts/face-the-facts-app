@@ -20,6 +20,7 @@
 		881DF794353F4B8A9F24B61F /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89043628020E4F53A7F854DA /* Inter-Light.ttf */; };
 		A63EB9CE29CF1D4C00273A5D /* FaceTheFactsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FaceTheFactsTests.m */; };
 		A6B0E06A29F8753B00671F9B /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A6B0E06929F8753B00671F9B /* main.jsbundle */; };
+		A6B948102AB896D8009BF0D4 /* ftf-cert.cer in Resources */ = {isa = PBXBuildFile; fileRef = A6B9480F2AB896D7009BF0D4 /* ftf-cert.cer */; };
 		A6E4CFCD27FDF457008CEE4A /* poliTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = A6E4CFCB27FDF456008CEE4A /* poliTrack.png */; };
 		A6E4CFCE27FDF457008CEE4A /* openParliamentTV.png in Resources */ = {isa = PBXBuildFile; fileRef = A6E4CFCC27FDF456008CEE4A /* openParliamentTV.png */; };
 		BBF7A640A2D647B680FD5FEC /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97A0336281C34A019DC27587 /* Inter-ExtraLight.ttf */; };
@@ -64,8 +65,11 @@
 		89043628020E4F53A7F854DA /* Inter-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.ttf"; path = "../assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		97A0336281C34A019DC27587 /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraLight.ttf"; path = "../assets/fonts/Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
 		A1CE4041363F7EAA06827F09 /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; sourceTree = "<group>"; };
+		A64106872A76DE3300B1E416 /* mycert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = mycert.cer; path = ../android/app/src/main/assets/mycert.cer; sourceTree = "<group>"; };
+		A64106892A76DF6100B1E416 /* mycert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = mycert.cer; sourceTree = "<group>"; };
 		A6B0E06929F8753B00671F9B /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		A6B0E06B29F8756000671F9B /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		A6B9480F2AB896D7009BF0D4 /* ftf-cert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ftf-cert.cer"; sourceTree = "<group>"; };
 		A6E4CFCB27FDF456008CEE4A /* poliTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = poliTrack.png; path = ../src/poliTrack.png; sourceTree = "<group>"; };
 		A6E4CFCC27FDF456008CEE4A /* openParliamentTV.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = openParliamentTV.png; path = ../src/openParliamentTV.png; sourceTree = "<group>"; };
 		BAEA4081528AAC2CDA3BEDA6 /* libPods-FaceTheFacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FaceTheFacts.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +157,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A6B9480F2AB896D7009BF0D4 /* ftf-cert.cer */,
+				A64106892A76DF6100B1E416 /* mycert.cer */,
 				A6B0E06B29F8756000671F9B /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* FaceTheFacts */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -179,6 +185,7 @@
 		9080EF43BDA545F59E418449 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A64106872A76DE3300B1E416 /* mycert.cer */,
 				EE59F4E0FDA14163A1A38385 /* Inter-Black.ttf */,
 				1CD6C5A9392B46B2A0F100A0 /* Inter-Bold.ttf */,
 				4BB653351B934D90A7FD9F64 /* Inter-ExtraBold.ttf */,
@@ -297,6 +304,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6B948102AB896D8009BF0D4 /* ftf-cert.cer in Resources */,
 				A6B0E06A29F8753B00671F9B /* main.jsbundle in Resources */,
 				A6E4CFCD27FDF457008CEE4A /* poliTrack.png in Resources */,
 				A6E4CFCE27FDF457008CEE4A /* openParliamentTV.png in Resources */,
