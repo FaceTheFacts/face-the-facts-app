@@ -19,8 +19,8 @@
 		856912AE52FA41B8B5B34E4F /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB76851FDA2C4FDDA46866CD /* Inter-Medium.ttf */; };
 		881DF794353F4B8A9F24B61F /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89043628020E4F53A7F854DA /* Inter-Light.ttf */; };
 		A63EB9CE29CF1D4C00273A5D /* FaceTheFactsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FaceTheFactsTests.m */; };
-		A641068A2A76DF6100B1E416 /* mycert.cer in Resources */ = {isa = PBXBuildFile; fileRef = A64106892A76DF6100B1E416 /* mycert.cer */; };
 		A6B0E06A29F8753B00671F9B /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A6B0E06929F8753B00671F9B /* main.jsbundle */; };
+		A6B948102AB896D8009BF0D4 /* ftf-cert.cer in Resources */ = {isa = PBXBuildFile; fileRef = A6B9480F2AB896D7009BF0D4 /* ftf-cert.cer */; };
 		A6E4CFCD27FDF457008CEE4A /* poliTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = A6E4CFCB27FDF456008CEE4A /* poliTrack.png */; };
 		A6E4CFCE27FDF457008CEE4A /* openParliamentTV.png in Resources */ = {isa = PBXBuildFile; fileRef = A6E4CFCC27FDF456008CEE4A /* openParliamentTV.png */; };
 		BBF7A640A2D647B680FD5FEC /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97A0336281C34A019DC27587 /* Inter-ExtraLight.ttf */; };
@@ -69,6 +69,7 @@
 		A64106892A76DF6100B1E416 /* mycert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = mycert.cer; sourceTree = "<group>"; };
 		A6B0E06929F8753B00671F9B /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		A6B0E06B29F8756000671F9B /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		A6B9480F2AB896D7009BF0D4 /* ftf-cert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ftf-cert.cer"; sourceTree = "<group>"; };
 		A6E4CFCB27FDF456008CEE4A /* poliTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = poliTrack.png; path = ../src/poliTrack.png; sourceTree = "<group>"; };
 		A6E4CFCC27FDF456008CEE4A /* openParliamentTV.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = openParliamentTV.png; path = ../src/openParliamentTV.png; sourceTree = "<group>"; };
 		BAEA4081528AAC2CDA3BEDA6 /* libPods-FaceTheFacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FaceTheFacts.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,6 +157,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A6B9480F2AB896D7009BF0D4 /* ftf-cert.cer */,
 				A64106892A76DF6100B1E416 /* mycert.cer */,
 				A6B0E06B29F8756000671F9B /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* FaceTheFacts */,
@@ -302,7 +304,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A641068A2A76DF6100B1E416 /* mycert.cer in Resources */,
+				A6B948102AB896D8009BF0D4 /* ftf-cert.cer in Resources */,
 				A6B0E06A29F8753B00671F9B /* main.jsbundle in Resources */,
 				A6E4CFCD27FDF457008CEE4A /* poliTrack.png in Resources */,
 				A6E4CFCE27FDF457008CEE4A /* openParliamentTV.png in Resources */,
