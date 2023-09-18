@@ -27,7 +27,6 @@ import DashboardPollsView from './view/DashboardPollsView';
 import PartyDonationView from './view/PartyDonationView';
 import {ErrorBoundary} from 'react-error-boundary';
 import ErrorView from './view/ErrorView';
-import * as Sentry from '@sentry/react-native';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const queryClient = new QueryClient();
@@ -35,22 +34,6 @@ const env = require('../env.json');
 if (!env.SENTRY_DSN) {
   console.error('SENTRY_DNS in env.json is missing');
 }
-
-Sentry.init({
-  enableNative: false,
-  dsn: env.SENTRY_DSN,
-  tracesSampleRate: 0.5,
-  // Release Health
-  enableAutoSessionTracking: true,
-  // Sessions close after app is 10 seconds in the background.
-  sessionTrackingIntervalMillis: 10000,
-  // Performance Monitoring
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      tracingOrigins: ['localhost', /^\//, /^https:\/\/www\./],
-    }),
-  ],
-});
 
 const App = () => {
   const [data, setData] = useState<FaceTheFactsData | null>(null);
@@ -201,4 +184,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Sentry.wrap(App);
+export default App;
