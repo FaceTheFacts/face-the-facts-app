@@ -12,14 +12,18 @@ const PoliticianHeader = () => {
   const politician = useContext(PoliticianContext);
   const data = useContext(DataContext);
   const [isFollowed, setIsFollowed] = useState(false);
-
   useEffect(() => {
     data.dbManager.isIdFollowed(politician?.profile?.id!).then(setIsFollowed);
   }, [data, politician]);
 
   return politician?.profile ? (
     <View style={styles.container}>
-      <PoliticianPicture politicianId={politician.profile.id!} size={80} />
+      <PoliticianPicture
+        politicianId={politician.profile.id!}
+        size={80}
+        clickable={true}
+        copyright={politician.profile.image_copyright}
+      />
       <View style={styles.rightContainer}>
         <Text style={styles.name}>{politician.profile.label}</Text>
         <Wrap spacing={4}>
