@@ -57,6 +57,7 @@ export interface ApiPoliticianProfile {
   statistic_questions_answered: string;
   qid_wikidata: string;
   field_title: string;
+  image_copyright: string;
   sidejobs: ApiSidejob[];
   cvs: {
     polician_id: number;
@@ -123,6 +124,7 @@ export interface ApiSidejob {
   interval: string;
   created: string;
   sidejob_organization: ApiSidejobOrganisation;
+  income: number | null;
 }
 
 export interface ApiSidejobOrganisation {
