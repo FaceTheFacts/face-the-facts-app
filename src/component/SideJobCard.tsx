@@ -4,6 +4,7 @@ import {ApiParty} from '../logic/api';
 import {Colors} from '../theme';
 import {formatDate} from '../utils/util';
 import PoliticianCard from './politician/PoliticianCard';
+import {formatIncome} from '../logic/partydonation';
 //import CardPolitician from '../CardPolitician';
 
 interface SideJobCardProps {
@@ -13,8 +14,9 @@ interface SideJobCardProps {
   date: string;
   label: string;
   organization: string;
-  income: string;
+  income_level: string;
   fromView?: boolean;
+  income: number | null;
 }
 
 const SideJobCard = ({
@@ -24,8 +26,9 @@ const SideJobCard = ({
   date,
   label,
   organization,
-  income,
+  income_level,
   fromView,
+  income,
 }: SideJobCardProps) => {
   const {width} = useWindowDimensions();
   const cardWidth = fromView ? width - 24 : width * 0.7;
@@ -62,7 +65,15 @@ const SideJobCard = ({
 
         <Text style={styles.orgText}>{organization}</Text>
         <View style={styles.separatorLine} />
-        <Text style={styles.dateText}>{income ? income : 'ehrenamtlich'}</Text>
+        <Text style={styles.dateText}>
+          {income_level === '1' && income
+            ? `monatlich ${formatIncome(income)}`
+            : income_level === '2' && income
+            ? `jährlich ${formatIncome(income)}`
+            : income && !income_level
+            ? `${formatIncome(income)}`
+            : ''}
+        </Text>
       </View>
     </View>
   );
