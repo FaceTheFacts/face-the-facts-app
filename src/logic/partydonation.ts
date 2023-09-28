@@ -25,6 +25,14 @@ export function formatDonationsInThousands(donations_sum: number) {
   });
 }
 
+export function formatIncome(income: number) {
+  if (income >= 1000000) {
+    return formatDonationsInMillions(income);
+  } else {
+    return formatDonationsInThousands(income);
+  }
+}
+
 // Helper function to append donations based on timeframe selection
 export function getDonationsFromSelection(
   donations: ApiPartyDonationDetails,
