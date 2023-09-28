@@ -179,7 +179,8 @@ const PoliticianOverview: React.FC<PoliticianOverviewProps> = ({
                   date={sidejob.created}
                   label={sidejob.label}
                   organization={sidejob.sidejob_organization.label}
-                  income={sidejob.income_level}
+                  income_level={sidejob.income_level}
+                  income={sidejob.income}
                 />
               ))}
             </View>

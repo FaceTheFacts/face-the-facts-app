@@ -54,8 +54,9 @@ const SideJobCarousel = ({sidejobs}: SideJobCarouselProps) => {
               party={sidejob.politician.party}
               label={sidejob.sidejob.label}
               date={sidejob.sidejob.created}
-              income={sidejob.sidejob.income_level}
+              income_level={sidejob.sidejob.income_level}
               organization={sidejob.sidejob.sidejob_organization.label}
+              income={sidejob.sidejob.income}
             />
           </TouchableOpacity>
         ))}
