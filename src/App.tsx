@@ -24,9 +24,10 @@ import DashboardSpeechesView from './view/DashboardSpeechesView';
 import {RootStackParamList} from './view/RootStackParams';
 import DashboardSidejobsView from './view/DashboardSidejobsView';
 import DashboardPollsView from './view/DashboardPollsView';
-import PartyDonationView from './view/PartyDonationView';
+import PartyDonationDetailsView from './view/PartyDonationDetailsView';
 import {ErrorBoundary} from 'react-error-boundary';
 import ErrorView from './view/ErrorView';
+import BundestagDonationsView from './view/BundestagPartyDonationView';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const queryClient = new QueryClient();
@@ -105,8 +106,13 @@ const App = () => {
                     options={{headerShown: false}}
                   />
                   <Stack.Screen
-                    name="PartyDonations"
-                    component={PartyDonationView}
+                    name="BundestagDonations"
+                    component={BundestagDonationsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="PartyDonationDetails"
+                    component={PartyDonationDetailsView}
                     options={{headerShown: false}}
                   />
                   <Stack.Screen
