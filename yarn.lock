@@ -6188,6 +6188,11 @@ react-native-gradle-plugin@^0.71.12:
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.19.tgz#3379e28341fcd189bc1f4691cefc84c1a4d7d232"
   integrity sha512-1dVk9NwhoyKHCSxcrM6vY6cxmojeATsBobDicX0ZKr7DgUF2cBQRTKsimQFvzH8XhOVXyH8p4HyDSZNIFI8OlQ==
 
+react-native-linear-gradient@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz#9a116649f86d74747304ee13db325e20b21e564f"
+  integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
+
 react-native-modalize@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-native-modalize/-/react-native-modalize-2.1.1.tgz#dcb67d208f4c5bdc76f45075e727be43fd008561"
