@@ -25,11 +25,12 @@ export function formatDonationsInMillions(donations_sum: number) {
 }
 
 export function formatDonationsInThousands(donations_sum: number) {
-  return round(donations_sum, 0).toLocaleString('de-DE', {
-    maximumFractionDigits: 0,
-    style: 'currency',
-    currency: 'EUR',
-  });
+  const roundedValue = round(donations_sum, 0).toString();
+  const withThousandSeparator = roundedValue.replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    '.',
+  );
+  return '' + withThousandSeparator + ' €';
 }
 
 export function formatDonations(donations_sum: number) {
