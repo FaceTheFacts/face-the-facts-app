@@ -63,7 +63,6 @@ const PoliticianProfile = ({toSideJobs}: PoliticianProfileProps) => {
                 style,
                 position,
                 getTabWidth,
-                // eslint-disable-next-line no-shadow
                 navigationState: {routes},
               }) => {
                 const inputRange = routes.map((_, i) => i);

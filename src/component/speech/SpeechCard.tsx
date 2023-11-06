@@ -59,10 +59,10 @@ const SpeechCard = ({
       <View style={styles.separatorLine} />
       <TouchableOpacity onPress={handleClickOpen} style={styles.cardContent}>
         {verticalScroll ? (
-          <Text style={[styles.descText, {marginBottom: 4}]}>{title}</Text>
+          <Text style={styles.descText}>{title}</Text>
         ) : (
           <Text
-            style={styles.descText}
+            style={styles.descTextTailed}
             numberOfLines={1}
             ellipsizeMode={'tail'}>
             {title}
@@ -123,6 +123,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   descText: {
+    fontSize: 13,
+    lineHeight: 15.73,
+    color: Colors.baseWhite,
+    marginBottom: 4,
+  },
+  descTextTailed: {
     fontSize: 13,
     lineHeight: 15.73,
     color: Colors.baseWhite,

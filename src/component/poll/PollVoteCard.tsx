@@ -255,9 +255,9 @@ const PollVoteCard = ({pollData}: PollVoteCardProps) => {
               </TouchableOpacity>
             </View>
             <ScrollView
-              style={{flexGrow: 1, height: '90%'}}
+              style={styles.cardContainer}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{flexGrow: 1}}>
+              contentContainerStyle={styles.cardContainerContent}>
               {votes.slice(0, offset).map((politician, voteIndex) => (
                 <Pressable
                   key={voteIndex}
@@ -396,6 +396,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     backgroundColor: Colors.background,
+  },
+  cardContainer: {
+    flexGrow: 1,
+    height: '90%',
+  },
+  cardContainerContent: {
+    flexGrow: 1,
   },
   card: {
     backgroundColor: Colors.cardBackground,

@@ -93,7 +93,7 @@ const PoliticianLinks = () => {
         </View>
       </TouchableOpacity>
       {politician?.profile?.weblinks?.map((link, index) => {
-        const type = linkTypes.find(type => type.test(link.link));
+        const type = linkTypes.find(linkType => linkType.test(link.link));
         return (
           <TouchableOpacity
             key={index}
@@ -105,7 +105,7 @@ const PoliticianLinks = () => {
                   icon={{viewBox: '0 0 24 24', d: type.icon}}
                 />
               )}
-              <Text style={styles.label}>{type?.label ?? link}</Text>
+              <Text style={styles.label}>{type?.label ?? link.link}</Text>
             </View>
           </TouchableOpacity>
         );
