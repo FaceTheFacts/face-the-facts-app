@@ -33,7 +33,6 @@ import {
   generateYearList,
   getDonationsFromSelection,
 } from '../logic/partydonation';
-import SkeletonDashboard from '../component/skeleton/SkeletonDashboard';
 import GraphComponent from '../component/partydonation/GraphComponent';
 import PartyDonationFilter from '../component/partydonation/PartyDonationFilter';
 import AdditionalInformation from '../component/partydonation/AdditionalInformation';
@@ -43,6 +42,7 @@ import PartyDonationDetailsCard from '../component/partydonation/PartyDonationDe
 import {useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from './RootStackParams';
 import {StackNavigationProp} from '@react-navigation/stack';
+import SkeletonPartyDonation from '../component/skeleton/SkeletonPartyDonation';
 
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -181,7 +181,7 @@ const BundestagDonationsView = () => {
   }
 
   if (partydonationsLoading) {
-    return <SkeletonDashboard />;
+    return <SkeletonPartyDonation />;
   }
   return (
     <>

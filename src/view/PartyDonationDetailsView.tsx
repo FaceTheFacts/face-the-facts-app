@@ -19,13 +19,13 @@ import {
   getAdditionalDonationInformation,
   getGraphData,
 } from '../logic/partydonation';
-import SkeletonDashboard from '../component/skeleton/SkeletonDashboard';
 import {RootStackParamList} from './RootStackParams';
 import GraphComponent from '../component/partydonation/GraphComponent';
 import TimeFrameFilter from '../component/partydonation/TimeFrameFilter';
 import AdditionalInformation from '../component/partydonation/AdditionalInformation';
 import PartyDonationDetailsCard from '../component/partydonation/PartyDonationDetailsCard';
 import DonationSectionHeader from '../component/partydonation/DonationSectionHeader';
+import SkeletonPartyDonation from '../component/skeleton/SkeletonPartyDonation';
 
 export interface PartyDonationDetailsViewProps {
   route: RouteProp<RootStackParamList, 'PartyDonationDetails'>;
@@ -92,7 +92,7 @@ const PartyDonationDetailsView = ({route}: PartyDonationDetailsViewProps) => {
   }
 
   if (partydonationsLoading) {
-    return <SkeletonDashboard />;
+    return <SkeletonPartyDonation />;
   }
   return (
     <>
