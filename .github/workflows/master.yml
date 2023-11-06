@@ -18,7 +18,7 @@ jobs:
 
   deployment:
     runs-on: ubuntu-latest
-    needs: [eslint, testing]
+    needs: eslint
     if: ${{ github.event_name == 'push' }}
 
     steps:

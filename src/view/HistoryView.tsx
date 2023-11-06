@@ -31,6 +31,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import PoliticianItem from '../component/politician/PoliticianItem';
 import SkeletonPoliticianItem from '../component/skeleton/SkeletonPoliticianItem';
 import ErrorCard from '../component/Error';
+import {isZipCode} from '../utils/util';
 
 const HistoryView = () => {
   const data = useContext(DataContext);
@@ -68,10 +69,12 @@ const HistoryView = () => {
     isError,
   } = useQuery<ApiPoliticianHeader[] | undefined, Error>(
     `search-${searchQuery}`,
-    () =>
-      fetch_api<ApiPoliticianHeader[]>(
-        `search?text=${encodeURIComponent(searchQuery)}`,
-      ),
+    () => {
+      const route = isZipCode(searchQuery) ? 'search-zipcode' : 'search-name';
+      return fetch_api<ApiPoliticianHeader[]>(
+        `${route}?text=${encodeURIComponent(searchQuery)}`,
+      );
+    },
     {enabled: newSearch},
   );
 

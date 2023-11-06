@@ -1,5 +1,11 @@
-import React from 'react';
-import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
+import React, {useContext} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  TouchableOpacity,
+} from 'react-native';
 import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
 import {ApiParty} from '../../logic/api';
@@ -9,6 +15,7 @@ import {
   formatDonationsInThousands,
   getAverageDonation,
 } from '../../logic/partydonation';
+import {NavigationContext} from '@react-navigation/native';
 
 interface PartyDonationCardProps {
   party: ApiParty;
@@ -21,6 +28,7 @@ const PartyDonationCard = ({
   donations,
   donations_total,
 }: PartyDonationCardProps) => {
+  const navigator = useContext<any>(NavigationContext)!;
   const screenWidth = useWindowDimensions().width;
   const chartConfig = {
     backgroundGradientFrom: Colors.cardBackground,
@@ -30,56 +38,61 @@ const PartyDonationCard = ({
     color: () => party.party_style.background_color,
     strokeWidth: 2, // optional, default 3
   };
+  const currentYear = new Date().getFullYear();
+  const pastYear = currentYear - 7;
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.header} />
-        <View style={styles.politicianContainer}>
-          <PartyTag party={party.party_style} />
-          <View style={styles.info}>
-            <Text style={styles.nameText}>Gesamt</Text>
-            <Text style={styles.totalAmount}>
-              {formatDonationsInMillions(donations_total)}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.separatorLine} />
-        <LineChart
-          data={{
-            labels: [],
-            datasets: [
-              {
-                data: donations,
-              },
-            ],
-          }}
-          width={screenWidth * 0.45}
-          height={48}
-          withDots={false}
-          withInnerLines={false}
-          withOuterLines={false}
-          withHorizontalLabels={false}
-          withVerticalLabels={false}
-          chartConfig={chartConfig}
-          fromZero={true}
-          style={styles.lineChart}
-          bezier
-        />
-        <View style={styles.dateContainer}>
-          <Text style={styles.dateText}>2014</Text>
-          <Text style={styles.dateText}>2022</Text>
-        </View>
-        <View style={styles.separatorLine} />
-        <View>
-          <Text style={styles.averageText}>
-            Ø{' '}
-            {formatDonationsInThousands(getAverageDonation(donations_total, 8))}{' '}
-            / Jahr
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => {
+        navigator.push('PartyDonationDetails', {
+          party,
+        });
+      }}>
+      <View style={styles.header} />
+      <View style={styles.politicianContainer}>
+        <PartyTag party={party.party_style} />
+        <View style={styles.info}>
+          <Text style={styles.nameText}>Gesamt</Text>
+          <Text style={styles.totalAmount}>
+            {formatDonationsInMillions(donations_total)}
           </Text>
         </View>
       </View>
-    </>
+      <View style={styles.separatorLine} />
+      <LineChart
+        data={{
+          labels: [],
+          datasets: [
+            {
+              data: donations,
+            },
+          ],
+        }}
+        width={screenWidth * 0.45}
+        height={48}
+        withDots={false}
+        withInnerLines={false}
+        withOuterLines={false}
+        withHorizontalLabels={false}
+        withVerticalLabels={false}
+        chartConfig={chartConfig}
+        fromZero={true}
+        style={styles.lineChart}
+        bezier
+      />
+      <View style={styles.dateContainer}>
+        <Text style={styles.dateText}>{pastYear}</Text>
+        <Text style={styles.dateText}>{currentYear}</Text>
+      </View>
+      <View style={styles.separatorLine} />
+      <View>
+        <Text style={styles.averageText}>
+          Ø {formatDonationsInThousands(getAverageDonation(donations_total, 8))}{' '}
+          / Jahr
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 

@@ -57,6 +57,7 @@ export interface ApiPoliticianProfile {
   statistic_questions_answered: string;
   qid_wikidata: string;
   field_title: string;
+  image_copyright: string;
   sidejobs: ApiSidejob[];
   cvs: {
     polician_id: number;
@@ -123,6 +124,7 @@ export interface ApiSidejob {
   interval: string;
   created: string;
   sidejob_organization: ApiSidejobOrganisation;
+  income: number | null;
 }
 
 export interface ApiSidejobOrganisation {
@@ -142,7 +144,7 @@ export interface ApiBundestagPartyDonation {
   donations_total: number;
 }
 
-export interface ApiPartyDonationDetails {
+export interface BundestagPartyDonationDetails {
   [key: string]: PartyDonationDetails;
 }
 
@@ -160,10 +162,29 @@ export interface PartyDonation {
   party_donation_organization: ApiPartyDonationOrganization;
 }
 
+export interface FormattedPartyDonation {
+  id: number;
+  party: ApiParty;
+  amount: string;
+  date: string;
+  party_donation_organization: ApiPartyDonationOrganization;
+}
+
 export interface GroupedPartyDonations {
   month: string;
   sum: number;
   sorted_donations: PartyDonation[];
+}
+
+export interface FormattedGroupedPartyDonations {
+  title: string;
+  sum: string;
+  data: FormattedPartyDonation[];
+}
+
+export interface GroupedQuarterPartyDonations {
+  quarterYear: string;
+  amount: number;
 }
 
 export interface ApiPartyDonationOrganization {
@@ -372,4 +393,38 @@ export interface TabEntities {
 interface Tab<T extends ValueOf<TabEntities>> {
   type: keyof TabEntities;
   content: T;
+}
+
+export interface GraphData {
+  data: {value: number}[];
+  maxValue: number;
+  noOfSections: number;
+  stepValue: number;
+}
+
+export interface GraphDataOverview {
+  data: {value: number}[];
+  color: string;
+}
+
+export interface ExtendedGraphData {
+  data: GraphData;
+  yAxis: string[];
+}
+export interface ExtendedGraphDataWithColor {
+  data: GraphData;
+  yAxis: string[];
+  color: string;
+}
+export interface GraphDataList {
+  graphDataList: GraphDataOverview[];
+  maxValue: number;
+  noOfSections: number;
+  stepValue: number;
+  yAxis: string[];
+}
+
+export interface PartySeparation {
+  bundestagParties: ApiParty[];
+  otherParties: ApiParty[];
 }

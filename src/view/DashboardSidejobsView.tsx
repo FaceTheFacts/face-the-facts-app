@@ -102,7 +102,8 @@ const DashboardSidejobView = () => {
                   label={sidejob.sidejob.label}
                   date={sidejob.sidejob.created}
                   organization={sidejob.sidejob.sidejob_organization.label}
-                  income={sidejob.sidejob.income_level}
+                  income_level={sidejob.sidejob.income_level}
+                  income={sidejob.sidejob.income}
                   fromView={true}
                 />
               </TouchableOpacity>

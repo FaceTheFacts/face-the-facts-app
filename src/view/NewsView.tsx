@@ -1,3 +1,4 @@
+import React from 'react';
 import {ScrollView, StyleSheet, Text, SafeAreaView, View} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';

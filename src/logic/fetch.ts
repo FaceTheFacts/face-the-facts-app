@@ -12,7 +12,7 @@ export async function fetch_api<T>(url: string): Promise<T | undefined> {
       method: 'GET',
       timeoutInterval: 10000,
       sslPinning: {
-        certs: ['mycert'],
+        certs: ['ftf-cert'],
       },
     });
 

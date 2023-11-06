@@ -24,7 +24,7 @@ const PartyDonationCarousel = ({donations}: PartyDonationCarouselProps) => {
         <TouchableOpacity
           style={styles.moreBtn}
           onPress={() => {
-            navigator?.navigate('PartyDonations', {
+            navigator?.navigate('BundestagDonations', {
               donations,
             });
           }}>
