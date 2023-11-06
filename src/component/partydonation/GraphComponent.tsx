@@ -50,7 +50,7 @@ const GraphComponent = ({
           yAxisLabelSuffix="k"
           yAxisLabelWidth={40}
           yAxisLabelContainerStyle={styles.yAxisLabelContainer}
-          xAxisColor={'transparent'}
+          xAxisColor="rgba(255, 255, 255, 0.2)"
           color={graphColor}
           areaChart
           startFillColor={graphColor}
@@ -112,6 +112,7 @@ const GraphComponent = ({
           yAxisLabelSuffix="k"
           yAxisLabelWidth={40}
           yAxisLabelContainerStyle={styles.yAxisLabelContainer}
+          xAxisColor="rgba(255, 255, 255, 0.2)"
           color1={color1}
           color2={color2}
           color3={color3}
