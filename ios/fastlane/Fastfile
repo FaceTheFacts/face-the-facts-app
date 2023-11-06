@@ -76,8 +76,6 @@ platform :ios do
       keychain_name: "build",
       keychain_password: ENV["KEYCHAIN_PASSWORD"]
     )
-    sh("yarn install")
-    sh("react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios")
 
     build_ios_app(
       workspace: "FaceTheFacts.xcworkspace",

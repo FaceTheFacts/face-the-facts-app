@@ -66,7 +66,6 @@
 		97A0336281C34A019DC27587 /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraLight.ttf"; path = "../assets/fonts/Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
 		A1CE4041363F7EAA06827F09 /* Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; path = "Target Support Files/Pods-FaceTheFacts-FaceTheFactsTests/Pods-FaceTheFacts-FaceTheFactsTests.release.xcconfig"; sourceTree = "<group>"; };
 		A64106872A76DE3300B1E416 /* mycert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = mycert.cer; path = ../android/app/src/main/assets/mycert.cer; sourceTree = "<group>"; };
-		A64106892A76DF6100B1E416 /* mycert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = mycert.cer; sourceTree = "<group>"; };
 		A6B0E06929F8753B00671F9B /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		A6B0E06B29F8756000671F9B /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		A6B9480F2AB896D7009BF0D4 /* ftf-cert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ftf-cert.cer"; sourceTree = "<group>"; };
@@ -158,7 +157,6 @@
 			isa = PBXGroup;
 			children = (
 				A6B9480F2AB896D7009BF0D4 /* ftf-cert.cer */,
-				A64106892A76DF6100B1E416 /* mycert.cer */,
 				A6B0E06B29F8756000671F9B /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* FaceTheFacts */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -304,8 +302,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6B948102AB896D8009BF0D4 /* ftf-cert.cer in Resources */,
 				A6B0E06A29F8753B00671F9B /* main.jsbundle in Resources */,
+				A6B948102AB896D8009BF0D4 /* ftf-cert.cer in Resources */,
 				A6E4CFCD27FDF457008CEE4A /* poliTrack.png in Resources */,
 				A6E4CFCE27FDF457008CEE4A /* openParliamentTV.png in Resources */,
 				006B95DA26D569D1000EB869 /* abgeordnetenwatch.png in Resources */,
