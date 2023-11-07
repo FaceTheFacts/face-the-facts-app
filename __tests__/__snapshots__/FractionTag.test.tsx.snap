@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fraction Tag renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "flex-start",
+      "backgroundColor": "#E74343",
+      "borderColor": undefined,
+      "borderRadius": 4,
+      "borderWidth": undefined,
+      "padding": 5,
+      "width": 50,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#FFFFFF",
+        "fontFamily": "Inter",
+        "fontSize": 13,
+        "fontWeight": "600",
+        "marginLeft": 0,
+        "marginRight": 0,
+        "textTransform": "none",
+      }
+    }
+  >
+    SPD
+  </Text>
+</View>
+`;

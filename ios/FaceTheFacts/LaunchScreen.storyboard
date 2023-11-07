@@ -35,7 +35,7 @@
                                 <rect key="frame" x="177" y="572" width="108" height="13.5"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="powered by" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xz0-1k-ITK">
-                                <rect key="frame" x="149" y="558" width="62" height="14"/>
+                                <rect key="frame" x="149.5" y="559" width="61.5" height="13"/>
                                 <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="11"/>
                                 <color key="textColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>

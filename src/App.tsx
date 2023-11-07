@@ -24,29 +24,17 @@ import DashboardSpeechesView from './view/DashboardSpeechesView';
 import {RootStackParamList} from './view/RootStackParams';
 import DashboardSidejobsView from './view/DashboardSidejobsView';
 import DashboardPollsView from './view/DashboardPollsView';
-import * as Sentry from '@sentry/react-native';
+import PartyDonationDetailsView from './view/PartyDonationDetailsView';
+import {ErrorBoundary} from 'react-error-boundary';
+import ErrorView from './view/ErrorView';
+import BundestagDonationsView from './view/BundestagPartyDonationView';
 
+const Stack = createStackNavigator<RootStackParamList>();
+const queryClient = new QueryClient();
 const env = require('../env.json');
 if (!env.SENTRY_DSN) {
   console.error('SENTRY_DNS in env.json is missing');
 }
-
-Sentry.init({
-  dsn: env.SENTRY_DSN,
-  tracesSampleRate: 0.5,
-  // Release Health
-  enableAutoSessionTracking: true,
-  // Sessions close after app is 10 seconds in the background.
-  sessionTrackingIntervalMillis: 10000,
-  // Performance Monitoring
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      tracingOrigins: ['localhost', /^\//, /^https:\/\/www\./],
-    }),
-  ],
-});
-const Stack = createStackNavigator<RootStackParamList>();
-const queryClient = new QueryClient();
 
 const App = () => {
   const [data, setData] = useState<FaceTheFactsData | null>(null);
@@ -88,65 +76,77 @@ const App = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <DataContext.Provider value={data}>
-        <StatusBar barStyle="light-content" />
-        <Host>
-          <View style={styles.container}>
-            <NavigationContainer theme={DarkTheme}>
-              <Stack.Navigator>
-                {/* Main contains Home, Scanner and History */}
-                <Stack.Screen
-                  name="Main"
-                  component={MainView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="Politician"
-                  component={PoliticianView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="Polls"
-                  component={PollsView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="News"
-                  component={NewsView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="Speeches"
-                  component={SpeechesView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="PollDetails"
-                  component={PollDetailsView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="DashboardSpeeches"
-                  component={DashboardSpeechesView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="DashboardSidejobs"
-                  component={DashboardSidejobsView}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen
-                  name="DashboardPolls"
-                  component={DashboardPollsView}
-                  options={{headerShown: false}}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </View>
-        </Host>
-      </DataContext.Provider>
-    </QueryClientProvider>
+    <ErrorBoundary FallbackComponent={ErrorView}>
+      <QueryClientProvider client={queryClient}>
+        <DataContext.Provider value={data}>
+          <StatusBar barStyle="light-content" />
+          <Host>
+            <View style={styles.container}>
+              <NavigationContainer theme={DarkTheme}>
+                <Stack.Navigator>
+                  {/* Main contains Home, Scanner and History */}
+                  <Stack.Screen
+                    name="Main"
+                    component={MainView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="Politician"
+                    component={PoliticianView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="Polls"
+                    component={PollsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="News"
+                    component={NewsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="BundestagDonations"
+                    component={BundestagDonationsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="PartyDonationDetails"
+                    component={PartyDonationDetailsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="Speeches"
+                    component={SpeechesView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="PollDetails"
+                    component={PollDetailsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="DashboardSpeeches"
+                    component={DashboardSpeechesView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="DashboardSidejobs"
+                    component={DashboardSidejobsView}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="DashboardPolls"
+                    component={DashboardPollsView}
+                    options={{headerShown: false}}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </View>
+          </Host>
+        </DataContext.Provider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 
@@ -190,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Sentry.wrap(App);
+export default App;

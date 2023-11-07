@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+Array [
+  <RCTSafeAreaView
+    emulateUnlessSupported={true}
+    style={
+      Object {
+        "backgroundColor": "#2A2B36",
+        "flex": 0,
+      }
+    }
+  />,
+  <View
+    style={
+      Object {
+        "backgroundColor": "#181924",
+      }
+    }
+  >
+    <RNSVGSvgView
+      bbHeight="100%"
+      bbWidth="100%"
+      focusable={false}
+      interval={0.25}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "borderWidth": 0,
+          },
+          Object {},
+          Object {
+            "flex": 0,
+            "height": "100%",
+            "width": "100%",
+          },
+        ]
+      }
+    >
+      <RNSVGGroup>
+        <RNSVGRect
+          clipPath="l0vfr7l-animated-diff"
+          fill={
+            Array [
+              1,
+              "l0vfr7l-diff",
+            ]
+          }
+          height="100%"
+          propList={
+            Array [
+              "fill",
+            ]
+          }
+          width="100%"
+          x="0"
+          y="0"
+        />
+        <RNSVGDefs>
+          <RNSVGClipPath
+            name="l0vfr7l-animated-diff"
+          >
+            <RNSVGRect
+              height="16"
+              rx="4"
+              ry="4"
+              width="92"
+              x="12"
+              y="12"
+            />
+            <RNSVGRect
+              height="120"
+              rx="4"
+              ry="4"
+              width={726}
+              x="12"
+              y="40"
+            />
+            <RNSVGRect
+              height="16"
+              rx="4"
+              ry="4"
+              width="92"
+              x="12"
+              y="184"
+            />
+            <RNSVGRect
+              height="80"
+              rx="4"
+              ry="4"
+              width={726}
+              x="12"
+              y="212"
+            />
+            <RNSVGRect
+              height="80"
+              rx="4"
+              ry="4"
+              width={726}
+              x="12"
+              y="304"
+            />
+            <RNSVGRect
+              height="80"
+              rx="4"
+              ry="4"
+              width={726}
+              x="12"
+              y="400"
+            />
+          </RNSVGClipPath>
+          <RNSVGLinearGradient
+            gradient={
+              Array [
+                0,
+                -14013642,
+                0.5,
+                -1118482,
+                1,
+                -14013642,
+              ]
+            }
+            gradientTransform={null}
+            gradientUnits={0}
+            name="l0vfr7l-diff"
+            x1="-100%"
+            x2="0%"
+            y1={0}
+            y2={0}
+          />
+        </RNSVGDefs>
+      </RNSVGGroup>
+    </RNSVGSvgView>
+  </View>,
+]
+`;

@@ -15,13 +15,53 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios sync_all_dev
+
+```sh
+[bundle exec] fastlane ios sync_all_dev
+```
+
+Synchronize all development
+
+### ios sync_all_appstore_certs
+
+```sh
+[bundle exec] fastlane ios sync_all_appstore_certs
+```
+
+Synchronize all appstore certificates
+
+### ios sync_device_info
+
+```sh
+[bundle exec] fastlane ios sync_device_info
+```
+
+Register new devices
+
+### ios init_ci
+
+```sh
+[bundle exec] fastlane ios init_ci
+```
+
+Initialize fastlane and match to work with github actions
+
 ### ios beta
 
 ```sh
 [bundle exec] fastlane ios beta
 ```
 
-Push a new beta build to TestFlight
+
+
+### ios production
+
+```sh
+[bundle exec] fastlane ios production
+```
+
+
 
 ----
 

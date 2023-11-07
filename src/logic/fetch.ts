@@ -1,3 +1,5 @@
+import {fetch} from 'react-native-ssl-pinning';
+
 const env = require('../../env.json');
 if (!env.BASE_URL) {
   console.error('BASE_URL in env.json is missing');
@@ -6,23 +8,19 @@ if (!env.BASE_URL) {
 export async function fetch_api<T>(url: string): Promise<T | undefined> {
   const BASE_URL = env.BASE_URL;
   try {
-    const response = await fetch(`${BASE_URL}/${url}`);
-    if (response.status >= 200 && response.status <= 299) {
-      return await response.json();
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
+    const response = await fetch(`${BASE_URL}/${url}`, {
+      method: 'GET',
+      timeoutInterval: 10000,
+      sslPinning: {
+        certs: ['ftf-cert'],
+      },
+    });
 
-export async function request<T>(url: string): Promise<T | undefined> {
-  try {
-    const response = await fetch(url);
     if (response.status >= 200 && response.status <= 299) {
-      return await response.json();
+      const jsonResponse = await response.json();
+      return jsonResponse as T;
     }
-    return undefined;
-  } catch (_) {
-    return undefined;
+  } catch (error: Error | any) {
+    throw new Error(error);
   }
 }

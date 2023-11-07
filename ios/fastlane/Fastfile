@@ -16,11 +16,95 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Push a new beta build to TestFlight"
-  lane :beta do
-    sync_code_signing(type: "appstore")
-    increment_build_number(xcodeproj: "FaceTheFacts.xcodeproj")
-    build_app(workspace: "FaceTheFacts.xcworkspace", scheme: "FaceTheFacts")
-    upload_to_testflight
+
+  desc "Synchronize all development"
+  lane :sync_all_dev do
+    # Uncomment the following line if you want to register a new Apple device on the developer portal
+    # sync_device_info
+    match(type: "development")
   end
+
+  desc "Synchronize all appstore certificates"
+  lane :sync_all_appstore_certs do
+    match(type: "appstore")
+  end
+
+  desc "Register new devices"
+  lane :sync_device_info do
+    register_devices(
+      devices: {
+        # Uncomment the line below this comment if you want to register a new Apple device on the developer portal
+        # If having to trouble finding the device UUID, find more information here: https://developer.apple.com/documentation/xcode/distributing-your-app-to-registered-devices
+        
+        # "Device Name" => " Device UUID",
+      }
+    )
+  end
+
+  desc "Initialize fastlane and match to work with github actions"
+  lane :init_ci do
+    setup_ci()
+    github_action(
+      api_token: ENV["MATCH_GITHUB_API_TOKEN"],
+      org: "FaceTheFacts",
+      repo: "face-the-facts-app",
+      match_org: "FaceTheFacts",
+      match_repo: "fastlane-ios",
+      dotenv_paths: ["fastlane/.env.default"]
+    )
+    
+  end
+
+
+
+  lane :beta do
+    setup_ci()
+    create_keychain(
+      name: "build",
+      password: ENV["KEYCHAIN_PASSWORD"],
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: false
+    )
+    match(
+      type: "appstore",
+      readonly: true,
+      app_identifier: "app.facethefacts",
+      verbose: true,
+      git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"],
+      keychain_name: "build",
+      keychain_password: ENV["KEYCHAIN_PASSWORD"]
+    )
+
+    build_ios_app(
+      workspace: "FaceTheFacts.xcworkspace",
+      scheme: "FaceTheFacts",
+      export_method: "app-store",
+      include_bitcode: false,
+      silent: true,
+      clean: true
+    )        
+    upload_to_testflight(
+      api_key_path("fastlane/AppStoreConnectAPIKey.json"),
+      skip_waiting_for_build_processing: true,
+      skip_submission: true)
+  end
+
+  lane :production do
+    setup_ci
+    app_store_connect_api_key(
+      is_key_content_base64: true,
+      in_house: false,
+      )
+    deliver(
+      submit_for_review: false,
+      skip_binary_upload: true,
+      run_precheck_before_submit: false,
+      automatic_release: true,
+      force: true
+    )       
+    
+  end
+
 end

@@ -1,12 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
+import {Route, SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import {Colors} from '../../theme';
 import {PoliticianContext} from '../../view/PoliticianView';
 import PoliticianOverview from './PoliticianOverview';
 import PoliticianCV from './PoliticianCV';
 import PoliticianLinks from './PoliticianLinks';
-import {Route} from 'react-native-tab-view/lib/typescript/types';
 
 interface PoliticianProfileProps {
   toSideJobs?: boolean;
@@ -64,7 +63,6 @@ const PoliticianProfile = ({toSideJobs}: PoliticianProfileProps) => {
                 style,
                 position,
                 getTabWidth,
-                // eslint-disable-next-line no-shadow
                 navigationState: {routes},
               }) => {
                 const inputRange = routes.map((_, i) => i);

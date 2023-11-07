@@ -46,9 +46,9 @@ const DashboardPollCard = ({
           </View>
         </View>
         <View style={styles.headerText}>
-          <Text style={[styles.date, {opacity: 1}]}>
+          <Text style={styles.date}>
             {last_politician}
-            <Text style={styles.date}>
+            <Text style={styles.dateMore}>
               {' '}
               und {result.yes + result.no + result.abstain} weitere
             </Text>
@@ -136,6 +136,12 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   date: {
+    color: Colors.foreground,
+    fontSize: 11,
+    fontFamily: 'Inter',
+    opacity: 1,
+  },
+  dateMore: {
     color: Colors.foreground,
     fontSize: 11,
     fontFamily: 'Inter',

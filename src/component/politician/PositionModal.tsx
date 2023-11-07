@@ -23,10 +23,12 @@ const PositionModal = ({statement, reason, position}: PositionModalProps) => {
         ]}>
         <Text style={styles.position}>{positionWording}</Text>
       </View>
-      <View style={styles.reasonContainer}>
-        <Text style={styles.title}>Begründung</Text>
-        <Text style={styles.subtitle}>{reason}</Text>
-      </View>
+      {reason && (
+        <View style={styles.reasonContainer}>
+          <Text style={styles.title}>Begründung</Text>
+          <Text style={styles.subtitle}>{reason}</Text>
+        </View>
+      )}
     </View>
   );
 };

@@ -29,7 +29,12 @@ const ReadMoreHTML = ({
 }: ReadMoreHTMLProps) => {
   const {width} = useWindowDimensions();
   const [expanded, setExpanded] = useState(false);
-
+  const linkStyles: Readonly<Record<string, MixedStyleDeclaration>> = {
+    a: {
+      color: '#3AA6F4',
+      textDecorationLine: 'none',
+    },
+  };
   return (
     <>
       <View
@@ -42,6 +47,7 @@ const ReadMoreHTML = ({
           baseStyle={baseStyle}
           source={{html}}
           contentWidth={width}
+          tagsStyles={linkStyles}
         />
       </View>
       <TouchableOpacity

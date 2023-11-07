@@ -16,12 +16,12 @@ import {ApiPaginatedData, ApiSpeechBundestag} from '../logic/api';
 import {checkPreviousMonth, formatDate, formatMonth} from '../utils/util';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
+import SkeletonDashboardSpeeches from '../component/skeleton/SkeletonSpeechesDashboard';
+import ErrorCard from '../component/Error';
+import {RootStackParamList} from './RootStackParams';
 
 export interface DashboardSpeechesViewProps {
-  route: RouteProp<
-    {params: {speeches: ApiPaginatedData<ApiSpeechBundestag>}},
-    'params'
-  >;
+  route: RouteProp<RootStackParamList, 'DashboardSpeeches'>;
 }
 
 const DashboardSpeechesView = ({route}: DashboardSpeechesViewProps) => {
@@ -33,6 +33,10 @@ const DashboardSpeechesView = ({route}: DashboardSpeechesViewProps) => {
     );
   const {
     data: speechesData,
+    isError,
+    isLoading,
+    isSuccess,
+    isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery<ApiPaginatedData<ApiSpeechBundestag> | undefined, Error>(
@@ -50,7 +54,11 @@ const DashboardSpeechesView = ({route}: DashboardSpeechesViewProps) => {
         !lastPage?.is_last_page && pages.length + 1,
     },
   );
-  return (
+  return isLoading ? (
+    <SkeletonDashboardSpeeches />
+  ) : isError ? (
+    <ErrorCard />
+  ) : (
     <>
       <SafeAreaView style={styles.iosSafeTop} />
       <View style={styles.header}>
@@ -64,39 +72,55 @@ const DashboardSpeechesView = ({route}: DashboardSpeechesViewProps) => {
       </View>
       <View style={styles.separatorLine} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        {speechesData?.pages.map((page, pageIndex) =>
-          page?.items.map((speech, speechIndex) => (
-            <View key={pageIndex + speechIndex}>
-              {speechIndex !== 0 ? (
-                checkPreviousMonth(
-                  speech.date,
-                  speeches!.items[speechIndex + -1].date,
-                ) && (
+        {isSuccess &&
+          speechesData?.pages.map((page, pageIndex) =>
+            page?.items.map((speech, speechIndex) => (
+              <View key={pageIndex + speechIndex}>
+                {speechIndex === 0 && pageIndex === 0 ? (
                   <View style={styles.monthContainer}>
                     <Text style={styles.month}>{formatMonth(speech.date)}</Text>
                   </View>
-                )
-              ) : (
-                <View style={styles.monthContainer}>
-                  <Text style={styles.month}>{formatMonth(speech.date)}</Text>
+                ) : pageIndex !== 0 && speechIndex === 0 ? (
+                  checkPreviousMonth(
+                    speechesData.pages[pageIndex - 1]?.items[
+                      speechesData.pages[pageIndex - 1]!.items.length - 1
+                    ].date,
+                    speech.date,
+                  ) && (
+                    <View style={styles.monthContainer}>
+                      <Text style={styles.month}>
+                        {formatMonth(speech.date)}
+                      </Text>
+                    </View>
+                  )
+                ) : (
+                  checkPreviousMonth(
+                    page.items[speechIndex - 1].date,
+                    speech.date,
+                  ) && (
+                    <View style={styles.monthContainer}>
+                      <Text style={styles.month}>
+                        {formatMonth(speech.date)}
+                      </Text>
+                    </View>
+                  )
+                )}
+                <View style={styles.speechCardContainer}>
+                  <SpeechCard
+                    politicianId={speech.speaker.id}
+                    politicianName={speech.speaker.label}
+                    party={speech.speaker.party}
+                    title={speech.title}
+                    date={formatDate(speech.date)}
+                    video={speech.videoFileURI}
+                    cardWidth={width - 24}
+                    verticalScroll
+                  />
                 </View>
-              )}
-              <View style={styles.speechCardContainer}>
-                <SpeechCard
-                  politicianId={speech.speaker.id}
-                  politicianName={speech.speaker.label}
-                  party={speech.speaker.party}
-                  title={speech.title}
-                  date={formatDate(speech.date)}
-                  video={speech.videoFileURI}
-                  cardHeight={117}
-                  cardWidth={width - 24}
-                />
               </View>
-            </View>
-          )),
-        )}
-        {hasNextPage && (
+            )),
+          )}
+        {hasNextPage && !isFetchingNextPage && (
           <TouchableOpacity onPress={() => fetchNextPage()}>
             <Text style={styles.moreButton}>mehr</Text>
           </TouchableOpacity>

@@ -7,45 +7,71 @@ on:
     branches: [development]
 
 jobs:
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-  testing:
-    runs-on: ubuntu-latest
+  deployment_ios:
+    runs-on: macos-latest
+    if: ${{ github.event_name == 'push' }}
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
-      - uses: actions/setup-ruby@v1
+          node-version: '16.x'
+      - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.x'
+          ruby-version: '2.6.8'
+          bundler-cache: true
+
+      - name: Install Ruby Dependencies
+        run: |
+          cd ios
+          rm Gemfile.lock
+          bundle install
+          bundle update fastlane
 
       - name: Install packages
         run: yarn install
 
-      - name: Run javascript tests
-        run: npm run test
+      - name: Create env.json
+        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
 
-  deployment:
+      - name: Create ios/fastlane/AppStoreConnectAPIKey.json
+        run: |
+          cd ios/fastlane
+          echo '"key_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}"' >> AppStoreConnectAPIKey.json 
+          echo '"issuer_id"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"' >> AppStoreConnectAPIKey.json
+          echo '"key"':'"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}"' >> AppStoreConnectAPIKey.json
+
+      - name: Deploy beta to App Store
+        env:
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION  }}
+          MATCH_DEPLOY_KEY: ${{ secrets.MATCH_DEPLOY_KEY  }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD  }}
+          MATCH_USERNAME: ${{ secrets.MATCH_USERNAME  }}
+          GIT_SSH_COMMAND: 'ssh -o StrictHostKeyChecking=no'
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          MATCH_READONLY: true
+        run: |
+          eval "$(ssh-agent -s)"
+          ssh-add - <<<"${MATCH_DEPLOY_KEY}"
+          cd ios
+          pod install
+          bundle exec fastlane beta --verbose
+
+  deployment_android:
     runs-on: ubuntu-latest
-    needs: [eslint, testing]
     if: ${{ github.event_name == 'push' }}
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
-      - uses: actions/setup-ruby@v1
+          node-version: '16.x'
+      - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.x'
+          ruby-version: '3.0'
 
       - name: Build install
-        run: cd android && bundle install
+        run: cd android && bundle install && bundle update fastlane
 
       - name: Install packages
         run: yarn install
@@ -60,7 +86,7 @@ jobs:
           cd android
           echo ${{ secrets.SERVICE_ACCOUNT_JSON }} | base64 --decode > service-account.json
 
-      - name: Create android/gradle.properties
+      - name: Create android/key.properties
         run: |
           cd android
           echo "storeFile=${{ secrets.KEYSTORE_FILE }}" >> key.properties
@@ -68,13 +94,13 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
 
-      - name: Create env.json
-        run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"','"SENTRY_DSN"':'"${{ secrets.SENTRY_DSN }}"','"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"'} >> env.json
-
       - name: Create data.json mock
         run: echo "[]" >> data.json
+
+      - name: Create env.json
+        run: echo '{"BASE_URL":"${{ secrets.BASE_URL }}", "SCAN_DATA_URL":"${{ secrets.SCAN_DATA_URL }}"}' >> env.json
 
       - name: Deploy alpha to Google Playstore
         run: |
           cd android
-          fastlane alpha
+          bundle exec fastlane alpha

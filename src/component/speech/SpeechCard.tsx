@@ -17,8 +17,9 @@ interface SpeechCardProps {
   title: string;
   date: string;
   video: string;
-  cardHeight: number;
+  cardHeight?: number;
   cardWidth: number;
+  verticalScroll?: boolean;
 }
 
 const SpeechCard = ({
@@ -30,6 +31,7 @@ const SpeechCard = ({
   video,
   cardHeight,
   cardWidth,
+  verticalScroll,
 }: SpeechCardProps) => {
   const modal = useRef<Modalize>(null);
   const handleClickOpen = () => {
@@ -56,9 +58,16 @@ const SpeechCard = ({
       </TouchableOpacity>
       <View style={styles.separatorLine} />
       <TouchableOpacity onPress={handleClickOpen} style={styles.cardContent}>
-        <Text style={styles.descText} numberOfLines={1} ellipsizeMode={'tail'}>
-          {title}
-        </Text>
+        {verticalScroll ? (
+          <Text style={styles.descText}>{title}</Text>
+        ) : (
+          <Text
+            style={styles.descTextTailed}
+            numberOfLines={1}
+            ellipsizeMode={'tail'}>
+            {title}
+          </Text>
+        )}
         <Text style={styles.dateText}>{date}</Text>
       </TouchableOpacity>
       <BottomSheet
@@ -114,6 +123,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   descText: {
+    fontSize: 13,
+    lineHeight: 15.73,
+    color: Colors.baseWhite,
+    marginBottom: 4,
+  },
+  descTextTailed: {
     fontSize: 13,
     lineHeight: 15.73,
     color: Colors.baseWhite,

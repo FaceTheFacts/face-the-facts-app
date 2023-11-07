@@ -8,10 +8,9 @@ import {
   TouchableOpacity,
   Linking,
 } from 'react-native';
-import {ApiPollDetails, Vote} from '../logic/api';
+import {ApiPollDetails} from '../logic/api';
 import {Colors} from '../theme';
 import ReadMoreHTML from '../component/utils/ReadMoreHTML';
-import type {ApiPoliticianProfile, ApiPoll, ApiVote} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {RouteProp} from '@react-navigation/native';
@@ -25,16 +24,10 @@ import {ArrowUpRightFromSquare} from '../icons';
 import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import ErrorCard from '../component/Error';
-
-type PollDetailsViewParams = {
-  poll: ApiPoll;
-  vote: ApiVote;
-  candidateVote?: Vote;
-  politician?: ApiPoliticianProfile;
-};
+import {RootStackParamList} from './RootStackParams';
 
 interface PollDetailsViewProps {
-  route: RouteProp<{params: PollDetailsViewParams}, 'params'>;
+  route: RouteProp<RootStackParamList, 'PollDetails'>;
 }
 
 const PollDetailsView = ({route}: PollDetailsViewProps) => {
@@ -65,7 +58,7 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
           <BackButton />
         </View>
         <View style={styles.filterContainer}>
-          {pollDetails && pollDetails.poll_links && (
+          {pollDetails && pollDetails.poll_links.length > 0 && (
             <TouchableOpacity
               style={styles.redirectBtn}
               onPress={() => {
@@ -74,7 +67,11 @@ const PollDetailsView = ({route}: PollDetailsViewProps) => {
                   : Linking.openURL(pollDetails.poll_links[0].uri);
               }}>
               <Icon style={styles.arrowIcon} icon={ArrowUpRightFromSquare} />
-              <Text style={styles.redirectBtnText}>weiterführende Links</Text>
+              <Text style={styles.redirectBtnText}>
+                {pollDetails.poll_links.length > 1
+                  ? 'weiterführende Links'
+                  : 'weiterführender Link'}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
@@ -232,6 +229,7 @@ const styles = StyleSheet.create({
   },
   linkBtn: {
     flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: Colors.cardBackground,
@@ -242,7 +240,7 @@ const styles = StyleSheet.create({
   linkBtnText: {
     fontSize: 13,
     fontWeight: '600',
-    textAlign: 'center',
+    textAlign: 'left',
     color: Colors.foreground,
   },
 });

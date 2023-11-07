@@ -11,7 +11,7 @@ import {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import Icon from '../component/Icon';
 import BackButton from '../component/BackButton';
-import {ApiPollBundestag, ApiPollBundestagData} from '../logic/api';
+import {ApiPollBundestag} from '../logic/api';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/util';
@@ -20,14 +20,11 @@ import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import PollFilter from '../component/poll/PollFilter';
 import DashboardPollCard from '../component/poll/DashboardPollCard';
+import {RootStackParamList} from './RootStackParams';
 
 export interface DashboardPollsViewProps {
-  route: RouteProp<{params: PollViewParams}, 'params'>;
+  route: RouteProp<RootStackParamList, 'DashboardPolls'>;
 }
-
-type PollViewParams = {
-  polls: ApiPollBundestagData[];
-};
 
 const DashboardPollsView = ({route}: DashboardPollsViewProps) => {
   const polls = route.params.polls;
@@ -191,11 +188,12 @@ const DashboardPollsView = ({route}: DashboardPollsViewProps) => {
               </View>
             )),
           )}
-        {isSuccess && !pollsData?.pages[pollsData.pages.length - 1]?.last_page && (
-          <TouchableOpacity onPress={() => fetchNextPage()}>
-            <Text style={styles.moreButton}>mehr</Text>
-          </TouchableOpacity>
-        )}
+        {isSuccess &&
+          !pollsData?.pages[pollsData.pages.length - 1]?.last_page && (
+            <TouchableOpacity onPress={() => fetchNextPage()}>
+              <Text style={styles.moreButton}>mehr</Text>
+            </TouchableOpacity>
+          )}
       </ScrollView>
       <SafeAreaView style={styles.iosSafeBottom} />
       <BottomSheet

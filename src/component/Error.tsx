@@ -36,8 +36,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 28,
-    //width,
-    //height,
   },
   logoContainer: {
     flex: 1,

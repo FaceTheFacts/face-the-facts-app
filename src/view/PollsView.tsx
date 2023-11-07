@@ -12,7 +12,7 @@ import {Colors} from '../theme';
 import PollCard from '../component/poll/PollCard';
 import Icon from '../component/Icon';
 import BackButton from '../component/BackButton';
-import {ApiVoteAndPoll, ApiPoliticianContext} from '../logic/api';
+import {ApiVoteAndPoll} from '../logic/api';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/util';
@@ -21,14 +21,11 @@ import {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import PollFilter from '../component/poll/PollFilter';
 import ErrorCard from '../component/Error';
+import {RootStackParamList} from './RootStackParams';
 
 export interface PollsViewProps {
-  route: RouteProp<{params: PollViewParams}, 'params'>;
+  route: RouteProp<RootStackParamList, 'Polls'>;
 }
-
-type PollViewParams = {
-  politician: ApiPoliticianContext;
-};
 
 const PollsView = ({route}: PollsViewProps) => {
   const [filter, setFilter] = useState<number[]>([]);

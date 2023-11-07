@@ -57,6 +57,7 @@ export interface ApiPoliticianProfile {
   statistic_questions_answered: string;
   qid_wikidata: string;
   field_title: string;
+  image_copyright: string;
   sidejobs: ApiSidejob[];
   cvs: {
     polician_id: number;
@@ -123,6 +124,7 @@ export interface ApiSidejob {
   interval: string;
   created: string;
   sidejob_organization: ApiSidejobOrganisation;
+  income: number | null;
 }
 
 export interface ApiSidejobOrganisation {
@@ -136,6 +138,63 @@ export interface ApiSidejobsBundestag {
   politician: ApiPoliticianHeader;
 }
 
+export interface ApiBundestagPartyDonation {
+  party: ApiParty;
+  donations_over_32_quarters: number[];
+  donations_total: number;
+}
+
+export interface BundestagPartyDonationDetails {
+  [key: string]: PartyDonationDetails;
+}
+
+export interface PartyDonationDetails {
+  donations_older_than_8_years: PartyDonation[];
+  donations_4_to_8_years_old: PartyDonation[];
+  donations_less_than_4_years_old: PartyDonation[];
+}
+
+export interface PartyDonation {
+  id: number;
+  party: ApiParty;
+  amount: number;
+  date: string;
+  party_donation_organization: ApiPartyDonationOrganization;
+}
+
+export interface FormattedPartyDonation {
+  id: number;
+  party: ApiParty;
+  amount: string;
+  date: string;
+  party_donation_organization: ApiPartyDonationOrganization;
+}
+
+export interface GroupedPartyDonations {
+  month: string;
+  sum: number;
+  sorted_donations: PartyDonation[];
+}
+
+export interface FormattedGroupedPartyDonations {
+  title: string;
+  sum: string;
+  data: FormattedPartyDonation[];
+}
+
+export interface GroupedQuarterPartyDonations {
+  quarterYear: string;
+  amount: number;
+}
+
+export interface ApiPartyDonationOrganization {
+  id: number;
+  donor_name: string;
+  donor_address: string;
+  donor_zip: string;
+  donor_city: string;
+  donor_foreign: boolean;
+}
 export interface ApiPositions {
   id: number;
   positions: ApiPosition[];
@@ -209,14 +268,6 @@ interface ApiSpeechData {
   relationships: SpeechRelationship;
 }
 
-interface ApiSpeeches {
-  items: ApiSpeech[];
-  total: number;
-  page: number;
-  size: number;
-  is_last_page: boolean;
-  politician_id: number;
-}
 interface SpeechResponse {
   meta: {
     api: unknown;
@@ -234,7 +285,10 @@ export interface ApiPaginatedData<T> {
   total: number;
   page: number;
   size: number;
-  is_last_page: boolean;
+}
+
+interface ApiSpeeches extends ApiPaginatedData<ApiSpeech> {
+  politician_id: number;
 }
 
 export interface ApiSpeech {
@@ -302,3 +356,75 @@ export type Vote = 'yes' | 'no' | 'abstain' | 'no_show';
 export type PollResult = 'yes' | 'no';
 
 export type PositionAnswer = 'agree' | 'disagree' | 'neutral';
+
+export interface PoliticianInfo {
+  id: number;
+  label: string;
+  party: ApiParty;
+  vote?: Vote;
+}
+
+export type PollTab = ApiVoteAndPoll & {
+  created: string;
+  politicians: PoliticianInfo[];
+};
+
+type ValueOf<T> = T[keyof T];
+
+export type SideJobTab = ApiSidejob & {
+  politicians: PoliticianInfo[];
+};
+
+export type SpeechTab = {
+  politicians: PoliticianInfo[];
+  videoFileURI: string;
+  title: string;
+  created: string;
+};
+
+type Row = PollTab | SideJobTab | SpeechTab;
+
+export interface TabEntities {
+  poll: PollTab;
+  sideJob: SideJobTab;
+  speech: SpeechTab;
+}
+
+interface Tab<T extends ValueOf<TabEntities>> {
+  type: keyof TabEntities;
+  content: T;
+}
+
+export interface GraphData {
+  data: {value: number}[];
+  maxValue: number;
+  noOfSections: number;
+  stepValue: number;
+}
+
+export interface GraphDataOverview {
+  data: {value: number}[];
+  color: string;
+}
+
+export interface ExtendedGraphData {
+  data: GraphData;
+  yAxis: string[];
+}
+export interface ExtendedGraphDataWithColor {
+  data: GraphData;
+  yAxis: string[];
+  color: string;
+}
+export interface GraphDataList {
+  graphDataList: GraphDataOverview[];
+  maxValue: number;
+  noOfSections: number;
+  stepValue: number;
+  yAxis: string[];
+}
+
+export interface PartySeparation {
+  bundestagParties: ApiParty[];
+  otherParties: ApiParty[];
+}
