@@ -1,5 +1,5 @@
-import {
-  ApiPartyDonationDetails,
+import type {
+  BundestagPartyDonationDetails,
   GroupedPartyDonations,
   PartyDonation,
 } from './api';
@@ -16,7 +16,7 @@ import {
 } from './partydonation';
 
 // Mock data
-const partyDonationDetailsData: ApiPartyDonationDetails = {
+const partyDonationDetailsData: BundestagPartyDonationDetails = {
   '1': {
     donations_older_than_8_years: [
       {

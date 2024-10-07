@@ -65,5 +65,6 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "packageManager": "yarn@4.5.0"
 }

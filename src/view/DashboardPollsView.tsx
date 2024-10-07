@@ -7,20 +7,20 @@ import {
   SafeAreaView,
   View,
 } from 'react-native';
-import {RouteProp} from '@react-navigation/native';
+import type {RouteProp} from '@react-navigation/native';
 import {Colors} from '../theme';
 import Icon from '../component/Icon';
 import BackButton from '../component/BackButton';
-import {ApiPollBundestag} from '../logic/api';
+import type {ApiPollBundestag} from '../logic/api';
 import {useInfiniteQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
 import {checkPreviousMonth, formatMonth, topicTypes} from '../utils/util';
 import {ClearIcon, FilterIcon} from '../icons';
-import {Modalize} from 'react-native-modalize';
+import type {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import PollFilter from '../component/poll/PollFilter';
 import DashboardPollCard from '../component/poll/DashboardPollCard';
-import {RootStackParamList} from './RootStackParams';
+import type {RootStackParamList} from './RootStackParams';
 
 export interface DashboardPollsViewProps {
   route: RouteProp<RootStackParamList, 'DashboardPolls'>;
@@ -33,9 +33,9 @@ const DashboardPollsView = ({route}: DashboardPollsViewProps) => {
   const modal = useRef<Modalize>(null);
   useEffect(() => {
     let query = '';
-    filter.forEach(filterItem => {
+    for (const filterItem of filter) {
       query += `filters=${filterItem + 1}&`;
-    });
+    }
     setFilterQuery(query);
   }, [filter]);
   const fetchallPolls = (pageParam = 1) =>
@@ -58,9 +58,8 @@ const DashboardPollsView = ({route}: DashboardPollsViewProps) => {
       getNextPageParam: (lastpage, pages) => {
         if (!lastpage?.last_page) {
           return pages?.length + 1;
-        } else {
-          return pages.length;
         }
+        return pages.length;
       },
     },
   );

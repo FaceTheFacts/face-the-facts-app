@@ -330,14 +330,18 @@ PODS:
     - React-Core
     - react-native-camera/RCT
     - react-native-camera/RN
-  - react-native-pager-view (6.2.2):
+  - react-native-pager-view (6.2.0):
     - React-Core
   - react-native-render-html (6.3.4):
     - React-Core
   - react-native-restart (0.0.24):
     - React-Core
-  - react-native-safe-area-context (4.7.4):
+  - react-native-safe-area-context (4.5.0):
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - ReactCommon/turbomodule/core
   - react-native-sqlite-storage (6.0.1):
     - React-Core
   - react-native-video (5.2.1):
@@ -428,20 +432,19 @@ PODS:
     - React-perflogger (= 0.71.0)
   - ReactNativeART (1.2.0):
     - React
-  - RNCAsyncStorage (1.19.4):
+  - RNCAsyncStorage (1.17.12):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.13.4):
-    - RCT-Folly (= 2021.07.22.00)
+  - RNGestureHandler (2.9.0):
     - React-Core
-  - RNScreens (3.27.0):
-    - RCT-Folly (= 2021.07.22.00)
+  - RNScreens (3.20.0):
     - React-Core
+    - React-RCTImage
   - RNSslPinning (1.5.7):
     - AFNetworking (~> 4.0)
     - React
-  - RNSVG (13.14.0):
+  - RNSVG (13.8.0):
     - React-Core
   - Yoga (1.14.0)
 
@@ -662,10 +665,10 @@ SPEC CHECKSUMS:
   React-logger: a6c0b3a807a8e81f6d7fea2e72660766f55daa50
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
-  react-native-pager-view: 02a5c4962530f7efc10dd51ee9cdabeff5e6c631
+  react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
-  react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
+  react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   react-native-sqlite-storage: f6d515e1c446d1e6d026aa5352908a25d4de3261
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
   React-perflogger: e5fc4149e9bbb972b8520277f3b23141faa47a36
@@ -682,12 +685,12 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: ac80782d9d76ba2b0f709f4de0c427fe33c352dc
   ReactCommon: 20e38a9be5fe1341b5e422220877cc94034776ba
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
-  RNCAsyncStorage: 3a8f7145d17cdd9f88e7b77666c94a09e4f759c8
+  RNCAsyncStorage: 09fc8595e6d6f6d5abf16b23a56b257d9c6b7c5b
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
-  RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSslPinning: 373fddf38420bec9c591376f3e4a24df1051b39a
-  RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
+  RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   Yoga: c618b544ff8bd8865cdca602f00cbcdb92fd6d31
 
 PODFILE CHECKSUM: 7309467023e793805f29b031ccdd425ff419a58b

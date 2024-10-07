@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  useWindowDimensions,
 } from 'react-native';
 import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
-import {ApiParty, PartySeparation} from '../../logic/api';
+import type {ApiParty, PartySeparation} from '../../logic/api';
 
 interface PartyDonationFilterProps {
   navigate: (party: ApiParty) => void;
@@ -24,6 +25,7 @@ const PartyDonationFilter = ({
   setFilter,
 }: PartyDonationFilterProps) => {
   const [showMore, setShowMore] = useState(false);
+  const {height: windowHeight} = useWindowDimensions();
   const handlePartyToggle = (partyId: number) => {
     // If the party is already selected, remove it if the result is >= 2
     if (filter.includes(partyId)) {
@@ -62,35 +64,34 @@ const PartyDonationFilter = ({
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.partyScrollContainer}>
           <View style={styles.partyRow}>
-            {parties &&
-              parties.bundestagParties.map((party: ApiParty) => (
-                <TouchableOpacity
-                  key={party.id}
-                  style={
-                    filter.includes(party.id)
-                      ? styles.partySelected
-                      : styles.party
-                  }
-                  onPress={() => handlePartyToggle(party.id)}>
-                  <PartyTag
-                    party={{
-                      id: party.party_style.id,
-                      display_name: party.party_style.display_name,
-                      background_color: party.party_style.background_color,
-                      foreground_color: party.party_style.foreground_color,
-                    }}
-                    style={styles.partyStyle}
-                  />
-                </TouchableOpacity>
-              ))}
+            {parties?.bundestagParties.map((party: ApiParty) => (
+              <TouchableOpacity
+                key={party.id}
+                style={
+                  filter.includes(party.id)
+                    ? styles.partySelected
+                    : styles.party
+                }
+                onPress={() => handlePartyToggle(party.id)}>
+                <PartyTag
+                  party={{
+                    id: party.party_style.id,
+                    display_name: party.party_style.display_name,
+                    background_color: party.party_style.background_color,
+                    foreground_color: party.party_style.foreground_color,
+                  }}
+                  style={styles.partyStyle}
+                />
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
       </ScrollView>
       {showMore && (
-        <View style={styles.partyColumn}>
+        <View style={styles.otherPartiesContainer}>
           <Text style={styles.modalTitle}>Sonstige Parteien</Text>
-          {parties &&
-            parties.otherParties.map((party: ApiParty) => (
+          <ScrollView style={{maxHeight: windowHeight * 0.5}}>
+            {parties?.otherParties.map((party: ApiParty) => (
               <TouchableOpacity
                 key={party.id}
                 style={styles.otherParty}
@@ -101,6 +102,7 @@ const PartyDonationFilter = ({
                 />
               </TouchableOpacity>
             ))}
+          </ScrollView>
         </View>
       )}
     </View>
@@ -191,6 +193,9 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  otherPartiesContainer: {
+    marginTop: 16,
   },
 });
 

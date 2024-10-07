@@ -11,7 +11,7 @@ import {
 import {Colors} from '../theme';
 import BackButton from '../component/BackButton';
 import Icon from '../component/Icon';
-import {
+import type {
   ApiParty,
   BundestagPartyDonationDetails,
   GraphDataList,
@@ -19,7 +19,7 @@ import {
   PartyDonationDetails,
 } from '../logic/api';
 import {FilterIcon} from '../icons';
-import {Modalize} from 'react-native-modalize';
+import type {Modalize} from 'react-native-modalize';
 import BottomSheet from '../component/utils/BottomSheet';
 import {useQuery} from 'react-query';
 import {fetch_api} from '../logic/fetch';
@@ -40,8 +40,8 @@ import TimeFrameFilter from '../component/partydonation/TimeFrameFilter';
 import DonationSectionHeader from '../component/partydonation/DonationSectionHeader';
 import PartyDonationDetailsCard from '../component/partydonation/PartyDonationDetailsCard';
 import {useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from './RootStackParams';
-import {StackNavigationProp} from '@react-navigation/stack';
+import type {RootStackParamList} from './RootStackParams';
+import type {StackNavigationProp} from '@react-navigation/stack';
 import SkeletonPartyDonation from '../component/skeleton/SkeletonPartyDonation';
 
 type NavigationProp = StackNavigationProp<
@@ -83,7 +83,7 @@ const BundestagDonationsView = () => {
   const groupedDonations = useMemo(() => {
     if (partydonations) {
       const filteredDonations = Object.keys(partydonations)
-        .filter(key => filter.includes(parseInt(key, 10)))
+        .filter(key => filter.includes(Number.parseInt(key, 10)))
         .reduce((obj, key) => {
           obj[key] = partydonations[key];
           return obj;
@@ -96,7 +96,7 @@ const BundestagDonationsView = () => {
   const graphDataListResult: GraphDataList = useMemo(() => {
     let highestMaxValue = 1;
     let allGraphData: GraphDataOverview[] = [];
-    let allRelevantDonations: PartyDonationDetails = {
+    const allRelevantDonations: PartyDonationDetails = {
       donations_older_than_8_years: [],
       donations_4_to_8_years_old: [],
       donations_less_than_4_years_old: [],
@@ -110,15 +110,15 @@ const BundestagDonationsView = () => {
         selection,
         partyStyles,
       );
-      allGraphData.forEach(graphDataOverview => {
+      for (const graphDataOverview of allGraphData) {
         const maxDataValue = Math.max(
           ...graphDataOverview.data.map(d => d.value),
         );
         if (maxDataValue > highestMaxValue) {
           highestMaxValue = maxDataValue;
         }
-      });
-      filter.forEach(key => {
+      }
+      for (const key of filter) {
         const donations = partydonations[key.toString()];
         if (donations) {
           allRelevantDonations.donations_older_than_8_years.push(
@@ -131,7 +131,7 @@ const BundestagDonationsView = () => {
             ...getDonationsFromSelection(donations, 2),
           );
         }
-      });
+      }
 
       // Use accumulated relevant donations to generate yAxis
       const yAxisLabels = generateYearList(selection);
@@ -157,7 +157,7 @@ const BundestagDonationsView = () => {
   const additionalDonationInfo = useMemo(() => {
     if (partydonations) {
       const filteredDonations = Object.keys(partydonations)
-        .filter(key => filter.includes(parseInt(key, 10)))
+        .filter(key => filter.includes(Number.parseInt(key, 10)))
         .reduce((obj, key) => {
           obj[key] = partydonations[key];
           return obj;

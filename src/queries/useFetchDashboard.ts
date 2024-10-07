@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Alert} from 'react-native';
 import {fetch_api} from '../logic/fetch';
-import {
+import type {
   ApiPaginatedData,
   ApiSpeechBundestag,
   ApiSidejobsBundestag,
@@ -26,7 +26,7 @@ const queryFunctions = {
 export const useFetchDashboard = (followIds: Set<number>) => {
   const [lastAlertTime, setLastAlertTime] = useState<number>(0);
 
-  const handleError = (error: any) => {
+  const handleError = (error: Error | unknown) => {
     const errorMessage = error ? error.toString() : '';
     const currentTime = Date.now();
 

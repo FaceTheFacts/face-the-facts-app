@@ -20,7 +20,7 @@ export async function fetch_api<T>(url: string): Promise<T | undefined> {
       const jsonResponse = await response.json();
       return jsonResponse as T;
     }
-  } catch (error: Error | any) {
-    throw new Error(error);
+  } catch (error: unknown) {
+    throw new Error(error instanceof Error ? error.message : String(error));
   }
 }
