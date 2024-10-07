@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  FlatList,
 } from 'react-native';
 import {Colors} from '../../theme';
 import PartyTag from '../PartyTag';
@@ -89,18 +90,23 @@ const PartyDonationFilter = ({
       {showMore && (
         <View style={styles.partyColumn}>
           <Text style={styles.modalTitle}>Sonstige Parteien</Text>
-          {parties &&
-            parties.otherParties.map((party: ApiParty) => (
-              <TouchableOpacity
-                key={party.id}
-                style={styles.otherParty}
-                onPress={() => navigate(party)}>
-                <PartyTag
-                  party={party.party_style}
-                  style={styles.otherPartyStyle}
-                />
-              </TouchableOpacity>
-            ))}
+          {parties && (
+            <FlatList
+              data={parties.otherParties}
+              numColumns={2}
+              keyExtractor={(item: ApiParty) => item.id.toString()}
+              renderItem={({item: party}) => (
+                <TouchableOpacity
+                  style={styles.otherParty}
+                  onPress={() => navigate(party)}>
+                  <PartyTag
+                    party={party.party_style}
+                    style={styles.otherPartyStyle}
+                  />
+                </TouchableOpacity>
+              )}
+            />
+          )}
         </View>
       )}
     </View>
@@ -164,7 +170,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   partyColumn: {
-    marginHorizontal: 4,
+    marginHorizontal: 2,
   },
   party: {
     flexDirection: 'row',
@@ -187,8 +193,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   otherPartyStyle: {
-    paddingVertical: 12,
-    width: '100%',
+    paddingVertical: 6,
+    width: '75%',
     alignItems: 'center',
     justifyContent: 'center',
   },

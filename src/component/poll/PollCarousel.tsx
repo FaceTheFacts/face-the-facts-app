@@ -7,14 +7,15 @@ import {Colors} from '../../theme';
 
 interface PollCarouselProps {
   polls: ApiPollBundestagData[];
+  eu?: boolean;
 }
 
-const PollCarousel = ({polls}: PollCarouselProps) => {
+const PollCarousel = ({polls, eu}: PollCarouselProps) => {
   const navigator = useContext(NavigationContext);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Abstimmungen</Text>
+        <Text style={styles.headerText}>Abstimmungen {eu ? 'EU' : ''}</Text>
         <TouchableOpacity
           style={styles.moreBtn}
           onPress={() => {

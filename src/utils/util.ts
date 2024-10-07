@@ -211,6 +211,12 @@ const fractionStyleMap: Record<string, ApiPartyStyle> = {
     foreground_color: '#FFFFFF',
     background_color: '#CD3E72',
   },
+  BSW: {
+    id: 229,
+    display_name: 'BSW',
+    foreground_color: '#FFFFFF',
+    background_color: '#7B2550',
+  },
   AfD: {
     id: 9,
     display_name: 'AfD',

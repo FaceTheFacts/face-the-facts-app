@@ -36,6 +36,32 @@ if (!env.SENTRY_DSN) {
   console.error('SENTRY_DNS in env.json is missing');
 }
 
+const linking = {
+  prefixes: ['ftfapp://', 'https:/facethefacts.app/'],
+  config: {
+    initialRouteName: 'Main' as const,
+    screens: {
+      Main: 'main',
+      Polls: 'polls',
+      News: 'news',
+      BundestagDonations: 'bundestagDonations',
+      PartyDonationDetails: 'partyDonationDetails',
+      Speeches: 'speeches',
+      PollDetails: 'pollDetails/:pollId',
+      Politician: {
+        path: 'politician/:id/:name',
+        parse: {
+          id: (id: string) => Number(id),
+          name: (name: string) => name,
+        },
+      },
+      DashboardSpeeches: 'dashboardSpeeches',
+      DashboardSidejobs: 'dashboardSidejobs',
+      DashboardPolls: 'dashboardPolls',
+    },
+  },
+};
+
 const App = () => {
   const [data, setData] = useState<FaceTheFactsData | null>(null);
   const [missingData, setMissingData] = useState(false);
@@ -82,7 +108,7 @@ const App = () => {
           <StatusBar barStyle="light-content" />
           <Host>
             <View style={styles.container}>
-              <NavigationContainer theme={DarkTheme}>
+              <NavigationContainer theme={DarkTheme} linking={linking}>
                 <Stack.Navigator>
                   {/* Main contains Home, Scanner and History */}
                   <Stack.Screen

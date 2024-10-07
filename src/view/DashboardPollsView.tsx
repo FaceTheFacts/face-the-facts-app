@@ -24,9 +24,10 @@ import {RootStackParamList} from './RootStackParams';
 
 export interface DashboardPollsViewProps {
   route: RouteProp<RootStackParamList, 'DashboardPolls'>;
+  eu?: boolean;
 }
 
-const DashboardPollsView = ({route}: DashboardPollsViewProps) => {
+const DashboardPollsView = ({route, eu}: DashboardPollsViewProps) => {
   const polls = route.params.polls;
   const [filter, setFilter] = useState<number[]>([]);
   const [filterQuery, setFilterQuery] = useState<string>('');
@@ -38,10 +39,20 @@ const DashboardPollsView = ({route}: DashboardPollsViewProps) => {
     });
     setFilterQuery(query);
   }, [filter]);
-  const fetchallPolls = (pageParam = 1) =>
-    fetch_api<ApiPollBundestag>(
-      `bundestag/allpolls?page=${pageParam}&${filterQuery}`,
-    );
+
+  let fetchallPollsQuery: any;
+
+  if (eu) {
+    fetchallPollsQuery = (pageParam = 1) =>
+      fetch_api<ApiPollBundestag>(
+        `eu/allpolls?page=${pageParam}&${filterQuery}`,
+      );
+  } else {
+    fetchallPollsQuery = (pageParam = 1) =>
+      fetch_api<ApiPollBundestag>(
+        `bundestag/allpolls?page=${pageParam}&${filterQuery}`,
+      );
+  }
   const {
     data: pollsData,
     isLoading,
@@ -50,7 +61,7 @@ const DashboardPollsView = ({route}: DashboardPollsViewProps) => {
     fetchNextPage,
   } = useInfiniteQuery<ApiPollBundestag | undefined, Error>(
     `allpolls Bundestag: ${filterQuery}`,
-    ({pageParam = 1}) => fetchallPolls(pageParam),
+    ({pageParam = 1}) => fetchallPollsQuery(pageParam),
     {
       staleTime: 60 * 10000000, // 10000 minute = around 1 week
       cacheTime: 60 * 10000000,

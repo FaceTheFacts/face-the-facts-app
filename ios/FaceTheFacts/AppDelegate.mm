@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import <React/RCTBundleURLProvider.h>
+#import <React/RCTLinkingManager.h>
 @implementation AppDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -22,5 +23,11 @@
 - (BOOL)concurrentRootEnabled
 {
   return true;
+}
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
 }
 @end

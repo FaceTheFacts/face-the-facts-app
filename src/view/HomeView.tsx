@@ -10,6 +10,7 @@ import FeedFilter from '../component/feed/FeedFilter';
 import Icon from '../component/Icon';
 import {FilterIcon} from '../icons';
 import {getItem, storeItem} from '../logic/storage';
+import DashboardEurope from '../component/dashboard/DasbordEurope';
 
 export const POLLS_TOGGLE_KEY = 'polls';
 export const SIDEJOBS_TOGGLE_KEY = 'sideJobs';
@@ -36,6 +37,7 @@ const HomeView = (props: HomeViewProps) => {
   const [showArticles, setShowArticles] = useState(true);
   const [routes] = useState([
     {key: 'parliament', title: 'Bundestag'},
+    {key: 'eu-parliament', title: 'Europa'},
     {key: 'follow', title: 'Folge ich'},
   ]);
   const modal = useRef<Modalize>(null);
@@ -88,6 +90,8 @@ const HomeView = (props: HomeViewProps) => {
     switch (route.key) {
       case 'parliament':
         return <Dashboard />;
+      case 'eu-parliament':
+        return <DashboardEurope />;
       case 'follow':
         return (
           <FollowFeed
@@ -123,7 +127,7 @@ const HomeView = (props: HomeViewProps) => {
                 <Text style={{...styles.label, color}}>{route.title}</Text>
               )}
             />
-            {index === 1 && (
+            {index === 2 && (
               <TouchableOpacity
                 style={styles.filterBtn}
                 onPress={() => modal.current?.open()}>

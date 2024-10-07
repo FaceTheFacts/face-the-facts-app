@@ -81,93 +81,101 @@ const PollVoteCard = ({pollData}: PollVoteCardProps) => {
   if (isError) {
     return <ErrorCard />;
   }
-
   return (
     <View style={styles.votesCard}>
       <Text style={styles.cardTitle}>Parteien</Text>
       <View style={styles.separatorLine} />
       {pollData &&
-        pollData.map((partyVote, pollIndex) => (
-          <Fragment key={pollIndex}>
-            <View style={styles.fractionRow}>
-              <View style={styles.fractionTagContainer}>
-                <FractionTag
-                  party={partyVote.fraction.short_name}
-                  style={styles.fractionTag}
-                />
+        pollData.map((partyVote, pollIndex) => {
+          console.log(partyVote.fraction.short_name);
+          return (
+            <Fragment key={pollIndex}>
+              <View style={styles.fractionRow}>
+                <View style={styles.fractionTagContainer}>
+                  <FractionTag
+                    party={partyVote.fraction.short_name}
+                    style={styles.fractionTag}
+                  />
+                </View>
+                <View
+                  style={[
+                    styles.partyVoteContainer,
+                    {
+                      width: width,
+                    },
+                  ]}>
+                  {partyVote.total_yes > 0 && (
+                    <View
+                      style={[
+                        styles.voteBarContainer,
+                        {
+                          width: getWidth(
+                            width,
+                            partyVote.total_yes,
+                            partyVote,
+                          ),
+                        },
+                      ]}>
+                      <Text style={styles.partyVote}>
+                        {partyVote.total_yes}
+                      </Text>
+                      <View style={[styles.voteBar, styles.yes]} />
+                    </View>
+                  )}
+                  {partyVote.total_no > 0 && (
+                    <View
+                      style={[
+                        styles.voteBarContainer,
+                        {
+                          width: getWidth(width, partyVote.total_no, partyVote),
+                        },
+                      ]}>
+                      <Text style={styles.partyVote}>{partyVote.total_no}</Text>
+                      <View style={[styles.voteBar, styles.no]} />
+                    </View>
+                  )}
+                  {partyVote.total_abstain > 0 && (
+                    <View
+                      style={[
+                        styles.voteBarContainer,
+                        {
+                          width: getWidth(
+                            width,
+                            partyVote.total_abstain,
+                            partyVote,
+                          ),
+                        },
+                      ]}>
+                      <Text style={styles.partyVote}>
+                        {partyVote.total_abstain}
+                      </Text>
+                      <View style={[styles.voteBar, styles.abstain]} />
+                    </View>
+                  )}
+                  {partyVote.total_no_show > 0 && (
+                    <View
+                      style={[
+                        styles.voteBarContainer,
+                        {
+                          width: getWidth(
+                            width,
+                            partyVote.total_no_show,
+                            partyVote,
+                          ),
+                        },
+                      ]}>
+                      <Text style={styles.partyVote}>
+                        {partyVote.total_no_show}
+                      </Text>
+                      <View style={[styles.voteBar, styles.noShow]} />
+                    </View>
+                  )}
+                </View>
               </View>
-              <View
-                style={[
-                  styles.partyVoteContainer,
-                  {
-                    width: width,
-                  },
-                ]}>
-                {partyVote.total_yes > 0 && (
-                  <View
-                    style={[
-                      styles.voteBarContainer,
-                      {
-                        width: getWidth(width, partyVote.total_yes, partyVote),
-                      },
-                    ]}>
-                    <Text style={styles.partyVote}>{partyVote.total_yes}</Text>
-                    <View style={[styles.voteBar, styles.yes]} />
-                  </View>
-                )}
-                {partyVote.total_no > 0 && (
-                  <View
-                    style={[
-                      styles.voteBarContainer,
-                      {
-                        width: getWidth(width, partyVote.total_no, partyVote),
-                      },
-                    ]}>
-                    <Text style={styles.partyVote}>{partyVote.total_no}</Text>
-                    <View style={[styles.voteBar, styles.no]} />
-                  </View>
-                )}
-                {partyVote.total_abstain > 0 && (
-                  <View
-                    style={[
-                      styles.voteBarContainer,
-                      {
-                        width: getWidth(
-                          width,
-                          partyVote.total_abstain,
-                          partyVote,
-                        ),
-                      },
-                    ]}>
-                    <Text style={styles.partyVote}>
-                      {partyVote.total_abstain}
-                    </Text>
-                    <View style={[styles.voteBar, styles.abstain]} />
-                  </View>
-                )}
-                {partyVote.total_no_show > 0 && (
-                  <View
-                    style={[
-                      styles.voteBarContainer,
-                      {
-                        width: getWidth(
-                          width,
-                          partyVote.total_no_show,
-                          partyVote,
-                        ),
-                      },
-                    ]}>
-                    <Text style={styles.partyVote}>
-                      {partyVote.total_no_show}
-                    </Text>
-                    <View style={[styles.voteBar, styles.noShow]} />
-                  </View>
-                )}
-              </View>
-            </View>
-            <View style={styles.separatorLine} />
-          </Fragment>
-        ))}
+              <View style={styles.separatorLine} />
+            </Fragment>
+          );
+        })}
       {isSuccess && voteData && (
         <>
           <TouchableOpacity
