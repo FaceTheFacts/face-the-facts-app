@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Enable Corepack
+        run: corepack enable
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
@@ -28,6 +30,8 @@ jobs:
           bundle install
           bundle update fastlane
 
+      - name: Use correct Yarn version
+        run: corepack prepare yarn@4.5.0 --activate
       - name: Install packages
         run: yarn install
 
@@ -63,6 +67,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Enable Corepack
+        run: corepack enable
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
@@ -73,6 +79,8 @@ jobs:
       - name: Build install
         run: cd android && bundle install && bundle update fastlane
 
+      - name: Use correct Yarn version
+        run: corepack prepare yarn@4.5.0 --activate
       - name: Install packages
         run: yarn install
 
