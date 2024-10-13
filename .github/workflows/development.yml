@@ -17,7 +17,7 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
       - name: Prepare Yarn 4.5.0
         run: corepack prepare yarn@4.5.0 --activate
       - uses: ruby/setup-ruby@v1
@@ -73,7 +73,7 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
       - name: Prepare Yarn 4.5.0
         run: corepack prepare yarn@4.5.0 --activate
       - uses: ruby/setup-ruby@v1
