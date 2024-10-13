@@ -69,7 +69,8 @@ platform :ios do
     )
     match(
       type: "appstore",
-      readonly: true,
+      readonly: false,
+      force: true,
       app_identifier: "app.facethefacts",
       verbose: true,
       git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"],
