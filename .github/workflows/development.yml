@@ -35,7 +35,7 @@ jobs:
       - name: Use correct Yarn version
         run: corepack prepare yarn@4.5.0 --activate
       - name: Install packages
-        run: yarn install --immutable --immutable-cache --check-cache
+        run: yarn install
 
       - name: Create env.json
         run: echo {'"BASE_URL"':'"${{ secrets.BASE_URL }}"', '"SCAN_DATA_URL"':'"${{ secrets.SCAN_DATA_URL }}"', '"APPLE_ACCOUNT"':'"${{ secrets.APPLE_ACCOUNT }}"', '"ITC_TEAM_ID"':'"${{ secrets.ITC_TEAM_ID }}"', '"TEAM_ID"':'"${{ secrets.TEAM_ID }}"'} >> env.json
@@ -86,7 +86,7 @@ jobs:
       - name: Use correct Yarn version
         run: corepack prepare yarn@4.5.0 --activate
       - name: Install packages
-        run: yarn install --immutable --immutable-cache --check-cache
+        run: yarn install
 
       - name: Decrypt keystore
         run: |
